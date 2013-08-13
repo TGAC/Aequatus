@@ -123,7 +123,10 @@ function seqregionSearchPopup(query, from, to, blast) {
                 else {
                     chromosome = false;
                 }
+
+                initiate();
                 loadDefaultTrack(track_list);
+
             }
         }
         });

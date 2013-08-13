@@ -8,10 +8,10 @@
           <element id="module-output" name="browser-web" />
         </element>
         <element id="directory" name="lib">
-          <element id="archive" name="service-0.1.2.jar">
+          <element id="archive" name="service-0.0.1.jar">
             <element id="module-output" name="service" />
           </element>
-          <element id="archive" name="core-0.1.2.jar">
+          <element id="archive" name="core-0.0.1.jar">
             <element id="module-output" name="core" />
           </element>
           <element id="library" level="project" name="Maven: net.sf.json-lib:json-lib:jdk15:2.4" />
@@ -23,7 +23,7 @@
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.6.1" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.6.0" />
           <element id="library" level="project" name="Maven: log4j:log4j:1.2.16" />
-          <element id="archive" name="browser-process-0.1.2.jar">
+          <element id="archive" name="browser-process-0.0.1.jar">
             <element id="module-output" name="browser-process" />
           </element>
           <element id="library" level="project" name="Maven: uk.ac.bbsrc.tgac.miso:tgac-analysis:0.1.6" />
@@ -110,7 +110,7 @@
           <element id="library" level="project" name="Maven: org.springframework.integration:spring-integration-stream:2.0.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.integration:spring-integration-event:2.0.3.RELEASE" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.13" />
-          <element id="archive" name="ensembl-store-0.1.2.jar">
+          <element id="archive" name="ensembl-store-0.0.1.jar">
             <element id="module-output" name="ensembl-store" />
           </element>
           <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache-core:2.5.1" />

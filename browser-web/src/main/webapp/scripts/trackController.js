@@ -313,6 +313,10 @@ function dispBLASTindel(j, blast_start) {
 
 
 function dispGenes(div, track, expand, className) {
+
+
+    svgClear()
+
     var labeltoogle = "display : in-line;";
     var labelclass = "label" + track;
     var track_html = [];
@@ -440,6 +444,7 @@ function dispGenes(div, track, expand, className) {
                     'title': label
 
                 }).html("<p class='track_label'>" + label + "</p>").appendTo("#" + track + "" + len);
+                drawoncircle(gene_start, gene_stop, genes[len].layer);
             }
         }
         else {
@@ -517,12 +522,13 @@ function dispGenes(div, track, expand, className) {
                         'style': "z-index: 999; height: 10px; TOP:" + top + "px; LEFT:" + startposition + "px; width :" + stopposition + "px; ",
                         'onClick': "trackClick('" + track + "'," + len + "," + transcript_len + ")"
                     }).appendTo(div);
+                    drawoncircle(gene_start, gene_stop, genes[len].layer);
 
 
                 }
             }
         }
-     }
+    }
 }
 
 function dispGeneExon(track, genestrand, className, div) {
@@ -753,6 +759,7 @@ function dispGeneExon(track, genestrand, className, div) {
 }
 
 function dispTrack(div, trackName, className) {
+    var svgdiv = jQuery(div).svg('get');
 
     var labelclass = "label" + trackName;
     var modi_style;
@@ -928,6 +935,9 @@ function dispTrack(div, trackName, className) {
 
                 }).html(label).appendTo("#" + trackName + "" + track_len);
 
+                svgdiv.line(startposition, top, (startposition + stopposition), top, {strokeWidth: 5, stroke: "blue", title: label, style: "cursor : pointer", onclick: "trackClick(\"" + trackName + "\",\"" + i + "\");"});
+
+
                 if (stopposition > 10) {
                     jQuery("<span>").attr({
                         'class': spanclass,
@@ -1064,7 +1074,7 @@ function dispCigar(cigars, start, top) {
 function dispGraph(div, trackName, className) {
     var track_html = "";
 
-     if (jQuery('input[name=' + trackName + 'mergedCheckbox]').is(':checked')) {
+    if (jQuery('input[name=' + trackName + 'mergedCheckbox]').is(':checked')) {
         jQuery(div).fadeOut();
         jQuery("#" + trackName + "_wrapper").fadeOut();
         div = "#mergedtrack";
@@ -1119,13 +1129,13 @@ function dispGraph(div, trackName, className) {
             var startposition = (track_start - newStart_temp) * parseFloat(maxLen_temp) / (newEnd_temp - newStart_temp) + parseFloat(maxLen_temp) / 2;
             var stopposition = (track_stop - track_start ) * parseFloat(maxLen_temp) / (newEnd_temp - newStart_temp);
 
-             jQuery("<div>").attr({
-                        'id': trackName + "" + track_len,
-                        'class': "graph " + className+"_graph",
-                        'style': "bottom:0px; height: " + (track[track_len].graph * 45 / max) + "px; LEFT:" + startposition + "px; width:" + (stopposition - 1) + "px",
-                        'title': track_start + ":" + track_stop + "->" + track[track_len].graph,
-                        'onClick': "setBegin(" + track[track_len].start + ");setEnd(" + track[track_len].end + ");jumpToSeq();"
-                    }).appendTo(div);
+            jQuery("<div>").attr({
+                'id': trackName + "" + track_len,
+                'class': "graph " + className+"_graph",
+                'style': "bottom:0px; height: " + (track[track_len].graph * 45 / max) + "px; LEFT:" + startposition + "px; width:" + (stopposition - 1) + "px",
+                'title': track_start + ":" + track_stop + "->" + track[track_len].graph,
+                'onClick': "setBegin(" + track[track_len].start + ");setEnd(" + track[track_len].end + ");jumpToSeq();"
+            }).appendTo(div);
 
 //            track_html += "<div class= \"graph " + className + "_graph\" onclick=\"setBegin(" + track[track_len].start + ");setEnd(" + track[track_len].end + ");jumpToSeq();\"STYLE=\"bottom:0px; height: " + (track[track_len].graph * 45 / max) + "px;" +
 //                "LEFT:" + startposition + "px;" +
