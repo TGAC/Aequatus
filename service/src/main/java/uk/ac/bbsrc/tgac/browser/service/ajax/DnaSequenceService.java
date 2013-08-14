@@ -25,27 +25,19 @@
 
 package uk.ac.bbsrc.tgac.browser.service.ajax;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import net.sf.samtools.CigarElement;
-import net.sf.samtools.SAMFileReader;
-import net.sf.samtools.SAMRecord;
-import net.sf.samtools.*;
-import net.sf.samtools.util.SeekableStream;
 import net.sourceforge.fluxion.ajax.Ajaxified;
 import net.sourceforge.fluxion.ajax.util.JSONUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import uk.ac.bbsrc.tgac.browser.core.store.SequenceStore;
-import uk.ac.bbsrc.tgac.browser.service.ajax.FileService;
-import uk.ac.bbsrc.tgac.browser.service.ajax.SamBamService;
+import uk.ac.bbsrc.tgac.browser.core.store.ComparaStore;
+import uk.ac.bbsrc.tgac.browser.core.store.EnsemblCoreStore;
+import uk.ac.bbsrc.tgac.browser.store.ensembl.SQLEnsemblComparaDAO;
 
 
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -59,10 +51,15 @@ import java.util.List;
 public class DnaSequenceService {
     protected static final Logger log = LoggerFactory.getLogger(DnaSequenceService.class);
     @Autowired
-    private SequenceStore sequenceStore;
+    private EnsemblCoreStore sequenceStore;
+    private ComparaStore comparaStore;
 
-    public void setSequenceStore(SequenceStore sequenceStore) {
+    public void setSequenceStore(EnsemblCoreStore sequenceStore) {
         this.sequenceStore = sequenceStore;
+    }
+
+    public void setComparaStore(ComparaStore comparaStore) {
+        this.comparaStore = comparaStore;
     }
 
     /**
@@ -391,5 +388,27 @@ public class DnaSequenceService {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             return JSONUtils.SimpleJSONError(e.getMessage());
         }
+    }
+
+
+    /**
+     * @param session an HTTPSession comes from ajax call
+     * @param json    json object with key parameters sent from ajax call
+     * @return JSONObject with one result or list of result
+     */
+
+    public JSONObject searchGenomeid(HttpSession session, JSONObject json) {
+        log.info("search_genome_id");
+        String query = json.getString("query");
+        JSONObject response = new JSONObject();
+        try {
+            response.put("html", "genomes");
+            response.put("genomes", comparaStore.getAllGenomeId(query));
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        }
+
     }
 }

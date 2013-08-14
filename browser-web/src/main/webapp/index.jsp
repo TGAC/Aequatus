@@ -24,7 +24,7 @@
 
 
     jQuery(document).ready(function() {
-        var chr = metaData();
+        var chr = ""//metaData();
 
         jQuery("#mainsearch").load("browser.jsp", function() {
             onLoad();
@@ -61,7 +61,7 @@
             var now = new Date();
 
 
-            search(jQuery('#search').val(), oldTracklist);
+            search(jQuery('#search').val());
         <%--vars[1] for blast and so on --%>
         }
         else if(chr == true){

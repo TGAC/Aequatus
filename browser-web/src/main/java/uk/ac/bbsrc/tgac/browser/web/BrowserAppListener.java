@@ -2,22 +2,16 @@ package uk.ac.bbsrc.tgac.browser.web;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
-import net.sf.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.context.support.XmlWebApplicationContext;
-import uk.ac.bbsrc.tgac.browser.core.store.SequenceStore;
+import uk.ac.bbsrc.tgac.browser.core.store.EnsemblCoreStore;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.io.IOException;
 import java.util.Date;
-import java.lang.management.*;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -42,7 +36,7 @@ public class BrowserAppListener implements ServletContextListener {
     //resolve property file configuration placeholders
     //MisoPropertyExporter exporter = (MisoPropertyExporter) context.getBean("propertyConfigurer");
     //Map<String, String> misoProperties = exporter.getResolvedProperties();
-    SequenceStore ss = (SequenceStore) context.getBean("sequenceStore");
+      EnsemblCoreStore ss = (EnsemblCoreStore) context.getBean("sequenceStore");
 
     try {
 //      JSONArray reference_list = ss.getSeqRegionIdSearch("");

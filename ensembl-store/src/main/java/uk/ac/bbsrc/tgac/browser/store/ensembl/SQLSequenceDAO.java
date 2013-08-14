@@ -29,29 +29,18 @@ package uk.ac.bbsrc.tgac.browser.store.ensembl;
 import com.googlecode.ehcache.annotations.Cacheable;
 import com.googlecode.ehcache.annotations.KeyGenerator;
 import com.googlecode.ehcache.annotations.Property;
-import com.sun.corba.se.spi.orbutil.fsm.Guard;
-import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
-import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.collections.set.SynchronizedSortedSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import uk.ac.bbsrc.tgac.browser.core.store.*;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by IntelliJ IDEA.
@@ -61,7 +50,7 @@ import java.util.regex.Pattern;
  * To change this template use File | Settings | File Templates.
  */
 
-public class SQLSequenceDAO implements SequenceStore {
+public class SQLSequenceDAO implements EnsemblCoreStore {
   protected static final Logger log = LoggerFactory.getLogger(SQLSequenceDAO.class);
 
   @Autowired
