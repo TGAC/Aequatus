@@ -749,7 +749,6 @@ function clicked_func(element) {
     jQuery("#searchresult").html(seqregioncontent)
     jQuery("#searchresult").fadeIn()
     jQuery("#searchresult").css('top', '225px')
-    console.log(parent_main)
     jQuery("#searchresult").css('left', jQuery("#"+parent_main).css('left'))
 
 

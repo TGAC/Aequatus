@@ -16,6 +16,11 @@
         <!-- <property name="seqStore" ref="sequenceStore"/> -->
     </bean>
 
+    <bean id="comparaService"
+          class="uk.ac.bbsrc.tgac.browser.service.ajax.ComparaService">
+        <!-- <property name="seqStore" ref="sequenceStore"/> -->
+    </bean>
+
     <bean id="fileService"
           class="uk.ac.bbsrc.tgac.browser.service.ajax.FileService">
     </bean>

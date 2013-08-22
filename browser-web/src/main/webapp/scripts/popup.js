@@ -508,78 +508,78 @@ function showDetails(track, i, j) {
 
 function showPeptides(track, i, k) {
   var seq = "";
-  Fluxion.doAjax(
-          'dnaSequenceService',
-          'loadSequence',
-          {'query': seqregname, 'from': window[track][i].start, 'to': window[track][i].end, 'url': ajaxurl},
-          {'doOnSuccess': function (json) {
-
-            seq = json.seq;
-            var cdnaseq = "";
-            var noofexons = window[track][i].transcript[k].Exons.length;
-            if (noofexons > 0) {
-              for (var j = 0; j < noofexons; j++) {
-                var exon_start = window[track][i].transcript[k].Exons[j].start;
-                var exon_end = window[track][i].transcript[k].Exons[j].end;
-                var transcript_start = window[track][i].transcript[k].transcript_start;
-                var transcript_end = window[track][i].transcript[k].transcript_end;
-                var track_start = window[track][i].transcript[k].start;
-                var track_end = window[track][i].transcript[k].end;
-
-                if (exon_start <= transcript_start && exon_end >= transcript_end) {
-                  cdnaseq = seq.substring(parseInt(transcript_start) - parseInt(track_start), parseInt(transcript_end) - parseInt(track_start));
-                }
-                else if (exon_start <= transcript_start) {
-                  cdnaseq = seq.substring(parseInt(transcript_start) - parseInt(track_start), parseInt(exon_end) - parseInt(track_start));
-                }
-                else if (exon_end >= transcript_end) {
-                  cdnaseq += seq.substring(parseInt(exon_start) - parseInt(track_start), parseInt(transcript_end) - parseInt(track_start));
-                  break;
-                }
-                else if (exon_start > transcript_start) {
-                  cdnaseq += seq.substring(parseInt(exon_start) - parseInt(track_start), parseInt(exon_end) - parseInt(track_start));
-                }
-                else {
-                }
-
-              }
-              if (window[track][i].strand == -1) {
-                var temp = "";
-                var temp2 = cdnaseq.split("").reverse();
-                for (var j = 0; j < temp2.length; j++) {
-                  if (temp2[j] == "A") {
-                    temp += "T";
-                  }
-                  else if (temp2[j] == "C") {
-                    temp += "G";
-                  }
-                  else if (temp2[j] == "G") {
-                    temp += "C";
-                  }
-                  else if (temp2[j] == "T") {
-                    temp += "A";
-                  }
-                  else {
-                    temp += "N";
-                  }
-                }
-                cdnaseq = temp;
-              }
-            }
-            var oldcdnaseq = cdnaseq;
-            var oldPeptideSeq = convertPeptide(oldcdnaseq);
-            cdnaseq = convertFasta(cdnaseq)
-            var peptideseq = convertFasta(oldPeptideSeq);
-            jQuery.colorbox({
-                              width: "90%",
-                              html: "<table><tr><td><button id=\"peptidebutton\" class='ui-state-default ui-corner-all' " +
-                                    "onclick=\"sequenceToogle();\">Peptide Sequence</button><br/>" +
-                                    "</td></td></tr></table><br/>" +
-                                    "<div id='cdnasequence' style='display : inline; font-family: Courier, \"Courier New\", monospace'><b>cDNA Seq</b><hr>" + cdnaseq + "</div><div id='peptidesequence' style='display : none; font-family: Courier, \"Courier New\", monospace'><b>Peptide Seq</b><hr>" + peptideseq + "</div>" });
-
-
-          }
-          });
+//  Fluxion.doAjax(
+//          'dnaSequenceService',
+//          'loadSequence',
+//          {'query': seqregname, 'from': window[track][i].start, 'to': window[track][i].end, 'url': ajaxurl},
+//          {'doOnSuccess': function (json) {
+//
+//            seq = json.seq;
+//            var cdnaseq = "";
+//            var noofexons = window[track][i].transcript[k].Exons.length;
+//            if (noofexons > 0) {
+//              for (var j = 0; j < noofexons; j++) {
+//                var exon_start = window[track][i].transcript[k].Exons[j].start;
+//                var exon_end = window[track][i].transcript[k].Exons[j].end;
+//                var transcript_start = window[track][i].transcript[k].transcript_start;
+//                var transcript_end = window[track][i].transcript[k].transcript_end;
+//                var track_start = window[track][i].transcript[k].start;
+//                var track_end = window[track][i].transcript[k].end;
+//
+//                if (exon_start <= transcript_start && exon_end >= transcript_end) {
+//                  cdnaseq = seq.substring(parseInt(transcript_start) - parseInt(track_start), parseInt(transcript_end) - parseInt(track_start));
+//                }
+//                else if (exon_start <= transcript_start) {
+//                  cdnaseq = seq.substring(parseInt(transcript_start) - parseInt(track_start), parseInt(exon_end) - parseInt(track_start));
+//                }
+//                else if (exon_end >= transcript_end) {
+//                  cdnaseq += seq.substring(parseInt(exon_start) - parseInt(track_start), parseInt(transcript_end) - parseInt(track_start));
+//                  break;
+//                }
+//                else if (exon_start > transcript_start) {
+//                  cdnaseq += seq.substring(parseInt(exon_start) - parseInt(track_start), parseInt(exon_end) - parseInt(track_start));
+//                }
+//                else {
+//                }
+//
+//              }
+//              if (window[track][i].strand == -1) {
+//                var temp = "";
+//                var temp2 = cdnaseq.split("").reverse();
+//                for (var j = 0; j < temp2.length; j++) {
+//                  if (temp2[j] == "A") {
+//                    temp += "T";
+//                  }
+//                  else if (temp2[j] == "C") {
+//                    temp += "G";
+//                  }
+//                  else if (temp2[j] == "G") {
+//                    temp += "C";
+//                  }
+//                  else if (temp2[j] == "T") {
+//                    temp += "A";
+//                  }
+//                  else {
+//                    temp += "N";
+//                  }
+//                }
+//                cdnaseq = temp;
+//              }
+//            }
+//            var oldcdnaseq = cdnaseq;
+//            var oldPeptideSeq = convertPeptide(oldcdnaseq);
+//            cdnaseq = convertFasta(cdnaseq)
+//            var peptideseq = convertFasta(oldPeptideSeq);
+//            jQuery.colorbox({
+//                              width: "90%",
+//                              html: "<table><tr><td><button id=\"peptidebutton\" class='ui-state-default ui-corner-all' " +
+//                                    "onclick=\"sequenceToogle();\">Peptide Sequence</button><br/>" +
+//                                    "</td></td></tr></table><br/>" +
+//                                    "<div id='cdnasequence' style='display : inline; font-family: Courier, \"Courier New\", monospace'><b>cDNA Seq</b><hr>" + cdnaseq + "</div><div id='peptidesequence' style='display : none; font-family: Courier, \"Courier New\", monospace'><b>Peptide Seq</b><hr>" + peptideseq + "</div>" });
+//
+//
+//          }
+//          });
 
 }
 
@@ -716,68 +716,68 @@ function fetchFasta(begin, end, track, i, j) {
                           "<br/><b>Fasta:</b> <br/>" + reverseText +
                           "<div id=\"fastaoutput\" style=' font-family: Courier, \"Courier New\", monospace'><img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'></div>"});
 
-  Fluxion.doAjax(
-          'dnaSequenceService',
-          'loadSequence',
-          {'query': seqregname, 'from': begin, 'to': end, 'url': ajaxurl},
-          {'doOnSuccess': function (json) {
-            var seq = (json.seq).toLowerCase();
-            if (i) {
-              var start, stop;
-
-              if (window[track][i].transcript[j].start > window[track][i].transcript[j].end) {
-                start = window[track][i].transcript[j].end;
-                stop = window[track][i].transcript[j].start;
-              }
-              else {
-                start = window[track][i].transcript[j].start;
-                stop = window[track][i].transcript[j].end;
-              }
-              var exons = window[track][i].transcript[j].Exons.length;
-              for (var k = 0; k < exons; k++) {
-                var substart, subend;
-                if (window[track][i].transcript[j].start > window[track][i].transcript[j].end) {
-                  substart = window[track][i].transcript[j].Exons[k].end - start;
-                  subend = window[track][i].transcript[j].Exons[k].start - start;
-                }
-                else {
-                  substart = window[track][i].transcript[j].Exons[k].start - start;
-                  subend = window[track][i].transcript[j].Exons[k].end - start;
-                }
-                var exonSeq = seq.substring(substart, subend);
-                seq = seq.substring(0, substart) + exonSeq.toUpperCase() + seq.substring(subend + 1, seq.length);
-              }
-              jQuery('#fastaoutput').html(">" + seqregname + ": " + begin + " - " + end + " <font color='green'> " + convertFasta(seq) + "</font>");
-              jQuery('#fastaoutput').each(function () {
-                var pattern = /([ATCG]+)/g;
-                var before = '<span style="color: red;">';
-                var after = '</span>';
-                jQuery(this).html(jQuery('#fastaoutput').html().replace(pattern, before + "$1" + after));
-              });
-
-            }
-            else {
-              jQuery('#fastaoutput').html(">" + seqregname + ": " + begin + " - " + end + convertFasta(seq));
-            }
-            jQuery('#fastadownload').html("<button class='ui-state-default ui-corner-all' " +
-                                          "onclick=fastaFile('" + seq + "'," + begin + "," + end + ") \">Prepare Download Sequence File</button>");
-          }
-          });
+//  Fluxion.doAjax(
+//          'dnaSequenceService',
+//          'loadSequence',
+//          {'query': seqregname, 'from': begin, 'to': end, 'url': ajaxurl},
+//          {'doOnSuccess': function (json) {
+//            var seq = (json.seq).toLowerCase();
+//            if (i) {
+//              var start, stop;
+//
+//              if (window[track][i].transcript[j].start > window[track][i].transcript[j].end) {
+//                start = window[track][i].transcript[j].end;
+//                stop = window[track][i].transcript[j].start;
+//              }
+//              else {
+//                start = window[track][i].transcript[j].start;
+//                stop = window[track][i].transcript[j].end;
+//              }
+//              var exons = window[track][i].transcript[j].Exons.length;
+//              for (var k = 0; k < exons; k++) {
+//                var substart, subend;
+//                if (window[track][i].transcript[j].start > window[track][i].transcript[j].end) {
+//                  substart = window[track][i].transcript[j].Exons[k].end - start;
+//                  subend = window[track][i].transcript[j].Exons[k].start - start;
+//                }
+//                else {
+//                  substart = window[track][i].transcript[j].Exons[k].start - start;
+//                  subend = window[track][i].transcript[j].Exons[k].end - start;
+//                }
+//                var exonSeq = seq.substring(substart, subend);
+//                seq = seq.substring(0, substart) + exonSeq.toUpperCase() + seq.substring(subend + 1, seq.length);
+//              }
+//              jQuery('#fastaoutput').html(">" + seqregname + ": " + begin + " - " + end + " <font color='green'> " + convertFasta(seq) + "</font>");
+//              jQuery('#fastaoutput').each(function () {
+//                var pattern = /([ATCG]+)/g;
+//                var before = '<span style="color: red;">';
+//                var after = '</span>';
+//                jQuery(this).html(jQuery('#fastaoutput').html().replace(pattern, before + "$1" + after));
+//              });
+//
+//            }
+//            else {
+//              jQuery('#fastaoutput').html(">" + seqregname + ": " + begin + " - " + end + convertFasta(seq));
+//            }
+//            jQuery('#fastadownload').html("<button class='ui-state-default ui-corner-all' " +
+//                                          "onclick=fastaFile('" + seq + "'," + begin + "," + end + ") \">Prepare Download Sequence File</button>");
+//          }
+//          });
 
 }
 
 
 function blast(begin, end, hit, blastdb, type) {
 //  if (end - begin < 10000) {
-  Fluxion.doAjax(
-          'dnaSequenceService',
-          'loadSequence',
-          {'query': seqregname, 'from': begin, 'to': end, 'url': ajaxurl},
-          {'doOnSuccess': function (json) {
-            var seq = json.seq;
-            blastTrackSearch(seq, begin, end, hit, blastdb, type);
-          }
-          });
+//  Fluxion.doAjax(
+//          'dnaSequenceService',
+//          'loadSequence',
+//          {'query': seqregname, 'from': begin, 'to': end, 'url': ajaxurl},
+//          {'doOnSuccess': function (json) {
+//            var seq = json.seq;
+//            blastTrackSearch(seq, begin, end, hit, blastdb, type);
+//          }
+//          });
 
 
 //    blastTrackSearch(seq.substring(begin, end), begin, end, hit, blastdb);

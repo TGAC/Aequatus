@@ -52,15 +52,12 @@ public class DnaSequenceService {
     protected static final Logger log = LoggerFactory.getLogger(DnaSequenceService.class);
     @Autowired
     private EnsemblCoreStore sequenceStore;
-    private ComparaStore comparaStore;
 
     public void setSequenceStore(EnsemblCoreStore sequenceStore) {
         this.sequenceStore = sequenceStore;
     }
 
-    public void setComparaStore(ComparaStore comparaStore) {
-        this.comparaStore = comparaStore;
-    }
+
 
     /**
      * Returns a JSONObject that can be read as single reference or a list of results
@@ -197,13 +194,14 @@ public class DnaSequenceService {
         int count;
         try {
             Integer queryid = sequenceStore.getSeqRegion(seqName);
-            if (trackId.contains(".sam") || trackId.contains(".bam")) {
-                response.put(trackName, SamBamService.getSamBam(start, end, delta, trackId, seqName));
-            } else if (trackId.contains(".wig")) {
-                response.put(trackName, SamBamService.getWig(start, end, delta, trackId, seqName));
-            } else if (trackId.contains(".bed")) {
-                response.put(trackName, SamBamService.getBed(start, end, delta, trackId, seqName));
-            } else if (trackId.indexOf("cs") >= 0) {
+//            if (trackId.contains(".sam") || trackId.contains(".bam")) {
+//                response.put(trackName, SamBamService.getSamBam(start, end, delta, trackId, seqName));
+//            } else if (trackId.contains(".wig")) {
+//                response.put(trackName, SamBamService.getWig(start, end, delta, trackId, seqName));
+//            } else if (trackId.contains(".bed")) {
+//                response.put(trackName, SamBamService.getBed(start, end, delta, trackId, seqName));
+//            } else
+            if (trackId.indexOf("cs") >= 0) {
                 count = sequenceStore.countAssembly(queryid, trackId, start, end);
                 if (count < 5000) {
                     response.put(trackName, sequenceStore.getAssembly(queryid, trackId, delta));
@@ -391,24 +389,5 @@ public class DnaSequenceService {
     }
 
 
-    /**
-     * @param session an HTTPSession comes from ajax call
-     * @param json    json object with key parameters sent from ajax call
-     * @return JSONObject with one result or list of result
-     */
 
-    public JSONObject searchGenomeid(HttpSession session, JSONObject json) {
-        log.info("search_genome_id");
-        String query = json.getString("query");
-        JSONObject response = new JSONObject();
-        try {
-            response.put("html", "genomes");
-            response.put("genomes", comparaStore.getAllGenomeId(query));
-            return response;
-        } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            return JSONUtils.SimpleJSONError(e.getMessage());
-        }
-
-    }
 }

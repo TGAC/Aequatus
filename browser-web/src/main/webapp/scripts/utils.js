@@ -106,6 +106,7 @@ function browser_coordinates() {
 }
 
 function trackToggle(trackname) {
+
     var index = 0;
     var graph = "false";
     var trackid = "";
@@ -121,35 +122,44 @@ function trackToggle(trackname) {
 //        }
 //    }
     if (trackname == "all") {
+        var Tracklist = track_list;
+
         jQuery("#mergedtrack").html("<div id= \"mergelabel\" align='left' class='handle'></div>");
         for (var i = 0; i < track_list.length; i++) {
-            if (jQuery("#" + track_list[i].name + "Checkbox").is(':checked')) {
-                if (window['track_list' + track_list[i].name].graph == "true") {
-                    dispGraph("#" + track_list[i].name + "_div", track_list[i].name, track_list[i].display_label)
-                }
-                else if (track_list[i].name.toLowerCase().indexOf("blasttrack") >= 0) {
-                    dispBLAST("#" + track_list[i].name + "_div", 'blasttrack');
-                }
-                else if (track_list[i].name.toLowerCase().indexOf("gene") >= 0) {
-                    dispGenes("#" + track_list[i].name + "_div", track_list[i].name, track_list[i].expand, track_list[i].display_label);
-                }
-                else if (track_list[i].name.toLowerCase().indexOf("wig") >= 0) {
-                    dispGraphWig("#" + track_list[i].name + "_div", track_list[i].name, trackid, track_list[i].display_label);
-                }
-                else if (track_list[i].name.toLowerCase().indexOf("bed") >= 0) {
-                    dispGraphBed("#" + track_list[i].name + "_div", track_list[i].name, track_list[i].display_label);
+            var track_name = Tracklist[i].name;
+            var track = Tracklist[i][track_name]
+
+            for (var j = 0; j < track.length; j++) {
+                if (jQuery("#" + track[j].name + "Checkbox").is(':checked')) {
+                    if (window['track_list' + track[j].name].graph == "true") {
+                        dispGraph("#" + track[j].name + "_div", track[j].name, track[j].display_label)
+                    }
+                    else if (track[j].name.toLowerCase().indexOf("blasttrack") >= 0) {
+                        dispBLAST("#" + track[j].name + "_div", 'blasttrack');
+                    }
+                    else if (track[j].name.toLowerCase().indexOf("gene") >= 0) {
+                        dispGenes("#" + track[j].name + "_div", track[j].name, track[j].expand, track[j].display_label);
+                    }
+                    else if (track[j].name.toLowerCase().indexOf("wig") >= 0) {
+                        dispGraphWig("#" + track[j].name + "_div", track[j].name, trackid, track[j].display_label);
+                    }
+                    else if (track[j].name.toLowerCase().indexOf("bed") >= 0) {
+                        dispGraphBed("#" + track[j].name + "_div", track[j].name, track[j].display_label);
+                    }
+                    else {
+                        dispTrack("#" + track[j].name + "_div", track[j].name, track[j].display_label);
+                    }
                 }
                 else {
-                    dispTrack("#" + track_list[i].name + "_div", track_list[i].name, track_list[i].display_label);
+                    jQuery("#" + track[j].name + "_wrapper").fadeOut();
                 }
             }
-            else {
-                jQuery("#" + track_list[i].name + "_wrapper").fadeOut();
-            }
+
         }
     }
     else {
-        layers = jQuery("#rowoftracks").val();
+
+        layers = 4;
         trackid = window['track_list' + trackname].id;
         graph = window['track_list' + trackname].graph;
         if (jQuery('#' + trackname + 'Checkbox').is(':checked')) {
@@ -359,7 +369,6 @@ function backup_tracks_removed(track, i) {
 //      if (w.id == add.id) {
 //        index = b;
 //        add.edited = parseInt(add.edited) + 1;
-//        console.log("if");
 //        window[track + "_removed"].splice(b, 1, add)
 //        return;
 //      }
@@ -374,10 +383,9 @@ function backup_tracks_removed(track, i) {
 }
 
 function parseBLAST(json){
-console.log("parse blast")
     jQuery('#blastresult').fadeIn();
 
-  jQuery('#blastresult').append("<table style=\"display: none;\" class='list' id='blasttable"+json.id+"'> <thead>        <tr>            <th class=\"header\"> Query id </th>            <th class=\"header\"> Subject id </th>            <th class=\"header\"> % identity </th>            <th class=\"header\"> alignment length </th>            <th class=\"header\"> mismatches </th>            <th class=\"header\"> gap openings </th>            <th class=\"header\"> q.start </th>            <th class=\"header\"> q.end </th>            <th class=\"header\"> s.start </th>            <th class=\"header\"> s.end </th>            <th class=\"header\"> e-value </th>            <th class=\"header\"> bit score </th>            <th class=\"header\"> Subject db </th>        </tr>        </thead>        <tbody>        </tbody>    </table>")
+    jQuery('#blastresult').append("<table style=\"display: none;\" class='list' id='blasttable"+json.id+"'> <thead>        <tr>            <th class=\"header\"> Query id </th>            <th class=\"header\"> Subject id </th>            <th class=\"header\"> % identity </th>            <th class=\"header\"> alignment length </th>            <th class=\"header\"> mismatches </th>            <th class=\"header\"> gap openings </th>            <th class=\"header\"> q.start </th>            <th class=\"header\"> q.end </th>            <th class=\"header\"> s.start </th>            <th class=\"header\"> s.end </th>            <th class=\"header\"> e-value </th>            <th class=\"header\"> bit score </th>            <th class=\"header\"> Subject db </th>        </tr>        </thead>        <tbody>        </tbody>    </table>")
 
     for(var i=0; json.html.length; i++){
         jQuery("#blasttable"+json.id+" tbody").append("<tr><td>"+json.html[i].q_id+"</td><td>"+json.html[i].s_id+"</td><td>"+json.html[i].identity+"</td><td>"+json.html[i].aln_length+"</td><td>"+json.html[i].mismatch+"</td><td>"+json.html[i].gap_open+"</td><td>"+json.html[i].q_start+"</td><td>"+json.html[i].q_end+"</td><td>"+json.html[i].s_start+"</td><td>"+json.html[i].s_end+"</td><td>"+json.html[i].e_value+"</td><td>"+json.html[i].bit_score+"</td><td>"+json.html[i].s_db+"</td></tr>");
@@ -392,12 +400,12 @@ function resetBLAST(){
 }
 
 function toogleTable(id){
-     jQuery("th.header").closest("table").hide();
-  jQuery("#blasttable"+id).show()
+    jQuery("th.header").closest("table").hide();
+    jQuery("#blasttable"+id).show()
 }
 
 function deleteTable(id){
 
-  jQuery("#blasttable"+id).remove()
-  jQuery("#"+id).remove()
+    jQuery("#blasttable"+id).remove()
+    jQuery("#"+id).remove()
 }

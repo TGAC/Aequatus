@@ -25,6 +25,7 @@
 
     jQuery(document).ready(function() {
         var chr = ""//metaData();
+        getReferences();
 
         jQuery("#mainsearch").load("browser.jsp", function() {
             onLoad();
@@ -54,7 +55,7 @@
 
             jQuery("#search").val(vars[0]);
 
-            seqregionSearchPopup(jQuery("#search").val(), vars[1], vars[2], vars[3])
+            seqregionSearchPopup(jQuery("#search").val(), vars[1], vars[2], vars[3], vars[4])
 
         }
         else if (jQuery('#search').val().length >= 1) {

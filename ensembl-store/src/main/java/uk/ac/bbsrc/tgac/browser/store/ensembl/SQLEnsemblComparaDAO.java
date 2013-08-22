@@ -28,6 +28,7 @@ package uk.ac.bbsrc.tgac.browser.store.ensembl;
 
 import net.sf.ehcache.CacheManager;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,31 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_ALL_GENOMES = "select * from genome_db where name like ?";
 
+    public static final String GET_ALL_GENOMES_EXCEPT_ONE = "select * from genome_db where genome_db_id <> ?";
+
     public static final String GET_DNAFRAG_FROM_GENOMEID = "select * from dnafrag where genome_db_id = ?";
+
+    public static final String GET_GENOMIC_ALIGN_BY_DNAFRAG_ID = "select * from genomic_align where dnafrag_id = ? AND ((dnafrag_start > ? AND dnafrag_end < ?) OR (dnafrag_start < ? AND dnafrag_end > ?) OR (dnafrag_end > ? AND dnafrag_end < ?) OR (dnafrag_start > ? AND dnafrag_start < ?))";
+
+    public static final String COUNT_GENOMIC_ALIGN_BY_DNAFRAG_ID = "select count(*) from genomic_align where dnafrag_id = ? AND (dnafrag_start >= ? AND dnafrag_end <= ?)";
+
+    public static final String GET_GENOMIC_ALIGN_BLOCK_BY_ID = "select * from genomic_align_block where genomic_align_block_id = ?";
+
+    public static final String GET_METHOD_LINK_SPECIES_SET_BY_GENOME_ID = "select * from method_link_species_set ms, species_set ss where ss.species_set_id = ms.species_set_id and ss.genome_db_id = ?";
+
+    public static final String GET_REFERENCE_LENGTH = "select length from dnafrag where dnafrag_id = ?";
+
+    public static final String GET_REFERENCE_NAME = "select name from dnafrag where dnafrag_id = ?";
+
+    public static final String  GET_DNAFRAG_ID_SEARCH = "select dnafrag_id from dnafrag where name = ? and genome_db_id = ?";
+
+    public static final String  GET_DNAFRAGS_ID_SEARCH = "select dnafrag_id from dnafrag where name like ? and genome_db_id = ?";
+
+    public static final String  GET_DNAFRAG_BY_NAME = "select * from dnafrag where name like ? and genome_db_id = ?";
+
+    public static final String GET_GENOME_ID_FROM_DNAFRAG = "select genome_db_id from dnafrag where dnafrag_id = ?";
+
+    public static final String GET_GENOME_NAME_FROM_ID = "select name from genome_db where genome_db_id = ?";
     @Autowired
     private CacheManager cacheManager;
 
@@ -97,4 +122,212 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             throw new IOException(" getAllGenomeId no result found");
         }
     }
+
+    public JSONArray getGenomicAlignbyDnafragId(String query) throws IOException {
+        log.info("getGenomocAlignbyDnafragId "+query);
+        try {
+            JSONArray genomes = new JSONArray();
+            List<Map<String, Object>> genomic_align = template.queryForList(GET_GENOMIC_ALIGN_BY_DNAFRAG_ID, new Object[]{query});
+            log.info("size "+genomic_align.size());
+            for(Map map:genomic_align){
+                log.info("map "+map.toString());
+                genomes.add(map);
+            }
+            return genomes;
+        } catch (EmptyResultDataAccessException e) {
+            throw new IOException(" getGenomocAlignbyDnafragId no result found");
+        }
+    }
+
+    public JSONArray getGenomicAlignblockbyId(String query) throws IOException {
+        log.info("getGenomocAlignbyDnafragId "+query);
+        try {
+            JSONArray genomes = new JSONArray();
+            List<Map<String, Object>> genomic_align = template.queryForList(GET_GENOMIC_ALIGN_BLOCK_BY_ID, new Object[]{query});
+            log.info("size "+genomic_align.size());
+            for(Map map:genomic_align){
+                log.info("map "+map.toString());
+                genomes.add(map);
+            }
+            return genomes;
+        } catch (EmptyResultDataAccessException e) {
+            throw new IOException(" getGenomocAlignblockbyId no result found");
+        }
+    }
+
+    public JSONArray getAllGenomeIdforReference(int query) throws IOException {
+        log.info("getAllGenomeIdforreference "+query);
+        try {
+            JSONArray genomes = new JSONArray();
+            List<Map<String, Object>> genomeIDs = template.queryForList(GET_ALL_GENOMES_EXCEPT_ONE, new Object[]{query});
+            log.info("size "+genomeIDs.size());
+            for(Map map:genomeIDs){
+                JSONObject species = new JSONObject();
+                JSONArray tracks_list =  new JSONArray();
+                List<Map<String, Object>> method_link_ids = template.queryForList(GET_METHOD_LINK_SPECIES_SET_BY_GENOME_ID, new Object[]{map.get("genome_db_id").toString()});
+
+                for(Map maps:method_link_ids){
+                    JSONObject track = new JSONObject();
+                    track.put("species_set_id",maps.get("species_set_id").toString());
+                    track.put("method_link_species_set_id",maps.get("method_link_species_set_id").toString());
+                    track.put("method_link_id",maps.get("method_link_id").toString());
+                    track.put("name",maps.get("name").toString().replaceAll("\\(","_").replaceAll("\\)","_"));
+                    tracks_list.add(track);
+                }
+                String name = template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{map.get("genome_db_id").toString()}, String.class);
+                species.put("name",name);
+                species.put(name,tracks_list);
+                log.info("map " + map.toString());
+                genomes.add(species);
+            }
+            return genomes;
+        } catch (EmptyResultDataAccessException e) {
+            throw new IOException(" getAllGenomeIdforreference no result found");
+        }
+    }
+
+    public int getReferenceLength(int query) throws IOException {
+        log.info("getReferenceLength "+query);
+        try {
+            JSONArray genomes = new JSONArray();
+            int length = template.queryForObject(GET_REFERENCE_LENGTH, new Object[]{query}, Integer.class);
+            return length;
+        } catch (EmptyResultDataAccessException e) {
+            throw new IOException(" getReferenceLength no result found");
+        }
+    }
+
+    public String getReferenceName(int query) throws IOException {
+        log.info("getReferenceName "+query);
+        try {
+            JSONArray genomes = new JSONArray();
+            String name = template.queryForObject(GET_REFERENCE_NAME, new Object[]{query}, String.class);
+            return name;
+        } catch (EmptyResultDataAccessException e) {
+            throw new IOException(" getReferenceName no result found");
+        }
+    }
+
+
+    public int getDnafragearchsize(String query, int reference) throws IOException {
+        log.info("getDnafragearchsize "+query);
+        try {
+            List<Map<String, Object>> maps = template.queryForList(GET_DNAFRAGS_ID_SEARCH, new Object[]{'%' + query + '%', reference});
+            return maps.size();
+        }
+        catch (EmptyResultDataAccessException e) {
+//     return getGOSearch(searchQuery);
+//      throw new IOException("result not found");
+            return 0;
+    }
+    }
+
+    public int getDnafragId(String query, int reference) throws IOException {
+        log.info("getDnafragId  "+query);
+        try {
+            return template.queryForObject(GET_DNAFRAG_ID_SEARCH, new Object[]{ query, reference}, Integer.class);
+        }
+        catch (EmptyResultDataAccessException e) {
+//     return getGOSearch(searchQuery);
+//      throw new IOException("result not found");
+            return 0;
+        }
+    }
+
+    public int getGenomeIdfromDnafragId(int query) throws IOException {
+        log.info("getGenomeIdfromDnafragId  "+query);
+        try {
+            int genome_id = template.queryForObject(GET_GENOME_ID_FROM_DNAFRAG, new Object[]{'%' + query + '%'}, Integer.class);
+
+            return genome_id;
+
+        }
+        catch (EmptyResultDataAccessException e) {
+//     return getGOSearch(searchQuery);
+//      throw new IOException("result not found");
+            return 0;
+        }
+    }
+
+    public String getGenomeNamefromId(int query) throws IOException {
+        log.info("getGenomeIdfromDnafragId  "+query);
+        try {
+            String genome_name = template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{query}, String.class);
+
+            return genome_name;
+
+        }
+        catch (EmptyResultDataAccessException e) {
+//     return getGOSearch(searchQuery);
+//      throw new IOException("result not found");
+            return "";
+        }
+    }
+
+    public JSONArray getAllDnafragByName(String query, int reference) throws IOException {
+        try {
+            JSONArray dnafrags =  new JSONArray();
+            List<Map<String, Object>> maps = template.queryForList(GET_DNAFRAG_BY_NAME, new Object[]{'%'+query+'%', reference});
+            for(Map map: maps){
+                map.put("genome_db_name",getGenomeNamefromId(reference));
+                dnafrags.add(map);
+            }
+            return dnafrags;
+        } catch (EmptyResultDataAccessException e) {
+            throw new IOException(" getAllDnafragByGenomedbId no result found");
+
+        }
+    }
+
+    public int countGenomicAlign(int query, long start, long end) throws IOException {
+        try {
+            int size = template.queryForObject(COUNT_GENOMIC_ALIGN_BY_DNAFRAG_ID, new Object[]{query, start, end}, Integer.class);
+
+            return size;
+        } catch (EmptyResultDataAccessException e) {
+            throw new IOException(" countGenomicAlign no result found");
+
+        }
+    }
+
+    public JSONArray getGenomicAlign(int query, long start, long end) throws IOException {
+        try {
+            JSONArray aligns =  new JSONArray();
+            List<Map<String, Object>> maps = template.queryForList(GET_GENOMIC_ALIGN_BY_DNAFRAG_ID, new Object[]{query, start, end, start, end, start, end, start, end});
+            for(Map map: maps){
+                aligns.add(map);
+            }
+            return aligns;
+        } catch (EmptyResultDataAccessException e) {
+            throw new IOException(" getGenomicAlign no result found");
+
+        }
+    }
+
+    public JSONArray getGenomicAlignGraph(int query, long start, long end) throws IOException {
+        try {
+            JSONArray trackList = new JSONArray();
+            long from = start;
+            long to = 0;
+            int no_of_tracks = 0;//template.queryForObject(COUNT_GENOMIC_ALIGN_BY_DNAFRAG_ID, new Object[]{query, start, end, start, end, start, end, start, end}, int.class);
+                for (int i = 1; i <= 200; i++) {
+                    log.info("i "+i+" "+from+" "+to);
+                    JSONObject eachTrack = new JSONObject();
+                    to = start + (i * (end - start) / 200);
+                    no_of_tracks = template.queryForObject(COUNT_GENOMIC_ALIGN_BY_DNAFRAG_ID, new Object[]{query, from, to}, Integer.class);
+                    eachTrack.put("start", from);
+                    eachTrack.put("end", to);
+                    eachTrack.put("graph", no_of_tracks);
+                    eachTrack.put("id", query);
+                    trackList.add(eachTrack);
+                    from = to;
+                }
+            return trackList;
+
+        } catch (EmptyResultDataAccessException e) {
+            throw new IOException(" countGenomicAlign no result found");
+
+        }
+    }
+
 }

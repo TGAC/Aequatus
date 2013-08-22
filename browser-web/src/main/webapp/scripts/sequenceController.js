@@ -84,30 +84,30 @@ function seqBar(seqStart, seqEnd) {
     var partial = (parseInt(getEnd()) - parseInt(getBegin())) / 2;
     var start = parseInt(getBegin());// - parseInt(partial)
     var end = parseInt(getEnd());// + parseInt(partial);
-    Fluxion.doAjax(
-            'dnaSequenceService',
-            'loadSequence',
-            {'query': seqregname, 'from': start, 'to': end, 'url': ajaxurl},
-            {'doOnSuccess': function (json) {
-              var seq = json.seq;
-              if (seq.length > 1) {
-                temp = seq;
-                temp = "<font style='Courier New'>" + stringColour(temp);
-                if (start < 0) {
-                  var left = (1 - start) * parseInt(maxLen) / end * 3 / 4;
-                }
-
-                jQuery('#sequenceString').html(temp);
-                translate(seq);
-              }
-              else {
-                jQuery("#translation_div").hide();
-                jQuery("#sequence").css('height', '20px');
-                jQuery("#tracks").css('top', '20px');
-                jQuery('#sequenceString').html("<hr id = \"seqbar\" style='background-color: silver; z-index: 999'>");
-              }
-            }
-            });
+//    Fluxion.doAjax(
+//            'dnaSequenceService',
+//            'loadSequence',
+//            {'query': seqregname, 'from': start, 'to': end, 'url': ajaxurl},
+//            {'doOnSuccess': function (json) {
+//              var seq = json.seq;
+//              if (seq.length > 1) {
+//                temp = seq;
+//                temp = "<font style='Courier New'>" + stringColour(temp);
+//                if (start < 0) {
+//                  var left = (1 - start) * parseInt(maxLen) / end * 3 / 4;
+//                }
+//
+//                jQuery('#sequenceString').html(temp);
+//                translate(seq);
+//              }
+//              else {
+//                jQuery("#translation_div").hide();
+//                jQuery("#sequence").css('height', '20px');
+//                jQuery("#tracks").css('top', '20px');
+//                jQuery('#sequenceString').html("<hr id = \"seqbar\" style='background-color: silver; z-index: 999'>");
+//              }
+//            }
+//            });
   }
   else {
 
@@ -208,7 +208,6 @@ function translate(sequence) {
     var i = 0;
     for (i; i <= seq.length - 3; i = i + 3) {
       var chunk = seq.substring(i, i + 3);
-//        console.log(i+":"+j+":"+chunk);
       ptn_seq += "&nbsp;";
       if (chunk.indexOf("N") > -1) {
         ptn_seq += "X";

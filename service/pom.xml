@@ -113,11 +113,11 @@
             <version>1.0-alpha-3</version>
         </dependency>
 
-        <dependency>
-            <groupId>net.sourceforge.sam</groupId>
-            <artifactId>sam</artifactId>
-            <version>1.84</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>net.sourceforge.sam</groupId>-->
+            <!--<artifactId>sam</artifactId>-->
+            <!--<version>1.84</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>net.sourceforge.fluxion.ajax.beans</groupId>
@@ -131,21 +131,21 @@
             <version>2.4</version>
             <classifier>jdk15</classifier>
         </dependency>
-        <dependency>
-            <groupId>net.sourceforge.sam</groupId>
-            <artifactId>sam</artifactId>
-            <version>1.84</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.sam</groupId>
-            <artifactId>sam</artifactId>
-            <version>1.84</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.sam</groupId>
-            <artifactId>sam</artifactId>
-            <version>1.84</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>net.sourceforge.sam</groupId>-->
+            <!--<artifactId>sam</artifactId>-->
+            <!--<version>1.84</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>net.sourceforge.sam</groupId>-->
+            <!--<artifactId>sam</artifactId>-->
+            <!--<version>1.84</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>net.sourceforge.sam</groupId>-->
+            <!--<artifactId>sam</artifactId>-->
+            <!--<version>1.84</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <properties>

@@ -182,113 +182,6 @@
 
 </div>
 
-<%--<div id="openCloseIdentifier"></div>--%>
-
-<div style='display:none'>
-    <div id="controlpanel">
-
-        <h1>Control Panel</h1>
-
-        <div class="sectionDivider" onclick="toggleLeftInfo(jQuery('#displayoptions_arrowclick'), 'displayoptions');">
-            Settings
-            <div id="displayoptions_arrowclick" class="toggleLeftDown"></div>
-        </div>
-
-        <div id="displayoptions" style="display: none" align="left">
-            <input id="guidelineswitch" type="checkbox"/>Guideline
-            <br/>
-            <input id="currentpositionswitch" type="checkbox" checked="checked"/>Coordinates
-            <br/>
-            <input id="scrollswitch" type="checkbox" onchange="scrollSwitcher()"/>Scroll Zoom
-            <p></p>
-            Rows of Tracks:
-            <select id='rowoftracks' name='rowoftracks' onchange='trackToggle("all");'>
-                <option value=1> 1</option>
-                <option value=2> 2</option>
-                <option value=3> 3</option>
-                <option value=4 selected=""> 4</option>
-                <option value=5> 5</option>
-            </select>
-        </div>
-
-        <div class="sectionDivider" onclick="toggleLeftInfo(jQuery('#Tracksdiv_arrowclick'), 'Tracksdiv');">Tracks List
-            <div id="Tracksdiv_arrowclick" class="toggleLeftDown"></div>
-        </div>
-
-        <div id="Tracksdiv">
-            <table>
-                <tr>
-                    <th>
-                        Track List
-
-                        <span title='selectAll'><input type="checkbox" id='selectAllCheckbox'
-                                                       name='selectAllCheckbox'
-                                                       onClick=selectAllCheckbox();>  Select All</span>
-
-                        <span title='unSelectAll'><input type="checkbox" id='unSelectAllCheckbox'
-                                                         name='unSelectAllCheckbox'
-                                                         onClick=unSelectAllCheckbox();>  Deselect All</span>
-
-                    </th>
-
-                </tr>
-                <tr>
-                    <td>
-                        <div id="tracklist" align="left">
-
-                        </div>
-                    </td>
-
-                </tr>
-            </table>
-        </div>
-
-        <div class="sectionDivider" onclick="toggleLeftInfo(jQuery('#MergeTracksdiv_arrowclick'), 'MergeTracksdiv');">
-            Merge
-            Tracks List
-            <div id="MergeTracksdiv_arrowclick" class="toggleLeftDown"></div>
-        </div>
-
-        <div id="MergeTracksdiv">
-
-            <table>
-                <tr>
-                    <th>
-                        Merge
-                    </th>
-                </tr>
-                <tr>
-
-                    <td>
-                        <div id="mergetracklist" align="left"></div>
-                    </td>
-                </tr>
-                <%--<tr>--%>
-                <%--<td>--%>
-                <%--<form method='post'--%>
-                <%--id='ajax_upload_form'--%>
-                <%--action="<c:url value="/vietnamese_rice/upload/file"/>"--%>
-                <%--enctype="multipart/form-data"--%>
-                <%--target="target_upload"--%>
-                <%--onsubmit="fileUploadProgress('ajax_upload_form', 'statusdiv', fileUploadSuccess);">--%>
-                <%--<input type="file" name="file"/>--%>
-                <%--<button type="submit" class="br-button ui-state-default ui-corner-all">Upload</button>--%>
-                <%--</form>--%>
-                <%--<iframe id='target_upload' name='target_upload' src='' style='display: none'></iframe>--%>
-                <%--<div id="statusdiv"></div>--%>
-                <%--</td>--%>
-                <%--<td>--%>
-
-                <%--</td>--%>
-                <%--</tr>--%>
-            </table>
-        </div>
-        <%--<div id="openCloseWrap" style="display: none; cursor: pointer" onclick="tracklistopenclose();">--%>
-        <%--<font color="white"> Contrasdfols </font>--%>
-        <%--</div>--%>
-    </div>
-</div>
-
 <div id="menu">
     <table id="dpop1" width="100%">
         <tr>
@@ -602,6 +495,30 @@
 
 
 </div>
+
+
+<div style="">
+    <div id="controlpanel">
+
+        <h1>Control Panel</h1>
+
+        <div class="sectionDivider" onclick="toggleLeftInfo(jQuery('#Tracksdiv_arrowclick'), 'Tracksdiv');">Tracks List
+            <div id="Tracksdiv_arrowclick" class="toggleLeftDown"></div>
+        </div>
+
+        <div id="Tracksdiv">
+            <table>
+                <tr>
+                    <td>
+                        <div id="tracklist" align="left">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
 
 <span id="ruler"></span>
 

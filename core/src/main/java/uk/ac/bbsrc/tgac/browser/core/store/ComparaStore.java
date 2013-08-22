@@ -42,4 +42,18 @@ import java.util.Map;
 public interface ComparaStore extends Store<String> {
     public String getAllDnafragByGenomedbId(int query) throws IOException;
     public JSONArray getAllGenomeId(String query) throws IOException;
+    public JSONArray getGenomicAlignbyDnafragId(String query) throws IOException;
+    public JSONArray getGenomicAlignblockbyId(String query) throws IOException;
+    public int getReferenceLength(int query) throws IOException;
+    public String getReferenceName(int query) throws IOException;
+    public JSONArray getAllGenomeIdforReference(int query) throws IOException;
+    public int getDnafragearchsize(String query, int reference) throws IOException;
+    public int getDnafragId(String query, int reference) throws IOException;
+    public int getGenomeIdfromDnafragId(int query) throws IOException;
+    public String getGenomeNamefromId(int query) throws IOException;
+    public JSONArray getAllDnafragByName(String query, int reference) throws IOException;
+    public JSONArray getGenomicAlign(int query, long start, long end) throws IOException;
+    public int countGenomicAlign(int query, long start, long end) throws IOException;
+    public JSONArray getGenomicAlignGraph(int query, long start, long end) throws IOException;
+
 }

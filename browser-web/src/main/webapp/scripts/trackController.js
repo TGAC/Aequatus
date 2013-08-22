@@ -620,7 +620,6 @@ function dispGeneExon(track, genestrand, className, div) {
                         last = current;
                     }
                     else if (exon_start < transcript_start && exon_stop < transcript_start) {
-                        console.log("2")
                         startposition = (exon_start - newStart_temp) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp) + parseFloat(maxLentemp) / 2;
                         stopposition = (exon_stop - exon_start + 1) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp);
 
@@ -632,7 +631,6 @@ function dispGeneExon(track, genestrand, className, div) {
                         last = current;
                     }
                     else if (exon_start < transcript_start && exon_stop > transcript_end) {
-                        console.log("3")
 
                         startposition = (exon_start - newStart_temp) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp) + parseFloat(maxLentemp) / 2;
                         stopposition = (transcript_start - exon_start + 1) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp);
@@ -739,7 +737,6 @@ function dispGeneExon(track, genestrand, className, div) {
                         }
                         else {
                             marker_pos = parseInt(marker_pos) + parseInt(startposition) - 8;
-                            console.log("here span" + top + ":" + marker_pos)
                         }
                         jQuery("<span>").attr({
                             'class': spanclass,
@@ -759,6 +756,7 @@ function dispGeneExon(track, genestrand, className, div) {
 }
 
 function dispTrack(div, trackName, className) {
+
     var svgdiv = jQuery(div).svg('get');
 
     var labelclass = "label" + trackName;
@@ -831,6 +829,7 @@ function dispTrack(div, trackName, className) {
     }
     else if (window[trackName][0] == "getHit no result found") {
         if (div.indexOf("mergedtrack") <= 0) {
+
             jQuery('#' + trackName + 'Checkbox').attr('checked', false);
             jQuery(div).html();
             jQuery(div).fadeOut();
@@ -865,7 +864,7 @@ function dispTrack(div, trackName, className) {
             var track_len = track.length;
             while (track_len--) {
 
-                var strand = track[track_len].strand;
+                var strand = track[track_len].dnafrag_strand;
 
                 var spanclass = "ui-icon ui-icon-carat-1-e";
 
@@ -873,30 +872,18 @@ function dispTrack(div, trackName, className) {
                     spanclass = "ui-icon ui-icon-carat-1-w";
                 }
 
-                var track_start = track[track_len].start;
-                var track_stop = track[track_len].end ? track[track_len].end : parseInt(track[track_len].start) + 1;
+                var track_start = track[track_len].dnafrag_start;
+                var track_stop = track[track_len].dnafrag_end ? track[track_len].dnafrag_end : parseInt(track[track_len].dnafrag_start) + 1;
 
                 var border = "";
                 if (track[track_len].flag) {
                     border = "border: 1px solid black;";
                 }
-                var track_desc = track[track_len].desc;
+                var track_desc = track[track_len].dnafrag_score;
                 var top;
-                if (coord || track[track_len].layer) {
-                    top = (track[track_len].layer) * 10 + 10;
-                    if (track[track_len].layer > j) {
-                        j = track[track_len].layer;
-                    }
-                }
-                else {
-                    top = ((track_len) % (layers) + 1) * 20 + 15;
-                }
-                if (track[track_len].colour) {
-                    modi_style = 'background:' + track[track_len].colour + "; ";
-                }
-                else {
-                    modi_style = '';
-                }
+                top = ((track_len) % (layers) + 1) * 20 + 15;
+
+
                 var startposition = (track_start - newStart_temp) * parseFloat(maxLen_temp) / (newEnd_temp - newStart_temp) + parseFloat(maxLen_temp) / 2;
                 var stopposition = (track_stop - track_start + 1) * parseFloat(maxLen_temp) / (newEnd_temp - newStart_temp);
 
@@ -923,7 +910,7 @@ function dispTrack(div, trackName, className) {
                 jQuery("<div>").attr({
                     'id': trackName + "" + track_len,
                     'class': trackClass + " " + className,
-                    'style': border + "" + modi_style + "TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px;",
+                    'style': "TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px;",
                     'title': label,
                     'onClick': "trackClick(\"" + trackName + "\",\"" + track_len + "\")"
                 }).appendTo(div);
@@ -934,8 +921,6 @@ function dispTrack(div, trackName, className) {
                     'title': label
 
                 }).html(label).appendTo("#" + trackName + "" + track_len);
-
-                svgdiv.line(startposition, top, (startposition + stopposition), top, {strokeWidth: 5, stroke: "blue", title: label, style: "cursor : pointer", onclick: "trackClick(\"" + trackName + "\",\"" + i + "\");"});
 
 
                 if (stopposition > 10) {
@@ -1074,31 +1059,19 @@ function dispCigar(cigars, start, top) {
 function dispGraph(div, trackName, className) {
     var track_html = "";
 
-    if (jQuery('input[name=' + trackName + 'mergedCheckbox]').is(':checked')) {
-        jQuery(div).fadeOut();
-        jQuery("#" + trackName + "_wrapper").fadeOut();
-        div = "#mergedtrack";
-        jQuery("#mergedtrack").fadeIn();
-        jQuery("#mergedtrack_wrapper").fadeIn();
-
-        track_html.push("(" + merged_track_list + ")");
-        jQuery("#mergelabel").html(track_html.join(""));
-
-        className = " mergedtrack "+className;
-        labelclass = "Merged_Track";
-    }
-    else {
-        jQuery(div).fadeIn();
-        jQuery("#" + track + "_wrapper").fadeIn();
-    }
+    jQuery(div).fadeIn();
+    jQuery("#" + track + "_wrapper").fadeIn();
+    jQuery(div).html("")
 
     if (!window[trackName] || window[trackName] == "loading") {
+
         jQuery(div).html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
         jQuery(div).fadeIn();
         jQuery("#" + trackName + "_wrapper").fadeIn();
 
     }
     else {
+
         var track = window[trackName];
         var partial = (parseInt(getEnd()) - parseInt(getBegin())) / 2;
         var start = parseInt(getBegin()) - parseInt(partial)
@@ -1123,9 +1096,9 @@ function dispGraph(div, trackName, className) {
         var track_len = track.length;
 
         while (track_len--) {
+
             var track_start = track[track_len].start;
             var track_stop = track[track_len].end;
-
             var startposition = (track_start - newStart_temp) * parseFloat(maxLen_temp) / (newEnd_temp - newStart_temp) + parseFloat(maxLen_temp) / 2;
             var stopposition = (track_stop - track_start ) * parseFloat(maxLen_temp) / (newEnd_temp - newStart_temp);
 
@@ -1212,6 +1185,7 @@ function dispGraphWig(div, trackName, trackId, className) {
     jQuery(trackName + "_wrapper").fadeIn();
 
     var track = window[trackName];
+
     var partial = (parseInt(getEnd()) - parseInt(getBegin())) / 2;
     var start = parseInt(getBegin()) - parseInt(partial)
     var end = parseInt(getEnd()) + parseInt(partial);

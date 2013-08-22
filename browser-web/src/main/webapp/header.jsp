@@ -43,8 +43,6 @@
     <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/canvg.js"></script>
 
 
-
-
     <link rel="stylesheet" href="<c:url value='/scripts/jquery/css/smoothness/jquery-ui-1.8.custom.css'/>"
 
           type="text/css">
@@ -105,22 +103,29 @@
         </table>
     </center>
     <div class="blasttab">
+        <table>
+            <tr>
+                <td>
+                    <input type="text" id="search" class="seachbox" value='${initParam.defaultRef}'/>
+                </td>
+                <td>
+                    <div id="genome_list"></div>
+                </td>
+                <td>
+                    <c:set var="databases">${initParam.blastdblink} </c:set>
 
+                    <c:set var="dateParts" value="${fn:split(databases, ',')}"/>
 
-        <input type="text" id="search" class="seachbox" value='${initParam.defaultRef}'/>
-        <%--<button id="searchbutton" class="ui-state-default ui-corner-all"--%>
-        <%--onclick="search(jQuery('#search').val(), oldTracklist);">Search--%>
-        <%--</button>--%>
-        <c:set var="databases">${initParam.blastdblink} </c:set>
+                    <c:set var="length">${fn:length(databases)}</c:set>
 
-        <c:set var="dateParts" value="${fn:split(databases, ',')}"/>
+                    ${initParam.fasta == "true" && length > 1 ? "| <a href=\"blast.jsp\"><span>Blast Search</span></a>" : ""}
+                </td>
+                <td>
+                    | <a href="<c:url value="session.jsp"/>"><span>Load Session</span></a>
+                </td>
+            </tr>
+        </table>
 
-        <c:set var="length">${fn:length(databases)}</c:set>
-
-        ${initParam.fasta == "true" && length > 1 ? "| <a href=\"blast.jsp\"><span>Blast Search</span></a>" : ""}
-
-
-        | <a href="<c:url value="session.jsp"/>"><span>Load Session</span></a>
     </div>
 </div>
 
@@ -150,7 +155,6 @@
 <div id="blastLocation" style="visibility: hidden; position: fixed;">${initParam.blastLocation}</div>
 <div id="blastType" style="visibility: hidden; position: fixed;">${initParam.blastType}</div>
 <div id="fasta" style="visibility: hidden; position: fixed;">${initParam.fasta}</div>
-
 
 
 <div id="content">
