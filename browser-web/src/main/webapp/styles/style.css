@@ -1661,6 +1661,8 @@ span.counter {
     border: 1;
     -moz-user-select: -moz-none;
     -webkit-user-select: none;
+    font-family: Arial;
+    font-size: x-small;
 }
 
 #SeqLen25 {
@@ -1671,6 +1673,8 @@ span.counter {
     border: 1;
     -moz-user-select: -moz-none;
     -webkit-user-select: none;
+    font-family: Arial;
+    font-size: x-small;
 }
 
 #SeqLenMid {
@@ -1681,6 +1685,8 @@ span.counter {
     border: 1;
     -moz-user-select: -moz-none;
     -webkit-user-select: none;
+    font-family: Arial;
+    font-size: x-small;
 }
 
 #SeqLen75 {
@@ -1691,6 +1697,8 @@ span.counter {
     border: 1;
     -moz-user-select: -moz-none;
     -webkit-user-select: none;
+    font-family: Arial;
+    font-size: x-small;
 }
 
 #SeqLenEnd {
@@ -1701,6 +1709,8 @@ span.counter {
     border: 1;
     -moz-user-select: -moz-none;
     -webkit-user-select: none;
+    font-family: Arial;
+    font-size: x-small;
 }
 
 #ruler {
@@ -1823,43 +1833,47 @@ span.counter {
 }
 
 #slider {
-    position: absolute;
+
+    background: none repeat scroll 0 0 white;
+    border-radius: 0 10px 10px 0;
+    box-shadow: 1px 0 5px 5px #888888;
     float: left;
-    background: white;
-    /*opacity: 0.7;*/
+
+    position: absolute;
+    top: 0;
     width: 80%;
+    z-index: 999;
+    max-width: 90%;
+
+    /*position: absolute;*/
+    /*float: left;*/
+    /*background: white;*/
+    /*opacity: 0.7;*/
+    /*width: 80%;*/
     /*height: 500px;*/
-    left: 10%;
+    /*left: 10%;*/
     /*margin-left: -140px;*/
-    /*background-image: -moz-linear-gradient(right, #80B7FF 0%, #D2DFFA 100%); *//* Firefox*/
-    /*background-image: -webkit-gradient(linear, right top, left top, from(#80B7FF), to(#D2DFFA)); *//* Saf4+, Chrome */
+    /*background-image: -moz-linear-gradient(right, #80B7FF 0%, #D2DFFA 100%);  Firefox*/
+    /*background-image: -webkit-gradient(linear, right top, left top, from(#80B7FF), to(#D2DFFA));  Saf4+, Chrome */
     /*border-bottom-right-radius: 25px 25px;*/
     /*border-top-right-radius: 25px 25px;*/
-    border-radius: 10px;
-    top: 10%;
-    box-shadow: 1px 0 5px 5px #888888;
-    display: none;
+    /*border-radius: 10px;*/
+    /*top: 10%;*/
+    /*box-shadow: 1px 0 5px 5px #888888;*/
     /*visibility: hidden;*/
     /*border: 1px solid blue;*/
 }
 
 #openCloseWrap {
-    position: absolute;
-    /*opacity: 0.7;*/
-    margin: 0px 0 5px 120px;
-    top: 50%;
+    background: none repeat scroll 0 0 white;
+    border-radius: 5px 5px 5px 5px;
     font-size: 12px;
     font-weight: bold;
-
-    writing-mode: tb-rl;
-    -webkit-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -o-transform: rotate(90deg);
-    background-image: -moz-linear-gradient(right, #4F90FF 0%, #80B7FF 100%);
-    background-image: -webkit-gradient(linear, right top, left top, from(#4F90FF), to(#80B7FF)); /* Saf4+, Chrome */
-    /*border: 1px solid blue;*/
-    border-radius: 10px 10px;
-    /*border-top-right-radius: 10px 10px;*/
+    margin-right: -25px;
+    padding: 2px;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 #currentposition {
@@ -2043,6 +2057,11 @@ span.counter {
 .tracks_image {
     opacity: 1;
     cursor: pointer;
+}
+
+.svg_marker{
+    position: fixed;
+
 }
 
 .merged_tracks_image {
@@ -2663,4 +2682,4 @@ border: 1px solid gray;
 
 
 /* css for circular*/
-#svgcircle { width: 100%; height: 400px; border: 1px solid #484; }
+#svgcircle { width: 100%; height: 400px; border: 1px solid #484; position: fixed; bottom: 0px; }

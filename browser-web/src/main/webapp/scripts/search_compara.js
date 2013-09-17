@@ -127,13 +127,6 @@ function seqregionSearchPopup(query, reference, from, to, jsonid, oldtracks) {
 
                 dispSeqCoord();
                 displayCursorPosition();
-                if (json.coord_sys.indexOf('chromosome') >= 0) {
-                    getReferences();
-                }
-                else {
-                    chromosome = false;
-                }
-
                 initiate();
                 loadDefaultTrack(track_list);
 

@@ -353,17 +353,22 @@ function onLoad() {
 
 //toogle side bar codes
 function tracklistopenclose() {
+    var width = "-"+parseInt(jQuery("#slider").width())+"px";
+    console.log(width)
     if (jQuery("#openCloseIdentifier").is(":hidden")) {
+        console.log("here")
         jQuery("#slider").animate({
-            marginLeft: "-141px"
+            marginLeft: width
         }, 500);
         jQuery("#openCloseIdentifier").show();
     }
     else {
+        console.log("else here")
         jQuery("#slider").animate({
             marginLeft: "0px"
         }, 500);
         jQuery("#openCloseIdentifier").hide();
+
     }
 }
 
@@ -467,12 +472,72 @@ function dispSeqCoord() {
     jQuery("#zoominsmall").attr('title', "Zoom In(" + +diff + "" + bp + ")");
     var len = sequencelength;
     jQuery('#SeqLenStart').html(0);
-    jQuery('#SeqLen25').html(parseInt(parseInt(len) / 4));
 
-    jQuery('#SeqLenMid').html(parseInt(parseInt(len) / 2));
-    jQuery('#SeqLen75').html(parseInt(parseInt(len) / 4 * 3));
+    var diff =parseInt(parseInt(len) / 4);
+    var bp = "bp";
+    if (diff > 100000000) {
+        diff = (diff / 1000000);
+        bp = "Gbp";
+    }
+    else if (diff > 1000000) {
+        diff = (diff / 1000000);
+        bp = "Mbp";
+    }
+    else if (diff > 1000) {
+        diff = diff / 1000;
+        bp = "Kbp";
+    }
+    jQuery('#SeqLen25').html(parseFloat(diff).toFixed(2) + "" +  bp );
 
-    jQuery('#SeqLenEnd').html(len);
+    var diff =parseInt(parseInt(len) / 2);
+    var bp = "bp";
+    if (diff > 100000000) {
+        diff = (diff / 1000000);
+        bp = "Gbp";
+    }
+    else if (diff > 1000000) {
+        diff = (diff / 1000000);
+        bp = "Mbp";
+    }
+    else if (diff > 1000) {
+        diff = diff / 1000;
+        bp = "Kbp";
+    }
+
+    jQuery('#SeqLenMid').html(parseFloat(diff).toFixed(2) + "" +  bp);
+    var diff =parseInt(parseInt(len) / 4 * 3);
+    var bp = "bp";
+    if (diff > 100000000) {
+        diff = (diff / 1000000);
+        bp = "Gbp";
+    }
+    else if (diff > 1000000) {
+        diff = (diff / 1000000);
+        bp = "Mbp";
+    }
+    else if (diff > 1000) {
+        diff = diff / 1000;
+        bp = "Kbp";
+    }
+
+    jQuery('#SeqLen75').html(parseFloat(diff).toFixed(2) + "" +  bp );
+
+    var diff =parseInt(parseInt(len));
+    var bp = "bp";
+    if (diff > 100000000) {
+        diff = (diff / 1000000);
+
+        bp = "Gbp";
+    }
+    else if (diff > 1000000) {
+        diff = (diff / 1000000);
+        bp = "Mbp";
+    }
+    else if (diff > 1000) {
+        diff = diff / 1000;
+        bp = "Kbp";
+    }
+    jQuery('#SeqLenEnd').html(parseFloat(diff).toFixed(2) + "" +  bp );
 
 }
 
@@ -536,6 +601,7 @@ function trackList(tracklist) {
     }
 
     jQuery("#tracklist").html(tracks);
+    tracklistopenclose();
 
 }
 

@@ -3,182 +3,209 @@
 <%@ page import="java.util.ArrayList" language="java" %>
 <div id="main1" style="top : 10px ; height: 1050px; ">
 
-    <div id="seqname"></div>
-    <div id="currentposition"></div>
-    <div id="guideline" style="display: none"></div>
-    <div id="seqdrag"><p id="dragLabel"></div>
-    <div id="searchresultMap" style="display: none">
+<div id="seqname"></div>
+<div id="currentposition"></div>
+<div id="guideline" style="display: none"></div>
+<div id="seqdrag"><p id="dragLabel"></div>
+<div id="searchresultMap" style="display: none">
+</div>
+<div id="searchResultLegend"></div>
+<div id='map'>
+    <div id="refmap"></div>
+    <div id="mapmarker">
     </div>
-    <div id="searchResultLegend"></div>
-    <div id='map'>
-        <div id="refmap"></div>
-        <div id="mapmarker">
+</div>
+<div id="searchresult">
+    <div id="searchresultHead"></div>
+    <div id="searchnavtabs">
+        <ul>
+            <li><a href="#tabGenes"><span>Genes</span></a></li>
+            <li><a href="#tabTranscripts"><span>Transcripts</span></a></li>
+            <li><a href="#tabGO"><span>GO</span></a></li>
+        </ul>
+        <div id="tabGenes">
+        </div>
+        <div id="tabGO">
+        </div>
+        <div id="tabTranscripts">
         </div>
     </div>
-    <div id="searchresult">
-        <div id="searchresultHead"></div>
-        <div id="searchnavtabs">
-            <ul>
-                <li><a href="#tabGenes"><span>Genes</span></a></li>
-                <li><a href="#tabTranscripts"><span>Transcripts</span></a></li>
-                <li><a href="#tabGO"><span>GO</span></a></li>
-            </ul>
-            <div id="tabGenes">
-            </div>
-            <div id="tabGO">
-            </div>
-            <div id="tabTranscripts">
-            </div>
-        </div>
-    </div>
-    <div id="canvas" style="display: none">
+</div>
+<div id="canvas" style="display: none">
 
-        <div id="controller">
-            <table width=100%>
-                <tr>
-                    <td>
+    <div id="controller">
+        <table width=100%>
+            <tr>
+                <td>
 
-                        <div id="coord" align="left">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <input type="text" id="begin" size="5" class="jump">
-                                    </td>
-                                    <td>
-                                        <input type="text" id="end" size="5" class="jump">
-                                    </td>
-                                    <td>
-                                        <div onclick="jumpToSeq()" class="divbutton"> Go</div>
-                                    </td>
-                                    <td>
-                                        <div class="divbutton"
-                                             onClick="parent.location='mailto:tgac.browser@tgac.ac.uk?Subject=TGAC Browser - Feedback'; ">
-                                            Feedback
-                                        </div>
-
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <div id=alertDiv></div>
-                            <div id="notifier" class="rightAlertdiv"></div>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="width: 100%; margin: 0px auto; position: fixed; left: 0px;">
-                            <center>
-                                <img src='images/browser/reset.png' onclick="reset();" class="browserimage" height=50%
-                                     alt="Reset" title="Reset"> &nbsp;&nbsp;
-                                <img src='images/browser/backward.png' onclick="dragLeft();" id="leftbig" class="browserimage"
-                                     height=70%
-                                     alt="Backward" title="Move Left">
-                                <img src='images/browser/backward.png' onclick="seqLeft();"
-                                     class="browserimage browserimagesmall"
-                                     height=40% alt="Left" title="Move Left (1bp)">&nbsp;
-                                <img src='images/browser/forward.png' onclick="seqRight();"
-                                     class="browserimage browserimagesmall"
-                                     height=40% alt="Right" title="Move Right (1bp)">
-                                <img src='images/browser/forward.png' onclick="dragRight();" id="rightbig" class="browserimage"
-                                     height=70% alt="Forward" title="Move Right">&nbsp;&nbsp;
-                                <img src='images/browser/zoomin.png' id="zoominbig"
-                                     onclick="zoomIn(parseInt(sequencelength/20));"
-                                     class="browserimage"
-                                     height=70% alt="ZoomIn" title="Zoom In">
-                                <img src='images/browser/zoomin.png' id="zoominsmall"
-                                     onclick="zoomIn(parseInt(sequencelength/40));"
-                                     class="browserimage browserimagesmall"
-                                     height=40% alt="Zoomin" title="Zoom In">&nbsp;
-                                <img src='images/browser/zoomout.png' id="zoomoutsmall"
-                                     onclick="zoomOut(parseInt(sequencelength/40));"
-                                     class="browserimage browserimagesmall"
-                                     height=40% alt="Zoomout" title='Zoom Out'>
-                                <img src='images/browser/zoomout.png' id="zoomoutbig"
-                                     onclick="zoomOut(parseInt(sequencelength/20));"
-                                     class="browserimage"
-                                     height=70% alt="Zoomout" title="Zoom Out">&nbsp;&nbsp;
-                                <img src='images/browser/selectall.png' onclick="expand();" class="browserimage"
-                                     height=60% alt="selectall" title="Select All">
-                            </center>
-
-                        </div>
-                    </td>
-                    <td>
-                        <table style="position: fixed; right: 0px; top: 25px;">
+                    <div id="coord" align="left">
+                        <table>
                             <tr>
                                 <td>
-                                    <div id=export style=" display: none;"
-                                         class="divbutton"> Export
-                                    </div>
+                                    <input type="text" id="begin" size="5" class="jump">
                                 </td>
                                 <td>
-                                    <div onclick="checkSession();"
-                                         class="divbutton">
-                                        Save Session
-                                    </div>
+                                    <input type="text" id="end" size="5" class="jump">
                                 </td>
+                                <td>
+                                    <div onclick="jumpToSeq()" class="divbutton"> Go</div>
+                                </td>
+                                <td>
+                                    <div class="divbutton"
+                                         onClick="parent.location='mailto:tgac.browser@tgac.ac.uk?Subject=TGAC Browser - Feedback'; ">
+                                        Feedback
+                                    </div>
 
-                                <td>
-                                    <div id="controlsbutton" class="divbutton">
-                                        Tracks / Settings
-                                    </div>
                                 </td>
                             </tr>
                         </table>
-                        <div id=sessionid></div>
 
-                    </td>
-                </tr>
-            </table>
+                        <div id=alertDiv></div>
+                        <div id="notifier" class="rightAlertdiv"></div>
+                    </div>
+                </td>
+                <td>
+                    <div style="width: 100%; margin: 0px auto; position: fixed; left: 0px;">
+                        <center>
+                            <img src='images/browser/reset.png' onclick="reset();" class="browserimage" height=50%
+                                 alt="Reset" title="Reset"> &nbsp;&nbsp;
+                            <img src='images/browser/backward.png' onclick="dragLeft();" id="leftbig"
+                                 class="browserimage"
+                                 height=70%
+                                 alt="Backward" title="Move Left">
+                            <img src='images/browser/backward.png' onclick="seqLeft();"
+                                 class="browserimage browserimagesmall"
+                                 height=40% alt="Left" title="Move Left (1bp)">&nbsp;
+                            <img src='images/browser/forward.png' onclick="seqRight();"
+                                 class="browserimage browserimagesmall"
+                                 height=40% alt="Right" title="Move Right (1bp)">
+                            <img src='images/browser/forward.png' onclick="dragRight();" id="rightbig"
+                                 class="browserimage"
+                                 height=70% alt="Forward" title="Move Right">&nbsp;&nbsp;
+                            <img src='images/browser/zoomin.png' id="zoominbig"
+                                 onclick="zoomIn(parseInt(sequencelength/20));"
+                                 class="browserimage"
+                                 height=70% alt="ZoomIn" title="Zoom In">
+                            <img src='images/browser/zoomin.png' id="zoominsmall"
+                                 onclick="zoomIn(parseInt(sequencelength/40));"
+                                 class="browserimage browserimagesmall"
+                                 height=40% alt="Zoomin" title="Zoom In">&nbsp;
+                            <img src='images/browser/zoomout.png' id="zoomoutsmall"
+                                 onclick="zoomOut(parseInt(sequencelength/40));"
+                                 class="browserimage browserimagesmall"
+                                 height=40% alt="Zoomout" title='Zoom Out'>
+                            <img src='images/browser/zoomout.png' id="zoomoutbig"
+                                 onclick="zoomOut(parseInt(sequencelength/20));"
+                                 class="browserimage"
+                                 height=70% alt="Zoomout" title="Zoom Out">&nbsp;&nbsp;
+                            <img src='images/browser/selectall.png' onclick="expand();" class="browserimage"
+                                 height=60% alt="selectall" title="Select All">
+                        </center>
+
+                    </div>
+                </td>
+                <td>
+                    <table style="position: fixed; right: 0px; top: 25px;">
+                        <tr>
+                            <td>
+                                <div id=export style=" display: none;"
+                                     class="divbutton"> Export
+                                </div>
+                            </td>
+                            <td>
+                                <div onclick="checkSession();"
+                                     class="divbutton">
+                                    Save Session
+                                </div>
+                            </td>
+
+                            <td>
+                                <div id="controlsbutton" class="divbutton">
+                                    Tracks / Settings
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div id=sessionid></div>
+
+                </td>
+            </tr>
+        </table>
 
 
-        </div>
-
-
-
-        <div id="bar_image">
-            <div id="searchDiv"></div>
-            <div id="SeqLenStart">&nbsp;</div>
-            <div id="SeqLen25">&nbsp;</div>
-            <div id="SeqLenMid">&nbsp;</div>
-            <div id="SeqLen75">&nbsp;</div>
-            <div id="SeqLenEnd">&nbsp;</div>
-        </div>
-        <div id="nav_panel"> &nbsp;</div>
-        <div id="vertical0" style="left: 0%" class="vertical-line"></div>
-        <div id="vertical1" style="left: 10%" class="vertical-line"></div>
-        <div id="vertical2" style="left: 20%" class="vertical-line"></div>
-        <div id="vertical3" style="left: 30%" class="vertical-line"></div>
-        <div id="vertical4" style="left: 40%" class="vertical-line"></div>
-        <div id="vertical5" style="left: 50%" class="vertical-line"></div>
-        <div id="vertical6" style="left: 60%" class="vertical-line"></div>
-        <div id="vertical7" style="left: 70%" class="vertical-line"></div>
-        <div id="vertical8" style="left: 80%" class="vertical-line"></div>
-        <div id="vertical9" style="left: 90%" class="vertical-line"></div>
-        <div id="vertical10" style="right: 0%; margin-left: -20px; border-left: 0" class="vertical-line"></div>
-        <div id="bg_layer"></div>
-        <div id="draggable" onmouseup="auto_drag()" onmouseout="auto_drag()"></div>
-
-
-        <div id="wrapper">
-
-            <div id=tracks>
-            </div>
-            <div class="fakediv">
-
-            </div>
-            <div id="sequence">
-
-                <center>
-                    <div id="sequenceString"></div>
-                    <div id="translation_div"></div>
-                </center>
-
-
-            </div>
-        </div>
-
-        <div id="svgcircle"></div>
     </div>
+
+
+    <div id="bar_image">
+        <div id="searchDiv"></div>
+        <div id="SeqLenStart">&nbsp;</div>
+        <div id="SeqLen25">&nbsp;</div>
+        <div id="SeqLenMid">&nbsp;</div>
+        <div id="SeqLen75">&nbsp;</div>
+        <div id="SeqLenEnd">&nbsp;</div>
+    </div>
+    <div id="nav_panel"> &nbsp;</div>
+    <div id="vertical0" style="left: 0%" class="vertical-line"></div>
+    <div id="vertical1" style="left: 10%" class="vertical-line"></div>
+    <div id="vertical2" style="left: 20%" class="vertical-line"></div>
+    <div id="vertical3" style="left: 30%" class="vertical-line"></div>
+    <div id="vertical4" style="left: 40%" class="vertical-line"></div>
+    <div id="vertical5" style="left: 50%" class="vertical-line"></div>
+    <div id="vertical6" style="left: 60%" class="vertical-line"></div>
+    <div id="vertical7" style="left: 70%" class="vertical-line"></div>
+    <div id="vertical8" style="left: 80%" class="vertical-line"></div>
+    <div id="vertical9" style="left: 90%" class="vertical-line"></div>
+    <div id="vertical10" style="right: 0%; margin-left: -20px; border-left: 0" class="vertical-line"></div>
+    <div id="bg_layer"></div>
+    <div id="draggable" onmouseup="auto_drag()" onmouseout="auto_drag()"></div>
+
+
+    <div id="wrapper">
+
+        <div id=tracks>
+        </div>
+        <div class="fakediv">
+
+        </div>
+        <div id="sequence">
+
+            <center>
+                <div id="sequenceString"></div>
+                <div id="translation_div"></div>
+            </center>
+
+
+        </div>
+    </div>
+
+    <div id="svgcircle"></div>
+</div>
+
+<div id="openCloseIdentifier"></div>
+<div id="slider">
+    <h1>Control Panel</h1>
+
+    <div class="sectionDivider" onclick="toggleLeftInfo(jQuery('#Tracksdiv_arrowclick'), 'Tracksdiv');">Tracks List
+        <div id="Tracksdiv_arrowclick" class="toggleLeftDown"></div>
+    </div>
+    <div id="Tracksdiv">
+        <table width="100%">
+
+            <tr>
+                <td>
+                    <div id="tracklist" align="left">
+
+                    </div>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+
+    <div id="openCloseWrap" style="display: none; cursor: pointer" onclick="tracklistopenclose();">
+        <b>| | |</b>
+    </div>
+</div>
 
 </div>
 
@@ -497,27 +524,28 @@
 </div>
 
 
-<div style="">
-    <div id="controlpanel">
+<%--<div id="controlpanel_parent" style="position: fixed; width: 100px">--%>
+<%--<div id="controlpanel">--%>
 
-        <h1>Control Panel</h1>
+<%--<h1>Control Panel</h1>--%>
 
-        <div class="sectionDivider" onclick="toggleLeftInfo(jQuery('#Tracksdiv_arrowclick'), 'Tracksdiv');">Tracks List
-            <div id="Tracksdiv_arrowclick" class="toggleLeftDown"></div>
-        </div>
+<%--<div class="sectionDivider" onclick="toggleLeftInfo(jQuery('#Tracksdiv_arrowclick'), 'Tracksdiv');">Tracks List--%>
+<%--<div id="Tracksdiv_arrowclick" class="toggleLeftDown"></div>--%>
+<%--</div>--%>
 
-        <div id="Tracksdiv">
-            <table>
-                <tr>
-                    <td>
-                        <div id="tracklist" align="left">
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</div>
+<%--<div id="Tracksdiv">--%>
+<%--<table>--%>
+<%--<tr>--%>
+<%--<td>--%>
+<%--<div id="tracklist" align="left">--%>
+<%--</div>--%>
+<%--</td>--%>
+<%--</tr>--%>
+<%--</table>--%>
+<%--</div>--%>
+<%--</div>--%>
+<%--<div style="position: fixed; top: 0px; height: 10px; width: 10px;" onclick="tracklistopenclose()">|||</div>--%>
+<%--</div>--%>
 
 
 <span id="ruler"></span>

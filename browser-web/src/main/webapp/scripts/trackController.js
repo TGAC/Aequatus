@@ -92,20 +92,27 @@ function trackClick(track, i, j) {
 
 }
 
-function trackmouseover(track, i, j) {
+function trackmouseover(child, track, track_len) {
+    child_track = window[track][track_len].child;
 
-    jQuery("#trackmouseoverhead").html("<h2>" + window[track][i].desc + "</h2>");
-    jQuery("#trackmouseoverbody").html(window[track][i].transcript.length + "transcript for Gene");
+    svgClear();
 
-    if (mouseX + jQuery("#trackmouseover").width() > jQuery("#main1").width()) {
-        jQuery("#trackmouseover").css({"left": mouseX - jQuery("#trackmouseover").width() - 10});
-        jQuery("#trackmouseover").css({"top": (mouseY + 10)});
+
+
+    var align_length = child_track.length;
+    var refs = [];
+
+    while(align_length--){
+        var align_track_start = child_track[align_length].start;
+        var align_track_stop = child_track[align_length].end;
+        var id = child_track[align_length].ref_id;
+        if(jQuery.inArray(id, refs) >= 0){
+        }
+        else{
+            refs.push(id);
+        }
+        drawoncircle(align_track_start, align_track_stop, jQuery.inArray(id, refs), track + "" + track_len);
     }
-    else {
-        jQuery("#trackmouseover").css({"left": (mouseX + 10)});
-        jQuery("#trackmouseover").css({"top": (mouseY + 10)});
-    }
-    jQuery("#trackmouseover").show();
 }
 function trackmouseout() {
     jQuery("#trackmouseover").hide();
@@ -844,7 +851,7 @@ function dispTrack(div, trackName, className) {
         var newStart_temp = getBegin();
         var newEnd_temp = getEnd();
         var maxLen_temp = jQuery("#canvas").css("width");
-
+        svgClear();
         var track = window[trackName];
 
         if (track[0] == null) {
@@ -872,8 +879,8 @@ function dispTrack(div, trackName, className) {
                     spanclass = "ui-icon ui-icon-carat-1-w";
                 }
 
-                var track_start = track[track_len].dnafrag_start;
-                var track_stop = track[track_len].dnafrag_end ? track[track_len].dnafrag_end : parseInt(track[track_len].dnafrag_start) + 1;
+                var track_start = track[track_len].start;
+                var track_stop = track[track_len].end ? track[track_len].end : parseInt(track[track_len].start) + 1;
 
                 var border = "";
                 if (track[track_len].flag) {
@@ -890,29 +897,15 @@ function dispTrack(div, trackName, className) {
                 if (stopposition < 2) {
                     stopposition = 2;
                 }
-
-                if (trackName.toLowerCase().indexOf("snp") >= 0) {
-                    spanclass = "";
-                    if (stopposition < 2) {
-                        stopposition = 2;
-                    }
-                    trackClass = 'snp' + track[track_len].cigarline + ' track';
-
-                    label = track[track_len].cigarline;
-                }
-                else if (track_desc) {
                     label = track_desc + ":" + track_start + "-" + track_stop;
-
-                } else {
-                    label = track_start + "-" + track_stop;
-                }
 
                 jQuery("<div>").attr({
                     'id': trackName + "" + track_len,
                     'class': trackClass + " " + className,
                     'style': "TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px;",
                     'title': label,
-                    'onClick': "trackClick(\"" + trackName + "\",\"" + track_len + "\")"
+                    'onClick': "trackClick(\"" + trackName + "\",\"" + track_len + "\")",
+                    'onmouseOver': "trackmouseover(\""+track[track_len].child + "\",\"" + trackName+"\",\"" + track_len+"\")"
                 }).appendTo(div);
 
                 jQuery("<div>").attr({
@@ -921,6 +914,8 @@ function dispTrack(div, trackName, className) {
                     'title': label
 
                 }).html(label).appendTo("#" + trackName + "" + track_len);
+
+
 
 
                 if (stopposition > 10) {
@@ -974,7 +969,7 @@ function dispCigarLine(cigars, start, top) {
                 track_html += trackHTML(startposition, stopposition, top, trackClass);
                 cigar_pos = parseInt(cigar_pos) + parseInt(length)
             }
-            else if (key == "D") {
+            else if (key == "D") {p
                 trackClass = "delete";
                 startposition = (cigar_pos - newStart_temp) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp) + parseFloat(maxLentemp) / 2;
                 stopposition = 1

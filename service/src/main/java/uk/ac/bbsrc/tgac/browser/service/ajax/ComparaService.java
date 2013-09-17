@@ -203,25 +203,25 @@ public class ComparaService {
         String seqName = json.getString("query");
         JSONObject response = new JSONObject();
         int reference = json.getInt("reference");
-        String trackId = json.getString("trackid");
+        int trackId = json.getInt("trackid");
         String trackName = json.getString("trackname");
 
         long start = json.getInt("start");
         long end = json.getInt("end");
 //        int delta = json.getInt("delta");
         response.put("trackname", trackName);
-        log.info(trackId);
         int count;
         try {
             Integer queryid = comparaStore.getDnafragId(seqName, reference);
-            if(comparaStore.countGenomicAlign(queryid, start, end)  < 1000){
-                response.put("count", comparaStore.countGenomicAlign(queryid, start, end));
-                response.put(trackName, comparaStore.getGenomicAlign(queryid, start, end));
-            }else{
-                response.put("type", "graph");
-                response.put("count", comparaStore.countGenomicAlign(queryid, start, end));
-                response.put(trackName, comparaStore.getGenomicAlignGraph(queryid, start, end));
-            }
+            response.put(trackName,comparaStore.getAllMember(seqName, start, end));
+//            if(comparaStore.countGenomicAlign(queryid, start, end, trackId)  < 1000){
+//                response.put("count", comparaStore.countGenomicAlign(queryid, start, end, trackId));
+//                response.put(trackName, comparaStore.getGenomicAlign(queryid, start, end, trackId));
+//            }else{
+//                response.put("type", "graph");
+//                response.put("count", comparaStore.countGenomicAlign(queryid, start, end, trackId));
+//                response.put(trackName, comparaStore.getGenomicAlignGraph(queryid, start, end));
+//            }
 
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
