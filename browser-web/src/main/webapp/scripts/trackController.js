@@ -111,7 +111,7 @@ function trackmouseover(child, track, track_len) {
         else{
             refs.push(id);
         }
-        drawoncircle(align_track_start, align_track_stop, jQuery.inArray(id, refs), track + "" + track_len);
+        drawoncircle(align_track_start, align_track_stop, jQuery.inArray(id, refs), track + "" + track_len, child_track[align_length].genome_db_id);
     }
 }
 function trackmouseout() {
