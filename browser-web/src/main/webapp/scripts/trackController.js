@@ -95,9 +95,11 @@ function trackClick(track, i, j) {
 function trackmouseover(child, track, track_len) {
     child_track = window[track][track_len].child;
 
-    svgClear();
 
+    jQuery("#"+track+"_wrapper").svg();
+    jQuery("#"+track+"_wrapper").svg('get').clear();
 
+    var svg = jQuery("#"+track+"_wrapper").svg('get');
 
     var align_length = child_track.length;
     var refs = [];
@@ -111,7 +113,18 @@ function trackmouseover(child, track, track_len) {
         else{
             refs.push(id);
         }
-        drawoncircle(align_track_start, align_track_stop, jQuery.inArray(id, refs), track + "" + track_len, child_track[align_length].genome_db_id);
+//        var x1 = jQuery("#"+child_track[align_length].id + "" + align_length).offset().left
+//        var y1 = jQuery("#"+child_track[align_length].id + "" + align_length).offset().top
+//
+//
+//
+//        var x2 = x1+jQuery("#"+id).height()
+//        var y2 = y1+jQuery("#"+id).width()
+//
+//        console.log(x1+","+y1+","+x2+","+y2+","+track+""+track_len)
+//        markers(x1,y1,x2,y2,track+""+track_len, svg)
+
+//        drawoncircle(align_track_start, align_track_stop, jQuery.inArray(id, refs), track + "" + track_len, child_track[align_length].genome_db_id);
     }
 }
 function trackmouseout() {
@@ -891,13 +904,13 @@ function dispTrack(div, trackName, className) {
                 top = ((track_len) % (layers) + 1) * 20 + 15;
 
 
-                var startposition = (track_start - newStart_temp) * parseFloat(maxLen_temp) / (newEnd_temp - newStart_temp) + parseFloat(maxLen_temp) / 2;
+                var startposition = (track_start - newStart_temp) * parseFloat(maxLen_temp) / (newEnd_temp - newStart_temp) + parseFloat(maxLen_temp);
                 var stopposition = (track_stop - track_start + 1) * parseFloat(maxLen_temp) / (newEnd_temp - newStart_temp);
 
                 if (stopposition < 2) {
                     stopposition = 2;
                 }
-                    label = track_desc + ":" + track_start + "-" + track_stop;
+                label = track_desc + ":" + track_start + "-" + track_stop;
 
                 jQuery("<div>").attr({
                     'id': trackName + "" + track_len,
@@ -908,15 +921,47 @@ function dispTrack(div, trackName, className) {
                     'onmouseOver': "trackmouseover(\""+track[track_len].child + "\",\"" + trackName+"\",\"" + track_len+"\")"
                 }).appendTo(div);
 
+                var child_track = track[track_len].child;
+
+                var align_length = child_track.length;
+                var refs = [];
+
+                while(align_length--){
+                    var align_track_start = child_track[align_length].start;
+                    var align_track_stop = child_track[align_length].end;
+                    var id = child_track[align_length].ref_id;
+                    if(jQuery.inArray(id, refs) >= 0){
+                    }
+                    else{
+                        refs.push(id);
+                    }
+
+                    var length = child_track[align_length].length;
+                    var startposition = (align_track_start - newStart_temp) * parseFloat(maxLen_temp) / (length) + parseFloat(maxLen_temp) / 2;
+                    var stopposition = (align_track_stop - align_track_start + 1) * parseFloat(maxLen_temp) / (length);
+
+                    top = (jQuery.inArray(id, refs) + 1) * 20 + 15;
+
+                    jQuery("<div>").attr({
+                        'id': child_track[align_length].id + "" + align_length,
+                        'class': trackClass + " " + className,
+                        'style': "TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px;",
+                        'title': label
+//                        'onClick': "trackClick(\"" + trackName + "\",\"" + track_len + "\")",
+//                        'onmouseOver': "trackmouseover(\""+track[track_len].child + "\",\"" +01 trackName+"\",\"" + track_len+"\")"
+                    }).appendTo("#"+trackName+"_"+child_track[align_length].genome_db_id+"_div");
+
+
+                }
+
+
+
                 jQuery("<div>").attr({
                     'class': "tracklabel " + labelclass,
                     'style': labeltoogle + " z-index: 999; overflow: hidden;text-overflow: ellipsis;",
                     'title': label
 
                 }).html(label).appendTo("#" + trackName + "" + track_len);
-
-
-
 
                 if (stopposition > 10) {
                     jQuery("<span>").attr({

@@ -1815,8 +1815,8 @@ span.counter {
     float: left;
     top: 120px;
     /*height: 100%;*/
-    width: 200%;
-    margin-left: -50%;
+    width: 100%;
+    margin-left: 0%;
     /*border: 1px solid black;*/
     background-color: white;
     /*border-right: 0;*/
@@ -2035,7 +2035,7 @@ span.counter {
     display: inline-block;
     font-family: arial;
     /*font-size: 15px;*/
-    left: 25.2%;
+    left: 0%;
     opacity: 0.9;
     position: absolute;
     top: 5px;
@@ -2082,6 +2082,7 @@ span.counter {
     /*resize: vertical;*/
     overflow-x: auto;
     /*overflow-y: scroll;*/
+    border-bottom: 1px solid gray;
 
 }
 

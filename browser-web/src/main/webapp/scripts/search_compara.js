@@ -141,8 +141,8 @@ function loadTrackAjax(trackId, trackname) {
 
         window[trackname] == "loading";
     var partial = (getEnd() - getBegin()) + ((getEnd() - getBegin()) / 2);
-    var start = (getBegin() - partial);
-    var end = parseInt(getEnd()) + parseFloat(partial);
+    var start = (getBegin() );
+    var end = parseInt(getEnd());
     if (start < 0) {
         start = 0;
     }

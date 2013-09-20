@@ -558,7 +558,6 @@ function dispCoord(seqStart, seqEnd) {
 // Generate automated tracks lists and divs for each track
 
 function trackList(tracklist) {
-    console.log("tracklist")
     var Tracklist = tracklist;
     var tracks = "";
     for (var i = 0; i < Tracklist.length; i++) {
@@ -594,8 +593,18 @@ function trackList(tracklist) {
                 "</tr>" +
                 "</table>" +
                 "</div>" +
-                "<div id='" + track[j].name + "_div' class='feature_tracks' style=\"display:none; top:10px;\" > " + track[j].name + "</div>" +
+                "<div id='" + track[j].name + "_div' class='feature_tracks' style=\"top:10px;\" > " + track[j].name + "</div>" +
                 "</div>");
+
+            var length = jQuery('#genomes').children('option').length;
+            var r = parseInt((middle/2) / length);
+            for(var i=0; i< length; i++){
+                var id = jQuery('#genomes').children('option')[i].value;
+                var title = jQuery('#genomes').children('option')[i].text;
+                jQuery("#"+track[j].name + "_wrapper").append("<div id='" + track[j].name +"_"+id+ "_div' class='feature_tracks' style=\"top:10px;\" > " + track[j].name + "</div>");
+
+            }
+
         }
         tracks += "</table>";
     }

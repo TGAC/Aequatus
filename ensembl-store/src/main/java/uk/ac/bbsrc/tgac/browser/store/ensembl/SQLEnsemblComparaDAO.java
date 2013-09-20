@@ -367,6 +367,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                     int member = template.queryForInt(GET_HOMOLOGY_MEMBER_BY_HOMOLOGY_MEMBER_ID, new Object[]{map_two.get("homology_id"), map.get("id")});
                     Map<String, Object> homologous = template.queryForMap(GET_MEMBER_BY_MEMBER_ID, new Object[]{member});
                     homologous.put("ref_id",getDnafragId(homologous.get("chr_name").toString(),Integer.parseInt(homologous.get("genome_db_id").toString())));
+                    homologous.put("length",getReferenceLength(Integer.parseInt(homologous.get("ref_id").toString())));
                     homologouses.add(homologous);
                 }
                 map.put("ref_id",getDnafragId(map.get("chr_name").toString(),Integer.parseInt(map.get("genome_db_id").toString())));

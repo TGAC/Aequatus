@@ -329,8 +329,8 @@ function updateJSON() {
 
 //      console.log("right");
         if (parseInt(lastStart) < parseInt(getBegin()) || parseInt(lastEnd) < parseInt(newEnd)) {
-            from = Math.ceil(parseInt(getBegin()) - partial);
-            to = Math.ceil(parseInt(getEnd()) + partial);
+            from = Math.ceil(parseInt(getBegin()) );
+            to = Math.ceil(parseInt(getEnd()) );
 
             addJSON(from, to);
 //      removeJSON(parseInt((parseInt(getBegin()) - parseInt(partial)) - (getEnd() - getBegin())), "");
@@ -340,8 +340,8 @@ function updateJSON() {
         }
         //      console.log("left");
         else if (parseInt(lastStart) > parseInt(getBegin()) || parseInt(lastEnd) > parseInt(getEnd())) {
-            from = Math.floor((parseInt(getBegin()) - parseInt(partial)));
-            to = Math.ceil(parseInt(getEnd()) + partial);
+            from = Math.floor((parseInt(getBegin()) ));
+            to = Math.ceil(parseInt(getEnd()) );
 
             addJSON(from, to);
 //      removeJSON("", parseInt((parseInt(getEnd()) + parseInt(partial) + parseInt((getEnd() - getBegin())))));
@@ -350,8 +350,8 @@ function updateJSON() {
         }
 //       console.log("zoomout");
         else if (parseInt(lastStart) > parseInt(getBegin()) || parseInt(lastEnd) < parseInt(getEnd())) {
-            from = Math.floor((getBegin() - partial));
-            to = Math.ceil(parseInt(getEnd()) + parseInt(partial));
+            from = Math.floor((getBegin() ));
+            to = Math.ceil(parseInt(getEnd()) );
 
             addJSON(from, to);
 
@@ -360,9 +360,9 @@ function updateJSON() {
         }
 //      console.log("zoomin");
         else if (parseInt(lastStart) < parseInt(getBegin()) && parseInt(lastEnd) > parseInt(getEnd())) {
-            partial = (parseInt((getEnd() - getBegin() ) + parseInt(partial)));
-            removeJSON(null, parseInt((parseInt(getEnd()) + parseInt(partial))));
-            removeJSON(parseInt(parseInt(getBegin() - partial)), null);
+            partial = (parseInt((getEnd() - getBegin() ) ));
+            removeJSON(null, parseInt((parseInt(getEnd()) )));
+            removeJSON(parseInt(parseInt(getBegin() )), null);
             lastEnd = getEnd();
             lastStart = getBegin();
         }
