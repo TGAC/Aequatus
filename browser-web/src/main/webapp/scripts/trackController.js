@@ -462,7 +462,6 @@ function dispGenes(div, track, expand, className) {
                     'class': "tracklabel " + labelclass,
                     'style': labeltoogle + " z-index: 999; overflow: hidden;text-overflow: ellipsis;",
                     'title': label
-
                 }).html("<p class='track_label'>" + label + "</p>").appendTo("#" + track + "" + len);
                 drawoncircle(gene_start, gene_stop, genes[len].layer);
             }
@@ -904,7 +903,7 @@ function dispTrack(div, trackName, className) {
                 top = ((track_len) % (layers) + 1) * 20 + 15;
 
 
-                var startposition = (track_start - newStart_temp) * parseFloat(maxLen_temp) / (newEnd_temp - newStart_temp) + parseFloat(maxLen_temp);
+                var startposition = (track_start - newStart_temp) * parseFloat(maxLen_temp) / (newEnd_temp - newStart_temp);
                 var stopposition = (track_stop - track_start + 1) * parseFloat(maxLen_temp) / (newEnd_temp - newStart_temp);
 
                 if (stopposition < 2) {
@@ -937,7 +936,7 @@ function dispTrack(div, trackName, className) {
                     }
 
                     var length = child_track[align_length].length;
-                    var startposition = (align_track_start - newStart_temp) * parseFloat(maxLen_temp) / (length) + parseFloat(maxLen_temp) / 2;
+                    var startposition = (align_track_start - newStart_temp) * parseFloat(maxLen_temp) / (length);
                     var stopposition = (align_track_stop - align_track_start + 1) * parseFloat(maxLen_temp) / (length);
 
                     top = (jQuery.inArray(id, refs) + 1) * 20 + 15;
@@ -947,11 +946,7 @@ function dispTrack(div, trackName, className) {
                         'class': trackClass + " " + className,
                         'style': "TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px;",
                         'title': label
-//                        'onClick': "trackClick(\"" + trackName + "\",\"" + track_len + "\")",
-//                        'onmouseOver': "trackmouseover(\""+track[track_len].child + "\",\"" +01 trackName+"\",\"" + track_len+"\")"
                     }).appendTo("#"+trackName+"_"+child_track[align_length].genome_db_id+"_div");
-
-
                 }
 
 

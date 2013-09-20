@@ -2080,8 +2080,8 @@ span.counter {
     border-right: 0;
     float: left;
     /*resize: vertical;*/
-    overflow-x: auto;
-    /*overflow-y: scroll;*/
+    overflow-x: hidden;
+    overflow-y: scroll;
     border-bottom: 1px solid gray;
 
 }
@@ -2339,7 +2339,7 @@ span.counter {
     padding: 5px 5px;
     text-shadow: 0 1px 1px hsla(0, 0%, 100%, .5);
     border: 1px solid #888888;
-    width: 200px;
+    width: 100%;
     z-index: 999;
 }
 
@@ -2388,7 +2388,7 @@ span.counter {
     padding: 5px 5px;
     text-shadow: 0 1px 1px hsla(0, 0%, 100%, .5);
     border: 1px solid #888888;
-    width: 200px;
+    width: 100%;
     z-index: 999;
 }
 
@@ -2402,6 +2402,10 @@ span.counter {
     z-index: 999;
 
 !important;
+}
+
+.widget_div{
+   margin-bottom: 5px;
 }
 
 .bubbleright:before {

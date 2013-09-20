@@ -558,6 +558,21 @@ function dispCoord(seqStart, seqEnd) {
 // Generate automated tracks lists and divs for each track
 
 function trackList(tracklist) {
+
+
+    var length = jQuery('#genomes').children('option').length;
+
+    for(var i=0; i< length; i++){
+        var id = jQuery('#genomes').children('option')[i].value;
+        var title = jQuery('#genomes').children('option')[i].text;
+
+        jQuery("#widget").append("<div class=\"sectionDivider\" onclick=\"toggleLeftInfo(jQuery('#"+id+ "_widget_arrowclick'), '"+id+ "_widgetdiv_wrapper');\">"+title+
+            "<div id=\""+id+ "_widget_arrowclick\" class=\"toggleLeftDown\"></div></div>" +
+            "<div id='"+id+ "_widgetdiv_wrapper' style='position: relative; height: auto; min-height: 100px;'>" +
+            "<div id='"+id+ "_widgetdiv' class='widget_div'> </div></div>");
+    }
+
+
     var Tracklist = tracklist;
     var tracks = "";
     for (var i = 0; i < Tracklist.length; i++) {
@@ -565,6 +580,7 @@ function trackList(tracklist) {
         var track = Tracklist[i][track_name]
         tracks += "<table> <tr>";
         tracks += "<td colspan=3> "+track_name+" </td> <tr>";
+
         for (var j = 0; j < track.length; j++) {
             window['track_list' + track[j].name] = {
                 name: track[j].name,
@@ -602,7 +618,6 @@ function trackList(tracklist) {
                 var id = jQuery('#genomes').children('option')[i].value;
                 var title = jQuery('#genomes').children('option')[i].text;
                 jQuery("#"+track[j].name + "_wrapper").append("<div id='" + track[j].name +"_"+id+ "_div' class='feature_tracks' style=\"top:10px;\" > " + track[j].name + "</div>");
-
             }
 
         }

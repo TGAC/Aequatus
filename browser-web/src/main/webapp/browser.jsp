@@ -258,7 +258,7 @@
         </tr>
     </table>
     <hr style="color: #d3d3d3;">
-    <div id="widget"></div>
+    <div id="widget" style="position: absolute"></div>
     <table width="100%">
         <tr>
 
