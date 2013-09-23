@@ -105,28 +105,28 @@
                     </div>
                 </td>
                 <td>
-                    <table style="position: fixed; right: 0px; top: 25px;">
-                        <tr>
-                            <td>
-                                <div id=export style=" display: none;"
-                                     class="divbutton"> Export
-                                </div>
-                            </td>
-                            <td>
-                                <div onclick="checkSession();"
-                                     class="divbutton">
-                                    Save Session
-                                </div>
-                            </td>
+                    <%--<table style="position: fixed; right: 0px; top: 25px;">--%>
+                        <%--<tr>--%>
+                            <%--<td>--%>
+                                <%--<div id=export style=" display: none;"--%>
+                                     <%--class="divbutton"> Export--%>
+                                <%--</div>--%>
+                            <%--</td>--%>
+                            <%--<td>--%>
+                                <%--<div onclick="checkSession();"--%>
+                                     <%--class="divbutton">--%>
+                                    <%--Save Session--%>
+                                <%--</div>--%>
+                            <%--</td>--%>
 
-                            <td>
-                                <div id="controlsbutton" class="divbutton">
-                                    Tracks / Settings
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                    <div id=sessionid></div>
+                            <%--<td>--%>
+                                <%--<div id="controlsbutton" class="divbutton">--%>
+                                    <%--Tracks / Settings--%>
+                                <%--</div>--%>
+                            <%--</td>--%>
+                        <%--</tr>--%>
+                    <%--</table>--%>
+                    <%--<div id=sessionid></div>--%>
 
                 </td>
             </tr>

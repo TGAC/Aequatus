@@ -26,94 +26,79 @@ function drawLines(a, b) {
 
     svg.line(middle, 400, x, y, {strokeWidth: 1, stroke: "#D3D3D3"});
     svg.line(x, y, x2, 0, {strokeWidth: 1, stroke: "#D3D3D3"});
-//  svg.line(x2, 250, x2, 0, {strokeWidth: 1, stroke: "gray"});
 }
 
 function paths(x1,y1,x2,y2, l, s, c, title, id, r, ref) {
-
-
     var svg = jQuery('#svgcircle').svg('get');
     var path = svg.createPath();
 
-
-
-
-
-
-    svg.path(path.move(x1, y1).arc(middle - s - l / 2, middle - s - l / 2, 30, false, true, x2, y2),
+    svg.path(path.move(x1, y1).arc(r - s - l / 2, r - s - l / 2, 30, false, true, x2, y2),
         {id:'trackcircle'+ref, title:title, class:'trackcircle', fill: 'none', stroke: c, strokeWidth: l});
-
-//svg.path(path.move(x1, y1).curveC(x1, y1, (x1+x2)/2, (y1+y2)/2, x2, y2),
-    //  {fill: 'none', stroke: '#D90000', strokeWidth: 2});
 
 }
 
 function markers(x1,y1,x2,y2,id, svg){
-//    var svg = jQuery('#svgcircle').svg('get');
-
-
-
     var diff = jQuery("#svgcircle").offset().top
     var x3 = jQuery("#"+id).offset().left
     var y3 = -1 * (diff - jQuery("#"+id).offset().top)
 
-    var x4 = x3+jQuery("#"+id).height()
-    var y4 = y3+jQuery("#"+id).width()
+    var x4 = x3+jQuery("#"+id).width()
+    var y4 = y3+jQuery("#"+id).height()
 
     svg.polygon([[x1,y1],[x2,y2],[x3,y3],[x4,y4]],
         {fill: 'lime', stroke: 'blue', strokeWidth: 0, opacity:0.4});
 }
 
 function initiate() {
-//    middle = parseInt(jQuery("#canvas").css("width")) / 2;
-//    jQuery('#svgcircle').svg();
-//
-//    var length = jQuery('#genomes').children('option').length;
-//    var color = ["lightgray", "steelblue"]
-//    var r = parseInt((middle/2) / length);
-//    for(var i=0; i< length; i++){
-//        var id = jQuery('#genomes').children('option')[i].value;
-//        var title = jQuery('#genomes').children('option')[i].text;
-//        drawCircle((length-i)*r, color[i%2], id, title);
-//    }
-//    var a = 10;
-//    for (var i = 0; i >= -180; i = i - 18) {
-//
-//        drawLines(i, a);
-//        a--;
-//    }
-//    drawCircle(middle - 750, 'black');
-//
-//    jQuery('#clear').click(function() {
-//        jQuery('#svgcircle').svg('get').clear();
-//    });
-//    jQuery('#export').click(function() {
-//        var xml = jQuery('#svgcircle').svg('get').toSVG();
-//        jQuery('#svgexport').html(xml.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'));
-//    });
+    middle = parseInt(jQuery("#canvas").css("width")) / 2;
+    jQuery('#svgcircle').svg();
+
+    var length = jQuery('#genomes').children('option').length;
+    var color = ["lightgray", "steelblue"]
+    var r = parseInt((middle/2) / length);
+    for(var i=0; i< length; i++){
+        var id = jQuery('#genomes').children('option')[i].value;
+        var title = jQuery('#genomes').children('option')[i].text;
+        drawCircle((length-i)*r, color[i%2], id, title);
+    }
+    var a = 10;
+    for (var i = 0; i >= -180; i = i - 18) {
+
+        drawLines(i, a);
+        a--;
+    }
+    drawCircle(middle - 750, 'black');
+
+    jQuery('#clear').click(function() {
+        jQuery('#svgcircle').svg('get').clear();
+    });
+    jQuery('#export').click(function() {
+        var xml = jQuery('#svgcircle').svg('get').toSVG();
+        jQuery('#svgexport').html(xml.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'));
+    });
 }
 
-function findAngle(x){
+function findAngle(x, length){
 
-    var startposition = -180+(x - getBegin()) * 180 / (getEnd() - getBegin());
-
+    var startposition = (x) * 180 / (length);
+    console.log(x+","+ length+":"+startposition)
     return startposition;
 }
 
-function drawoncircle(x,y, l, id, ref){
-//    if(x < getBegin()){x = getBegin()}
-//    if(y > getEnd()){y = getEnd()}
+function drawoncircle(x,y, l, id, ref, length){
+    var svg = jQuery('#svgcircle').svg('get');
+
+
     if(x > y){
         var temp = y;
         x = y;
         y = temp;
     }
 
-
     var r = jQuery("#circle_"+ref).attr("r");
 
-    var angle_x = findAngle(x);
-    var angle_y = findAngle(y);
+    var angle_x = findAngle(x, length);
+    var angle_y = findAngle(y, length);
 
     var s = l*5;
 
@@ -123,12 +108,9 @@ function drawoncircle(x,y, l, id, ref){
     var x2 = middle + (r - (s + l / 2)) * Math.cos(angle_y * Math.PI / 180);
     var y2 = 400 + (r - (s + l / 2)) * Math.sin(angle_y * Math.PI / 180);
 
-    paths(x1,y1,x2,y2, 5, (l*5), "blue", x+":"+y, id, r, ref);
-
-    var svg = jQuery('#svgcircle').svg('get');
+    paths(x1,y1,x2,y2, 5, (l*5), "red", x+":"+y, id, r, ref);
 
     markers(x1,y1,x2,y2,id, svg);
-
 }
 
 function svgClear(){
@@ -140,9 +122,5 @@ function svgClear(){
 function screenshot(){
     var canvas = document.getElementById("trackssss");
     var img    = canvas.toDataURL("image/png");
-
-
     document.write('<img src="'+img+'"/>');
-
-
 }

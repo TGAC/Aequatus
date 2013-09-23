@@ -139,7 +139,7 @@ function newpopup(track, i, j) {
         }
         else {
             tempNamespace[id_ref].push(id);
-            var top = (jQuery.inArray(id, tempNamespace[id_ref]) + 1) * 15;
+            var top = (jQuery.inArray(id, tempNamespace[id_ref]) + 1) * 15 + 20;
             var length = child_track[align_length].length;
             var startposition = parseFloat(maxLen_temp) / (length);
             var stopposition = parseFloat(maxLen_temp);
@@ -153,12 +153,12 @@ function newpopup(track, i, j) {
 //            'title': label
             }).appendTo("#"+child_track[align_length].genome_db_id+"_widgetdiv");
 
-            jQuery("<p class='track_label'>" + id + "</p>").appendTo("#" +id);
+            jQuery("<p class='track_label'>" + child_track[align_length].chr_name + "</p>").appendTo("#" +id);
 
 
         }
         var id_ref = child_track[align_length].genome_db_id+"refs";
-        var top = (jQuery.inArray(id, tempNamespace[id_ref]) + 1) * 15;
+        var top = (jQuery.inArray(id, tempNamespace[id_ref]) + 1) * 15 + 20;
 
         var length = child_track[align_length].length;
         var startposition = (align_track_start) * parseFloat(maxLen_temp) / (length);
@@ -180,6 +180,11 @@ function newpopup(track, i, j) {
 //            'title': label
 
         }).html("<p class='track_label'>" + child_track[align_length].desc + "</p>").appendTo("#" + child_track[align_length].desc);
+        console.log(child_track[align_length].genome_db_id)
+        console.log(jQuery("#"+child_track[align_length].genome_db_id+"_widgetdiv_wrapper").css("height"))
+        if(top > parseInt(jQuery("#"+child_track[align_length].genome_db_id+"_widgetdiv_wrapper").css("height"))){
+            jQuery("#"+child_track[align_length].genome_db_id+"_widgetdiv_wrapper").css("height", top)
+        }
     }
 
 //// decide side of popup left / right

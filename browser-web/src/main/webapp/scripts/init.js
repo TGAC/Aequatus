@@ -566,9 +566,9 @@ function trackList(tracklist) {
         var id = jQuery('#genomes').children('option')[i].value;
         var title = jQuery('#genomes').children('option')[i].text;
 
-        jQuery("#widget").append("<div class=\"sectionDivider\" onclick=\"toggleLeftInfo(jQuery('#"+id+ "_widget_arrowclick'), '"+id+ "_widgetdiv_wrapper');\">"+title+
+        jQuery("#widget").append("<div id='"+id+ "_widgetdiv_wrapper' style='position: relative;  height: 100px; min-height:100px; width:100%; '>" +
+            "<div class=\"sectionDivider\" onclick=\"toggleLeftInfo(jQuery('#"+id+ "_widget_arrowclick'), '"+id+ "_widgetdiv');\">"+title+
             "<div id=\""+id+ "_widget_arrowclick\" class=\"toggleLeftDown\"></div></div>" +
-            "<div id='"+id+ "_widgetdiv_wrapper' style='position: relative; height: auto; min-height: 100px;'>" +
             "<div id='"+id+ "_widgetdiv' class='widget_div'> </div></div>");
     }
 

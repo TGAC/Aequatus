@@ -111,18 +111,18 @@
                 <td>
                     <div id="genome_list"></div>
                 </td>
-                <td>
-                    <c:set var="databases">${initParam.blastdblink} </c:set>
-
-                    <c:set var="dateParts" value="${fn:split(databases, ',')}"/>
-
-                    <c:set var="length">${fn:length(databases)}</c:set>
-
-                    ${initParam.fasta == "true" && length > 1 ? "| <a href=\"blast.jsp\"><span>Blast Search</span></a>" : ""}
-                </td>
-                <td>
-                    | <a href="<c:url value="session.jsp"/>"><span>Load Session</span></a>
-                </td>
+                <%--<td>--%>
+                    <%--<c:set var="databases">${initParam.blastdblink} </c:set>--%>
+<%----%>
+                    <%--<c:set var="dateParts" value="${fn:split(databases, ',')}"/>--%>
+<%----%>
+                    <%--<c:set var="length">${fn:length(databases)}</c:set>--%>
+<%----%>
+                    <%--${initParam.fasta == "true" && length > 1 ? "| <a href=\"blast.jsp\"><span>Blast Search</span></a>" : ""}--%>
+                <%--</td>--%>
+                <%--<td>--%>
+                    <%--| <a href="<c:url value="session.jsp"/>"><span>Load Session</span></a>--%>
+                <%--</td>--%>
             </tr>
         </table>
 
