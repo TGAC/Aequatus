@@ -345,9 +345,9 @@ function onLoad() {
     });
 
 
-    jQuery('#popup').hide();
-    jQuery('#blastpopup').hide();
-    jQuery('#dragpopup').hide();
+//    jQuery('#popup').hide();
+//    jQuery('#blastpopup').hide();
+//    jQuery('#dragpopup').hide();
     jQuery('#track-upload-form').hide();
 }
 

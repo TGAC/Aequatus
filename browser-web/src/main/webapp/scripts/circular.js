@@ -81,7 +81,6 @@ function initiate() {
 function findAngle(x, length){
 
     var startposition = (x) * 180 / (length);
-    console.log(x+","+ length+":"+startposition)
     return startposition;
 }
 

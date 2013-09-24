@@ -40,13 +40,13 @@ function removeMenu() {
 
 function removePopup() {
 
-    jQuery("#popuptrack").html("");
-    jQuery("#position").html("");
-    jQuery("#Detail").html("");
-    jQuery("#popup").fadeOut("");
-    jQuery('#EditTrack').hide();
-    jQuery('#blastselector').hide();
-    jQuery('#popup_hanging').hide();
+//    jQuery("#popuptrack").html("");
+//    jQuery("#position").html("");
+//    jQuery("#Detail").html("");
+//    jQuery("#popup").fadeOut("");
+//    jQuery('#EditTrack').hide();
+//    jQuery('#blastselector').hide();
+//    jQuery('#popup_hanging').hide();
 }
 
 // create a new for each track
@@ -70,46 +70,51 @@ function newpopup(track, i, j) {
         }
     }
 
+    jQuery("#track_info").html(track);
+    jQuery("#track_i_info").html(i);
+    jQuery("#track_toggle_info").html("0");
+
     if (j >= 0) {
+
         position = window[track][i].transcript[j].start + position_func(window[track][i].transcript[j]);
-        jQuery("#makemetop").html('<span title="Make Me Top" class="ui-button ui-icon ui-icon-arrowthick-1-n" onclick=makeMeTop(\"' + track + "\",\"" + i + "\",\"" + j + '\");></span>');
-        jQuery("#peptides").html('<span title="peptides" class="ui-button ui-icon ui-icon-comment" onclick=showPeptides(\"' + track + "\",\"" + i + "\",\"" + j + '\");></span>');
+//        jQuery("#makemetop").html('<span title="Make Me Top" class="ui-button ui-icon ui-icon-arrowthick-1-n" onclick=makeMeTop(\"' + track + "\",\"" + i + "\",\"" + j + '\");></span>');
+//        jQuery("#peptides").html('<span title="peptides" class="ui-button ui-icon ui-icon-comment" onclick=showPeptides(\"' + track + "\",\"" + i + "\",\"" + j + '\");></span>');
         jQuery("#position").html(stringTrim(position, width));
-        jQuery("#exdetails").html('<span title="Attributes" class="ui-button ui-icon ui-icon-note" onclick=showDetails(\"' + track + "\",\"" + i + "\",\"" + j + '\");></span>');
-        jQuery("#FASTAme").html('<span title="Fasta" class="ui-button ui-fasta" onclick=fetchFasta(' + window[track][i].transcript[j].start + ',' + window[track][i].transcript[j].end + ",\"" + track + "\",\"" + i + "\",\"" + j + '\");></span>');
-        jQuery("#BLASTme").html('<span title="Blast" class="ui-button ui-blast" onclick=preBlast(' + window[track][i].transcript[j].start + ',' + window[track][i].transcript[j].end + ',' + '\"#popup\");></span>');
-        jQuery("#ZoomHere").html('<span title="Zoom Here" class="ui-button ui-icon ui-icon-zoomin" onclick=zoomHere(' + window[track][i].transcript[j].start + ',' + window[track][i].transcript[j].end + ');></span>');
-        jQuery("#EditDescription").html('<span title="Edit" class="ui-button ui-icon ui-icon-pencil" onclick=showEditDesc(\"' + track + "\",\"" + i + "\",\"" + j + '\");></span>');
-        jQuery("#deleteTrack").html('<span title="Remove" class="ui-button ui-icon ui-icon-trash" onclick=deleteTrack(\"' + track + "\",\"" + i + "\",\"" + j + '\");></span>');
-        jQuery("#flagTrack").html('<span title="Flag" class="ui-button ui-icon ui-icon-flag" onclick=flagTrack(\"' + track + "\",\"" + i + "\",\"" + j + '\");></span>');
-        jQuery("#Linkme").html("<a target='_blank' href='" + jQuery("#linkLocation").html() + "" + window[track][i].desc + "'> <span title=\"Link\" class=\"ui-button ui-icon ui-icon-link\"></span></a>");
-        jQuery("#revertme").html('<span title="Revert_Name" class="ui-button ui-icon ui-icon-arrowreturnthick-1-w" onclick=revertTrack(\"' + track + "\",\"" + i + "\",\"" + j + '\");></span>');
+//        jQuery("#exdetails").html('<span title="Attributes" class="ui-button ui-icon ui-icon-note" onclick=showDetails(\"' + track + "\",\"" + i + "\",\"" + j + '\");></span>');
+//        jQuery("#FASTAme").html('<span title="Fasta" class="ui-button ui-fasta" onclick=fetchFasta(' + window[track][i].transcript[j].start + ',' + window[track][i].transcript[j].end + ",\"" + track + "\",\"" + i + "\",\"" + j + '\");></span>');
+//        jQuery("#BLASTme").html('<span title="Blast" class="ui-button ui-blast" onclick=preBlast(' + window[track][i].transcript[j].start + ',' + window[track][i].transcript[j].end + ',' + '\"#popup\");></span>');
+//        jQuery("#ZoomHere").html('<span title="Zoom Here" class="ui-button ui-icon ui-icon-zoomin" onclick=zoomHere(' + window[track][i].transcript[j].start + ',' + window[track][i].transcript[j].end + ');></span>');
+//        jQuery("#EditDescription").html('<span title="Edit" class="ui-button ui-icon ui-icon-pencil" onclick=showEditDesc(\"' + track + "\",\"" + i + "\",\"" + j + '\");></span>');
+//        jQuery("#deleteTrack").html('<span title="Remove" class="ui-button ui-icon ui-icon-trash" onclick=deleteTrack(\"' + track + "\",\"" + i + "\",\"" + j + '\");></span>');
+//        jQuery("#flagTrack").html('<span title="Flag" class="ui-button ui-icon ui-icon-flag" onclick=flagTrack(\"' + track + "\",\"" + i + "\",\"" + j + '\");></span>');
+//        jQuery("#Linkme").html("<a target='_blank' href='" + jQuery("#linkLocation").html() + "" + window[track][i].desc + "'> <span title=\"Link\" class=\"ui-button ui-icon ui-icon-link\"></span></a>");
+//        jQuery("#revertme").html('<span title="Revert_Name" class="ui-button ui-icon ui-icon-arrowreturnthick-1-w" onclick=revertTrack(\"' + track + "\",\"" + i + "\",\"" + j + '\");></span>');
         jQuery("#Detail").html(stringTrim(window[track][i].transcript[j].desc + "(" + window[track][i].desc + ")", width));
 
     }
     else {
-        jQuery("#Linkme").html("");
-        jQuery("#makemetop").html('');
-        jQuery("#peptides").html('');
+//        jQuery("#Linkme").html("");
+//        jQuery("#makemetop").html('');
+//        jQuery("#peptides").html('');
         jQuery("#position").html(position);
-        jQuery("#exdetails").html('');
-        if (window[track][i].end - window[track][i].start > 1 || window[track][i].start - window[track][i].end > 1) {
-            jQuery("#FASTAme").html('<span title="Fasta" class="ui-button ui-fasta" onclick=fetchFasta(' + window[track][i].start + ',' + window[track][i].end + ');></span>');
-            jQuery("#BLASTme").html('<span title="Blast" class="ui-button ui-blast" onclick=preBlast(' + window[track][i].start + ',' + window[track][i].end + ',' + '\"#popup\");></span>');
-            jQuery("#revertme").html('<span title="Revert_Name" class="ui-button ui-icon ui-icon-arrowreturnthick-1-w" onclick=revertTrack(\"' + track + "\",\"" + i + '\");></span>');
-
-        }
-        else {
-            jQuery("#FASTAme").html('');
-            jQuery("#BLASTme").html('');
-            jQuery("#revertme").html('');
-
-        }
-
-        jQuery("#ZoomHere").html('<span title="Zoom Here" class="ui-button ui-icon ui-icon-zoomin" onclick=zoomHere(' + window[track][i].start + ',' + endposition + ');></span>');
-        jQuery("#EditDescription").html('<span title="Edit" class="ui-button ui-icon ui-icon-pencil" onclick=showEditDesc(\"' + track + '\",\'' + i + '\');></span>');
-        jQuery("#deleteTrack").html('<span title="Remove" class="ui-button ui-icon ui-icon-trash" onclick=deleteTrack(\"' + track + '\",\'' + i + '\');></span>');
-        jQuery("#flagTrack").html('<span title="Flag" class="ui-button ui-icon ui-icon-flag" onclick=flagTrack(\"' + track + '\",\'' + i + '\');></span>');
+//        jQuery("#exdetails").html('');
+//        if (window[track][i].end - window[track][i].start > 1 || window[track][i].start - window[track][i].end > 1) {
+//            jQuery("#FASTAme").html('<span title="Fasta" class="ui-button ui-fasta" onclick=fetchFasta(' + window[track][i].start + ',' + window[track][i].end + ');></span>');
+//            jQuery("#BLASTme").html('<span title="Blast" class="ui-button ui-blast" onclick=preBlast(' + window[track][i].start + ',' + window[track][i].end + ',' + '\"#popup\");></span>');
+//            jQuery("#revertme").html('<span title="Revert_Name" class="ui-button ui-icon ui-icon-arrowreturnthick-1-w" onclick=revertTrack(\"' + track + "\",\"" + i + '\");></span>');
+//
+//        }
+//        else {
+//            jQuery("#FASTAme").html('');
+//            jQuery("#BLASTme").html('');
+//            jQuery("#revertme").html('');
+//
+//        }
+//
+//        jQuery("#ZoomHere").html('<span title="Zoom Here" class="ui-button ui-icon ui-icon-zoomin" onclick=zoomHere(' + window[track][i].start + ',' + endposition + ');></span>');
+//        jQuery("#EditDescription").html('<span title="Edit" class="ui-button ui-icon ui-icon-pencil" onclick=showEditDesc(\"' + track + '\",\'' + i + '\');></span>');
+//        jQuery("#deleteTrack").html('<span title="Remove" class="ui-button ui-icon ui-icon-trash" onclick=deleteTrack(\"' + track + '\",\'' + i + '\');></span>');
+//        jQuery("#flagTrack").html('<span title="Flag" class="ui-button ui-icon ui-icon-flag" onclick=flagTrack(\"' + track + '\",\'' + i + '\');></span>');
         jQuery("#Detail").html(stringTrim(window[track][i].desc, width));
 
     }
@@ -117,75 +122,6 @@ function newpopup(track, i, j) {
 
 //    jQuery("#widget").html("");
 
-    var child_track = window[track][i].child;
-
-    var align_length = child_track.length;
-    var refs = [];
-    var maxLen_temp = jQuery("#popup").width()*0.8;
-    console.log(maxLen_temp)
-
-    var tempNamespace = {};
-
-    while (align_length--) {
-        var align_track_start = child_track[align_length].start;
-        var align_track_stop = child_track[align_length].end;
-        var id_ref = child_track[align_length].genome_db_id+"refs";
-        if(!tempNamespace[id_ref]){
-            tempNamespace[id_ref] = [];
-            jQuery("#"+child_track[align_length].genome_db_id+"_widgetdiv").html("")
-        }
-        var id = child_track[align_length].ref_id;
-        if (jQuery.inArray(id, tempNamespace[id_ref]) >= 0) {
-        }
-        else {
-            tempNamespace[id_ref].push(id);
-            var top = (jQuery.inArray(id, tempNamespace[id_ref]) + 1) * 15 + 20;
-            var length = child_track[align_length].length;
-            var startposition = parseFloat(maxLen_temp) / (length);
-            var stopposition = parseFloat(maxLen_temp);
-            if (stopposition < 1) {
-                stopposition = 1;
-            }
-            jQuery("<div>").attr({
-                'id': id,
-//            'class': trackClass + " " + className,
-                'style': "position:absolute; TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 5px; background: lightgray"
-//            'title': label
-            }).appendTo("#"+child_track[align_length].genome_db_id+"_widgetdiv");
-
-            jQuery("<p class='track_label'>" + child_track[align_length].chr_name + "</p>").appendTo("#" +id);
-
-
-        }
-        var id_ref = child_track[align_length].genome_db_id+"refs";
-        var top = (jQuery.inArray(id, tempNamespace[id_ref]) + 1) * 15 + 20;
-
-        var length = child_track[align_length].length;
-        var startposition = (align_track_start) * parseFloat(maxLen_temp) / (length);
-        var stopposition = (align_track_stop - align_track_start + 1) * parseFloat(maxLen_temp) / (length);
-        if (stopposition < 1) {
-            stopposition = 1;
-        }
-        jQuery("<div>").attr({
-            'id': child_track[align_length].desc,
-//            'class': trackClass + " " + className,
-            'style': "position:absolute; TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 5px; background: red",
-            'title': (align_track_stop - align_track_start)
-        }).appendTo("#"+child_track[align_length].genome_db_id+"_widgetdiv");
-
-
-        jQuery("<div>").attr({
-//            'class': "tracklabel " + labelclass,
-            'style': " z-index: 999;"
-//            'title': label
-
-        }).html("<p class='track_label'>" + child_track[align_length].desc + "</p>").appendTo("#" + child_track[align_length].desc);
-        console.log(child_track[align_length].genome_db_id)
-        console.log(jQuery("#"+child_track[align_length].genome_db_id+"_widgetdiv_wrapper").css("height"))
-        if(top > parseInt(jQuery("#"+child_track[align_length].genome_db_id+"_widgetdiv_wrapper").css("height"))){
-            jQuery("#"+child_track[align_length].genome_db_id+"_widgetdiv_wrapper").css("height", top)
-        }
-    }
 
 //// decide side of popup left / right
 //    if (mouseX + jQuery("#popup").width() > jQuery("#main1").width()) {
@@ -199,13 +135,17 @@ function newpopup(track, i, j) {
 //        jQuery("#popup").attr('class', 'bubbleleft')
 //    }
 
+    show_align();
+    d3_widget();
+
 
     var html = jQuery("#popup").html();
 
     jQuery.colorbox({
         width: "90%",
         height: "100%",
-        html:html
+        inline: true,
+        href: "#popup"
     });
 
 }
@@ -915,4 +855,119 @@ function removeAllPopup() {
     removePopup();
     removeDragPopup();
     removeBlastPopup();
+}
+
+function show_align(change) {
+    var track = jQuery("#track_info").html();
+    var i = jQuery("#track_i_info").html();
+
+    if (change) {
+
+        if (jQuery("#track_toggle_info").html() == "1") {
+            jQuery("#track_toggle_info").html("0")
+        } else {
+            jQuery("#track_toggle_info").html("1")
+        }
+    }
+    var max = jQuery("#track_toggle_info").html();
+    var child_track = window[track][i].child;
+    if (max == "1") {
+        max = Math.max.apply(Math, child_track.map(function (o) {
+            return (o.end - o.start);
+        }));
+    }
+    var align_length = child_track.length;
+    var refs = [];
+    var maxLen_temp = jQuery("#popup").width();
+
+    var top = 0;
+    var length = 0;
+    var startposition = 0;
+    var stopposition = 0;
+    var tempNamespace = {};
+
+    while (align_length--) {
+        var align_track_start = child_track[align_length].start;
+        var align_track_stop = child_track[align_length].end;
+        var id_ref = child_track[align_length].genome_db_id + "refs";
+        if (!tempNamespace[id_ref]) {
+            tempNamespace[id_ref] = [];
+            jQuery("#" + child_track[align_length].genome_db_id + "_widgetdiv").html("")
+        }
+        var id = child_track[align_length].ref_id;
+        if (max != "0") {
+            tempNamespace[id_ref].push(id);
+            top = (align_length) * 15 + 20;
+            length = child_track[align_length].length;
+            startposition = parseFloat(maxLen_temp) / (length);
+            stopposition = parseFloat(maxLen_temp);
+            if (stopposition < 1) {
+                stopposition = 1;
+            }
+            jQuery("<div>").attr({
+                'id': id+""+align_length,
+                'style': "position:absolute; TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 5px; background: lightgray"
+            }).appendTo("#" + child_track[align_length].genome_db_id + "_widgetdiv");
+
+            jQuery("<p class='track_label'>" + child_track[align_length].chr_name + "</p>").appendTo("#" + id+""+align_length);
+        } else {
+            if (jQuery.inArray(id, tempNamespace[id_ref]) >= 0) {
+            }
+            else {
+                tempNamespace[id_ref].push(id);
+                var top = (jQuery.inArray(id, tempNamespace[id_ref]) + 1) * 15 + 20;
+                var length = child_track[align_length].length;
+                var startposition = parseFloat(maxLen_temp) / (length);
+                var stopposition = parseFloat(maxLen_temp);
+                if (stopposition < 1) {
+                    stopposition = 1;
+                }
+                jQuery("<div>").attr({
+                    'id': id,
+                    'style': "position:absolute; TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 5px; background: lightgray"
+                }).appendTo("#" + child_track[align_length].genome_db_id + "_widgetdiv");
+
+                jQuery("<p class='track_label'>" + child_track[align_length].chr_name + "</p>").appendTo("#" + id);
+            }
+        }
+        var id_ref = child_track[align_length].genome_db_id + "refs";
+        var top = 0;
+
+        var length = child_track[align_length].length;
+
+        stopposition = (align_track_stop - align_track_start + 1) * parseFloat(maxLen_temp) / (length);
+        startposition = (align_track_start) * parseFloat(maxLen_temp) / (length);
+
+        if (max != "0") {
+            stopposition = (align_track_stop - align_track_start + 1) * parseFloat(maxLen_temp) / (max);
+            startposition = (maxLen_temp - stopposition) / 2; //(align_track_start) * parseFloat(maxLen_temp) / (length);
+            top = (align_length) * 15 + 20;
+
+        } else {
+            top = (jQuery.inArray(id, tempNamespace[id_ref]) + 1) * 15 + 20;
+        }
+
+        if (stopposition < 1) {
+            stopposition = 1;
+        }
+
+        jQuery("<div>").attr({
+            'id': child_track[align_length].desc,
+            'style': "position:absolute; TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 5px; background: red",
+            'title': (align_track_stop - align_track_start)
+        }).appendTo("#" + child_track[align_length].genome_db_id + "_widgetdiv");
+
+
+        jQuery("<div>").attr({
+            'style': " z-index: 999;"
+        }).html("<p class='track_label'>" + child_track[align_length].desc + "</p>").appendTo("#" + child_track[align_length].desc);
+
+        if (top > parseInt(jQuery("#" + child_track[align_length].genome_db_id + "_widgetdiv_wrapper").css("height"))) {
+            jQuery("#" + child_track[align_length].genome_db_id + "_widgetdiv_wrapper").css("height", (parseInt(top) + 20))
+        }
+    }
+}
+
+function d3_widget() {
+
 }

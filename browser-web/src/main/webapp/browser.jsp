@@ -231,8 +231,10 @@
     </table>
 </div>
 
-<div id="popup" class="bubbleleft">
-
+<div id="popup" class="bubble">
+     <div id='track_info' style="display: none"></div>
+    <div id='track_i_info' style="display: none"></div>
+    <div id='track_toggle_info' style="display: none"></div>
 
     <table id="dpop" width="100%">
 
@@ -256,60 +258,18 @@
                 <div id="Detail"></div>
             </td>
         </tr>
-    </table>
-    <hr style="color: #d3d3d3;">
-    <div id="widget" style="position: absolute"></div>
-    <table width="100%">
         <tr>
-
-            <td align="right">
-
-                <div class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="exdetails">
-                </div>
-
-                ${initParam.fasta == "true" ? "<div class=\"ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only\" id=\"FASTAme\"> </div>" : ""}
-
-                <c:set var="databases">${initParam.blastdblink} </c:set>
-
-                <c:set var="dateParts" value="${fn:split(databases, ',')}"/>
-
-                <c:set var="length">${fn:length(databases)}</c:set>
-
-                ${initParam.fasta == "true" && length > 1 ? "<div class=\"ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only\" id=\"BLASTme\"> </div>" : ""}
-
-                <div class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="ZoomHere">
-                </div>
-
-                <div class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="flagTrack">
-                </div>
-                <div class="ui-widget ui-state-default ui-corner-all ui-button ui-icon ui-icon-arrow-1-s" id="openmenu"
-                     onclick="tooglehangingmenu()" title="More Option">
-                </div>
+            <td colspan="2">
+                <span class="ui-button ui-icon ui-icon-carat-2-e-w" onclick=show_align(true);></span>
             </td>
         </tr>
     </table>
-
-
+    <hr style="color: #d3d3d3;">
+    <div id="widget" style="position: absolute"></div>
+    <div id="d3_widget" style="position: absolute"></div>
 </div>
 
-<div id=popup_hanging style="display : none; z-index: 999;">
-    <div class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="revertme">
-    </div>
-    <div class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
-         id="EditDescription">
-    </div>
-    <div class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="deleteTrack">
-    </div>
-    <p>
 
-    <div class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="Linkme">
-    </div>
-    <div class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="makemetop">
-    </div>
-
-    ${initParam.fasta == "true" ? "<div class=\"ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only\" id=\"peptides\"> </div>" : ""}
-
-</div>
 
 <div id="dragpopup" class="bubbleleft">
 
