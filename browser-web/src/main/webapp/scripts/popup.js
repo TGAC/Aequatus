@@ -887,6 +887,14 @@ function show_align(change) {
     var tempNamespace = {};
 
     while (align_length--) {
+
+        var desc = "";
+        if (child_track[align_length].desc) {
+            desc = child_track[align_length].desc.replace(/[\s+\(+\)+]/g, "_");
+        } else {
+            desc = "null" + child_track[align_length].start + ":" + child_track[align_length].end;
+        }
+
         var align_track_start = child_track[align_length].start;
         var align_track_stop = child_track[align_length].end;
         var id_ref = child_track[align_length].genome_db_id + "refs";
@@ -897,7 +905,7 @@ function show_align(change) {
         var id = child_track[align_length].ref_id;
         if (max != "0") {
             tempNamespace[id_ref].push(id);
-            top = (align_length) * 15 + 20;
+            top = (parseInt(tempNamespace[id_ref].length)) * 30 + 20;
             length = child_track[align_length].length;
             startposition = parseFloat(maxLen_temp) / (length);
             stopposition = parseFloat(maxLen_temp);
@@ -905,17 +913,19 @@ function show_align(change) {
                 stopposition = 1;
             }
             jQuery("<div>").attr({
-                'id': id+""+align_length,
-                'style': "position:absolute; TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 5px; background: lightgray"
+                'id': id + "" + align_length,
+                'style': "position:absolute; TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 20px; background: lightgray"
             }).appendTo("#" + child_track[align_length].genome_db_id + "_widgetdiv");
 
-            jQuery("<p class='track_label'>" + child_track[align_length].chr_name + "</p>").appendTo("#" + id+""+align_length);
+            jQuery("<div>").attr({
+                'style': " z-index: 999; top: 15px; position: relative;"
+            }).html("<p class='track_label'>" + child_track[align_length].chr_name + "</p>").appendTo("#" + id + "" + align_length);
         } else {
             if (jQuery.inArray(id, tempNamespace[id_ref]) >= 0) {
             }
             else {
                 tempNamespace[id_ref].push(id);
-                var top = (jQuery.inArray(id, tempNamespace[id_ref]) + 1) * 15 + 20;
+                var top = (jQuery.inArray(id, tempNamespace[id_ref]) + 1) * 30 + 20;
                 var length = child_track[align_length].length;
                 var startposition = parseFloat(maxLen_temp) / (length);
                 var stopposition = parseFloat(maxLen_temp);
@@ -924,10 +934,12 @@ function show_align(change) {
                 }
                 jQuery("<div>").attr({
                     'id': id,
-                    'style': "position:absolute; TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 5px; background: lightgray"
+                    'style': "position:absolute; TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 20px; background: lightgray"
                 }).appendTo("#" + child_track[align_length].genome_db_id + "_widgetdiv");
 
-                jQuery("<p class='track_label'>" + child_track[align_length].chr_name + "</p>").appendTo("#" + id);
+                jQuery("<div>").attr({
+                    'style': " z-index: 999; top: 15px; position: relative;"
+                }).html("<p class='track_label'>" + child_track[align_length].chr_name + "</p>").appendTo("#" + id);
             }
         }
         var id_ref = child_track[align_length].genome_db_id + "refs";
@@ -940,11 +952,11 @@ function show_align(change) {
 
         if (max != "0") {
             stopposition = (align_track_stop - align_track_start + 1) * parseFloat(maxLen_temp) / (max);
-            startposition = (maxLen_temp - stopposition) / 2; //(align_track_start) * parseFloat(maxLen_temp) / (length);
-            top = (align_length) * 15 + 20;
+            startposition = 10;//(maxLen_temp - stopposition) / 2; //(align_track_start) * parseFloat(maxLen_temp) / (length);
+            top = (parseInt(tempNamespace[id_ref].length)) * 30 + 20;
 
         } else {
-            top = (jQuery.inArray(id, tempNamespace[id_ref]) + 1) * 15 + 20;
+            top = (jQuery.inArray(id, tempNamespace[id_ref]) + 1) * 30 + 20;
         }
 
         if (stopposition < 1) {
@@ -952,22 +964,105 @@ function show_align(change) {
         }
 
         jQuery("<div>").attr({
-            'id': child_track[align_length].desc,
-            'style': "position:absolute; TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 5px; background: red",
+            'id': desc,
+            'style': "position:absolute; TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 20px; background: darkgray",
             'title': (align_track_stop - align_track_start)
         }).appendTo("#" + child_track[align_length].genome_db_id + "_widgetdiv");
 
 
         jQuery("<div>").attr({
-            'style': " z-index: 999;"
-        }).html("<p class='track_label'>" + child_track[align_length].desc + "</p>").appendTo("#" + child_track[align_length].desc);
+            'style': " z-index: 999; top: 15px; position: relative;"
+        }).html("<p class='track_label'>" + desc + "</p>").appendTo("#" + desc);
+
+        if (max != "0") {
+            if (child_track[align_length].cigarline1) {
+                dispCigarLinePopup(child_track[align_length].cigarline1, startposition, 0, desc, stopposition, align_track_start, align_track_stop);
+                dispCigarLinePopup(child_track[align_length].cigarline2, startposition, 10, desc, stopposition, align_track_start, align_track_stop);
+
+            }
+        }
 
         if (top > parseInt(jQuery("#" + child_track[align_length].genome_db_id + "_widgetdiv_wrapper").css("height"))) {
-            jQuery("#" + child_track[align_length].genome_db_id + "_widgetdiv_wrapper").css("height", (parseInt(top) + 20))
+            jQuery("#" + child_track[align_length].genome_db_id + "_widgetdiv_wrapper").css("height", (parseInt(top) + 50))
         }
     }
 }
 
 function d3_widget() {
+//    jQuery('#d3_widget').svg();
+//
+//    var svgdiv = jQuery('#d3_widget').svg('get');
+//    svgdiv.circle(middle, 400, x, {class:'genome',id: "circle", fill: y, opacity:0.7, title:"title"});
 
+}
+
+function dispCigarLinePopup(cigars, start, top, id, track_length, align_track_start, align_track_stop) {
+    var trackClass = "";
+    var newStart_temp = 0;//align_track_start;
+    var newEnd_temp = parseInt(jQuery("#popup").width()) - 100;
+    var maxLentemp = track_length;//newEnd_temp;
+    var cigar_pos = start;
+    var startposition;
+    var stopposition;
+    if (cigars != '*') {
+        var cigar_length = cigars.replace(/([SIXMND])/g, "+");
+
+        while (cigar_length.indexOf("++") >= 0) {
+            cigar_length = cigar_length.replace(/(\+\+)/g, "+1+");
+        }
+
+        cigar_length = eval(cigar_length.substring(0,cigar_length.length-1));
+        cigars = cigars.replace(/([SIXMND])/g, ":$1,");
+
+
+        var cigars_array = cigars.split(',');
+        for (var i = 0; i < cigars_array.length - 1; i++) {
+            var cigar = cigars_array[i].split(":");
+            var key = cigar[1];
+            var length = cigar[0];
+            if (length == "") {
+                length = 1;
+            }
+            if (key == "M") {
+                trackClass = "match";
+                startposition = (cigar_pos) * parseFloat(maxLentemp) / (cigar_length);
+                stopposition = (length) * parseFloat(maxLentemp) / (cigar_length);
+                trackHTML(startposition, stopposition, top, trackClass, id);
+                cigar_pos = parseInt(cigar_pos) + parseInt(length);
+            }
+            else if (key == "I") {
+                trackClass = "insert";
+                startposition = (cigar_pos) * parseFloat(maxLentemp) / (cigar_length);
+                stopposition = (length) * parseFloat(maxLentemp) / (cigar_length);
+                trackHTML(startposition, stopposition, top, trackClass, id);
+                cigar_pos = parseInt(cigar_pos) + parseInt(length)
+            }
+            else if (key == "D") {
+                trackClass = "delete";
+                startposition = (cigar_pos) * parseFloat(maxLentemp) / (cigar_length);
+                stopposition = (length) * parseFloat(maxLentemp) / (cigar_length)
+
+                trackHTML(startposition, stopposition, top, trackClass, id);
+                cigar_pos = parseInt(cigar_pos) + parseInt(length)
+            }
+
+            else if (key == "X") {
+                trackClass = "mismatch";
+                startposition = (cigar_pos ) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp);
+                stopposition = (length) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp);
+                trackHTML(startposition, stopposition, top, trackClass, id);
+                cigar_pos = parseInt(cigar_pos) + parseInt(length)
+            }
+            else if (key == "=") {
+                cigar_pos = parseInt(cigar_pos) + parseInt(length)
+            }
+        }
+    }
+
+    function trackHTML(startposition, stopposition, top, trackClass, div) {
+        jQuery("<div>").attr({
+            'class': trackClass,
+            'style': "position:absolute; TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 10px;"
+        }).appendTo("#" + div);
+    }
 }

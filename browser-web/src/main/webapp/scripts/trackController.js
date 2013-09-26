@@ -948,6 +948,10 @@ function dispTrack(div, trackName, className) {
                         'style': "TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px;",
                         'title': label
                     }).appendTo("#"+trackName+"_"+child_track[align_length].genome_db_id+"_div");
+
+//                    if(child_track[align_length].cigarline){
+//                        dispCigarLine(child_track[align_length].cigarline, startposition, top);
+//                    }
                 }
 
 
