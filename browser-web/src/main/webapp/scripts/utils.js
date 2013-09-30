@@ -106,6 +106,7 @@ function browser_coordinates() {
 }
 
 function trackToggle(trackname) {
+    console.log("tracktoogle"+trackname)
 
     var index = 0;
     var graph = "false";
@@ -128,26 +129,26 @@ function trackToggle(trackname) {
         for (var i = 0; i < track_list.length; i++) {
             var track_name = Tracklist[i].name;
             var track = Tracklist[i][track_name]
-
+              console.log(track_name)
             for (var j = 0; j < track.length; j++) {
                 if (jQuery("#" + track[j].name + "Checkbox").is(':checked')) {
                     if (window['track_list' + track[j].name].graph == "true") {
-                        dispGraph("#" + track[j].name + "_div", track[j].name, track[j].display_label)
+                        dispGraph("#track_div", track[j].name, track[j].display_label)
                     }
                     else if (track[j].name.toLowerCase().indexOf("blasttrack") >= 0) {
-                        dispBLAST("#" + track[j].name + "_div", 'blasttrack');
+                        dispBLAST("#track_div", 'blasttrack');
                     }
                     else if (track[j].name.toLowerCase().indexOf("gene") >= 0) {
-                        dispGenes("#" + track[j].name + "_div", track[j].name, track[j].expand, track[j].display_label);
+                        dispGenes("#track_div", track[j].name, track[j].expand, track[j].display_label);
                     }
                     else if (track[j].name.toLowerCase().indexOf("wig") >= 0) {
-                        dispGraphWig("#" + track[j].name + "_div", track[j].name, trackid, track[j].display_label);
+                        dispGraphWig("#track_div", track[j].name, trackid, track[j].display_label);
                     }
                     else if (track[j].name.toLowerCase().indexOf("bed") >= 0) {
-                        dispGraphBed("#" + track[j].name + "_div", track[j].name, track[j].display_label);
+                        dispGraphBed("#track_div", track[j].name, track[j].display_label);
                     }
                     else {
-                        dispTrack("#" + track[j].name + "_div", track[j].name, track[j].display_label);
+                        dispTrack("#track_div", track[j].name, track[j].display_label);
                     }
                 }
                 else {
@@ -164,22 +165,22 @@ function trackToggle(trackname) {
         graph = window['track_list' + trackname].graph;
         if (jQuery('#' + trackname + 'Checkbox').is(':checked')) {
             if (graph == "true") {
-                dispGraph("#" + trackname + "_div", trackname, window['track_list' + trackname].display_label);
+                dispGraph("#track_div", trackname, window['track_list' + trackname].display_label);
             }
             else if (trackname.toLowerCase().indexOf("blasttrack") >= 0) {
-                dispBLAST("#" + trackname + "_div", 'blasttrack');
+                dispBLAST("#track_div", 'blasttrack');
             }
             else if (trackname.toLowerCase().indexOf("gene") >= 0) {
-                dispGenes("#" + trackname + "_div", trackname, window['track_list' + trackname].expand, window['track_list' + trackname].display_label);
+                dispGenes("#track_div", trackname, window['track_list' + trackname].expand, window['track_list' + trackname].display_label);
             }
             else if (trackname.toLowerCase().indexOf("wig") >= 0) {
-                dispGraphWig("#" + trackname + "_div", trackname, trackid, window['track_list' + trackname].display_label);
+                dispGraphWig("#track_div", trackname, trackid, window['track_list' + trackname].display_label);
             }
             else if (trackname.toLowerCase().indexOf("bed") >= 0) {
-                dispGraphBed("#" + trackname + "_div", trackname, window['track_list' + trackname].display_label);
+                dispGraphBed("#track_div", trackname, window['track_list' + trackname].display_label);
             }
             else {
-                dispTrack("#" + trackname + "_div", trackname, window['track_list' + trackname].display_label);
+                dispTrack("#track_div", trackname, window['track_list' + trackname].display_label);
             }
         }
         else {

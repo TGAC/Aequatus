@@ -304,6 +304,7 @@ function trackDrag() {
     }
 }
 function updateJSON() {
+    console.log("update")
     var from, to;
     var partial = (getEnd() - getBegin()) / 2;
     from = Math.ceil(parseInt(getEnd()) - partial);
@@ -380,6 +381,9 @@ function updateJSON() {
 }
 
 function addJSON(from, to, trackName, trackId) {
+    console.log("add")
+    console.log(from+":"+ to+":"+ trackName+":"+ trackId)
+
 
     if (from < 0) {
         from = 0;

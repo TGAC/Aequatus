@@ -203,7 +203,7 @@ public class ComparaService {
         String seqName = json.getString("query");
         JSONObject response = new JSONObject();
         int reference = json.getInt("reference");
-        int trackId = json.getInt("trackid");
+        String trackId = json.getString("trackid");
         String trackName = json.getString("trackname");
 
         long start = json.getInt("start");
@@ -213,15 +213,17 @@ public class ComparaService {
         int count;
         try {
             Integer queryid = comparaStore.getDnafragId(seqName, reference);
-            response.put(trackName,comparaStore.getAllMember(seqName, start, end));
-//            if(comparaStore.countGenomicAlign(queryid, start, end, trackId)  < 1000){
-//                response.put("count", comparaStore.countGenomicAlign(queryid, start, end, trackId));
-//                response.put(trackName, comparaStore.getGenomicAlign(queryid, start, end, trackId));
-//            }else{
-//                response.put("type", "graph");
-//                response.put("count", comparaStore.countGenomicAlign(queryid, start, end, trackId));
-//                response.put(trackName, comparaStore.getGenomicAlignGraph(queryid, start, end));
-//            }
+            if(trackId.indexOf("member") >=0){
+                response.put(trackName,comparaStore.getAllMember(seqName, start, end));
+            }else{
+            if(comparaStore.countGenomicAlign(queryid, start, end, trackId)  < 1000){
+                response.put("count", comparaStore.countGenomicAlign(queryid, start, end, trackId));
+                response.put(trackName, comparaStore.getGenomicAlign(queryid, start, end, trackId));
+            }else{
+                response.put("type", "graph");
+                response.put("count", comparaStore.countGenomicAlign(queryid, start, end, trackId));
+                response.put(trackName, comparaStore.getGenomicAlignGraph(queryid, start, end));
+            }          }
 
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

@@ -886,6 +886,48 @@ function show_align(change) {
     var stopposition = 0;
     var tempNamespace = {};
 
+    jQuery("#ref_widgetdiv").html("")
+
+    var ref_seq_length = sequencelength;
+
+    top = 50;
+
+
+
+
+    startposition = 1;
+    stopposition = parseFloat(maxLen_temp);
+
+    jQuery("<div>").attr({
+        'id': "refref",
+        'style': "position:absolute; TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 20px; background: lightgray"
+    }).appendTo("#ref_widgetdiv");
+
+    var ref_start = window[track][i].start;
+    var ref_end = window[track][i].end;
+
+    var ref_length = ref_end-ref_start;
+
+    stopposition = (ref_end - ref_start + 1) * parseFloat(maxLen_temp) / (ref_seq_length);
+    startposition = (ref_start) * parseFloat(maxLen_temp) / (ref_seq_length);
+
+    if (max != "0") {
+        stopposition = (ref_end - ref_start + 1) * parseFloat(maxLen_temp) / (ref_length);
+        startposition = 10;//(maxLen_temp - stopposition) / 2; //(align_track_start) * parseFloat(maxLen_temp) / (length);
+    }
+
+    jQuery("<div>").attr({
+        'id':"reftrack"+i,
+        'style': "position:absolute; TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 20px; background: darkgray",
+        'title': (ref_end - ref_start)
+    }).appendTo("#ref_widgetdiv");
+
+
+    jQuery("<div>").attr({
+        'style': " z-index: 999; top: 15px; position: relative;"
+    }).html("<p class='track_label'>ref</p>").appendTo("#reftrack"+i);
+
+
     while (align_length--) {
 
         var desc = "";
@@ -951,7 +993,7 @@ function show_align(change) {
         startposition = (align_track_start) * parseFloat(maxLen_temp) / (length);
 
         if (max != "0") {
-            stopposition = (align_track_stop - align_track_start + 1) * parseFloat(maxLen_temp) / (max);
+            stopposition = (align_track_stop - align_track_start + 1) * parseFloat(maxLen_temp) / (ref_length);
             startposition = 10;//(maxLen_temp - stopposition) / 2; //(align_track_start) * parseFloat(maxLen_temp) / (length);
             top = (parseInt(tempNamespace[id_ref].length)) * 30 + 20;
 

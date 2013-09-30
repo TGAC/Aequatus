@@ -97,10 +97,10 @@ function trackmouseover(child, track, track_len) {
     child_track = window[track][track_len].child;
 
 
-    jQuery("#"+track+"_wrapper").svg();
-    jQuery("#"+track+"_wrapper").svg('get').clear();
+    jQuery("#track_wrapper").svg();
+    jQuery("#track_wrapper").svg('get').clear();
 
-    var svg = jQuery("#"+track+"_wrapper").svg('get');
+    var svg = jQuery("#track_wrapper").svg('get');
 
     var align_length = child_track.length;
     var refs = [];
@@ -836,7 +836,7 @@ function dispTrack(div, trackName, className) {
     }
     else {
         jQuery(div).fadeIn();
-        jQuery("#" + trackName + "_wrapper").fadeIn();
+        jQuery("#track_wrapper").fadeIn();
     }
 
 
@@ -947,7 +947,7 @@ function dispTrack(div, trackName, className) {
                         'class': trackClass + " " + className,
                         'style': "TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px;",
                         'title': label
-                    }).appendTo("#"+trackName+"_"+child_track[align_length].genome_db_id+"_div");
+                    }).appendTo("#track_div");
 
 //                    if(child_track[align_length].cigarline){
 //                        dispCigarLine(child_track[align_length].cigarline, startposition, top);

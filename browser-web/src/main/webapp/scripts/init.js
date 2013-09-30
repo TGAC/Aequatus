@@ -562,6 +562,11 @@ function trackList(tracklist) {
 
     var length = jQuery('#genomes').children('option').length;
 
+    jQuery("#widget").append("<div id='ref_widgetdiv_wrapper' style='position: relative;  height: 100px; min-height:100px; width:100%; '>" +
+        "<div class=\"sectionDivider\" onclick=\"toggleLeftInfo(jQuery('#ref_widget_arrowclick'), 'ref_widgetdiv');\">ref"+
+        "<div id=\"ref_widget_arrowclick\" class=\"toggleLeftDown\"></div></div>" +
+        "<div id='ref_widgetdiv' class='widget_div'> </div></div>");
+
     for(var i=0; i< length; i++){
         var id = jQuery('#genomes').children('option')[i].value;
         var title = jQuery('#genomes').children('option')[i].text;
@@ -599,32 +604,51 @@ function trackList(tracklist) {
             if ((j + 1) % 3 == 0) {
                 tracks += "</tr> <tr>";
             }
-            jQuery("#tracks").append("<div id='" + track[j].name + "_wrapper' class='feature_tracks' style=\"display:none\">" +
-                "<div align='left' class='handle'>" +
-                "<table>" +
-                "<tr>" +
-                "<td><b>" + track[j].name + "</b></td>" +
-                "<td><div class=\"ui-icon ui-icon-comment\" onclick=toogleLabel(\"" + track[j].name + "\");> </div></td>" +
-                "<td><div class='closehandle ui-icon ui-icon-close' onclick=removeTrack(\"" + track[j].name + "_div\",\"" + track[j].name + "\");></div></td>" +
-                "</tr>" +
-                "</table>" +
-                "</div>" +
-                "<div id='" + track[j].name + "_div' class='feature_tracks' style=\"top:10px;\" > " + track[j].name + "</div>" +
-                "</div>");
 
-            var length = jQuery('#genomes').children('option').length;
-            var r = parseInt((middle/2) / length);
-            for(var i=0; i< length; i++){
-                var id = jQuery('#genomes').children('option')[i].value;
-                var title = jQuery('#genomes').children('option')[i].text;
-                jQuery("#"+track[j].name + "_wrapper").append("<div id='" + track[j].name +"_"+id+ "_div' class='feature_tracks' style=\"top:10px;\" > " + track[j].name + "</div>");
-            }
+//
+//            var length = jQuery('#genomes').children('option').length;
+//            var r = parseInt((middle/2) / length);
+//            for(var i=0; i< length; i++){
+//                var id = jQuery('#genomes').children('option')[i].value;
+//                var title = jQuery('#genomes').children('option')[i].text;
+//                jQuery("#"+track[j].name + "_wrapper").append("<div id='" + track[j].name +"_"+id+ "_div' class='feature_tracks' style=\"top:10px;\" > " + track[j].name + "</div>");
+//            }
 
         }
+        tracks += "<tr><td> <span title='homology_member'><input type=\"checkbox\" id='homology_memberCheckbox' name='homology_member-member'  onClick=loadTrackAjax(\"member\",\"homology_member\"); />  homology_member </span> </td><td></td><td></td></tr>";
+
         tracks += "</table>";
     }
 
+    jQuery("#tracks").append("<div id='track_wrapper' class='feature_tracks' style=\"display:none\">" +
+        "<div align='left' class='handle'>" +
+        "<table>" +
+        "<tr>" +
+        "<td><b><div id=trackname></div></b></td>" +
+//        "<td><div class=\"ui-icon ui-icon-comment\" onclick=toogleLabel(\"" + track[j].name + "\");> </div></td>" +
+        "<td><div class='closehandle ui-icon ui-icon-close' onclick=removeTrack(\"track_div\",\"trackname\");></div></td>" +
+        "</tr>" +
+        "</table>" +
+        "</div>" +
+        "<div id='track_div' class='feature_tracks' style=\"top:10px;\" > trackname </div>" +
+        "</div>");
+
     jQuery("#tracklist").html(tracks);
+
+    window['track_listhomology_member'] = {
+        name: 'homology_member',
+        id: 'member',
+        display_label: 'homology_member',
+        desc: 'homology_member',
+        disp: 1,
+        merge: 0,
+        label: 0,
+        graph: 0
+    }
+             console.log(track_list)
+    track_list[0].gasterosteus_aculeatus.push(
+        {name: 'homology_member', display_label: 'homology_member', id: 'member', desc: 'homology_member', disp: 1, merge: 0}
+    );
     tracklistopenclose();
 
 }

@@ -52,8 +52,8 @@ public interface ComparaStore extends Store<String> {
     public int getGenomeIdfromDnafragId(int query) throws IOException;
     public String getGenomeNamefromId(int query) throws IOException;
     public JSONArray getAllDnafragByName(String query, int reference) throws IOException;
-    public JSONArray getGenomicAlign(int query, long start, long end, int mlssid) throws IOException;
-    public int countGenomicAlign(int query, long start, long end, int mlssid) throws IOException;
+    public JSONArray getGenomicAlign(int query, long start, long end, String mlssid) throws IOException;
+    public int countGenomicAlign(int query, long start, long end, String mlssid) throws IOException;
     public JSONArray getGenomicAlignGraph(int query, long start, long end) throws IOException;
     public JSONArray getAllMember(String query, long start, long end) throws IOException;
 

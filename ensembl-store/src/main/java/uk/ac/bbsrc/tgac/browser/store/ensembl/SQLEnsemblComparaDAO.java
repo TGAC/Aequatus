@@ -293,7 +293,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         }
     }
 
-    public int countGenomicAlign(int query, long start, long end, int mlssid) throws IOException {
+    public int countGenomicAlign(int query, long start, long end, String mlssid) throws IOException {
         try {
             int size = template.queryForObject(COUNT_GENOMIC_ALIGN_BY_DNAFRAG_ID, new Object[]{query, mlssid, start, end}, Integer.class);
 
@@ -304,7 +304,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         }
     }
 
-    public JSONArray getGenomicAlign(int query, long start, long end, int mlssid) throws IOException {
+    public JSONArray getGenomicAlign(int query, long start, long end, String mlssid) throws IOException {
         try {
             JSONArray aligns =  new JSONArray();
             List<Map<String, Object>> maps = template.queryForList(GET_GENOMIC_ALIGN_BLOCK_BY_DNAFRAG_ID, new Object[]{query, mlssid, start, end, start, end, start, end, start, end});
