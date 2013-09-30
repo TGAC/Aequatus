@@ -28,12 +28,12 @@ function drawLines(a, b) {
     svg.line(x, y, x2, 0, {strokeWidth: 1, stroke: "#D3D3D3"});
 }
 
-function paths(x1,y1,x2,y2, l, s, c, title, id, r, ref) {
-    var svg = jQuery('#svgcircle').svg('get');
+function paths(x1,y1,x2,y2, l, s, c, title, id, r, ref, svg) {
+    //var svg = jQuery('#svgcircle').svg('get');
     var path = svg.createPath();
 
     svg.path(path.move(x1, y1).arc(r - s - l / 2, r - s - l / 2, 30, false, true, x2, y2),
-        {id:'trackcircle'+ref, title:title, class:'trackcircle', fill: 'none', stroke: c, strokeWidth: l});
+        {id:'trackcircle'+ref, title:title, class:'trackcircle', fill: 'white', stroke: c, strokeWidth: l});
 
 }
 
@@ -87,7 +87,6 @@ function findAngle(x, length){
 function drawoncircle(x,y, l, id, ref, length){
     var svg = jQuery('#svgcircle').svg('get');
 
-
     if(x > y){
         var temp = y;
         x = y;
@@ -100,14 +99,18 @@ function drawoncircle(x,y, l, id, ref, length){
     var angle_y = findAngle(y, length);
 
     var s = l*5;
+    var x1 = middle  -(r - (s + l / 2)) * Math.cos(angle_x * Math.PI / 180);
+    var y1 = 400  -(r - (s + l / 2)) * Math.sin(angle_x * Math.PI / 180);
 
-    var x1 = middle + (r - (s + l / 2)) * Math.cos(angle_x * Math.PI / 180);
-    var y1 = 400 + (r - (s + l / 2)) * Math.sin(angle_x * Math.PI / 180);
+    var x2 = middle -(r - (s + l / 2)) * Math.cos(angle_y * Math.PI / 180);
+    var y2 = 400 -(r - (s + l / 2)) * Math.sin(angle_y * Math.PI / 180);
 
-    var x2 = middle + (r - (s + l / 2)) * Math.cos(angle_y * Math.PI / 180);
-    var y2 = 400 + (r - (s + l / 2)) * Math.sin(angle_y * Math.PI / 180);
+    var fill = "red"
 
-    paths(x1,y1,x2,y2, 5, (l*5), "red", x+":"+y, id, r, ref);
+    if(ref == jQuery('#genomes').val()) {
+        fill = "black"
+    }
+    paths(x1,y1,x2,y2, 5, (l*5), fill, x+":"+y, id, r, ref, svg);
 
     markers(x1,y1,x2,y2,id, svg);
 }

@@ -139,8 +139,7 @@ function newpopup(track, i, j) {
     d3_widget();
 
 
-    var html = jQuery("#popup").html();
-
+    console.log("back")
     jQuery.colorbox({
         width: "90%",
         height: "100%",
@@ -858,6 +857,7 @@ function removeAllPopup() {
 }
 
 function show_align(change) {
+    console.log("show align")
     var track = jQuery("#track_info").html();
     var i = jQuery("#track_i_info").html();
 
@@ -989,10 +989,113 @@ function show_align(change) {
 }
 
 function d3_widget() {
-//    jQuery('#d3_widget').svg();
-//
-//    var svgdiv = jQuery('#d3_widget').svg('get');
-//    svgdiv.circle(middle, 400, x, {class:'genome',id: "circle", fill: y, opacity:0.7, title:"title"});
+    console.log("d3 widget")
+
+    jQuery('#d3_widget').svg();
+    var svgdiv = jQuery('#d3_widget').svg('get');
+    var track = jQuery("#track_info").html();
+    var i = jQuery("#track_i_info").html();
+    var r = 200;
+    var child_track = window[track][i].child;
+
+    var align_length = child_track.length;
+    var refs = [];
+    var total_length= 0;
+
+    var tempNamespace = {};
+    var no_of_ref = 0;
+    while (align_length--) {
+        var id = child_track[align_length].ref_id;
+
+        var desc = "";
+        if (child_track[align_length].desc) {
+            desc = child_track[align_length].desc.replace(/[\s+\(+\)+]/g, "_");
+        } else {
+            desc = "null" + child_track[align_length].start + ":" + child_track[align_length].end;
+        }
+
+        var id_ref = child_track[align_length].genome_db_id + "refs";
+        if (!tempNamespace[id_ref]) {
+            tempNamespace[id_ref] = [];
+//            jQuery("#" + child_track[align_length].genome_db_id + "_widgetdiv").html("")
+        }
+
+        if (jQuery.inArray(id, tempNamespace[id_ref]) >= 0) {
+        }
+        else {
+            tempNamespace[id_ref].push(id);
+            no_of_ref++;
+        }
+
+        total_length += child_track[align_length].length;
+    }
+
+    var x = 1
+
+    var  y = 1;
+    align_length = child_track.length;
+
+    var a= 1;
+
+    while (align_length--) {
+
+        var id = child_track[align_length].ref_id;
+
+        var degree = 360 - (no_of_ref * 5);
+        x = y;
+        y = y+child_track[align_length].length;
+        var angle_x = parseInt((x) * degree / (total_length))+(a*5);//findAngle(x, total_length))+1;
+        var angle_y = (y) * degree / (total_length)+(a*5);//findAngle(y, total_length);
+        var l = 10;
+
+        var s = l*5;
+        var x1 =  r+ (r - (s + l / 2)) * Math.cos(angle_x * Math.PI / 180);
+        var y1 =  r+ (r - (s + l / 2)) * Math.sin(angle_x * Math.PI / 180);
+
+        var x2 =  r+ (r - (s + l / 2)) * Math.cos(angle_y * Math.PI / 180);
+        var y2 =  r+  (r - (s + l / 2)) * Math.sin(angle_y * Math.PI / 180);
+
+
+        paths(x1,y1,x2,y2, 10, (l*5), "red", x+":"+y, id, r, desc, svgdiv);
+        a++;
+    }
+
+    a = 1;
+
+    x = 1
+
+    y = 1;
+
+    align_length = child_track.length;
+    while (align_length--) {
+
+        var id = child_track[align_length].ref_id;
+
+        var degree = 360 - (no_of_ref * 5);
+        x = y;
+        y = y+child_track[align_length].length;
+        var angle_x = parseInt((x) * degree / (total_length))+(a*5);//findAngle(x, total_length))+1;
+        var angle_y = (y) * degree / (total_length)+(a*5);//findAngle(y, total_length);
+        var l = 10;
+
+        var angle_diff = angle_y - angle_x;
+
+        var track_angle_x = parseInt(x) + parseInt(child_track[align_length].start * angle_diff / child_track[align_length].length);//parseInt((x) * degree / (total_length))+(a*5);//findAngle(x, total_length))+1;
+        var track_angle_y = parseInt(x) +parseInt(child_track[align_length].end * angle_diff / child_track[align_length].length);
+
+        console.log(angle_x+":"+angle_y+":"+track_angle_x+":"+track_angle_y);
+
+        var s = l*5;
+        var x1 =  r+ (r - (s + l / 2)) * Math.cos(track_angle_x * Math.PI / 180);
+        var y1 =  r+ (r - (s + l / 2)) * Math.sin(track_angle_x * Math.PI / 180);
+
+        var x2 =  r+ (r - (s + l / 2)) * Math.cos(track_angle_y * Math.PI / 180);
+        var y2 =  r+  (r - (s + l / 2)) * Math.sin(track_angle_y * Math.PI / 180);
+
+
+        paths(x1,y1,x2,y2, 10, (l*5), "blue", x+":"+y, id, r, desc, svgdiv);
+        a++;
+    }
 
 }
 

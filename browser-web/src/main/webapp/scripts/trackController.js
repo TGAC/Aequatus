@@ -125,7 +125,7 @@ function trackmouseover(child, track, track_len) {
 //        console.log(x1+","+y1+","+x2+","+y2+","+track+""+track_len)
 //        markers(x1,y1,x2,y2,track+""+track_len, svg)
 
-        drawoncircle(align_track_start, align_track_stop, jQuery.inArray(id, refs), track + "" + track_len, child_track[align_length].genome_db_id. track_len, child_track[align_length].length);
+        drawoncircle(align_track_start, align_track_stop, jQuery.inArray(id, refs), track + "" + track_len, child_track[align_length].genome_db_id, child_track[align_length].length);
     }
 }
 function trackmouseout() {

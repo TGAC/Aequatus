@@ -2,7 +2,46 @@
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c' %>
 <%@ page import="java.util.ArrayList" language="java" %>
 <div id="main1" style="top : 10px ; height: 1050px; ">
+<div id="popup" class="bubble">
+    <div id='track_info' style="display: none"></div>
+    <div id='track_i_info' style="display: none"></div>
+    <div id='track_toggle_info' style="display: none"></div>
 
+    <table id="dpop" width="100%">
+
+        <tr>
+            <td>
+                <div id="popuptrack" style="font:bold 15px Arial; color: blue;"></div>
+            </td>
+            <td align="right">
+                <span class="ui-button ui-icon ui-icon-close" onclick=removePopup();></span>
+            </td>
+
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div id="position"></div>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <div id="Detail"></div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <span class="ui-button ui-icon ui-icon-carat-2-e-w" onclick=show_align(true);></span>
+            </td>
+            <td colspan="2">
+                <span class="ui-button ui-icon ui-icon-carat-2-e-w" onclick="jQuery('#d3_widget').toggle();jQuery('#widget').toggle();"></span>
+            </td>
+        </tr>
+    </table>
+    <hr style="color: #d3d3d3;">
+    <div id="widget" style="position: absolute; display: block"></div>
+    <div id="d3_widget" style="display: none"></div>
+</div>
 <div id="seqname"></div>
 <div id="currentposition"></div>
 <div id="guideline" style="display: none"></div>
@@ -231,43 +270,7 @@
     </table>
 </div>
 
-<div id="popup" class="bubble">
-     <div id='track_info' style="display: none"></div>
-    <div id='track_i_info' style="display: none"></div>
-    <div id='track_toggle_info' style="display: none"></div>
 
-    <table id="dpop" width="100%">
-
-        <tr>
-            <td>
-                <div id="popuptrack" style="font:bold 15px Arial; color: blue;"></div>
-            </td>
-            <td align="right">
-                <span class="ui-button ui-icon ui-icon-close" onclick=removePopup();></span>
-            </td>
-
-        </tr>
-        <tr>
-            <td colspan="2">
-                <div id="position"></div>
-            </td>
-        </tr>
-
-        <tr>
-            <td colspan="2">
-                <div id="Detail"></div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <span class="ui-button ui-icon ui-icon-carat-2-e-w" onclick=show_align(true);></span>
-            </td>
-        </tr>
-    </table>
-    <hr style="color: #d3d3d3;">
-    <div id="widget" style="position: absolute"></div>
-    <div id="d3_widget" style="position: absolute"></div>
-</div>
 
 
 
