@@ -893,8 +893,6 @@ function show_align(change) {
     top = 50;
 
 
-
-
     startposition = 1;
     stopposition = parseFloat(maxLen_temp);
 
@@ -906,7 +904,7 @@ function show_align(change) {
     var ref_start = window[track][i].start;
     var ref_end = window[track][i].end;
 
-    var ref_length = ref_end-ref_start;
+    var ref_length = ref_end - ref_start;
 
     stopposition = (ref_end - ref_start + 1) * parseFloat(maxLen_temp) / (ref_seq_length);
     startposition = (ref_start) * parseFloat(maxLen_temp) / (ref_seq_length);
@@ -917,7 +915,7 @@ function show_align(change) {
     }
 
     jQuery("<div>").attr({
-        'id':"reftrack"+i,
+        'id': "reftrack" + i,
         'style': "position:absolute; TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 20px; background: darkgray",
         'title': (ref_end - ref_start)
     }).appendTo("#ref_widgetdiv");
@@ -925,7 +923,7 @@ function show_align(change) {
 
     jQuery("<div>").attr({
         'style': " z-index: 999; top: 15px; position: relative;"
-    }).html("<p class='track_label'>ref</p>").appendTo("#reftrack"+i);
+    }).html("<p class='track_label'>ref</p>").appendTo("#reftrack" + i);
 
 
     while (align_length--) {
@@ -956,7 +954,7 @@ function show_align(change) {
             }
             jQuery("<div>").attr({
                 'id': id + "" + align_length,
-                'style': "position:absolute; TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 20px; background: lightgray"
+                'style': "position:absolute; TOP:0px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 20px; background: lightgray"
             }).appendTo("#" + child_track[align_length].genome_db_id + "_widgetdiv");
 
             jQuery("<div>").attr({
@@ -967,16 +965,20 @@ function show_align(change) {
             }
             else {
                 tempNamespace[id_ref].push(id);
-                var top = (jQuery.inArray(id, tempNamespace[id_ref]) + 1) * 30 + 20;
+                var top = (jQuery.inArray(id, tempNamespace[id_ref])) * 30 + 10;
                 var length = child_track[align_length].length;
                 var startposition = parseFloat(maxLen_temp) / (length);
                 var stopposition = parseFloat(maxLen_temp);
+
+                jQuery("#widget").append("<div id='" + child_track[align_length].genome_db_id  + "_widgetdiv_wrapper' style='position: relative; width:"+maxLen_temp+"px; height: 0px;'>title" +
+                    "<div id='" + child_track[align_length].genome_db_id  + "_widgetdiv' class='widget_div'> </div></div>");
+
                 if (stopposition < 1) {
                     stopposition = 1;
                 }
                 jQuery("<div>").attr({
                     'id': id,
-                    'style': "position:absolute; TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 20px; background: lightgray"
+                    'style': "position:absolute; TOP:" + top + "px; LEFT:50px; width:" + (stopposition) + "px; height: 20px; background: lightgray"
                 }).appendTo("#" + child_track[align_length].genome_db_id + "_widgetdiv");
 
                 jQuery("<div>").attr({
@@ -997,19 +999,39 @@ function show_align(change) {
             startposition = 10;//(maxLen_temp - stopposition) / 2; //(align_track_start) * parseFloat(maxLen_temp) / (length);
             top = (parseInt(tempNamespace[id_ref].length)) * 30 + 20;
 
+            if (stopposition < 1) {
+                stopposition = 1;
+            }
+
+            jQuery("<div>").attr({
+                'id': desc,
+                'style': "position:absolute; TOP: 0px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 20px; background: darkgray",
+                'title': (align_track_stop - align_track_start)
+            }).appendTo("#" + id + "" + align_length);
+
         } else {
             top = (jQuery.inArray(id, tempNamespace[id_ref]) + 1) * 30 + 20;
+
+            if (stopposition < 1) {
+                stopposition = 1;
+            }
+
+            jQuery("<div>").attr({
+                'id': desc,
+                'style': "position:absolute; TOP:0px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 20px; background: darkgray",
+                'title': (align_track_stop - align_track_start)
+            }).appendTo("#" + id);
         }
 
-        if (stopposition < 1) {
-            stopposition = 1;
-        }
-
-        jQuery("<div>").attr({
-            'id': desc,
-            'style': "position:absolute; TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 20px; background: darkgray",
-            'title': (align_track_stop - align_track_start)
-        }).appendTo("#" + child_track[align_length].genome_db_id + "_widgetdiv");
+//        if (stopposition < 1) {
+//            stopposition = 1;
+//        }
+//
+//        jQuery("<div>").attr({
+//            'id': desc,
+//            'style': " TOP:" + top + "px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 20px; background: darkgray",
+//            'title': (align_track_stop - align_track_start)
+//        }).appendTo("#" + child_track[align_length].genome_db_id + "_widgetdiv");
 
 
         jQuery("<div>").attr({
@@ -1023,9 +1045,11 @@ function show_align(change) {
 
             }
         }
+        console.log("height "+child_track[align_length].genome_db_id)
 
+        console.log("height "+jQuery("#" + child_track[align_length].genome_db_id + "_widgetdiv_wrapper").css("height"))
         if (top > parseInt(jQuery("#" + child_track[align_length].genome_db_id + "_widgetdiv_wrapper").css("height"))) {
-            jQuery("#" + child_track[align_length].genome_db_id + "_widgetdiv_wrapper").css("height", (parseInt(top) + 50))
+            jQuery("#" + child_track[align_length].genome_db_id + "_widgetdiv_wrapper").css("height", (parseInt(top) + 20))
         }
     }
 }
@@ -1042,7 +1066,7 @@ function d3_widget() {
 
     var align_length = child_track.length;
     var refs = [];
-    var total_length= 0;
+    var total_length = 0;
 
     var tempNamespace = {};
     var no_of_ref = 0;
@@ -1074,10 +1098,10 @@ function d3_widget() {
 
     var x = 1
 
-    var  y = 1;
+    var y = 1;
     align_length = child_track.length;
 
-    var a= 1;
+    var a = 1;
 
     while (align_length--) {
 
@@ -1085,20 +1109,20 @@ function d3_widget() {
 
         var degree = 360 - (no_of_ref * 5);
         x = y;
-        y = y+child_track[align_length].length;
-        var angle_x = parseInt((x) * degree / (total_length))+(a*5);//findAngle(x, total_length))+1;
-        var angle_y = (y) * degree / (total_length)+(a*5);//findAngle(y, total_length);
+        y = y + child_track[align_length].length;
+        var angle_x = parseInt((x) * degree / (total_length)) + (a * 5);//findAngle(x, total_length))+1;
+        var angle_y = (y) * degree / (total_length) + (a * 5);//findAngle(y, total_length);
         var l = 10;
 
-        var s = l*5;
-        var x1 =  r+ (r - (s + l / 2)) * Math.cos(angle_x * Math.PI / 180);
-        var y1 =  r+ (r - (s + l / 2)) * Math.sin(angle_x * Math.PI / 180);
+        var s = l * 5;
+        var x1 = r + (r - (s + l / 2)) * Math.cos(angle_x * Math.PI / 180);
+        var y1 = r + (r - (s + l / 2)) * Math.sin(angle_x * Math.PI / 180);
 
-        var x2 =  r+ (r - (s + l / 2)) * Math.cos(angle_y * Math.PI / 180);
-        var y2 =  r+  (r - (s + l / 2)) * Math.sin(angle_y * Math.PI / 180);
+        var x2 = r + (r - (s + l / 2)) * Math.cos(angle_y * Math.PI / 180);
+        var y2 = r + (r - (s + l / 2)) * Math.sin(angle_y * Math.PI / 180);
 
 
-        paths(x1,y1,x2,y2, 10, (l*5), "red", x+":"+y, id, r, desc, svgdiv);
+        paths(x1, y1, x2, y2, 10, (l * 5), "red", x + ":" + y, id, r, desc, svgdiv);
         a++;
     }
 
@@ -1115,27 +1139,27 @@ function d3_widget() {
 
         var degree = 360 - (no_of_ref * 5);
         x = y;
-        y = y+child_track[align_length].length;
-        var angle_x = parseInt((x) * degree / (total_length))+(a*5);//findAngle(x, total_length))+1;
-        var angle_y = (y) * degree / (total_length)+(a*5);//findAngle(y, total_length);
+        y = y + child_track[align_length].length;
+        var angle_x = parseInt((x) * degree / (total_length)) + (a * 5);//findAngle(x, total_length))+1;
+        var angle_y = (y) * degree / (total_length) + (a * 5);//findAngle(y, total_length);
         var l = 10;
 
         var angle_diff = angle_y - angle_x;
 
         var track_angle_x = parseInt(x) + parseInt(child_track[align_length].start * angle_diff / child_track[align_length].length);//parseInt((x) * degree / (total_length))+(a*5);//findAngle(x, total_length))+1;
-        var track_angle_y = parseInt(x) +parseInt(child_track[align_length].end * angle_diff / child_track[align_length].length);
+        var track_angle_y = parseInt(x) + parseInt(child_track[align_length].end * angle_diff / child_track[align_length].length);
 
-        console.log(angle_x+":"+angle_y+":"+track_angle_x+":"+track_angle_y);
+        console.log(angle_x + ":" + angle_y + ":" + track_angle_x + ":" + track_angle_y);
 
-        var s = l*5;
-        var x1 =  r+ (r - (s + l / 2)) * Math.cos(track_angle_x * Math.PI / 180);
-        var y1 =  r+ (r - (s + l / 2)) * Math.sin(track_angle_x * Math.PI / 180);
+        var s = l * 5;
+        var x1 = r + (r - (s + l / 2)) * Math.cos(track_angle_x * Math.PI / 180);
+        var y1 = r + (r - (s + l / 2)) * Math.sin(track_angle_x * Math.PI / 180);
 
-        var x2 =  r+ (r - (s + l / 2)) * Math.cos(track_angle_y * Math.PI / 180);
-        var y2 =  r+  (r - (s + l / 2)) * Math.sin(track_angle_y * Math.PI / 180);
+        var x2 = r + (r - (s + l / 2)) * Math.cos(track_angle_y * Math.PI / 180);
+        var y2 = r + (r - (s + l / 2)) * Math.sin(track_angle_y * Math.PI / 180);
 
 
-        paths(x1,y1,x2,y2, 10, (l*5), "blue", x+":"+y, id, r, desc, svgdiv);
+        paths(x1, y1, x2, y2, 10, (l * 5), "blue", x + ":" + y, id, r, desc, svgdiv);
         a++;
     }
 
@@ -1156,7 +1180,7 @@ function dispCigarLinePopup(cigars, start, top, id, track_length, align_track_st
             cigar_length = cigar_length.replace(/(\+\+)/g, "+1+");
         }
 
-        cigar_length = eval(cigar_length.substring(0,cigar_length.length-1));
+        cigar_length = eval(cigar_length.substring(0, cigar_length.length - 1));
         cigars = cigars.replace(/([SIXMND])/g, ":$1,");
 
 

@@ -213,17 +213,24 @@ public class ComparaService {
         int count;
         try {
             Integer queryid = comparaStore.getDnafragId(seqName, reference);
-            if(trackId.indexOf("member") >=0){
-                response.put(trackName,comparaStore.getAllMember(seqName, start, end));
-            }else{
+            if(trackId.indexOf("homology") >=0){
+                log.info("\n\n\n\ntest"+trackId+":"+trackId.replaceAll("homology", ""));
+                response.put(trackName,comparaStore.getMember(seqName, start, end, trackId.replaceAll("homology", "")));
+            }
+            else if(trackId.indexOf("genomic_align") >=0){
             if(comparaStore.countGenomicAlign(queryid, start, end, trackId)  < 1000){
-                response.put("count", comparaStore.countGenomicAlign(queryid, start, end, trackId));
-                response.put(trackName, comparaStore.getGenomicAlign(queryid, start, end, trackId));
+                log.info("\n\n\n\ntest"+trackId+":"+trackId.replaceAll("genomic_align", ""));
+                response.put("count", comparaStore.countGenomicAlign(queryid, start, end, trackId.replaceAll("genomic_align", "")));
+                response.put(trackName, comparaStore.getGenomicAlign(queryid, start, end, trackId.replaceAll("genomic_align", "")));
             }else{
-                response.put("type", "graph");
-                response.put("count", comparaStore.countGenomicAlign(queryid, start, end, trackId));
-                response.put(trackName, comparaStore.getGenomicAlignGraph(queryid, start, end));
-            }          }
+//                response.put("type", "graph");
+//                response.put("count", comparaStore.countGenomicAlign(queryid, start, end, trackId));
+//                response.put(trackName, comparaStore.getGenomicAlignGraph(queryid, start, end));
+            }
+            } else{
+                response.put("count", "babaji ka thulu");
+                response.put("babaji ka thulu","babaji ka thulu");
+            }
 
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

@@ -28,12 +28,12 @@ function drawLines(a, b) {
     svg.line(x, y, x2, 0, {strokeWidth: 1, stroke: "#D3D3D3"});
 }
 
-function paths(x1,y1,x2,y2, l, s, c, title, id, r, ref, svg) {
+function paths(x1,y1,x2,y2, l, s, c, title, id, r, ref, svg, ark) {
     //var svg = jQuery('#svgcircle').svg('get');
     var path = svg.createPath();
 
-    svg.path(path.move(x1, y1).arc(r - s - l / 2, r - s - l / 2, 30, false, true, x2, y2),
-        {id:'trackcircle'+ref, title:title, class:'trackcircle', fill: 'white', stroke: c, strokeWidth: l});
+    svg.path(path.move(x1, y1).arc(ark, ark, 30, false, true, x2, y2),
+        {id:'trackcircle'+ref, title:title, class:'trackcircle', fill: 'white', fillOpacity: 0, stroke: c, strokeOpacity: 0.5, strokeWidth: l});
 
 }
 
@@ -97,23 +97,52 @@ function drawoncircle(x,y, l, id, ref, length){
 
     var angle_x = findAngle(x, length);
     var angle_y = findAngle(y, length);
-
     var s = l*5;
-    var x1 = middle  -(r - (s + l / 2)) * Math.cos(angle_x * Math.PI / 180);
-    var y1 = 400  -(r - (s + l / 2)) * Math.sin(angle_x * Math.PI / 180);
 
-    var x2 = middle -(r - (s + l / 2)) * Math.cos(angle_y * Math.PI / 180);
-    var y2 = 400 -(r - (s + l / 2)) * Math.sin(angle_y * Math.PI / 180);
+    var ark = r - s - l / 2;
 
-    var fill = "red"
+    var x1 = parseInt(middle  -(r - (s + l / 2)) * Math.cos(angle_x * Math.PI / 180));
+    var y1 = parseInt(400  -(r - (s + l / 2)) * Math.sin(angle_x * Math.PI / 180));
+
+    var x2 = parseInt(middle -(r - (s + l / 2)) * Math.cos(angle_y * Math.PI / 180));
+    var y2 = parseInt(400 -(r - (s + l / 2)) * Math.sin(angle_y * Math.PI / 180));
+
 
     if(ref == jQuery('#genomes').val()) {
         fill = "black"
     }
-    paths(x1,y1,x2,y2, 5, (l*5), fill, x+":"+y, id, r, ref, svg);
+    paths(x1,y1,x2,y2, 5, (l*5), fill, x+":"+y, id, r, ref, svg, ark);
+
+
 
     markers(x1,y1,x2,y2,id, svg);
+
+
 }
+
+function drawrefoncircle(x,y, l, id, ref, length){
+    var svg = jQuery('#svgcircle').svg('get');
+
+
+    var r = jQuery("#circle_"+ref).attr("r");
+
+
+
+    var fill = "red"
+
+    var ark = r - (l*5) - l / 2;
+
+    var x1 = middle - r + (l*5);
+    var y1 = 400 ;
+
+    var x2 = parseInt(middle) + parseInt(r) - (l*5);
+    var y2 = 400;
+    paths(x1,y1,x2,y2, 1, (l*5), fill, x+":"+y, id, r, ref, svg, ark);
+
+
+
+}
+
 
 function svgClear(){
     jQuery('#svgcircle').svg();

@@ -562,20 +562,18 @@ function trackList(tracklist) {
 
     var length = jQuery('#genomes').children('option').length;
 
-    jQuery("#widget").append("<div id='ref_widgetdiv_wrapper' style='position: relative;  height: 100px; min-height:100px; width:100%; '>" +
-        "<div class=\"sectionDivider\" onclick=\"toggleLeftInfo(jQuery('#ref_widget_arrowclick'), 'ref_widgetdiv');\">ref"+
-        "<div id=\"ref_widget_arrowclick\" class=\"toggleLeftDown\"></div></div>" +
+    jQuery("#widget").append("<div id='ref_widgetdiv_wrapper' style='position: relative;  height: 100px; min-height:100px; width:100%; '>ref"+
         "<div id='ref_widgetdiv' class='widget_div'> </div></div>");
 
-    for(var i=0; i< length; i++){
-        var id = jQuery('#genomes').children('option')[i].value;
-        var title = jQuery('#genomes').children('option')[i].text;
-
-        jQuery("#widget").append("<div id='"+id+ "_widgetdiv_wrapper' style='position: relative;  height: 100px; min-height:100px; width:100%; '>" +
-            "<div class=\"sectionDivider\" onclick=\"toggleLeftInfo(jQuery('#"+id+ "_widget_arrowclick'), '"+id+ "_widgetdiv');\">"+title+
-            "<div id=\""+id+ "_widget_arrowclick\" class=\"toggleLeftDown\"></div></div>" +
-            "<div id='"+id+ "_widgetdiv' class='widget_div'> </div></div>");
-    }
+//    for(var i=0; i< length; i++){
+//        var id = jQuery('#genomes').children('option')[i].value;
+//        var title = jQuery('#genomes').children('option')[i].text;
+//
+//        jQuery("#widget").append("<div id='"+id+ "_widgetdiv_wrapper' style='position: relative;  height: 100px; min-height:100px; width:100%; '>" +
+//            "<div class=\"sectionDivider\" onclick=\"toggleLeftInfo(jQuery('#"+id+ "_widget_arrowclick'), '"+id+ "_widgetdiv');\">"+title+
+//            "<div id=\""+id+ "_widget_arrowclick\" class=\"toggleLeftDown\"></div></div>" +
+//            "<div id='"+id+ "_widgetdiv' class='widget_div'> </div></div>");
+//    }
 
 
     var Tracklist = tracklist;
@@ -615,8 +613,6 @@ function trackList(tracklist) {
 //            }
 
         }
-        tracks += "<tr><td> <span title='homology_member'><input type=\"checkbox\" id='homology_memberCheckbox' name='homology_member-member'  onClick=loadTrackAjax(\"member\",\"homology_member\"); />  homology_member </span> </td><td></td><td></td></tr>";
-
         tracks += "</table>";
     }
 
@@ -635,22 +631,7 @@ function trackList(tracklist) {
 
     jQuery("#tracklist").html(tracks);
 
-    window['track_listhomology_member'] = {
-        name: 'homology_member',
-        id: 'member',
-        display_label: 'homology_member',
-        desc: 'homology_member',
-        disp: 1,
-        merge: 0,
-        label: 0,
-        graph: 0
-    }
-             console.log(track_list)
-    track_list[0].gasterosteus_aculeatus.push(
-        {name: 'homology_member', display_label: 'homology_member', id: 'member', desc: 'homology_member', disp: 1, merge: 0}
-    );
     tracklistopenclose();
-
 }
 
 

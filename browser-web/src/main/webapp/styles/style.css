@@ -2414,7 +2414,8 @@ span.counter {
 }
 
 .widget_div {
-    margin-bottom: 5px;
+    margin-bottom: 20px;
+    height: auto;
 }
 
 .bubbleright:before {
