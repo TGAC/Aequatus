@@ -562,8 +562,8 @@ function trackList(tracklist) {
 
     var length = jQuery('#genomes').children('option').length;
 
-    jQuery("#widget").append("<div id='ref_widgetdiv_wrapper' style='position: relative;  height: 100px; min-height:100px; width:100%; '>ref"+
-        "<div id='ref_widgetdiv' class='widget_div'> </div></div>");
+//    jQuery("#widget").append("<div id='ref_widgetdiv_wrapper' style='position: relative;  height: 100px; min-height:100px; width:100%; '>ref"+
+//        "<div id='ref_widgetdiv' class='widget_div'> </div></div>");
 
 //    for(var i=0; i< length; i++){
 //        var id = jQuery('#genomes').children('option')[i].value;

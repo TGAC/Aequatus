@@ -400,6 +400,8 @@ function addJSON(from, to, trackName, trackId) {
     if ((to - from) > 0) {
         deltaWidth = parseInt(to - from) * 2 / parseInt(maxLen);
         if (trackName && trackId) {
+            window[trackName] = "loading";
+            trackToggle(trackName)
             Fluxion.doAjax(
                 'comparaService',
                 'loadTrack',
@@ -432,6 +434,8 @@ function addJSON(from, to, trackName, trackId) {
                     else if (jQuery("#" + track[j].name + "Checkbox").is(':checked')) {
                         var trackname = track[j].name;
                         var trackid = window['track_list' + track[j].name].id;
+                        window[trackname] = "loading";
+                        trackToggle(trackname)
                         if (trackid && window['track_list' + track[j].name].graph == "false") { //because graph == true is already loaded
                             Fluxion.doAjax(
                                 'comparaService',

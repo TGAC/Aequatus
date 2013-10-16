@@ -139,7 +139,6 @@ function newpopup(track, i, j) {
     d3_widget();
 
 
-    console.log("back")
     jQuery.colorbox({
         width: "90%",
         height: "100%",
@@ -857,7 +856,8 @@ function removeAllPopup() {
 }
 
 function show_align(change) {
-    console.log("show align")
+    jQuery("#widgetdiv").html("")
+
     var track = jQuery("#track_info").html();
     var i = jQuery("#track_i_info").html();
 
@@ -932,7 +932,7 @@ function show_align(change) {
         if (child_track[align_length].desc) {
             desc = child_track[align_length].desc.replace(/[\s+\(+\)+]/g, "_");
         } else {
-            desc = "null" + child_track[align_length].start + ":" + child_track[align_length].end;
+            desc = "null" + child_track[align_length].start + "" + child_track[align_length].end;
         }
 
         var align_track_start = child_track[align_length].start;
@@ -940,10 +940,23 @@ function show_align(change) {
         var id_ref = child_track[align_length].genome_db_id + "refs";
         if (!tempNamespace[id_ref]) {
             tempNamespace[id_ref] = [];
+            var name = "";
+            var length = jQuery('#genomes').children('option').length;
+            for(var i=0; i< length; i++){
+                var id_temp = jQuery('#genomes').children('option')[i].value;
+                var title = jQuery('#genomes').children('option')[i].text;
+                if(id_temp ==child_track[align_length].genome_db_id){
+                    name = title;
+                }
+            }
+
+            jQuery("#widgetdiv").append("<div id='" + child_track[align_length].genome_db_id  + "_widgetdiv_wrapper' style='position: relative; top:20px; width:"+maxLen_temp+"px; height: 0px;'>" + name+
+                "<div id='" + child_track[align_length].genome_db_id  + "_widgetdiv' class='widget_div'> </div></div>");
             jQuery("#" + child_track[align_length].genome_db_id + "_widgetdiv").html("")
         }
-        var id = child_track[align_length].ref_id;
+        var id = "id"+child_track[align_length].ref_id;
         if (max != "0") {
+            console.log("max !=0")
             tempNamespace[id_ref].push(id);
             top = (parseInt(tempNamespace[id_ref].length)) * 30 + 20;
             length = child_track[align_length].length;
@@ -954,7 +967,7 @@ function show_align(change) {
             }
             jQuery("<div>").attr({
                 'id': id + "" + align_length,
-                'style': "position:absolute; TOP:0px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 20px; background: lightgray"
+                'style': "position:absolute; TOP:"+top+"px; LEFT:" + (startposition) + "px; width:" + (stopposition) + "px; height: 20px; background: lightgray"
             }).appendTo("#" + child_track[align_length].genome_db_id + "_widgetdiv");
 
             jQuery("<div>").attr({
@@ -970,17 +983,27 @@ function show_align(change) {
                 var startposition = parseFloat(maxLen_temp) / (length);
                 var stopposition = parseFloat(maxLen_temp);
 
-                jQuery("#widget").append("<div id='" + child_track[align_length].genome_db_id  + "_widgetdiv_wrapper' style='position: relative; width:"+maxLen_temp+"px; height: 0px;'>title" +
-                    "<div id='" + child_track[align_length].genome_db_id  + "_widgetdiv' class='widget_div'> </div></div>");
+                var name = "";
+                var length = jQuery('#genomes').children('option').length;
+                for(var i=0; i< length; i++){
+                    var id_temp = jQuery('#genomes').children('option')[i].value;
+                    var title = jQuery('#genomes').children('option')[i].text;
+                    if(id_temp ==child_track[align_length].genome_db_id){
+                        name = title;
+                    }
+                }
+//                jQuery("#widgetdiv").append("<div id='" + child_track[align_length].genome_db_id  + "_widgetdiv_wrapper' style='position: relative; top:20px; width:"+maxLen_temp+"px; height: 0px;'>" +name +
+//                    "<div id='" + child_track[align_length].genome_db_id  + "_widgetdiv' class='widget_div'> </div></div>");
 
                 if (stopposition < 1) {
                     stopposition = 1;
                 }
+                console.log("id"+id)
                 jQuery("<div>").attr({
                     'id': id,
                     'style': "position:absolute; TOP:" + top + "px; LEFT:50px; width:" + (stopposition) + "px; height: 20px; background: lightgray"
                 }).appendTo("#" + child_track[align_length].genome_db_id + "_widgetdiv");
-
+                console.log(child_track[align_length].genome_db_id)
                 jQuery("<div>").attr({
                     'style': " z-index: 999; top: 15px; position: relative;"
                 }).html("<p class='track_label'>" + child_track[align_length].chr_name + "</p>").appendTo("#" + id);
@@ -995,6 +1018,8 @@ function show_align(change) {
         startposition = (align_track_start) * parseFloat(maxLen_temp) / (length);
 
         if (max != "0") {
+            console.log("max !=0")
+
             stopposition = (align_track_stop - align_track_start + 1) * parseFloat(maxLen_temp) / (ref_length);
             startposition = 10;//(maxLen_temp - stopposition) / 2; //(align_track_start) * parseFloat(maxLen_temp) / (length);
             top = (parseInt(tempNamespace[id_ref].length)) * 30 + 20;
@@ -1039,15 +1064,14 @@ function show_align(change) {
         }).html("<p class='track_label'>" + desc + "</p>").appendTo("#" + desc);
 
         if (max != "0") {
+            console.log("max !=0")
+
             if (child_track[align_length].cigarline1) {
                 dispCigarLinePopup(child_track[align_length].cigarline1, startposition, 0, desc, stopposition, align_track_start, align_track_stop);
                 dispCigarLinePopup(child_track[align_length].cigarline2, startposition, 10, desc, stopposition, align_track_start, align_track_stop);
 
             }
         }
-        console.log("height "+child_track[align_length].genome_db_id)
-
-        console.log("height "+jQuery("#" + child_track[align_length].genome_db_id + "_widgetdiv_wrapper").css("height"))
         if (top > parseInt(jQuery("#" + child_track[align_length].genome_db_id + "_widgetdiv_wrapper").css("height"))) {
             jQuery("#" + child_track[align_length].genome_db_id + "_widgetdiv_wrapper").css("height", (parseInt(top) + 20))
         }
@@ -1055,7 +1079,6 @@ function show_align(change) {
 }
 
 function d3_widget() {
-    console.log("d3 widget")
 
     jQuery('#d3_widget').svg();
     var svgdiv = jQuery('#d3_widget').svg('get');
@@ -1149,7 +1172,6 @@ function d3_widget() {
         var track_angle_x = parseInt(x) + parseInt(child_track[align_length].start * angle_diff / child_track[align_length].length);//parseInt((x) * degree / (total_length))+(a*5);//findAngle(x, total_length))+1;
         var track_angle_y = parseInt(x) + parseInt(child_track[align_length].end * angle_diff / child_track[align_length].length);
 
-        console.log(angle_x + ":" + angle_y + ":" + track_angle_x + ":" + track_angle_y);
 
         var s = l * 5;
         var x1 = r + (r - (s + l / 2)) * Math.cos(track_angle_x * Math.PI / 180);
@@ -1182,7 +1204,6 @@ function dispCigarLinePopup(cigars, start, top, id, track_length, align_track_st
 
         cigar_length = eval(cigar_length.substring(0, cigar_length.length - 1));
         cigars = cigars.replace(/([SIXMND])/g, ":$1,");
-
 
         var cigars_array = cigars.split(',');
         for (var i = 0; i < cigars_array.length - 1; i++) {

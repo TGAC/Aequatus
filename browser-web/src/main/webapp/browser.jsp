@@ -31,15 +31,20 @@
         </tr>
         <tr>
             <td colspan="2">
-                <span class="ui-button ui-icon ui-icon-carat-2-e-w" onclick=show_align(true);></span>
+                <span  onclick=show_align(true);>Toggle View</span>
             </td>
-            <td colspan="2">
-                <span class="ui-button ui-icon ui-icon-carat-2-e-w" onclick="jQuery('#d3_widget').toggle();jQuery('#widget').toggle();"></span>
-            </td>
+            <%--<td colspan="2">--%>
+                <%--<span onclick="jQuery('#d3_widget').toggle();jQuery('#widget').toggle();">Toggle View</span>--%>
+            <%--</td>--%>
         </tr>
     </table>
     <hr style="color: #d3d3d3;">
-    <div id="widget" style="position: absolute; display: block"></div>
+    <div id="widget" style="position: absolute; display: block">
+        <div id='ref_widgetdiv_wrapper' style='position: relative;  height: 100px; min-height:100px; width:100%; '>
+            <div id='ref_widgetdiv' class='widget_div'> </div></div>
+
+        <div id="widgetdiv" style="position: relative; display: block"> </div>
+    </div>
     <div id="d3_widget" style="display: none"></div>
 </div>
 <div id="seqname"></div>
