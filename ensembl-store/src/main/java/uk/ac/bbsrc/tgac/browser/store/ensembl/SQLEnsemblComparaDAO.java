@@ -37,6 +37,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import uk.ac.bbsrc.tgac.browser.core.store.ComparaStore;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -90,7 +91,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_MEMBER_BY_CHROMOSOME_NAME = "select member_id as id, chr_start as start, chr_end as end, chr_strand as strand, chr_name, genome_db_id from member where chr_name = ? and ((chr_start > ? AND chr_end < ?) OR (chr_start < ? AND chr_end > ?) OR (chr_end > ? AND chr_end < ?) OR (chr_start > ? AND chr_start < ?))";
 
-    public static final String GET_MEMBER_BY_MEMBER_ID = "select member_id as id, chr_start as start, chr_end as end, chr_strand as strand, chr_name, genome_db_id, display_label as 'desc' from member where member_id = ?";
+    public static final String GET_ALL_MEMBER_BY_CHROMOSOME_NAME = "select member_id as id, stable_id, chr_start as start, chr_end as end, chr_strand as strand, chr_name, genome_db_id from member where chr_name = ? limit 10000";
+
+    public static final String GET_MEMBER_BY_MEMBER_ID = "select member_id as id, chr_start as start, chr_end as end, chr_strand as strand, chr_name, genome_db_id, display_label as 'desc', stable_id from member where member_id = ?";
 
     public static final String GET_HOMOLOGY_MEMBER_CIGAR_BY_MEMBER_ID = "select cigar_line from homology_member where member_id = ? and homology_id = ?";
 
@@ -445,6 +448,67 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         } catch (EmptyResultDataAccessException e) {
             throw new IOException(" getAllMember no result found");
 
+        }
+    }
+
+
+    public JSONArray getHomologyforMember(String query) throws IOException {
+        log.info("\n\ngetHomologyforMembe "+query);
+
+
+        JSONArray homologouses = new JSONArray();
+        JSONObject homology_members = new JSONObject();
+        List<Map<String, Object>> homology_member_id = template.queryForList(GET_HOMOLOGY_ID_BY_MEMBER_ID, new Object[]{query});
+        log.info("\n\ngetHomologyforMembe size "+homology_member_id.size());
+
+
+        for (Map map_two : homology_member_id) {
+            int member = template.queryForInt(GET_HOMOLOGY_MEMBER_BY_HOMOLOGY_MEMBER_ID, new Object[]{map_two.get("homology_id"), query});
+//            String mlssi = template.queryForObject(GET_MLSSID_FOR_HOMOLOGY, new Object[]{map_two.get("homology_id")}, String.class);
+            Map<String, Object> homologous = template.queryForMap(GET_MEMBER_BY_MEMBER_ID, new Object[]{member});
+
+
+//            homologous.put("ref_id", getDnafragId(homologous.get("chr_name").toString(), Integer.parseInt(homologous.get("genome_db_id").toString())));
+//            homologous.put("length", getReferenceLength(Integer.parseInt(homologous.get("ref_id").toString())));
+//            homologous.put("cigarline1", template.queryForObject(GET_HOMOLOGY_MEMBER_CIGAR_BY_MEMBER_ID, new Object[]{query, map_two.get("homology_id")}, String.class));
+//            homologous.put("cigarline2", template.queryForObject(GET_HOMOLOGY_MEMBER_CIGAR_BY_MEMBER_ID, new Object[]{member, map_two.get("homology_id")}, String.class));
+//            homologous.put("mlssi", mlssi);
+            homology_members.put("genome", homologous.get("genome_db_id"));
+            homology_members.put("genes",  getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString()));
+            homologouses.add(homology_members);
+        }
+
+       return homologouses;
+
+    }
+
+    public JSONArray getAllMember(String query) throws IOException {
+        try {
+            JSONArray members = new JSONArray();
+            List<Map<String, Object>> maps = template.queryForList(GET_ALL_MEMBER_BY_CHROMOSOME_NAME, new Object[]{query});
+
+            for (Map map : maps) {
+
+                    members.add(map);
+                }
+            return members;
+        } catch (EmptyResultDataAccessException e) {
+            throw new IOException(" getAllMember no result found");
+
+        }
+    }
+
+
+
+    public JSONObject getGenefromCore(String query, String genome) throws IOException {
+        try{
+            log.info("\n\ngetgenefrom core "+query+"\t"+genome);
+            JSONObject gene = new JSONObject();
+            gene.put("gene", SQLSequenceDAO.getGenebyStableid(query, genome));
+            return gene;
+        }  catch (SQLException e) {
+            e.printStackTrace();
+            throw new IOException("Gene from core not found: " + e.getMessage());
         }
     }
 

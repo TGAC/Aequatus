@@ -2332,7 +2332,7 @@ span.counter {
     text-shadow: 0 1px 1px hsla(0, 0%, 100%, .5);
     width: 100%;
     z-index: 0;
-    left:0px;
+    left: 0px;
     top: 0px;
     height: 1000px;
 
@@ -2348,8 +2348,8 @@ span.counter {
 
 }
 
-#trackcircleref_popup{
-     z-index: 1999;
+#trackcircleref_popup {
+    z-index: 1999;
 }
 
 #popup_hanging {
@@ -2717,3 +2717,34 @@ span.deleteicon input {
     z-index: 1999;
     left: 0px;
 }
+
+/*geneView*/
+.refMarker {
+    position: absolute;
+    cursor: pointer;
+    TOP: 0px;
+    height: 10px;
+    z-index: 999;
+    background: black;
+    opacity: 0.1;
+}
+
+.refMarkerShow {
+    position: absolute;
+    cursor: pointer;
+    TOP: 0px;
+    height: 20px;
+    z-index: 999;
+    background: black;
+}
+
+#gene_widget{
+    height: 500px;
+    left: 25%;
+    position: fixed;
+    top: 160px;
+    width: 500px;
+    z-index: 999;
+}
+
+/*geneView*/

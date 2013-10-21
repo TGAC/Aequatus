@@ -242,4 +242,52 @@ public class ComparaService {
         return response;
     }
 
+    public JSONObject getMember(HttpSession session, JSONObject json) {
+        String seqName = json.getString("query");
+        JSONObject response = new JSONObject();
+        int reference = json.getInt("reference");
+
+
+
+//        int delta = json.getInt("delta");
+        response.put("trackname", "member");
+        int count;
+        try {
+            Integer queryid = comparaStore.getDnafragId(seqName, reference);
+                response.put("member",comparaStore.getAllMember(seqName));
+
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return response;
+    }
+
+    public JSONObject getCoreMember(HttpSession session, JSONObject json) {
+        String query = json.getString("query");
+        JSONObject response = new JSONObject();
+
+
+
+//        int delta = json.getInt("delta");
+        response.put("trackname", "member");
+        int count;
+        try {
+            response.put("member",comparaStore.getHomologyforMember(query));
+
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return response;
+    }
+
 }

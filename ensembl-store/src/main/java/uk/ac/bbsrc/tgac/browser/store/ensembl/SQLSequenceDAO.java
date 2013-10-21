@@ -40,6 +40,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import uk.ac.bbsrc.tgac.browser.core.store.*;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -109,8 +110,9 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
   public static final String GET_Transcript_name_from_ID = "SELECT description FROM transcript where transcript_id =?";
   public static final String GET_GO_for_Genes = "select value from gene_attrib where gene_id = ?";
   public static final String GET_GO_for_Transcripts = "select value from transcript_attrib where transcript_id =  ?";
+    public static final String GET_Gene_by_Gene_ID = "SELECT gene_id,seq_region_start,seq_region_end, description,seq_region_strand FROM gene where gene_id =?";//AND ((seq_region_start > ? AND seq_region_end < ?) OR (seq_region_start < ? AND seq_region_end > ?) OR (seq_region_end > ? AND seq_region_end < ?) OR (seq_region_start > ? AND seq_region_start < ?))";
 
-  public static final String GET_START_END_ANALYSIS_ID_FROM_SEQ_REGION_ID = "SELECT seq_region_start,seq_region_end,analysis_id FROM dna_align_feature where req_region_id =?";
+    public static final String GET_START_END_ANALYSIS_ID_FROM_SEQ_REGION_ID = "SELECT seq_region_start,seq_region_end,analysis_id FROM dna_align_feature where req_region_id =?";
   public static final String GET_HIT_SIZE = "SELECT COUNT(*) FROM dna_align_feature where seq_region_id =? and analysis_id = ?";
   public static final String GET_HIT_SIZE_SLICE = "SELECT COUNT(*) FROM dna_align_feature where seq_region_id =? and analysis_id = ? and seq_region_start >= ? and seq_region_start <= ?";
   public static final String GET_HIT = "SELECT dna_align_feature_id as id,cast(seq_region_start as signed) as start, cast(seq_region_end as signed) as end,seq_region_strand as strand,hit_start as hitstart, hit_end as hitend, hit_name as 'desc', cigar_line as cigarline FROM dna_align_feature where seq_region_id =? and analysis_id = ? AND ((seq_region_start >= ? AND seq_region_end <= ?) OR (seq_region_start <= ? AND seq_region_end >= ?) OR (seq_region_end >= ? AND seq_region_end <= ?) OR (seq_region_start >= ? AND seq_region_start <= ?)) ORDER BY (end-start) desc"; //seq_region_start ASC";//" AND ((hit_start >= ? AND hit_end <= ?) OR (hit_start <= ? AND hit_end >= ?) OR (hit_end >= ? AND hit_end <= ?) OR (hit_start >= ? AND hit_start <= ?))";
@@ -149,13 +151,41 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
   public static final String GET_Tables_with_analysis_id_column = "SELECT DISTINCT TABLE_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME IN ('analysis_id') AND TABLE_SCHEMA='wrightj_brachypodium_distachyon_core_10_63_12'";
   public static final String Check_feature_available = "SELECT DISTINCT analysis_id from ";// + var1;
 
-  private JdbcTemplate template;
+    public static final String GET_Gene_by_stable_id = "select gene_id from gene where stable_id = ?;";//"select * from gene_view where seq_region_id = ? and analysis_id = ?;";//
+
+
+    private JdbcTemplate template;
 
   public void setJdbcTemplate(JdbcTemplate template) {
     this.template = template;
   }
 
-  public String getTrackIDfromName(String trackName) throws IOException {
+    private static JdbcTemplate core1Template;
+
+    public void setCore1Template(JdbcTemplate core1Template) {
+        this.core1Template = core1Template;
+    }
+
+    private static JdbcTemplate core2Template;
+
+    public void setCore2Template(JdbcTemplate core2Template) {
+        this.core2Template = core2Template;
+    }
+
+    private static JdbcTemplate core3Template;
+
+    public void setCore3Template(JdbcTemplate core3Template) {
+        this.core3Template = core3Template;
+    }
+
+    private static JdbcTemplate core4Template;
+
+    public void setCore4Template(JdbcTemplate core4Template) {
+        this.core4Template = core4Template;
+    }
+
+
+    public String getTrackIDfromName(String trackName) throws IOException {
     try {
       String str = template.queryForObject(GET_Tracks_Name, new Object[]{trackName}, String.class);
       return str;
@@ -2418,4 +2448,91 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
       throw new Exception("Chromosome not found");
     }
   }
+
+
+    public static JSONObject getGenebyStableid(String query, String genome) throws SQLException {
+        log.info("\n\ngetgenebystableid\n\n");
+        try {
+            JSONObject gene = new JSONObject();
+
+            JdbcTemplate new_Template;
+
+            new_Template = core1Template;
+            if(genome.matches("1")){
+                new_Template = core1Template;
+                log.info("\n\n core 1"+core1Template.getDataSource().toString()+"\n\n");
+            }else if(genome.matches("2")){
+                new_Template = core2Template;
+                log.info("\n\ncore 2"+core2Template.getDataSource().toString()+"\n\n");
+
+            }else if(genome.matches("3")){
+                new_Template = core3Template;
+                log.info("\n\ncore 3"+core3Template.getDataSource().toString()+"\n\n");
+            }else if(genome.matches("4")){
+                new_Template = core4Template;
+                log.info("\n\ncore 4"+core4Template.getDataSource().toString()+"\n\n");
+            }
+
+            int gene_id = new_Template.queryForObject(GET_Gene_by_stable_id, new Object[]{query}, Integer.class);
+            log.info("\n\ngetgenebystableid "+gene_id+"\n\n");
+            Map<String, Object>  gene_info = new_Template.queryForMap(GET_Gene_by_Gene_ID, new Object[]{gene_id});
+            int start =  Integer.parseInt(gene_info.get("seq_region_start").toString());
+            int end =  Integer.parseInt(gene_info.get("seq_region_end").toString());
+
+            gene.put("gene_id", gene_id);
+            gene.put("start", start);
+            gene.put("end", end);
+            gene.put("length", end-start);
+
+            gene.put("strand", gene_info.get("seq_region_strand"));
+            List<Map<String, Object>>  transcripts = new_Template.queryForList(GET_transcript, new Object[]{gene_id});
+            JSONArray transcripts_array = new JSONArray();
+            for(Map map:transcripts){
+                log.info("\n\ntranscripts "+map.toString()+"\n\n");
+
+                JSONObject transcript =  new JSONObject();
+
+                start =  Integer.parseInt(map.get("seq_region_start").toString());
+                end =  Integer.parseInt(map.get("seq_region_end").toString());
+
+
+
+                transcript.put("id",map.get("transcript_id"));
+                transcript.put("start", start);
+                transcript.put("end", end);
+                transcript.put("length", end-start);
+
+                transcript.put("strand", map.get("seq_region_strand"));
+                JSONArray exons_array = new JSONArray();
+                  int transcript_id = Integer.parseInt(map.get("transcript_id").toString());
+                List<Map<String, Object>>  exons = new_Template.queryForList(GET_EXON_per_Gene, new Object[]{transcript_id});
+                for(Map map_temp:exons){
+                    log.info("\n\nexons "+map_temp.toString()+"\n\n");
+
+                    JSONObject exon =  new JSONObject();
+                    start =  Integer.parseInt(map_temp.get("seq_region_start").toString());
+                    end =  Integer.parseInt(map_temp.get("seq_region_end").toString());
+
+                    exon.put("id",map_temp.get("exon_id"));
+                    exon.put("start",start);
+                    exon.put("end",end);
+                    exon.put("length", end-start);
+
+                    exon.put("strand", map_temp.get("seq_region_strand"));
+                    exons_array.add(exon);
+                }
+                transcript.put("Exons", exons_array);
+
+                transcripts_array.add(transcript);
+            }
+            gene.put("transcripts", transcripts_array);
+
+
+            return gene;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw new SQLException("Gene not found: " + e.getMessage());
+        }
+    }
 }

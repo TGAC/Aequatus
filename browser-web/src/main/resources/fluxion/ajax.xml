@@ -13,12 +13,12 @@
     
     <bean id="dnaSequenceService"
           class="uk.ac.bbsrc.tgac.browser.service.ajax.DnaSequenceService">
-        <!-- <property name="seqStore" ref="sequenceStore"/> -->
+         <!--<property name="seqStore" ref="sequenceStore"/>-->
     </bean>
 
     <bean id="comparaService"
           class="uk.ac.bbsrc.tgac.browser.service.ajax.ComparaService">
-        <!-- <property name="seqStore" ref="sequenceStore"/> -->
+         <!--<property name="seqStore" ref="sequenceStore"/>-->
     </bean>
 
     <bean id="fileService"

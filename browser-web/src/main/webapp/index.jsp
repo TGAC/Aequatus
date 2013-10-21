@@ -14,11 +14,11 @@
 <%--</div>--%>
 
 
-<center>
+
 
     <div id="mainsearch" style="top : 10px ;"></div>
 
-</center>
+
 
 <script type="text/javascript">
 
@@ -27,7 +27,7 @@
         var chr = ""//metaData();
         getReferences();
 
-        jQuery("#mainsearch").load("browser.jsp", function() {
+        jQuery("#mainsearch").load("geneView.jsp", function() {
             onLoad();
             getUrlVariables(chr);
         });
@@ -55,14 +55,15 @@
 
             jQuery("#search").val(vars[0]);
 
-            seqregionSearchPopup(jQuery("#search").val(), vars[1], vars[2], vars[3], vars[4])
+            seqregionSearchPopup_geneView(jQuery("#search").val(), vars[1], vars[2], vars[3], vars[4])
+//            seqregionSearchPopup(jQuery("#search").val(), vars[1], vars[2], vars[3], vars[4])
 
         }
         else if (jQuery('#search').val().length >= 1) {
             var now = new Date();
 
-
-            search(jQuery('#search').val());
+            search_geneView();
+//            search(jQuery('#search').val());
         <%--vars[1] for blast and so on --%>
         }
         else if(chr == true){

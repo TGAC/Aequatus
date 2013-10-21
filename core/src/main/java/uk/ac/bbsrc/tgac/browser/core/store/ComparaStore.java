@@ -26,6 +26,7 @@
 package uk.ac.bbsrc.tgac.browser.core.store;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
@@ -57,6 +58,9 @@ public interface ComparaStore extends Store<String> {
     public JSONArray getGenomicAlignGraph(int query, long start, long end) throws IOException;
     public JSONArray getMember(String query, long start, long end, String trackId) throws IOException;
     public JSONArray getHomologybyMLSSI(String query, long start, long end, String trackId) throws IOException;
+    public JSONArray getAllMember(String query) throws IOException;
+    public JSONObject getGenefromCore(String query, String genome) throws Exception;
+    public JSONArray getHomologyforMember(String query) throws IOException;
 
 
 }
