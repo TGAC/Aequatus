@@ -130,7 +130,6 @@
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-config:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.fluxion.ajax:fluxion-ajax-3:1.0-alpha-4" level="project" />
     <orderEntry type="library" name="Maven: owlapi:owlapi:2.2.0" level="project" />
-    <orderEntry type="library" name="Maven: net.sourceforge.sam:sam:1.84" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.fluxion.ajax.beans:fluxion-ajax-beans:1.0-alpha-3" level="project" />
     <orderEntry type="library" name="Maven: commons-fileupload:commons-fileupload:1.2.1" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.fluxion.ajax:fluxion-ajax-js:1.0-alpha-11" level="project" />

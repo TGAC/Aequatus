@@ -151,15 +151,14 @@ function drawSelected() {
 
     var end = parseInt(start) + parseInt(width * sequencelength / maxLentemp)
 
-//    var new_data = data;
     var new_data = jQuery.grep(data, function (element, index) {
         return element.start >= start && element.start <= end; // retain appropriate elements
     });
 
+
     var data_length = new_data.length;
-    var total_data_length = data_length
+
     var maxLentemp = jQuery("#canvas").css("width");
-    var top = 0;
     while (data_length--) {
         var newStart = new_data[data_length].start
         var newEnd = new_data[data_length].end
@@ -173,46 +172,75 @@ function drawSelected() {
             'id': id,
             'class': "refMarkerShow",
             'style': "LEFT:" + startposition + "px; width :" + stopposition + "px;",
-//                    'title': label,
             'onClick': "getcoreMember(\"" + new_data[data_length].id + "\")"
-//                    'onmouseOver': "trackmouseover(\"" + track + "\",\"" + len + "\")",
-//                    'onmouseOut': 'trackmouseout()'
         }).appendTo("#selected_region");
     }
 }
 
 function getcoreMember(query) {
+    jQuery(".refMarkerShow").css("background", "black")
+    jQuery("#ref" + query).css("background", "red")
+
     Fluxion.doAjax(
         'comparaService',
         'getCoreMember',
         {'query': query, 'url': ajaxurl},
         {'doOnSuccess': function (json) {
-            data = json.member;
+            var core_data = json.member;
             var max = 0;
             jQuery("#gene_widget").html("")
-            for (var i = 0; i < data.length; i++) {
-                var genes = data[i].genes;
+            for (var i = 0; i < core_data.length; i++) {
+                var genes = core_data[i].genes;
                 var new_max = genes.gene.length;
                 if (new_max > max) {
                     max = new_max;
                 }
             }
 
-            for (var i = 0; i < data.length; i++) {
-                var genes = data[i].genes
-                if (document.getElementById("ref" + data[i].genome) == null) {
-                    jQuery("#gene_widget").append("<div style='width: 500px; padding: 5px; position: relative; border: 1px solid black; top: 10px' id='ref" + data[i].genome + "'></div>")
+            var ref_data = json.ref;
+
+            var genes = ref_data.genes
+
+            if (new_max > genes.gene.length) {
+                max = new_max;
+            }
+            var name = "";
+            var length = jQuery('#genomes').children('option').length;
+
+            for (var j = 0; j < length; j++) {
+                var id = jQuery('#genomes').children('option')[j].value;
+                var title = jQuery('#genomes').children('option')[j].text;
+                if (ref_data.genome == id) {
+                    name = title;
+                }
+            }
+            jQuery("#gene_widget").append("<div style='width: 500px; padding: 5px; position: relative; border: 2px solid black; top: 10px' id='ref" + ref_data.genome + "'>" + name + "</div>")
+
+            dispGenes("#ref" + ref_data.genome, genes, max);
+
+            for (var i = 0; i < core_data.length; i++) {
+                var genes = core_data[i].genes
+                if (document.getElementById("ref" + core_data[i].genome) == null) {
+                    var name = "";
+                    var length = jQuery('#genomes').children('option').length;
+
+                    for (var j = 0; j < length; j++) {
+                        var id = jQuery('#genomes').children('option')[j].value;
+                        var title = jQuery('#genomes').children('option')[j].text;
+                        if (core_data[i].genome == id) {
+                            name = title;
+                        }
+                    }
+                    jQuery("#gene_widget").append("<div style='width: 500px; padding: 5px; position: relative; border: 1px solid gray; top: 10px' id='core" + core_data[i].genome + "'>" + name + "</div>")
                 }
 
-
-                dispGenes("#ref" + data[i].genome, genes, max);
+                dispGenes("#core" + core_data[i].genome, genes, max);
             }
         }
         });
 }
 
 function dispGenes(div, track, max) {
-    console.log(div)
     var gene = track.gene;
 
     var trackClass;
@@ -223,10 +251,6 @@ function dispGenes(div, track, max) {
 
     var label = "";
     var j = 0;
-
-
-    trackClass = "gene track";
-
 
     var transcript_len = gene.transcripts.length;
     while (transcript_len--) {
@@ -241,51 +265,39 @@ function dispGenes(div, track, max) {
             gene_start = gene.transcripts[transcript_len].end;
             gene_stop = gene.transcripts[transcript_len].start;
         }
-        var gene_desc = gene.transcripts[transcript_len].desc;
+        if (gene.transcripts[transcript_len].desc) {
+            label = gene.transcripts[transcript_len].desc;
+        }
         var border = " border-left: 1px solid #000000; border-right: 1px solid #000000;";
-        label = gene.transcripts[transcript_len].desc;
+//        label = gene.transcripts[transcript_len].desc;
         if (gene.transcripts[transcript_len].layer > j) {
             j = gene.transcripts[transcript_len].layer;
         }
         var top = transcript_len * 20 + 25;
         var startposition = (1) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp);
         var stopposition = (gene_stop - gene_start + 1) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp);
+        var margin = "margin-top:5px;margin-bottom:5px;";
+        if (transcript_len == 0) {
+            margin = "margin-top:5px;margin-bottom:25px;";
+        }
 
         var temp_div = jQuery("<div>").attr({
             'id': transcript_len,
             'class': "gene",
-            'style': "position:relative;  cursor:pointer; height: 10px; margin-top:5px;margin-bottom:5px; LEFT:" + startposition + "px; width :" + stopposition + "px;"
-            // 'title': label,
-            // 'onClick': "trackClick('" + track + "'," + len + "," + transcript_len + ")"
-        }).appendTo(div);
-
-        console.log(temp_div);
-        //    jQuery("<div>").attr({
-        //      'class': "tracklabel " ,
-        //    'style': " z-index: 999; overflow: hidden;text-overflow: ellipsis;",
-        //   'title': label
-
-//            }).html("<p>" + label + "</p>").appendTo("#" + transcript_len);
+            'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " LEFT:" + startposition + "px; width :" + stopposition + "px;"
+        }).html("<p style='position: relative; white-space: nowrap; padding: 15px;'>" + label + "</p>").appendTo(div);
 
         dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length);
-//
-
 
     }
 }
 
 function dispGeneExon(track, genestrand, div, gene_start, width, max_len) {
     var trackClass = "exon";
-    var utrtrackClass = "utr ";
-
 
     var geneexons = track.Exons;
-    var genetranscript = track;
-
 
     if (geneexons.length > 0) {
-        var track_html = "";
-        var last = null, current = null;
         var strand = genestrand;
 
         var spanclass = "ui-icon ui-icon-carat-1-e";
@@ -299,11 +311,9 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len) {
 
 
         var exon_len = geneexons.length;
-        var last_exon = 0;
         var startposition = 0;
         var stopposition = 0;
         while (exon_len--) {
-
 
             var exon_start;
             var exon_stop;
@@ -316,10 +326,7 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len) {
                 exon_stop = geneexons[exon_len].start;
             }
 
-
             var top = 0;
-            current = exon_start;
-
 
             startposition = (exon_start - newStart_temp) * parseFloat(maxLentemp) / (max_len);
             stopposition = (exon_stop - exon_start + 1) * parseFloat(maxLentemp) / (max_len);
@@ -330,15 +337,10 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len) {
             }).appendTo(div);
 
 
-//            if (last != null || geneexons.length == 1) {
-//                if ((startposition - 20) > (transcript_start - newStart_temp) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp) + parseFloat(maxLentemp) / 2) {
-//                    jQuery("<span>").attr({
-//                        'class': spanclass,
-//                        'style': "cursor:pointer; position:absolute; z-index; 999; TOP:" + (top - 3) + "px; left:" + (startposition - 20) + "px "
-//                    }).appendTo(div);
-//                }
-//            }
-
+            jQuery("<span>").attr({
+                'class': spanclass,
+                'style': "cursor:pointer; position:absolute; z-index; 999; TOP:" + (top - 1) + "px; left:" + (startposition - 20) + "px "
+            }).appendTo(div);
 
         }
     }

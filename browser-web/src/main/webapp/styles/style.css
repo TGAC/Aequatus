@@ -2101,10 +2101,11 @@ span.counter {
     position: absolute;
     /*background: url("../images/browser/tempexon.png") repeat-x left top;*/
     background-position: center center;
-    background: #556b2f;
-    border: 1px solid transparent;
+    background: white;
+    border: 2px solid green;
     height: 5px;
     cursor: pointer;
+    border-radius:5px;
 }
 
 .track_label {
@@ -2259,7 +2260,7 @@ span.counter {
     background-position: center center;
     background: blue;
     /*border: 1px solid #000000;*/
-    height: 5px;
+    height: 4px;
 }
 
 .repeat {

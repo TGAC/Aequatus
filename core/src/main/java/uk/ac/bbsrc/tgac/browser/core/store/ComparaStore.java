@@ -61,6 +61,8 @@ public interface ComparaStore extends Store<String> {
     public JSONArray getAllMember(String query) throws IOException;
     public JSONObject getGenefromCore(String query, String genome) throws Exception;
     public JSONArray getHomologyforMember(String query) throws IOException;
+    public JSONObject getRefDetail(String query) throws IOException;
+
 
 
 }

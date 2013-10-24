@@ -254,7 +254,8 @@ public class ComparaService {
         int count;
         try {
             Integer queryid = comparaStore.getDnafragId(seqName, reference);
-                response.put("member",comparaStore.getAllMember(seqName));
+
+            response.put("member",comparaStore.getAllMember(seqName));
 
 
         } catch (IOException e) {
@@ -277,6 +278,8 @@ public class ComparaService {
         response.put("trackname", "member");
         int count;
         try {
+            response.put("ref",comparaStore.getRefDetail(query));
+
             response.put("member",comparaStore.getHomologyforMember(query));
 
 
