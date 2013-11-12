@@ -110,7 +110,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
   public static final String GET_Transcript_name_from_ID = "SELECT description FROM transcript where transcript_id =?";
   public static final String GET_GO_for_Genes = "select value from gene_attrib where gene_id = ?";
   public static final String GET_GO_for_Transcripts = "select value from transcript_attrib where transcript_id =  ?";
-    public static final String GET_Gene_by_Gene_ID = "SELECT gene_id,seq_region_start,seq_region_end, description,seq_region_strand FROM gene where gene_id =?";//AND ((seq_region_start > ? AND seq_region_end < ?) OR (seq_region_start < ? AND seq_region_end > ?) OR (seq_region_end > ? AND seq_region_end < ?) OR (seq_region_start > ? AND seq_region_start < ?))";
+    public static final String GET_Gene_by_Gene_ID = "SELECT gene_id,seq_region_id, seq_region_start,seq_region_end, description,seq_region_strand FROM gene where gene_id =?";//AND ((seq_region_start > ? AND seq_region_end < ?) OR (seq_region_start < ? AND seq_region_end > ?) OR (seq_region_end > ? AND seq_region_end < ?) OR (seq_region_start > ? AND seq_region_start < ?))";
 
     public static final String GET_START_END_ANALYSIS_ID_FROM_SEQ_REGION_ID = "SELECT seq_region_start,seq_region_end,analysis_id FROM dna_align_feature where req_region_id =?";
   public static final String GET_HIT_SIZE = "SELECT COUNT(*) FROM dna_align_feature where seq_region_id =? and analysis_id = ?";
@@ -365,6 +365,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
 
   public JSONArray getSeqRegionSearch(String searchQuery) throws IOException {
     try {
+        log.info("\n\n\ngetseqregionsearch"+searchQuery);
       JSONArray names = new JSONArray();
       List<Map<String, Object>> maps = template.queryForList(GET_SEQ_REGION_ID_SEARCH, new Object[]{'%' + searchQuery + '%'});
       for (Map map : maps) {
@@ -391,10 +392,12 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
     }
     catch (EmptyResultDataAccessException e) {
 //     return getGOSearch(searchQuery);
-      throw new IOException("result not found");
+        e.printStackTrace();
+      throw new IOException("result not found"+e.getMessage());
     }
     catch (Exception e) {
-      throw new IOException("result not found");  //To change body of catch statement use File | Settings | File Templates.
+        e.printStackTrace();
+      throw new IOException("result not found"+e.getMessage());  //To change body of catch statement use File | Settings | File Templates.
     }
   }
 
@@ -2474,17 +2477,21 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             }
 
             int gene_id = new_Template.queryForObject(GET_Gene_by_stable_id, new Object[]{query}, Integer.class);
-            log.info("\n\ngetgenebystableid "+gene_id+"\n\n");
             Map<String, Object>  gene_info = new_Template.queryForMap(GET_Gene_by_Gene_ID, new Object[]{gene_id});
             int start =  Integer.parseInt(gene_info.get("seq_region_start").toString());
             int end =  Integer.parseInt(gene_info.get("seq_region_end").toString());
+            int ref_id =  Integer.parseInt(gene_info.get("seq_region_id").toString());
 
             gene.put("gene_id", gene_id);
             gene.put("start", start);
             gene.put("end", end);
             gene.put("length", end-start);
+            gene.put("reference", new_Template.queryForObject(GET_SEQ_REGION_NAME_FROM_ID, new Object[]{ref_id}, String.class));
+
 
             gene.put("strand", gene_info.get("seq_region_strand"));
+            gene.put("desc", gene_info.get("description"));
+
             List<Map<String, Object>>  transcripts = new_Template.queryForList(GET_transcript, new Object[]{gene_id});
             JSONArray transcripts_array = new JSONArray();
             for(Map map:transcripts){

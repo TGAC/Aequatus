@@ -457,13 +457,17 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
 
         JSONObject homology_members = new JSONObject();
+//        List<Map<String, Object>> homology_member_id = template.queryForList(GET_HOMOLOGY_ID_BY_MEMBER_ID, new Object[]{query});
 
 
-            Map<String, Object> homologous = template.queryForMap(GET_MEMBER_BY_MEMBER_ID, new Object[]{query});
+        Map<String, Object> homologous = template.queryForMap(GET_MEMBER_BY_MEMBER_ID, new Object[]{query});
 
 
             homology_members.put("genome", homologous.get("genome_db_id"));
-            homology_members.put("genes",  getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString()));
+//        homology_members.put("cigarline1", template.queryForObject(GET_HOMOLOGY_MEMBER_CIGAR_BY_MEMBER_ID, new Object[]{query, homology_member_id}, String.class));
+//        homology_members.put("cigarline2", template.queryForObject(GET_HOMOLOGY_MEMBER_CIGAR_BY_MEMBER_ID, new Object[]{query, homology_member_id}, String.class));
+//
+homology_members.put("genes",  getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString()));
 
        return homology_members;
 
@@ -486,8 +490,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
 //            homologous.put("ref_id", getDnafragId(homologous.get("chr_name").toString(), Integer.parseInt(homologous.get("genome_db_id").toString())));
 //            homologous.put("length", getReferenceLength(Integer.parseInt(homologous.get("ref_id").toString())));
-//            homologous.put("cigarline1", template.queryForObject(GET_HOMOLOGY_MEMBER_CIGAR_BY_MEMBER_ID, new Object[]{query, map_two.get("homology_id")}, String.class));
-//            homologous.put("cigarline2", template.queryForObject(GET_HOMOLOGY_MEMBER_CIGAR_BY_MEMBER_ID, new Object[]{member, map_two.get("homology_id")}, String.class));
+            homology_members.put("cigarline1", template.queryForObject(GET_HOMOLOGY_MEMBER_CIGAR_BY_MEMBER_ID, new Object[]{query, map_two.get("homology_id")}, String.class));
+            homology_members.put("cigarline2", template.queryForObject(GET_HOMOLOGY_MEMBER_CIGAR_BY_MEMBER_ID, new Object[]{member, map_two.get("homology_id")}, String.class));
 //            homologous.put("mlssi", mlssi);
             homology_members.put("genome", homologous.get("genome_db_id"));
             homology_members.put("genes",  getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString()));
@@ -520,6 +524,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         try{
             log.info("\n\ngetgenefrom core "+query+"\t"+genome);
             JSONObject gene = new JSONObject();
+
             gene.put("gene", SQLSequenceDAO.getGenebyStableid(query, genome));
             return gene;
         }  catch (SQLException e) {

@@ -2744,8 +2744,9 @@ span.deleteicon input {
     left: 25%;
     position: fixed;
     top: 160px;
-    width: 500px;
+    width: 900px;
     z-index: 999;
+    overflow: scroll;
 }
 
 /*geneView*/

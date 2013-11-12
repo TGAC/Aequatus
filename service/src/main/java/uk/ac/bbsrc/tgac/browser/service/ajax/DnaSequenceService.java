@@ -78,9 +78,10 @@ public class DnaSequenceService {
         try {
 
             Integer queryid = sequenceStore.getSeqRegionearchsize(seqName);
-
+             log.info("\n\n queryid "+queryid);
 //      if more than one results
             if (queryid > 1) {
+
                 response.put("html", "seqregion");
                 response.put("seqregion", sequenceStore.getSeqRegionSearch(seqName));
                 response.put("chromosome", sequenceStore.checkChromosome());
