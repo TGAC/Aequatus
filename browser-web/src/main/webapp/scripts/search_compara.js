@@ -9,19 +9,20 @@
 
 function getReferences() {
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
-    Fluxion.doAjax(
-        'comparaService',
-        'getGenomes',
-        { 'url': ajaxurl},
-        {'doOnSuccess': function (json) {
+//    Fluxion.doAjax(
+//        'comparaService',
+//        'getGenomes',
+//        { 'url': ajaxurl},
+//        {'doOnSuccess': function (json) {
+            var json = {"genomes":[{"genome_db_id":1,"taxon_id":39947,"name":"oryza_sativa","assembly":"MSU6","assembly_default":true,"genebuild":"2009-01-MSU","locator":"Bio::EnsEMBL::DBSQL::DBAdaptor/host=tgac-db1;port=3306;user=tgacro;pass=tgacR0;dbname=herreroj_oryza_sativa_core_18_71_6;species=oryza_sativa;species_id=1;disconnect_when_inactive=1"},{"genome_db_id":2,"taxon_id":15368,"name":"brachypodium_distachyon","assembly":"v1.0","assembly_default":true,"genebuild":"2010-02-JGI","locator":"Bio::EnsEMBL::DBSQL::DBAdaptor/host=tgac-db1;port=3306;user=tgacro;pass=tgacR0;dbname=herreroj_brachypodium_distachyon_core_18_71_12;species=brachypodium_distachyon;species_id=1;disconnect_when_inactive=1"},{"genome_db_id":3,"taxon_id":112509,"name":"hordeum_vulgare","assembly":"030312v2","assembly_default":true,"genebuild":"2012-06-IBSC_1.0","locator":"Bio::EnsEMBL::DBSQL::DBAdaptor/host=tgac-db1;port=3306;user=tgacro;pass=tgacR0;dbname=herreroj_hordeum_vulgare_core_19_72_1;species=hordeum_vulgare;species_id=1;disconnect_when_inactive=1"},{"genome_db_id":4,"taxon_id":37682,"name":"aegilops_tauschii","assembly":"GCA_000347335.1","assembly_default":true,"genebuild":"2008-11-BGI","locator":"Bio::EnsEMBL::DBSQL::DBAdaptor/host=tgac-db1;port=3306;user=tgacro;pass=tgacR0;dbname=herreroj_aegilops_tauschii_core_19_72_1;species=aegilops_tauschii;species_id=1;disconnect_when_inactive=1"}]};
             var content = "<select name=\"genomes\" id=\"genomes\">  "
             for (var i = 0; i < json.genomes.length; i++) {
                 content += "<option value=\"" + json.genomes[i].genome_db_id + "\">" + json.genomes[i].name + "</option>  "
             }
             content += "</select>";
             jQuery("#genome_list").html(content);
-        }
-        });
+//        }
+//        });
 }
 function search(query, from, to, jsonid, oldtracks) {
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';

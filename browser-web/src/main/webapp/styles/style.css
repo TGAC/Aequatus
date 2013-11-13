@@ -2741,12 +2741,19 @@ span.deleteicon input {
 
 #gene_widget{
     height: 500px;
-    left: 25%;
+    left: 5%;
     position: fixed;
     top: 160px;
-    width: 900px;
+    width: 1200px;
     z-index: 999;
     overflow: scroll;
 }
 
+.frontcorner{
+border-radius: 5px 0 0 5px;
+}
+
+.endcorner{
+    border-radius:0 5px 5px 0;
+}
 /*geneView*/
