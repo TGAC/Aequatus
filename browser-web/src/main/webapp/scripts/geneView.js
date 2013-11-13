@@ -101,32 +101,32 @@ function seqregionSearchPopup_geneView(query, reference, from, to, jsonid, oldtr
             {"species_set_id": "1", "method_link_species_set_id": "else40001", "method_link_id": "401", "name": "4_plants_ProtienTree"}
         ]}
     ]};
-            if (json.html == "genomes") {
-                jQuery('#canvas').hide();
-                jQuery('#currentposition').hide();
-                jQuery("#searchresult").fadeIn();
-                var content = "<h1>Search Results: </h1><br>";
+    if (json.html == "genomes") {
+        jQuery('#canvas').hide();
+        jQuery('#currentposition').hide();
+        jQuery("#searchresult").fadeIn();
+        var content = "<h1>Search Results: </h1><br>";
 
-                for (var i = 0; i < json.genomes.length; i++) {
-                    if (i == 0) {
-                        content += "<table class='list' id='search_hit' ><thead><tr><th>Genome_db_id</th><th>Genome</th><th>Assembly</th><th>Link</th></tr></thead>";
-                    }
-                    content += "<tr><td> " + json.genomes[i].genome_db_id + "<td>" + json.genomes[i].name + "<td>" + json.genomes[i].assembly + " <td><a target='_blank' href='index.jsp?query=" + json.genomes[i].name + "' > <span title=\"Link\" class=\"ui-button ui-icon ui-icon-link\" </span><a/></td>";
-                }
-                jQuery("#searchresult").html(content)
+        for (var i = 0; i < json.genomes.length; i++) {
+            if (i == 0) {
+                content += "<table class='list' id='search_hit' ><thead><tr><th>Genome_db_id</th><th>Genome</th><th>Assembly</th><th>Link</th></tr></thead>";
             }
-            else {
-                seq = json.html;
-                seqregname = json.seqregname;
-                sequencelength = json.length;
-                track_list = json.tracklists;
-                trackList(track_list);
-                setRef(sequencelength)
-                dispSeqCoord();
-                jQuery('#canvas').show();
-                findminwidth();
-                getMember();
-            }
+            content += "<tr><td> " + json.genomes[i].genome_db_id + "<td>" + json.genomes[i].name + "<td>" + json.genomes[i].assembly + " <td><a target='_blank' href='index.jsp?query=" + json.genomes[i].name + "' > <span title=\"Link\" class=\"ui-button ui-icon ui-icon-link\" </span><a/></td>";
+        }
+        jQuery("#searchresult").html(content)
+    }
+    else {
+        seq = json.html;
+        seqregname = json.seqregname;
+        sequencelength = json.length;
+        track_list = json.tracklists;
+        trackList(track_list);
+        setRef(sequencelength)
+        dispSeqCoord();
+        jQuery('#canvas').show();
+        findminwidth();
+        getMember();
+    }
 //        }
 //        });
 }
@@ -709,23 +709,23 @@ function getMember() {
         {"id": 3918, "stable_id": "LOC_Os01g03590.1", "start": 1456947, "end": 1458982, "strand": true, "chr_name": "1", "genome_db_id": 1}
     ]};
 
-            data = json.member;
-            var data_length = data.length;
-            var maxLentemp = jQuery("#canvas").css("width");
-            var top = 0;
-            while (data_length--) {
-                var start = data[data_length].start
-                var end = data[data_length].end
-                var startposition = (start) * parseFloat(maxLentemp) / parseFloat(sequencelength);
-                var stopposition = (end - start + 1) * parseFloat(maxLentemp) / parseFloat(sequencelength);
-                if (stopposition < 1) {
-                    stopposition = 1;
-                }
-                jQuery("<div>").attr({
-                    'class': "refMarker",
-                    'style': "LEFT:" + startposition + "px; width :" + stopposition + "px;"
-                }).appendTo("#bar_image_ref");
-            }
+    data = json.member;
+    var data_length = data.length;
+    var maxLentemp = jQuery("#canvas").css("width");
+    var top = 0;
+    while (data_length--) {
+        var start = data[data_length].start
+        var end = data[data_length].end
+        var startposition = (start) * parseFloat(maxLentemp) / parseFloat(sequencelength);
+        var stopposition = (end - start + 1) * parseFloat(maxLentemp) / parseFloat(sequencelength);
+        if (stopposition < 1) {
+            stopposition = 1;
+        }
+        jQuery("<div>").attr({
+            'class': "refMarker",
+            'style': "LEFT:" + startposition + "px; width :" + stopposition + "px;"
+        }).appendTo("#bar_image_ref");
+    }
 //        }
 //        });
 }
@@ -1287,7 +1287,7 @@ function dispGenes(div, track, max, cigarline1, cigarline2, ref) {
                     "<span style='position: absolute; top: -12px;'>" + gene.reference + "</span>").appendTo(div);
             dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length);
 
-            jQuery(temp_div).append(dispCigarLine(cigarline2, 1, top, (gene_stop - gene_start), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON()));
+            dispCigarLine(cigarline2, 1, top, (gene_stop - gene_start), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div);
         }
         else {
             var temp_div = jQuery("<div>").attr({
@@ -1365,7 +1365,7 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len) {
     }
 }
 
-function dispCigarLine(cigars, start, top, max, gene_start, stop, exons) {
+function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_div) {
     exons = jQuery.parseJSON(exons);
 
     exons.sort(sort_by('start', true, parseInt));
@@ -1380,12 +1380,12 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons) {
     var temp_start = 1;
     var startposition;
     var stopposition;
-    var last_cigar_pos = 0;
+    var no_of_exons = exons.length;
 
     if (cigars != '*') {
         cigars = cigars.replace(/([SIXMND])/g, ":$1,");
         var cigars_array = cigars.split(',');
-        for (var i = 0; i < cigars_array.length - 1; i++) {
+        first: for (var i = 0; i < cigars_array.length - 1; i++) {
             var cigar = cigars_array[i].split(":");
             var key = cigar[1];
             var length = cigar[0];
@@ -1400,60 +1400,62 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons) {
                 trackClass = "delete";
             }
 
-            startposition = parseInt(temp_start) + parseInt((cigar_pos - newStart_temp) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp));
+            startposition = parseInt((cigar_pos - newStart_temp) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp));
             stopposition = (length) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp);
-           last_cigar_pos = cigar_pos;
-            cigar_pos = parseInt(cigar_pos) + parseInt(length)
-            if (cigar_pos <= temp_end) {
-                track_html += trackHTML(startposition, stopposition, top, trackClass);
+
+            if (parseInt(cigar_pos) + parseInt(length) <= temp_end) {
+                trackHTML(startposition, stopposition, top, trackClass + " if", temp_div);
+                cigar_pos = parseInt(cigar_pos) + parseInt(length)
+
             } else {
 
                 var bool = true;
-                while (bool) {
-                    var temp_length = cigar_pos - temp_end;
-                    stopposition =(length - temp_length) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp);
-                    track_html += trackHTML(startposition, stopposition, top, trackClass + " endcorner");
+
+                second: while (bool) {
+
+                    stopposition = (temp_end - cigar_pos) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp);
+                    trackHTML(startposition, stopposition, top, trackClass + " else", temp_div);
+
+                    var diff = (temp_end - cigar_pos);
+                    length = length - diff;
 
                     exon_number++;
-                    var temp_start_pos = exons[exon_number].start - gene_start;
+
+                    if (exon_number >= no_of_exons) {
+                        console.log("continued")
+                        break second;
+                        continue first;
+                    }
+                    temp_start = exons[exon_number].start - gene_start;
                     temp_end = exons[exon_number].end - gene_start;
 
-                    startposition = parseInt(temp_start) + parseInt((temp_start_pos - newStart_temp) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp));
-                    stopposition = (temp_length) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp);
+                    cigar_pos = temp_start;
 
-//                    length = cigar_pos - temp_start_pos;
-                    console.log(temp_start_pos)
-                    temp_start_pos = parseInt(temp_start_pos) + parseInt(temp_length)
-                    console.log(temp_start_pos)
-
-                    if (last_cigar_pos <= temp_end) {
-                        console.log("false")
-
-                        trackClass += " if"
-                        track_html += trackHTML(startposition, stopposition, top, trackClass + " frontcorner");
-                        cigar_pos = temp_start_pos
+                    startposition = parseInt((cigar_pos - newStart_temp) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp));
+                    stopposition = (length) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp);
+                    if (parseInt(cigar_pos) + parseInt(length) < temp_end) {
+                        trackHTML(startposition, stopposition, top, trackClass + " elseif", temp_div);
+                        cigar_pos = parseInt(cigar_pos) + parseInt(length)
                         bool = false;
-                    } else {
-                        trackClass += " else"
-//                        length = length - temp_length;
+                    }
+                    else {
+                        trackClass += " elselse"
                     }
                 }
 
             }
+
         }
 
     }
 
-    function trackHTML(startposition, stopposition, top, trackClass) {
+    function trackHTML(startposition, stopposition, top, trackClass, temp_div) {
         var track_html_local;
         track_html_local = "<div class='" + trackClass + "'  " +
             "STYLE=\"height: 14px; z-index: 1999; TOP:0px; LEFT:" + startposition + "px; opacity:0.5; " +
             "width:" + (stopposition) + "px \" > </div>";
-        return track_html_local;
+        jQuery(temp_div).append(track_html_local);
     }
-
-    return track_html;
-
 }
 
 var sort_by = function (field, reverse, primer) {
@@ -1475,35 +1477,6 @@ var sort_by = function (field, reverse, primer) {
 }
 
 function hitClicked(cigarline1, start, top, length, gene_start, stopposition, Exons) {
-    jQuery('#cigar').html(dispCigarLine(cigarline1, start, top, length, gene_start, stopposition, Exons));
+    jQuery("#cigar").html("")
+    dispCigarLine(cigarline1, start, top, length, gene_start, stopposition, Exons, "#cigar");
 }
-
-//while (bool) {
-//    var temp_length = cigar_pos - temp_end;
-//    stopposition = (length - temp_length) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp);
-//    track_html += trackHTML(startposition, stopposition, top, trackClass + " endcorner");
-//
-//    exon_number++;
-//    var temp_start_pos = exons[exon_number].start - gene_start;
-//    temp_end = exons[exon_number].end - gene_start;
-//
-//    startposition = parseInt(temp_start) + parseInt((temp_start_pos - newStart_temp) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp));
-//    stopposition = (temp_length) * parseFloat(maxLentemp) / (newEnd_temp - newStart_temp);
-//
-////                    length = cigar_pos - temp_start_pos;
-//    console.log(temp_start_pos)
-//    temp_start_pos = parseInt(temp_start_pos) + parseInt(temp_length)
-//    console.log(temp_start_pos)
-//
-//    if (temp_start_pos <= temp_end) {
-//        console.log("false")
-//
-//        trackClass += " if"
-//        track_html += trackHTML(startposition, stopposition, top, trackClass + " frontcorner");
-//        cigar_pos = temp_start_pos
-//        bool = false;
-//    } else {
-//        trackClass += " else"
-////                        length = length - temp_length;
-//    }
-//}
