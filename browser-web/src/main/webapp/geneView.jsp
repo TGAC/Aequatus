@@ -1,3 +1,5 @@
+<%@ include file="header.jsp" %>
+
 <div id="main1" style="top : 10px ; height: 1050px; ">
 
 </div>
@@ -56,8 +58,9 @@
 
 <script>
     jQuery(document).ready(function () {
+        console.log("ready")
         kickOff();
-//        getReferences();
-//        search_geneView();
+        getReferences();
+        search_geneView();
     });
 </script>

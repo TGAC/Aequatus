@@ -280,7 +280,7 @@ public class ComparaService {
         try {
             response.put("ref",comparaStore.getRefDetail(query));
 
-            response.put("member",comparaStore.getHomologyforMember(query));
+            response.put("member",comparaStore.getGeneTreeforMember(query));
 
 
         } catch (IOException e) {
