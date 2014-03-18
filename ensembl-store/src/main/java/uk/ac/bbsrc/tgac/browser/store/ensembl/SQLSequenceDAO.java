@@ -2406,6 +2406,16 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                 transcript.put("transcript_end", start+ Integer.parseInt(end_seq.get("seq_end").toString()));
             }
 
+            if(transcript.getInt("transcript_start") > transcript.getInt("transcript_end")){
+                for (Map start_seq : translation_end) {
+                    transcript.put("transcript_start", start+ Integer.parseInt(start_seq.get("seq_end").toString()));
+                }
+
+                for (Map end_seq : translation_start) {
+                    transcript.put("transcript_end", start+ Integer.parseInt(end_seq.get("seq_start").toString()));
+                }
+            }
+
             transcript.put("desc", map.get("description"));
             JSONArray exons_array = new JSONArray();
             List<Map<String, Object>> exons = new_Template.queryForList(GET_EXON_per_Gene, new Object[]{transcript_id});
