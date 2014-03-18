@@ -795,81 +795,282 @@ function getcoreMember(query) {
     jQuery(".refMarkerShow").css("background", "black")
     jQuery("#ref" + query).css("background", "red")
 
-    Fluxion.doAjax(
-        'comparaService',
-        'getCoreMember',
-        {'query': query, 'url': ajaxurl},
-        {'doOnSuccess': function (json) {
-//           var json = {"trackname":"member","ref":{"cigarline":"52M5D44M26D115MD8M","genome":1,"genes":{"gene":{"gene_id":1822,"start":185246,"end":189846,"length":4600,"reference":"1","strand":-1,"desc":"LOC_Os01g01369.1","transcripts":[{"id":2187,"start":185246,"end":189846,"length":4600,"strand":-1,"transcript_end":185862,"transcript_start":185502,"desc":"3-beta-hydroxysteroid-Delta-isomerase, putative, expressed","Exons":[{"id":8668,"start":189087,"end":189846,"length":759,"strand":-1},{"id":8669,"start":188841,"end":188990,"length":149,"strand":-1},{"id":8670,"start":188607,"end":188715,"length":108,"strand":-1},{"id":8671,"start":185246,"end":185771,"length":525,"strand":-1}]}]}}},"member":[{"cigarline":"3D48M6D44M26D124M","genome":3,"genes":{"gene":{"gene_id":19119,"start":26025554,"end":26027864,"length":2310,"reference":"3","strand":1,"desc":"MLOC_64646.1","transcripts":[{"id":48977,"start":26025554,"end":26027864,"length":2310,"strand":1,"transcript_start":26025825,"transcript_end":26025810,"Exons":[{"id":161753,"start":26025554,"end":26025959,"length":405,"strand":1},{"id":161754,"start":26026051,"end":26026197,"length":146,"strand":1},{"id":161755,"start":26026310,"end":26026418,"length":108,"strand":1},{"id":161756,"start":26027512,"end":26027864,"length":352,"strand":1}]}]}}},{"cigarline":"101M26D115MD8M","genome":4,"genes":{"gene":{"gene_id":849,"start":24475,"end":26513,"length":2038,"reference":"Scaffold27450","strand":-1,"desc":"EMT20515","transcripts":[{"id":849,"start":24475,"end":26513,"length":2038,"strand":-1,"transcript_start":24476,"transcript_end":24731,"Exons":[{"id":4158,"start":26351,"end":26513,"length":162,"strand":-1},{"id":4159,"start":25833,"end":25979,"length":146,"strand":-1},{"id":4160,"start":25621,"end":25729,"length":108,"strand":-1},{"id":4161,"start":24475,"end":24730,"length":255,"strand":-1}]}]}}},{"cigarline":"3D48M6D44M26D124M","genome":2,"genes":{"gene":{"gene_id":8106,"start":2569150,"end":2571479,"length":2329,"reference":"2","strand":1,"desc":"BRADI2G03530.1","transcripts":[{"id":9401,"start":2569150,"end":2571479,"length":2329,"strand":1,"transcript_start":2569259,"transcript_end":2569409,"Exons":[{"id":44416,"start":2569150,"end":2569393,"length":243,"strand":1},{"id":44417,"start":2569478,"end":2569624,"length":146,"strand":1},{"id":44418,"start":2569787,"end":2569895,"length":108,"strand":1},{"id":44419,"start":2570867,"end":2571479,"length":612,"strand":1}]}]}}},{"cigarline":"168M8DM14D9M10D20M4D8M3D6M","genome":4,"genes":{"gene":{"gene_id":19763,"start":73351,"end":74533,"length":1182,"reference":"Scaffold13839","strand":1,"desc":"EMT26536","transcripts":[{"id":19763,"start":73351,"end":74533,"length":1182,"strand":1,"transcript_start":73352,"transcript_end":73602,"Exons":[{"id":98445,"start":73351,"end":73513,"length":162,"strand":1},{"id":98446,"start":73859,"end":74005,"length":146,"strand":1},{"id":98447,"start":74105,"end":74182,"length":77,"strand":1},{"id":98448,"start":74283,"end":74533,"length":250,"strand":1}]}]}}},{"cigarline":"3D48M6D44M26D124M","genome":4,"genes":{"gene":{"gene_id":27354,"start":192984,"end":194949,"length":1965,"reference":"Scaffold8334","strand":1,"desc":"EMT29360","transcripts":[{"id":27354,"start":192984,"end":194949,"length":1965,"strand":1,"transcript_start":192985,"transcript_end":193243,"Exons":[{"id":136224,"start":192984,"end":193119,"length":135,"strand":1},{"id":136225,"start":193204,"end":193350,"length":146,"strand":1},{"id":136226,"start":193491,"end":193599,"length":108,"strand":1},{"id":136227,"start":194691,"end":194949,"length":258,"strand":1}]}]}}}]};
-            var core_data = json.member;
-            var max = 0;
-            jQuery("#gene_widget").html("")
-            for (var i = 0; i < core_data.length; i++) {
-                var genes = core_data[i].genes;
-                var new_max = genes.gene.length;
-                if (new_max > max) {
-                    max = new_max;
+//    Fluxion.doAjax(
+//        'comparaService',
+//        'getCoreMember',
+//        {'query': query, 'url': ajaxurl},
+//        {'doOnSuccess': function (json) {
+    var json = {
+        "trackname": "member",
+        "ref": {
+            "cigarline": "16M5D134M5D40M",
+            "genome": 1,
+            "genes": {
+                "gene": {
+                    "gene_id": 3476,
+                    "start": 147045,
+                    "end": 149577,
+                    "length": 2532,
+                    "reference": "1",
+                    "strand": 1,
+                    "desc": "LOC_Os01g01307.1",
+                    "transcripts": [
+                        {
+                            "id": 4234,
+                            "start": 147045,
+                            "end": 149577,
+                            "length": 2532,
+                            "strand": 1,
+                            "transcript_start": 147148,
+                            "transcript_end": 147165,
+                            "desc": "translocon-associated protein beta domain containing protein, expressed",
+                            "Exons": [
+                                {
+                                    "id": 16739,
+                                    "start": 147045,
+                                    "end": 147313,
+                                    "length": 268,
+                                    "strand": 1
+                                },
+                                {
+                                    "id": 16740,
+                                    "start": 148450,
+                                    "end": 148548,
+                                    "length": 98,
+                                    "strand": 1
+                                },
+                                {
+                                    "id": 16741,
+                                    "start": 148634,
+                                    "end": 148742,
+                                    "length": 108,
+                                    "strand": 1
+                                },
+                                {
+                                    "id": 16742,
+                                    "start": 148856,
+                                    "end": 148927,
+                                    "length": 71,
+                                    "strand": 1
+                                },
+                                {
+                                    "id": 16743,
+                                    "start": 149056,
+                                    "end": 149061,
+                                    "length": 5,
+                                    "strand": 1
+                                },
+                                {
+                                    "id": 16744,
+                                    "start": 149152,
+                                    "end": 149577,
+                                    "length": 425,
+                                    "strand": 1
+                                }
+                            ]
+                        }
+                    ]
                 }
-                var core_data = json.member;
-                var max = 0;
-                jQuery("#gene_widget").html("")
-                for (var i = 0; i < core_data.length; i++) {
-                    var genes = core_data[i].genes;
-                    var new_max = genes.gene.length;
-                    if (new_max > max) {
-                        max = new_max;
+            }
+        },
+        "member": [
+            {
+                "cigarline": "88D66M4D42M88D66M4D42M88D66M4D42M88D66M4D42M88D66M4D42M",
+                "genome": 3,
+                "genes": {
+                    "gene": {
+                        "gene_id": 189,
+                        "start": 29122264,
+                        "end": 29124123,
+                        "length": 1859,
+                        "reference": "3",
+                        "strand": -1,
+                        "desc": "MLOC_asd37196.1",
+                        "transcripts": [
+                            {
+                                "id": 87,
+                                "start": 29122264,
+                                "end": 29123239,
+                                "length": 975,
+                                "strand": -1,
+                                "transcript_start": 29122265,
+                                "transcript_end": 29122381,
+                                "Exons": [
+                                    {
+                                        "id": 157213,
+                                        "start": 29123223,
+                                        "end": 29123239,
+                                        "length": 16,
+                                        "strand": -1
+                                    },
+                                    {
+                                        "id": 157214,
+                                        "start": 29123014,
+                                        "end": 29123122,
+                                        "length": 108,
+                                        "strand": -1
+                                    },
+                                    {
+                                        "id": 157215,
+                                        "start": 29122813,
+                                        "end": 29122884,
+                                        "length": 71,
+                                        "strand": -1
+                                    },
+                                    {
+                                        "id": 157216,
+                                        "start": 29122675,
+                                        "end": 29122683,
+                                        "length": 8,
+                                        "strand": -1
+                                    },
+                                    {
+                                        "id": 157217,
+                                        "start": 29122264,
+                                        "end": 29122607,
+                                        "length": 343,
+                                        "strand": -1
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 }
-
-                var ref_data = json.ref;
-
-                var genes = ref_data.genes
-                if (max < genes.gene.length) {
-                    max = genes.gene.length;
+            },
+            {
+                "cigarline": "88D66M4D42M88D66M4D42M88D66M4D42M88D66M4D42M88D66M4D42M",
+                "genome": 3,
+                "genes": {
+                    "gene": {
+                        "gene_id": 18549,
+                        "start": 29122264,
+                        "end": 29124123,
+                        "length": 1859,
+                        "reference": "3",
+                        "strand": 1,
+                        "desc": "MLOC_37196.1",
+                        "transcripts": [
+                            {
+                                "id": 47587,
+                                "start": 29122264,
+                                "end": 29123239,
+                                "length": 975,
+                                "strand": 1,
+                                "transcript_start": 29122265,
+                                "transcript_end": 29122381,
+                                "Exons": [
+                                    {
+                                        "id": 157213,
+                                        "start": 29123223,
+                                        "end": 29123239,
+                                        "length": 16,
+                                        "strand": -1
+                                    },
+                                    {
+                                        "id": 157214,
+                                        "start": 29123014,
+                                        "end": 29123122,
+                                        "length": 108,
+                                        "strand": -1
+                                    },
+                                    {
+                                        "id": 157215,
+                                        "start": 29122813,
+                                        "end": 29122884,
+                                        "length": 71,
+                                        "strand": -1
+                                    },
+                                    {
+                                        "id": 157216,
+                                        "start": 29122675,
+                                        "end": 29122683,
+                                        "length": 8,
+                                        "strand": -1
+                                    },
+                                    {
+                                        "id": 157217,
+                                        "start": 29122264,
+                                        "end": 29122607,
+                                        "length": 343,
+                                        "strand": -1
+                                    }
+                                ]
+                            }
+                        ]
+                    }
                 }
+            }
+        ]
+    };
+    var core_data = json.member;
+    var max = 0;
+    jQuery("#gene_widget").html("")
+    for (var i = 0; i < core_data.length; i++) {
+        var genes = core_data[i].genes;
+        var new_max = genes.gene.length;
+        if (new_max > max) {
+            max = new_max;
+        }
+        var core_data = json.member;
+        var max = 0;
+        jQuery("#gene_widget").html("")
+        for (var i = 0; i < core_data.length; i++) {
+            var genes = core_data[i].genes;
+            var new_max = genes.gene.length;
+            if (new_max > max) {
+                max = new_max;
+            }
+        }
+
+        var ref_data = json.ref;
+
+        var genes = ref_data.genes
+        if (max < genes.gene.length) {
+            max = genes.gene.length;
+        }
+        var name = "";
+        var length = jQuery('#genomes').children('option').length;
+
+        for (var j = 0; j < length; j++) {
+            var id = jQuery('#genomes').children('option')[j].value;
+            var title = jQuery('#genomes').children('option')[j].text;
+            if (ref_data.genome == id) {
+                name = title;
+            }
+        }
+        jQuery("#gene_widget").append("<div style='left:100px; width: 1000px; padding: 25px 5px; position: relative; border: 2px solid black; top: 10px' id='ref'><span style='position: absolute; top:0px;'>" + name + "</span></div>")
+
+        dispGenes("#ref", genes, max, ref_data.cigarline);
+
+        for (var i = 0; i < core_data.length; i++) {
+            var genes = core_data[i].genes
+            if (document.getElementById("core" + core_data[i].genome) == null) {
                 var name = "";
                 var length = jQuery('#genomes').children('option').length;
 
                 for (var j = 0; j < length; j++) {
                     var id = jQuery('#genomes').children('option')[j].value;
                     var title = jQuery('#genomes').children('option')[j].text;
-                    if (ref_data.genome == id) {
+                    if (core_data[i].genome == id) {
                         name = title;
                     }
                 }
-                jQuery("#gene_widget").append("<div style='left:100px; width: 1000px; padding: 25px 5px; position: relative; border: 2px solid black; top: 10px' id='ref'><span style='position: absolute; top:0px;'>" + name + "</span></div>")
-
-                dispGenes("#ref", genes, max, ref_data.cigarline);
-
-                for (var i = 0; i < core_data.length; i++) {
-                    var genes = core_data[i].genes
-                    if (document.getElementById("core" + core_data[i].genome) == null) {
-                        var name = "";
-                        var length = jQuery('#genomes').children('option').length;
-
-                        for (var j = 0; j < length; j++) {
-                            var id = jQuery('#genomes').children('option')[j].value;
-                            var title = jQuery('#genomes').children('option')[j].text;
-                            if (core_data[i].genome == id) {
-                                name = title;
-                            }
-                        }
-                        jQuery("#gene_widget").append("<div style='left:100px; width: 1000px; padding: 5px; position: relative; border: 1px solid gray; top: 10px' id='core" + core_data[i].genome + "'>" + name + "</div>")
-                    }
-
-                    if (core_data[i].cigarline) {
-                        dispGenes("#core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0]);
-                    }
-
-                    else {
-                        dispGenes("#core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0]);
-                    }
-
-                }
-
+                jQuery("#gene_widget").append("<div style='left:100px; width: 1000px; padding: 5px; position: relative; border: 1px solid gray; top: 10px' id='core" + core_data[i].genome + "'>" + name + "</div>")
             }
+
+            if (core_data[i].cigarline) {
+                dispGenes("#core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0]);
+            }
+
+            else {
+                dispGenes("#core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0]);
+            }
+
         }
-        });
+
+    }
+//        }
+//        });
 }
 function dispGenes(div, track, max, cigarline, ref) {
     var gene = track.gene;
@@ -925,7 +1126,6 @@ function dispGenes(div, track, max, cigarline, ref) {
                 'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " LEFT:" + startposition + "px; width :" + stopposition + "px;"
             }).html("<p style='position: relative; white-space: nowrap; padding: 15px;'>" + label + "</p> " +
                     "<span style='position: absolute; top: -12px;'>" + gene.reference + "</span>").appendTo(div);
-            dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length);
             var strand = 0;
             if (ref.strand == gene.transcripts[transcript_len].strand) {
                 strand = 1;
@@ -933,12 +1133,25 @@ function dispGenes(div, track, max, cigarline, ref) {
                 strand = -1;
             }
 
+            gene.transcripts[transcript_len].Exons.sort(sort_by('start', true, parseInt));
+
+            if (strand == -1) {
+                console.log(strand)
+                gene.transcripts[transcript_len].Exons = reverse_exons(gene.transcripts[transcript_len]);
+            }
+
+            gene.transcripts[transcript_len].Exons.sort(sort_by('start', true, parseInt));
+
             var temp_int;
             if (ref.transcript_start > ref.transcript_end) {
                 temp_int = ref.transcript_start;
                 ref.transcript_start = ref.transcript_end;
                 ref.transcript_end = temp_int
             }
+
+            dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length);
+
+
             ref.Exons.sort(sort_by('start', true, parseInt));
 
             ref.Exons[0].length = ref.Exons[0].length - (ref.Exons[0].start - ref.transcript_start)
@@ -1040,9 +1253,9 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
     var stopposition;
     var no_of_exons = exons.length;
     var cigar_string = "";
-    var main_colours = ['red', 'green', 'blue', 'orange', 'purple', 'yellow', 'cyan', 'sienna', 'violet' , 'wheat', 'maroon', 'lawngreen' , 'khaki'];
+    var main_colours = ['rgb(166,206,227)', 'rgb(31,120,180)', 'rgb(178,223,138)', 'rgb(51,160,44)', 'rgb(251,154,153)', 'rgb(227,26,28)', 'rgb(253,191,111)', 'rgb(255,127,0)', 'rgb(202,178,214)', 'rgb(106,61,154)', 'rgb(255,255,153)'];
 
-    var colours = ['red', 'green', 'blue', 'orange', 'purple', 'yellow', 'cyan', 'sienna', 'violet' , 'wheat', 'maroon', 'lawngreen' , 'khaki'];
+    var colours = ['rgb(166,206,227)', 'rgb(31,120,180)', 'rgb(178,223,138)', 'rgb(51,160,44)', 'rgb(251,154,153)', 'rgb(227,26,28)', 'rgb(253,191,111)', 'rgb(255,127,0)', 'rgb(202,178,214)', 'rgb(106,61,154)', 'rgb(255,255,153)'];
     if (cigars != '*') {
         cigars = cigars.replace(/([SIXMND])/g, ":$1,");
         var cigars_array = cigars.split(',');
@@ -1098,6 +1311,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                         cigar_pos = parseInt(cigar_pos) + parseInt(length)
 
                     } else {
+
 
                         var bool = true;
 
@@ -1160,7 +1374,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
     }
 }
 
-function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp_div, ref_exons, transcript_start, transcript_end) {
+function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp_div, ref_exons, transcript_start, transcript_end, strand) {
 
     exons = jQuery.parseJSON(exons);
     exons.sort(sort_by('start', true, parseInt));
@@ -1182,7 +1396,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
     var stopposition;
     var no_of_exons = ref_exons.length;
     var cigar_string = "";
-    var colours = ['red', 'green', 'blue', 'orange', 'purple', 'yellow', 'cyan', 'sienna', 'violet' , 'wheat', 'maroon', 'lawngreen' , 'khaki'];
+    var colours = ['rgb(166,206,227)', 'rgb(31,120,180)', 'rgb(178,223,138)', 'rgb(51,160,44)', 'rgb(251,154,153)', 'rgb(227,26,28)', 'rgb(253,191,111)', 'rgb(255,127,0)', 'rgb(202,178,214)', 'rgb(106,61,154)', 'rgb(255,255,153)'];
 
     if (cigars != '*') {
 
@@ -1326,5 +1540,31 @@ function formatCigar(ref_exons, hit_cigar, colours) {
         i++;
     }
     return hit_cigar_arr.join("-");
+
+}
+
+function reverse_exons(transcript) {
+    console.log("reverse_exons")
+    console.log(transcript)
+    var exons = [];
+    console.log(1)
+    var length = transcript.end - transcript.start;
+    console.log(2)
+
+    transcript._exons = transcript.Exons;
+    console.log(3)
+    console.log(transcript)
+
+    for (var i = 0; i < transcript._exons.length; i++) {
+        console.log("i " + i)
+
+        exons.push({start: parseInt(transcript.start) + parseInt(transcript.end - transcript._exons[i].start),
+            end: parseInt(transcript.start) + parseInt(transcript.end - transcript._exons[i].end),
+            length: transcript.length,
+            id: transcript.id
+        })
+    }
+    console.log(exons)
+    return exons;
 
 }
