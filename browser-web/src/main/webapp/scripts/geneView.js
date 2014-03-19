@@ -822,7 +822,7 @@ function getcoreMember(query) {
                             "length": 2532,
                             "strand": 1,
                             "transcript_start": 147148,
-                            "transcript_end": 147165,
+                            "transcript_end": 149165,
                             "desc": "translocon-associated protein beta domain containing protein, expressed",
                             "Exons": [
                                 {
@@ -875,24 +875,24 @@ function getcoreMember(query) {
         },
         "member": [
             {
-                "cigarline": "88D66M4D42M88D66M4D42M88D66M4D42M88D66M4D42M88D66M4D42M",
+                "cigarline": "10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D",
                 "genome": 3,
                 "genes": {
                     "gene": {
-                        "gene_id": 189,
+                        "gene_id": 18549,
                         "start": 29122264,
                         "end": 29124123,
                         "length": 1859,
                         "reference": "3",
-                        "strand": -1,
-                        "desc": "MLOC_asd37196.1",
+                        "strand": 1,
+                        "desc": "MLOC_37196.1",
                         "transcripts": [
                             {
-                                "id": 87,
+                                "id": 47587,
                                 "start": 29122264,
                                 "end": 29123239,
                                 "length": 975,
-                                "strand": -1,
+                                "strand": 1,
                                 "transcript_start": 29122265,
                                 "transcript_end": 29122381,
                                 "Exons": [
@@ -938,24 +938,87 @@ function getcoreMember(query) {
                 }
             },
             {
-                "cigarline": "88D66M4D42M88D66M4D42M88D66M4D42M88D66M4D42M88D66M4D42M",
+                "cigarline": "10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D",
                 "genome": 3,
                 "genes": {
                     "gene": {
-                        "gene_id": 18549,
+                        "gene_id": 1812549,
                         "start": 29122264,
                         "end": 29124123,
                         "length": 1859,
                         "reference": "3",
                         "strand": 1,
-                        "desc": "MLOC_37196.1",
+                        "desc": "MLOC_31237196.1",
                         "transcripts": [
                             {
-                                "id": 47587,
+                                "id": 4751287,
                                 "start": 29122264,
                                 "end": 29123239,
                                 "length": 975,
                                 "strand": 1,
+                                "transcript_start": 29122265,
+                                "transcript_end": 29122381,
+                                "Exons": [
+                                    {
+                                        "id": 157213,
+                                        "start": 29123223,
+                                        "end": 29123239,
+                                        "length": 16,
+                                        "strand": -1
+                                    },
+                                    {
+                                        "id": 157214,
+                                        "start": 29123014,
+                                        "end": 29123122,
+                                        "length": 108,
+                                        "strand": -1
+                                    },
+                                    {
+                                        "id": 157215,
+                                        "start": 29122813,
+                                        "end": 29122884,
+                                        "length": 71,
+                                        "strand": -1
+                                    },
+                                    {
+                                        "id": 157216,
+                                        "start": 29122675,
+                                        "end": 29122683,
+                                        "length": 8,
+                                        "strand": -1
+                                    },
+                                    {
+                                        "id": 157217,
+                                        "start": 29122264,
+                                        "end": 29122607,
+                                        "length": 343,
+                                        "strand": -1
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "cigarline": "10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D10M10D",
+                "genome": 3,
+                "genes": {
+                    "gene": {
+                        "gene_id": 189,
+                        "start": 29122264,
+                        "end": 29124123,
+                        "length": 1859,
+                        "reference": "3",
+                        "strand": -1,
+                        "desc": "MLOC_asd37196.1",
+                        "transcripts": [
+                            {
+                                "id": 87,
+                                "start": 29122264,
+                                "end": 29123239,
+                                "length": 975,
+                                "strand": -1,
                                 "transcript_start": 29122265,
                                 "transcript_end": 29122381,
                                 "Exons": [
@@ -1042,6 +1105,12 @@ function getcoreMember(query) {
 
         dispGenes("#ref", genes, max, ref_data.cigarline);
 
+        ref_data.genes.gene.transcripts[0].Exons.sort(sort_by('start', true, parseInt));
+
+        ref_data.genes.gene.transcripts[0].Exons[0].length = ref_data.genes.gene.transcripts[0].Exons[0].length - (ref_data.genes.gene.transcripts[0].Exons[0].start - ref_data.genes.gene.transcripts[0].transcript_start)
+
+        ref_data.genes.gene.transcripts[0].Exons[ref_data.genes.gene.transcripts[0].Exons.length - 1].length = ref_data.genes.gene.transcripts[0].transcript_end - ref_data.genes.gene.transcripts[0].Exons[ref_data.genes.gene.transcripts[0].Exons.length - 1].start;
+
         for (var i = 0; i < core_data.length; i++) {
             var genes = core_data[i].genes
             if (document.getElementById("core" + core_data[i].genome) == null) {
@@ -1085,6 +1154,7 @@ function dispGenes(div, track, max, cigarline, ref) {
     var j = 0;
 
     var transcript_len = gene.transcripts.length;
+
     while (transcript_len--) {
         var gene_start;
         var gene_stop;
@@ -1105,7 +1175,7 @@ function dispGenes(div, track, max, cigarline, ref) {
             label = gene.transcripts[transcript_len].desc;
         }
         var border = " border-left: 1px solid #000000; border-right: 1px solid #000000;";
-//        label = gene.transcripts[transcript_len].desc;
+        label = gene.transcripts[transcript_len].desc;
         if (gene.transcripts[transcript_len].layer > j) {
             j = gene.transcripts[transcript_len].layer;
         }
@@ -1126,6 +1196,7 @@ function dispGenes(div, track, max, cigarline, ref) {
                 'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " LEFT:" + startposition + "px; width :" + stopposition + "px;"
             }).html("<p style='position: relative; white-space: nowrap; padding: 15px;'>" + label + "</p> " +
                     "<span style='position: absolute; top: -12px;'>" + gene.reference + "</span>").appendTo(div);
+
             var strand = 0;
             if (ref.strand == gene.transcripts[transcript_len].strand) {
                 strand = 1;
@@ -1136,7 +1207,6 @@ function dispGenes(div, track, max, cigarline, ref) {
             gene.transcripts[transcript_len].Exons.sort(sort_by('start', true, parseInt));
 
             if (strand == -1) {
-                console.log(strand)
                 gene.transcripts[transcript_len].Exons = reverse_exons(gene.transcripts[transcript_len]);
             }
 
@@ -1152,12 +1222,6 @@ function dispGenes(div, track, max, cigarline, ref) {
             dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length);
 
 
-            ref.Exons.sort(sort_by('start', true, parseInt));
-
-            ref.Exons[0].length = ref.Exons[0].length - (ref.Exons[0].start - ref.transcript_start)
-
-            ref.Exons[ref.Exons.length - 1].length = ref.Exons[ref.Exons.length - 1].length - (ref.Exons[ref.Exons.length - 1 ].end - ref.transcript_end)
-
             dispCigarLine(cigarline, 1, top, (gene_stop - gene_start), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, ref.Exons.toJSON(), transcript_start, transcript_end, strand);
         }
         else {
@@ -1170,6 +1234,8 @@ function dispGenes(div, track, max, cigarline, ref) {
             dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length);
 
             dispCigarLineRef(cigarline, 1, top, (gene_stop - gene_start), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, gene.transcripts[transcript_len].Exons.toJSON(), transcript_start, transcript_end);
+
+
         }
 
 
@@ -1235,6 +1301,7 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len) {
 }
 
 function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_div, ref_exons, transcript_start, transcript_end, strand) {
+
     exons = jQuery.parseJSON(exons);
 
     exons.sort(sort_by('start', true, parseInt));
@@ -1296,7 +1363,9 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
             var length = cigars_array[i].length;
 
             var cigars_second_array = cigars_array[i].split("-");
+
             for (var j = 0; j < cigars_second_array.length; j++) {
+
                 length = cigars_second_array[j].length;
 
                 if (key == "M") {
@@ -1351,6 +1420,8 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                     }
                 }
                 else if (key == "D") {
+                    k = parseInt(l) + parseInt(j);
+
                     trackClass = "delete";
                     startposition = parseInt((cigar_pos) * parseFloat(maxLentemp) / (max));
                     stopposition = 1;
@@ -1375,7 +1446,6 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 }
 
 function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp_div, ref_exons, transcript_start, transcript_end, strand) {
-
     exons = jQuery.parseJSON(exons);
     exons.sort(sort_by('start', true, parseInt));
 
@@ -1544,27 +1614,18 @@ function formatCigar(ref_exons, hit_cigar, colours) {
 }
 
 function reverse_exons(transcript) {
-    console.log("reverse_exons")
-    console.log(transcript)
     var exons = [];
-    console.log(1)
     var length = transcript.end - transcript.start;
-    console.log(2)
 
     transcript._exons = transcript.Exons;
-    console.log(3)
-    console.log(transcript)
 
     for (var i = 0; i < transcript._exons.length; i++) {
-        console.log("i " + i)
 
-        exons.push({start: parseInt(transcript.start) + parseInt(transcript.end - transcript._exons[i].start),
-            end: parseInt(transcript.start) + parseInt(transcript.end - transcript._exons[i].end),
+        exons.push({end: parseInt(transcript.start) + parseInt(transcript.end - transcript._exons[i].start),
+            start: parseInt(transcript.start) + parseInt(transcript.end - transcript._exons[i].end),
             length: transcript.length,
             id: transcript.id
         })
     }
-    console.log(exons)
     return exons;
-
 }
