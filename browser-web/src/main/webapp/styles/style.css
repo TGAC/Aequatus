@@ -2498,7 +2498,6 @@ span.deleteicon input {
 
 .delete {
     position: absolute;
-    background-color: #12ff41;
     z-index: 999;
     margin-top: -5px;
 }
@@ -2520,7 +2519,6 @@ span.deleteicon input {
 
 #map {
     height: 150px;
-    position: fixed;
     top: 60px;
     width: 100%;
     /*border-left: 1px solid black;*/
