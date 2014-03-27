@@ -801,6 +801,36 @@ function getcoreMember(query) {
         {'query': query, 'url': ajaxurl},
         {'doOnSuccess': function (json) {
 
+//    var json = {"trackname": "member", "ref": {"cigarline": "47M5D74M22D99MD154MD73M6D151M5D29M", "genome": 1, "genes": {"gene": {"gene_id": 3978, "start": 415241, "end": 419497, "length": 4256, "reference": "1", "strand": -1, "desc": "LOC_Os01g01790.1", "transcripts": [
+//        {"id": 4850, "start": 415241, "end": 419497, "length": 4256, "strand": -1, "transcript_start": 415665, "transcript_end": 419253, "desc": "expressed protein", "Exons": [
+//            {"id": 19305, "start": 419157, "end": 419497, "length": 340, "strand": -1},
+//            {"id": 19306, "start": 418941, "end": 419057, "length": 116, "strand": -1},
+//            {"id": 19307, "start": 418757, "end": 418822, "length": 65, "strand": -1},
+//            {"id": 19308, "start": 418575, "end": 418681, "length": 106, "strand": -1},
+//            {"id": 19309, "start": 418408, "end": 418489, "length": 81, "strand": -1},
+//            {"id": 19310, "start": 417567, "end": 418289, "length": 722, "strand": -1},
+//            {"id": 19311, "start": 417147, "end": 417267, "length": 120, "strand": -1},
+//            {"id": 19312, "start": 416920, "end": 417071, "length": 151, "strand": -1},
+//            {"id": 19313, "start": 416776, "end": 416850, "length": 74, "strand": -1},
+//            {"id": 19315, "start": 416510, "end": 416602, "length": 92, "strand": -1},
+//            {"id": 19316, "start": 415241, "end": 415767, "length": 526, "strand": -1}
+//        ]}
+//    ]}}}, "member": [
+//        {"cigarline": "121D5M22D254MD73M6D151M5D29M", "genome": 3, "genes": {"gene": {"gene_id": 13381, "start": 560143, "end": 564207, "length": 4064, "reference": "3", "strand": -1, "desc": "MLOC_73243.1", "transcripts": [
+//            {"id": 34327, "start": 560143, "end": 564207, "length": 4064, "strand": -1, "transcript_start": 560570, "transcript_end": 564194, "Exons": [
+//                {"id": 113395, "start": 563853, "end": 563918, "length": 65, "strand": -1},
+//                {"id": 113396, "start": 563494, "end": 563600, "length": 106, "strand": -1},
+//                {"id": 113397, "start": 563314, "end": 563395, "length": 81, "strand": -1},
+//                {"id": 113398, "start": 562496, "end": 563221, "length": 725, "strand": -1},
+//                {"id": 113401, "start": 564016, "end": 564207, "length": 191, "strand": -1},
+//                {"id": 113402, "start": 561703, "end": 561823, "length": 120, "strand": -1},
+//                {"id": 113403, "start": 561477, "end": 561628, "length": 151, "strand": -1},
+//                {"id": 113404, "start": 561295, "end": 561369, "length": 74, "strand": -1},
+//                {"id": 113405, "start": 561020, "end": 561112, "length": 92, "strand": -1},
+//                {"id": 113406, "start": 560143, "end": 560669, "length": 526, "strand": -1}
+//            ]}
+//        ]}}}
+//    ]};
 
             var core_data = json.member;
             var max = 0;
@@ -838,15 +868,40 @@ function getcoreMember(query) {
                         name = title;
                     }
                 }
-                jQuery("#gene_widget").append("<div style='left:100px; width: 1000px; padding: 25px 5px; position: relative; border: 2px solid black; top: 10px' id='ref'><span style='position: absolute; top:0px;'>" + name + "</span></div>")
+
+                browser_coordinates(max)
+
+
+                jQuery("#gene_widget").append("<div style='left:100px; width: 1000px; padding: 25px 5px; position: relative; border: 2px solid black; top: 10px' id='ref'><span style='position: absolute; left:-100px; width: 100px; word-wrap: break-word; top:-5px; '> <b>" + name + "</b></span></div>")
 
                 dispGenes("#ref", genes, max, ref_data.cigarline);
 
                 ref_data.genes.gene.transcripts[0].Exons.sort(sort_by('start', true, parseInt));
+                console.log(ref_data.genes.gene.transcripts[0].Exons.toJSON())
+                console.log(ref_data.genes.gene.transcripts[0].transcript_start)
 
-                ref_data.genes.gene.transcripts[0].Exons[0].length = ref_data.genes.gene.transcripts[0].Exons[0].length - (ref_data.genes.gene.transcripts[0].Exons[0].start - ref_data.genes.gene.transcripts[0].transcript_start)
+                var exon_nu = 0
+                var diff = ref_data.genes.gene.transcripts[0].Exons[0].end - ref_data.genes.gene.transcripts[0].transcript_start
+                while(diff < 0){
+                    ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = 0
+                    exon_nu++;
+                    diff = ref_data.genes.gene.transcripts[0].Exons[exon_nu].end - ref_data.genes.gene.transcripts[0].transcript_start
+                }
+                ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = diff;
 
-                ref_data.genes.gene.transcripts[0].Exons[ref_data.genes.gene.transcripts[0].Exons.length - 1].length = ref_data.genes.gene.transcripts[0].transcript_end - ref_data.genes.gene.transcripts[0].Exons[ref_data.genes.gene.transcripts[0].Exons.length - 1].start;
+
+                var exon_nu = ref_data.genes.gene.transcripts[0].Exons.length - 1
+                var diff = ref_data.genes.gene.transcripts[0].transcript_end - ref_data.genes.gene.transcripts[0].Exons[exon_nu].start
+                while(diff < 0){
+                    ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = 0
+                    exon_nu--;
+                    diff = ref_data.genes.gene.transcripts[0].transcript_end - ref_data.genes.gene.transcripts[0].Exons[exon_nu].start
+                }
+
+                ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = diff;
+                console.log(ref_data.genes.gene.transcripts[0].transcript_end)
+
+                console.log(ref_data.genes.gene.transcripts[0].Exons.toJSON())
 
                 for (var i = 0; i < core_data.length; i++) {
                     var genes = core_data[i].genes
@@ -861,15 +916,15 @@ function getcoreMember(query) {
                                 name = title;
                             }
                         }
-                        jQuery("#gene_widget").append("<div style='left:100px; width: 1000px; padding: 5px; position: relative; border: 1px solid gray; top: 10px' id='core" + core_data[i].genome + "'>" + name + "</div>")
+                        jQuery("#gene_widget").append("<div style='left:100px; width: 1000px; padding: 25px 5px;  position: relative; border: 1px solid gray; top: 10px' id='core" + core_data[i].genome + "'><span style='position: absolute; left:-100px; width: 100px; word-wrap: break-word; top: -5px;'><b>" + name + "</b></span></div>")
                     }
 
                     if (core_data[i].cigarline) {
-                        dispGenes("#core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0]);
+                        dispGenes("#core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
                     }
 
                     else {
-                        dispGenes("#core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0]);
+                        dispGenes("#core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
                     }
 
                 }
@@ -878,7 +933,8 @@ function getcoreMember(query) {
         }
         });
 }
-function dispGenes(div, track, max, cigarline, ref) {
+function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
+    console.log("disp gene")
     var gene = track.gene;
 
     var trackClass;
@@ -929,10 +985,10 @@ function dispGenes(div, track, max, cigarline, ref) {
 
             var temp_div = jQuery("<div>").attr({
                 'id': transcript_len,
+                'onClick': "jQuery('#gene_info').html('" + JSON.stringify(gene.transcripts[transcript_len]) + "')",
                 'class': "gene",
                 'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " LEFT:" + startposition + "px; width :" + stopposition + "px;"
-            }).html("<p style='position: relative; white-space: nowrap; padding: 15px;'>" + label + "</p> " +
-                    "<span style='position: absolute; top: -12px;'>" + gene.reference + "</span>").appendTo(div);
+            }).html("<span style='position: absolute; left:-100px; width: 100px; word-wrap: break-word;'>" + label + "(" + gene.reference + ")</span> ").appendTo(div);
 
             var strand = 0;
             if (ref.strand == gene.transcripts[transcript_len].strand) {
@@ -961,17 +1017,21 @@ function dispGenes(div, track, max, cigarline, ref) {
                 ref.transcript_end = temp_int
             }
 
-            dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length);
+//            dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length, transcript_len);
+//            dispCigarLine(cigarline, 1, top, (gene_stop - gene_start), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), gene.transcripts[transcript_len].id, ref.Exons.toJSON(), transcript_start, transcript_end, strand);
+
+            dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length, transcript_len);
 
 
-            dispCigarLine(cigarline, 1, top, (gene_stop - gene_start), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, ref.Exons.toJSON(), transcript_start, transcript_end, strand);
+            dispCigarLine(cigarline, 1, top, (gene_stop - gene_start), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, ref.Exons.toJSON(), transcript_start, transcript_end, strand, ref_cigar);
         }
         else {
             var temp_div = jQuery("<div>").attr({
                 'id': transcript_len,
+                'onClick': "jQuery('#gene_info').html('" + JSON.stringify(gene.transcripts[transcript_len]) + "')",
                 'class': "gene",
                 'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " top:10px; LEFT:" + startposition + "px; width :" + stopposition + "px;"
-            }).html("<p style='position: relative; white-space: nowrap; '>" + label + "</p>").appendTo(div);
+            }).html("<span style='position: absolute; left:-100px; width: 100px; word-wrap: break-word;'>" + label + "(" + gene.reference + ")</span> ").appendTo(div);
 
             dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length);
 
@@ -984,7 +1044,9 @@ function dispGenes(div, track, max, cigarline, ref) {
     }
 }
 
-function dispGeneExon(track, genestrand, div, gene_start, width, max_len) {
+function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
+    console.log("disp gene exon")
+
     var trackClass = "exon";
     var disp_exon = false;
     var geneexons = track.Exons;
@@ -1029,6 +1091,7 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len) {
 
             jQuery("<div>").attr({
                 'class': trackClass,
+                'id': "exon" + track.id + "" + exon_len,
                 'style': "position:absolute; cursor:pointer; height: 10px; z-index: 100;  TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
             }).appendTo(div);
             if (disp_exon) {
@@ -1042,7 +1105,8 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len) {
     }
 }
 
-function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_div, ref_exons, transcript_start, transcript_end, strand) {
+function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_div, ref_exons, transcript_start, transcript_end, strand, ref_cigar) {
+    console.log("disp cigar line")
 
     exons = jQuery.parseJSON(exons);
 
@@ -1062,6 +1126,8 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
     var stopposition;
     var no_of_exons = exons.length;
     var cigar_string = "";
+
+    console.log("ciar pos " + cigar_pos)
     var main_colours = ['rgb(166,206,227)', 'rgb(31,120,180)', 'rgb(178,223,138)', 'rgb(51,160,44)', 'rgb(251,154,153)', 'rgb(227,26,28)', 'rgb(253,191,111)', 'rgb(255,127,0)', 'rgb(202,178,214)', 'rgb(106,61,154)', 'rgb(255,255,153)'];
 
     var colours = ['rgb(166,206,227)', 'rgb(31,120,180)', 'rgb(178,223,138)', 'rgb(51,160,44)', 'rgb(251,154,153)', 'rgb(227,26,28)', 'rgb(253,191,111)', 'rgb(255,127,0)', 'rgb(202,178,214)', 'rgb(106,61,154)', 'rgb(255,255,153)'];
@@ -1088,13 +1154,21 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
             ref_exons.sort(sort_by('start', true, parseInt));
 
-            cigar_string = formatCigar(ref_exons, cigar_string, colours)
+
+            cigar_string = formatCigar(ref_exons, cigar_string, colours, ref_cigar)
+
         }
 
         colours = main_colours;
 
         cigar_string = cigar_string.replace(/(MD)/g, "M,D");
         cigar_string = cigar_string.replace(/(DM)/g, "D,M");
+        cigar_string = cigar_string.replace(/(D_)/g, "D,_");
+        cigar_string = cigar_string.replace(/(_M)/g, "_,M");
+        cigar_string = cigar_string.replace(/(M_)/g, "M,_");
+        cigar_string = cigar_string.replace(/(_D)/g, "_,D");
+
+        console.log(cigar_string)
 
         var k = 0;
         var l = 0;
@@ -1117,7 +1191,6 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                     stopposition = parseInt((length) * parseFloat(maxLentemp) / (max));
                     trackClass = "insert";
                     if (parseInt(cigar_pos) + parseInt(length) <= temp_end) {
-
                         trackHTML(startposition, stopposition, top, trackClass, temp_div, colours[k], length);
                         cigar_pos = parseInt(cigar_pos) + parseInt(length)
 
@@ -1164,7 +1237,59 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                     trackClass = "delete ui-icon ui-icon-carat-1-s";
                     startposition = parseInt((cigar_pos) * parseFloat(maxLentemp) / (max));
                     stopposition = 15;
+//                    trackHTMLDelete(startposition, stopposition, top, trackClass, "#exon"+temp_div+""+exon_number, colours[j], length);
                     trackHTMLDelete(startposition, stopposition, top, trackClass, temp_div, colours[j], length);
+
+                }
+                else if (key == "_") {
+                    console.log("......")
+                    trackClass = "insert";
+
+                    startposition = parseInt((cigar_pos) * parseFloat(maxLentemp) / (max));
+                    stopposition = parseInt((length) * parseFloat(maxLentemp) / (max));
+
+                    if (parseInt(cigar_pos) + parseInt(length) <= temp_end) {
+                        trackHTML(startposition, stopposition, top, trackClass, temp_div, "black", length);
+                        cigar_pos = parseInt(cigar_pos) + parseInt(length)
+
+                    } else {
+
+
+                        var bool = true;
+
+                        second: while (bool) {
+
+                            stopposition = parseInt((temp_end - cigar_pos) * parseFloat(maxLentemp) / (max));
+
+                            trackHTML(startposition, stopposition, top, trackClass, temp_div, "black", (temp_end - cigar_pos));
+
+                            var diff = (temp_end - cigar_pos);
+                            length = length - diff;
+
+                            exon_number++;
+
+                            if (exon_number >= no_of_exons) {
+                                break second;
+                                continue first;
+                            }
+                            temp_start = exons[exon_number].start - gene_start;
+                            temp_end = exons[exon_number].end - gene_start;
+
+                            cigar_pos = temp_start;
+                            startposition = parseInt((cigar_pos) * parseFloat(maxLentemp) / (max));
+                            stopposition = parseInt((length) * parseFloat(maxLentemp) / (max));
+
+                            if (parseInt(cigar_pos) + parseInt(length) < temp_end) {
+
+                                trackHTML(startposition, stopposition, top, trackClass, temp_div, "black", length);
+                                cigar_pos = parseInt(cigar_pos) + parseInt(length)
+                                bool = false;
+                            }
+                            else {
+                                trackClass += " elselse"
+                            }
+                        }
+                    }
 
                 }
             }
@@ -1185,6 +1310,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
     function trackHTML(startposition, stopposition, top, trackClass, temp_div, colour, title) {
         var track_html_local;
+
         track_html_local = "<div class='" + trackClass + "' " +
             "STYLE=\"height: 14px; z-index: 1999; TOP:0px; LEFT:" + startposition + "px; opacity:0.5; background:" + colour + "; " +
             "width:" + (stopposition) + "px \" title=" + title + "> </div>";
@@ -1193,6 +1319,8 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 }
 
 function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp_div, ref_exons, transcript_start, transcript_end, strand) {
+    console.log("disp cigar line ref")
+
     exons = jQuery.parseJSON(exons);
     exons.sort(sort_by('start', true, parseInt));
 
@@ -1217,6 +1345,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
 
     if (cigars != '*') {
 
+
         cigars = cigars.replace(/([SIXMND])/g, ":$1,");
         var cigars_array = cigars.split(',');
         for (var i = 0; i < cigars_array.length - 1; i++) {
@@ -1234,16 +1363,18 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
             cigar_string += "";
         }
 
-        if (ref_exons) {
-            ref_exons = jQuery.parseJSON(ref_exons);
-            ref_exons.sort(sort_by('start', true, parseInt));
 
-            cigar_string = formatCigar(ref_exons, cigar_string, colours)
-
-        }
+//        if (ref_exons) {
+//            ref_exons = jQuery.parseJSON(ref_exons);
+//            ref_exons.sort(sort_by('start', true, parseInt));
+//
+//            console.log(formatCigar(exons, cigar_string, colours))
+//
+//        }
 
         cigar_string = cigar_string.replace(/(MD)/g, "M,D");
         cigar_string = cigar_string.replace(/(DM)/g, "D,M");
+        console.log(cigar_string)
 
         var k = 0;
         var cigars_array = cigar_string.split(',');
@@ -1315,6 +1446,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
 
     function trackHTMLDelete(startposition, stopposition, top, trackClass, temp_div, colour, title) {
         var track_html_local;
+
         track_html_local = "<div class='" + trackClass + "' " +
             "STYLE=\"height: 14px; z-index: 1999; TOP:-5px; LEFT:" + startposition + "px; margin-left: -7px;" +
             "width:" + (stopposition) + "px \" title=" + title + "> </div>";
@@ -1323,6 +1455,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
 
     function trackHTML(startposition, stopposition, top, trackClass, temp_div, colour, title) {
         var track_html_local;
+
         track_html_local = "<div class='" + trackClass + "' " +
             "STYLE=\"position: absolute; height: 14px; z-index: 1999; TOP:0px; LEFT:" + startposition + "px; opacity:0.5; background:" + colour + "; " +
             "width:" + (stopposition) + "px \" title=" + title + "> </div>";
@@ -1353,17 +1486,69 @@ function hitClicked(cigarline1, start, top, length, gene_start, stopposition, Ex
     dispCigarLine(cigarline1, start, top, length, gene_start, stopposition, Exons, "#cigar");
 }
 
-function formatCigar(ref_exons, hit_cigar, colours) {
+function formatCigar(ref_exons, hit_cigar, colours, ref_cigar) {
+    console.log("format cigar")
+
     var no_of_exons = ref_exons.length
     var hit_cigar_arr = [];
+    var ref_exon_array = [];
     var last_pos = 0;
     var i = 0
+    var j = 0;
     while (i < no_of_exons) {
         var ref_exon = ref_exons[i].length;
-        hit_cigar_arr.push(hit_cigar.substr(last_pos, ref_exon));
-        last_pos += ref_exon;
+        ref_exon_array.push(ref_exon)
         i++;
     }
+
+    var a = 0;
+    var p = 0;
+
+    var cigar_string = "";
+    ref_cigar = ref_cigar.replace(/([SIXMND])/g, ":$1,");
+    var cigars_array = ref_cigar.split(',');
+
+    for (var i = 0; i < cigars_array.length - 1; i++) {
+
+        var cigar = cigars_array[i].split(":");
+        var key = cigar[1];
+        var length = cigar[0] * 3;
+        if (!length) {
+            length = 3
+        }
+        while (length--) {
+            cigar_string += key;
+        }
+
+        cigar_string += "";
+    }
+
+    while (j < cigar_string.length) {
+        if (cigar_string.charAt(j) == 'D') {
+            if (hit_cigar.charAt(j) == 'M') {
+                hit_cigar = replaceAt(hit_cigar, j, "_");
+            }
+        }
+        j++;
+    }
+    var j = 0;
+
+    var b = 0;
+    while (j < cigar_string.length) {
+        if (cigar_string.charAt(j) == 'M') {
+            if (a == ref_exon_array[p]) {
+                p++;
+                hit_cigar_arr.push(hit_cigar.substr(last_pos, b));
+                a = 0;
+                last_pos += b;
+                b=0;
+            }
+            a++;
+        }
+b++;
+        j++;
+    }
+
     return hit_cigar_arr.join("-");
 
 }
@@ -1383,4 +1568,8 @@ function reverse_exons(transcript) {
         })
     }
     return exons;
+}
+
+function replaceAt(str, index, character) {
+    return str.substr(0, index) + character + str.substr(index+character.length);
 }

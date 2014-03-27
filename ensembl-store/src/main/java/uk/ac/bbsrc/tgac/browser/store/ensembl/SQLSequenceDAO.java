@@ -101,8 +101,8 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
     public static final String GET_EXON = "SELECT seq_region_start,seq_region_end,seq_region_strand FROM exon where seq_region_id =?";
     public static final String GET_EXON_per_Gene = "SELECT e.exon_id, e.seq_region_start, e.seq_region_end, e.seq_region_strand FROM exon e, exon_transcript et where et.exon_id = e.exon_id and et.transcript_id =  ?";
     public static final String GET_Domain_per_Gene = "SELECT * FROM transcript_attrib where transcript_id =?";
-    public static final String GET_CDS_start_per_Gene = "SELECT seq_start FROM translation where transcript_id =?";
-    public static final String GET_CDS_end_per_Gene = "SELECT seq_end FROM translation where transcript_id =?";
+    public static final String GET_CDS_start_per_Gene = "SELECT start_exon_id, seq_start FROM translation where transcript_id =?";
+    public static final String GET_CDS_end_per_Gene = "SELECT end_exon_id, seq_end FROM translation where transcript_id =?";
     public static final String GET_GO_Genes = "select * from gene_attrib where value like ?";
     public static final String GET_GO_Transcripts = "select * from transcript_attrib where value like ?";
     public static final String GET_GENE_SIZE = "SELECT COUNT(*) FROM gene where seq_region_id =? and analysis_id = ?";
@@ -111,6 +111,8 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
     public static final String GET_GO_for_Genes = "select value from gene_attrib where gene_id = ?";
     public static final String GET_GO_for_Transcripts = "select value from transcript_attrib where transcript_id =  ?";
     public static final String GET_Gene_by_Gene_ID = "SELECT gene_id,seq_region_id, seq_region_start,seq_region_end, description,seq_region_strand FROM gene where gene_id =?";//AND ((seq_region_start > ? AND seq_region_end < ?) OR (seq_region_start < ? AND seq_region_end > ?) OR (seq_region_end > ? AND seq_region_end < ?) OR (seq_region_start > ? AND seq_region_start < ?))";
+    public static final String GET_EXON_BY_ID = "SELECT seq_region_start,seq_region_end,seq_region_strand FROM exon where exon_id =?";
+
 
     public static final String GET_START_END_ANALYSIS_ID_FROM_SEQ_REGION_ID = "SELECT seq_region_start,seq_region_end,analysis_id FROM dna_align_feature where req_region_id =?";
     public static final String GET_HIT_SIZE = "SELECT COUNT(*) FROM dna_align_feature where seq_region_id =? and analysis_id = ?";
@@ -2399,21 +2401,26 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             translation_end = new_Template.queryForList(GET_CDS_end_per_Gene, new Object[]{transcript_id});
 
             for (Map start_seq : translation_start) {
-                transcript.put("transcript_start", start+ Integer.parseInt(start_seq.get("seq_start").toString()));
+                log.info("\n\n\n\tstart " + start_seq.toString());
+                log.info("\n\n\n\tstart next " + new_Template.queryForList(GET_EXON_BY_ID, new Object[]{start_seq.get("start_exon_id")}).toString());
+
+                int exon_start = Integer.parseInt(new_Template.queryForList(GET_EXON_BY_ID, new Object[]{start_seq.get("start_exon_id")}).get(0).get("seq_region_start").toString());
+                transcript.put("transcript_start", exon_start + Integer.parseInt(start_seq.get("seq_start").toString()));
             }
 
             for (Map end_seq : translation_end) {
-                transcript.put("transcript_end", start+ Integer.parseInt(end_seq.get("seq_end").toString()));
+                log.info("\n\n\n\tend " + end_seq.toString());
+
+                int exon_end = Integer.parseInt(new_Template.queryForList(GET_EXON_BY_ID, new Object[]{end_seq.get("end_exon_id")}).get(0).get("seq_region_end").toString());
+
+                transcript.put("transcript_end", exon_end - Integer.parseInt(end_seq.get("seq_end").toString()));
             }
 
-            if(transcript.getInt("transcript_start") > transcript.getInt("transcript_end")){
-                for (Map start_seq : translation_end) {
-                    transcript.put("transcript_start", start+ Integer.parseInt(start_seq.get("seq_end").toString()));
-                }
+            if (transcript.getInt("transcript_start") > transcript.getInt("transcript_end")) {
+                int temp = transcript.getInt("transcript_start");
+                transcript.put("transcript_start", transcript.getInt("transcript_end"));
+                transcript.put("transcript_end", temp);
 
-                for (Map end_seq : translation_start) {
-                    transcript.put("transcript_end", start+ Integer.parseInt(end_seq.get("seq_start").toString()));
-                }
             }
 
             transcript.put("desc", map.get("description"));

@@ -1625,7 +1625,7 @@ span.counter {
 .vertical-line {
     position: fixed;
     display: inline;
-    top: 119px;
+    top: 10px;
     border: 1px solid #d3d3d3;
     border-top: 0;
     border-bottom: 0;
