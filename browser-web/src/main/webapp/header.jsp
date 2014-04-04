@@ -64,9 +64,6 @@
     <script type="text/javascript" src="<c:url value='/scripts/circular.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/geneView.js'/>"></script>
 
-<%--<script type="text/javascript" src="<c:url value='/scripts/blast_local.js'/>"></script>--%>
-
-    <%--<title>TGAC Browser - BRIC CHO <c:if test="${not empty title}">- ${title}</c:if></title>--%>
     <title>${initParam.pageTitle}</title>
     <script type="text/javascript">
 
@@ -104,53 +101,10 @@
         </tr>
         </table>
     </center>
-    <div class="blasttab">
-        <table>
-            <tr>
-                <td>
-                    <input type="text" id="search" class="seachbox" value='${initParam.defaultRef}'/>
-                </td>
-                <td>
-                    <div id="genome_list"></div>
-                </td>
-                <%--<td>--%>
-                    <%--<c:set var="databases">${initParam.blastdblink} </c:set>--%>
-<%----%>
-                    <%--<c:set var="dateParts" value="${fn:split(databases, ',')}"/>--%>
-<%----%>
-                    <%--<c:set var="length">${fn:length(databases)}</c:set>--%>
-<%----%>
-                    <%--${initParam.fasta == "true" && length > 1 ? "| <a href=\"blast.jsp\"><span>Blast Search</span></a>" : ""}--%>
-                <%--</td>--%>
-                <%--<td>--%>
-                    <%--| <a href="<c:url value="session.jsp"/>"><span>Load Session</span></a>--%>
-                <%--</td>--%>
-            </tr>
-        </table>
 
-    </div>
 </div>
 
-<%--<table border="0" width="100%">--%>
-<%--<tr>--%>
-<%--<td class="headertable" align="left" onclick="window.location.href='<c:url value='/'/>'">--%>
-<%--<img src="<c:url value='/images/tgac_new_logo_nosponsers.png'/>" alt="TGAC Logo" name="logo"--%>
-<%--border="0" id="TGAClogo"/>--%>
-<%--</td>--%>
-<%--<td align="right" >--%>
-<%--<div id=dbinfo></div>--%>
-<%--<div id=sessionid></div>--%>
-<%--</td>--%>
-<%--</tr>--%>
-<%--</table>--%>
 
-<%--<div id="navtabs">--%>
-<%--<ul>--%>
-<%--<li><a href="<c:url value="index.jsp"/>"><span>Home</span></a></li>--%>
-<%--<li><a href="<c:url value="blast.jsp"/>"><span>Blast Search</span></a></li>--%>
-<%--<li><a href="<c:url value="session.jsp"/>"><span>Load Session</span></a></li>--%>
-<%--</ul>--%>
-<%--</div>--%>
 <div id="filetrack" style="visibility: hidden; position: fixed;">${initParam.trackfiles}</div>
 <div id="title" style="visibility: hidden; position: fixed;">${initParam.urlpath}</div>
 <div id="linkLocation" style="visibility: hidden; position: fixed;">${initParam.linkLocation}</div>

@@ -4,26 +4,31 @@
 
 </div>
 
-<div id="searchresult">
-
-</div>
 <div id="canvas" style="display: none">
 
+    <div id=reference_maps style="height: 150px;    position: fixed;    top: 20px;    width: 100%;">
+
+    </div>
+
+    <div id=chr_maps style="height: 100px;    position: fixed;    top: 170px;    width: 100%; z-index: 19999">
+
+    </div>
     <div id="bar_image_ref"
-         style="border-left: 1px solid #000000; border-right: 1px solid #000000; height: 10px; left: 0; position: fixed; top: 60px; vertical-align: middle; width: 100%; z-index: 999;">
+         style="border-left: 1px solid #000000; border-right: 1px solid #000000; height: 10px; left: 0; position: fixed; top: 280px; vertical-align: middle; width: 100%; z-index: 999;">
 
-        <div id="bar_image_selector"
-             style="border: 1px solid #000000; height: 20px; left: 0; position: fixed; top: 55px; vertical-align: middle; width: 50px; z-index: 1999; background: white; opacity: 0.2">
 
-        </div>
+    </div>
+    <div id="bar_image_selector"
+         style="border: 1px solid #000000; height: 20px; left: 0; position: fixed; top: 275px; vertical-align: middle; width: 50px; z-index: 1999; background: white; opacity: 0.2">
+
     </div>
 
     <div id="selected_region"
-         style=" background-color: #FFFFFF; border: 1px solid #000000;  height: 20px;  left: 1px;  position: fixed; text-align: center; top: 135px; vertical-align: middle; width: 100%; z-index: 999;">
+         style=" background-color: #FFFFFF; border: 1px solid #000000;  height: 20px;  left: 1px;  position: fixed; text-align: center; top: 300px; vertical-align: middle; width: 100%; z-index: 999;">
 
     </div>
 
-    <div style="height: 500px; left: 5%; overflow: scroll; position: fixed; top: 160px;width: 1200px; z-index: 999;">
+    <div style="height: 500px; left: 5%; overflow: scroll; position: fixed; top: 320px;width: 1200px; z-index: 999;">
 
         <div id="vertical0" style="position:absolute; left: 100px" class="vertical-line"></div>
         <div id="vertical1" style="position:absolute; left: 200px" class="vertical-line"></div>
@@ -44,7 +49,7 @@
     </div>
 
 
-    <div id="gene_info">
+    <div id="gene_info" style=" position: fixed; right: 50px; top: 350px; width: 20%; word-wrap: break-word;">
 
     </div>
 
@@ -84,6 +89,5 @@
         console.log("ready")
         kickOff();
         getReferences();
-        search_geneView();
     });
 </script>

@@ -2742,7 +2742,7 @@ span.deleteicon input {
     height: 500px;
     left: 5%;
     position: fixed;
-    top: 160px;
+    top: 360px;
     width: 1200px;
     z-index: 999;
     overflow: scroll;

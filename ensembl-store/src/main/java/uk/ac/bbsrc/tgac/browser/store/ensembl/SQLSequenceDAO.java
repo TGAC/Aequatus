@@ -159,6 +159,18 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
     public static final String GET_Gene_by_transcript_id = "select gene_id from transcript where transcript_id = ?;";//"select * from gene_view where seq_region_id = ? and analysis_id = ?;";//
 
 
+    public static final String GET_Gene_View_by_transcript_id = "select g.gene_id, g.seq_region_start as gene_start, g.seq_region_end as gene_end, g.seq_region_strand as gene_strand, g. description as gene_name, " +
+            "t.transcript_id, t.seq_region_start as transcript_start, t.seq_region_end as transcript_end, t.description as transcript_name, " +
+            "e.exon_id, e.seq_region_start as exon_start, e.seq_region_end as exon_end, " +
+            "tl.translation_id, tl.seq_start as translation_start, tl.seq_end as translation_end, tl.start_exon_id, tl.end_exon_id " +
+            "from gene g " +
+            "left join transcript t on t.gene_id = g.gene_id " +
+            "left join exon_transcript et on t.transcript_id = et.transcript_id " +
+            "left join exon e on et.exon_id = e.exon_id " +
+            "left join translation tl on tl.transcript_id = t.transcript_id " +
+            "where  t.gene_id = g.gene_id and t.transcript_id = et.transcript_id and et.exon_id = e.exon_id  and  g.seq_region_id = 136058 and g.analysis_id = 1";
+
+
     private JdbcTemplate template;
 
     public void setJdbcTemplate(JdbcTemplate template) {
@@ -2399,6 +2411,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             transcript.put("strand", map.get("seq_region_strand"));
             translation_start = new_Template.queryForList(GET_CDS_start_per_Gene, new Object[]{transcript_id});
             translation_end = new_Template.queryForList(GET_CDS_end_per_Gene, new Object[]{transcript_id});
+            log.info("\n\n\n\tno of translation " + translation_start.size());
 
             for (Map start_seq : translation_start) {
                 log.info("\n\n\n\tstart " + start_seq.toString());
@@ -2423,7 +2436,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
 
             }
 
-            transcript.put("desc", map.get("description"));
+            transcript.put("desc", map.get("description") +":"+ query);
             JSONArray exons_array = new JSONArray();
             List<Map<String, Object>> exons = new_Template.queryForList(GET_EXON_per_Gene, new Object[]{transcript_id});
             for (Map map_temp : exons) {
@@ -2435,6 +2448,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
 
                 exon.put("id", map_temp.get("exon_id"));
                 exon.put("start", start);
+                exon.put("_start", start);
                 exon.put("end", end);
                 exon.put("length", end - start);
 

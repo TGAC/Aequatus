@@ -24,59 +24,14 @@
 
 
     jQuery(document).ready(function() {
-        var chr = ""//metaData();
-        getReferences();
 
         jQuery("#mainsearch").load("geneView.jsp", function() {
-            onLoad();
-            getUrlVariables(chr);
         });
     });
 
-    function getUrlVars() {
-        var vars = {};
-        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
-            vars[key] = value;
-        });
-        return vars;
-    }
-    function getUrlVariables(chr) {
-        var showBlast = false;
-        var vars = [];
-        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
-            vars.push(value);
-            if (key == "blasttrack") {
-                showBlast = true;
-            }
 
-        });
 
-        if (vars.length > 0) {
 
-            jQuery("#search").val(vars[0]);
-
-            seqregionSearchPopup_geneView(jQuery("#search").val(), vars[1], vars[2], vars[3], vars[4])
-//            seqregionSearchPopup(jQuery("#search").val(), vars[1], vars[2], vars[3], vars[4])
-
-        }
-        else if (jQuery('#search').val().length >= 1) {
-            var now = new Date();
-
-            search_geneView();
-//            search(jQuery('#search').val());
-        <%--vars[1] for blast and so on --%>
-        }
-        else if(chr == true){
-             getReferences(true)
-        }
-        else {
-          console.log("else")
-        }
-
-//        if(showBlast){
-//            loadPreBlast(vars[3], vars[0]);
-//        }
-    }
 
 
 </script>

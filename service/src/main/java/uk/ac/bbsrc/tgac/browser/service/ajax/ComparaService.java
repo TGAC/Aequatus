@@ -243,9 +243,9 @@ public class ComparaService {
     }
 
     public JSONObject getMember(HttpSession session, JSONObject json) {
-        String seqName = json.getString("query");
+        String chr_name = json.getString("chr_name");
         JSONObject response = new JSONObject();
-        int reference = json.getInt("reference");
+        String genome_id = json.getString("reference");
 
 
 
@@ -253,9 +253,34 @@ public class ComparaService {
         response.put("trackname", "member");
         int count;
         try {
-            Integer queryid = comparaStore.getDnafragId(seqName, reference);
 
-            response.put("member",comparaStore.getAllMember(seqName));
+            response.put("chr_length", comparaStore.getChromosomeLength(chr_name, genome_id));
+            response.put("member",comparaStore.getAllMember(chr_name, genome_id));
+
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return response;
+    }
+
+
+    public JSONObject getChromosome(HttpSession session, JSONObject json) {
+        JSONObject response = new JSONObject();
+        String reference = json.getString("reference");
+
+
+
+//        int delta = json.getInt("delta");
+        response.put("trackname", "member");
+        int count;
+        try {
+
+            response.put("member",comparaStore.getAllChromosome(reference));
 
 
         } catch (IOException e) {
