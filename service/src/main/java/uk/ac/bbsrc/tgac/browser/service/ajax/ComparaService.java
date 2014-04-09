@@ -256,6 +256,7 @@ public class ComparaService {
 
             response.put("chr_length", comparaStore.getChromosomeLength(chr_name, genome_id));
             response.put("member",comparaStore.getAllMember(chr_name, genome_id));
+            response.put("overview",comparaStore.getOverviewAllMember(chr_name, genome_id));
 
 
         } catch (IOException e) {

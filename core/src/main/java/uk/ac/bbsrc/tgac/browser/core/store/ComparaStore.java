@@ -59,6 +59,7 @@ public interface ComparaStore extends Store<String> {
     public JSONArray getMember(String query, long start, long end, String trackId) throws IOException;
     public JSONArray getHomologybyMLSSI(String query, long start, long end, String trackId) throws IOException;
     public JSONArray getAllMember(String query, String genome_db) throws IOException;
+    public JSONArray getOverviewAllMember(String query, String genome_db) throws IOException;
     public JSONArray getAllChromosome(String query) throws IOException;
     public int getChromosomeLength(String chr_name, String genome_id) throws IOException;
     public JSONObject getGenefromCore(String query, String genome) throws Exception;
