@@ -946,7 +946,7 @@ ul.tree li:last-child {
 }
 
 div.sectionDivider {
-    text-align: right;
+    text-align: left;
     border-bottom: 1px solid #999;
     margin-bottom: 5px;
     padding-top: 12px;
@@ -1330,12 +1330,14 @@ span.counter {
 /* Browser CSS Starts here*/
 /* All margins and alignments are based on percentage */
 #canvas {
-    position: relative;
+    position: fixed;
     /*float: right;*/
     left: 0px;
     background-color: white;
     width: 100%;
     min-height: 100%;
+    top: 20px;
+
     /*border: 1px solid black;*/
     /**/
     /*box-shadow: 10px 10px 25px #888888;*/
@@ -2740,10 +2742,10 @@ span.deleteicon input {
 
 #gene_widget{
     height: 500px;
-    left: 5%;
-    position: fixed;
-    top: 360px;
-    width: 1200px;
+    /*left: 5%;*/
+    position: relative;
+    top: 0px;
+    /*width: 1200px;*/
     z-index: 999;
     overflow: scroll;
 }
