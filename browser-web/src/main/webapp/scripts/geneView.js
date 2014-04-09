@@ -149,6 +149,9 @@ function getChromosomes(genome_db_id) {
     jQuery("#gene_info").html("")
 
 
+
+
+    jQuery("#genome_aero").animate({"left": (jQuery("#genome"+genome_db_id).position().left+jQuery("#genome"+genome_db_id).width())})
     Fluxion.doAjax(
         'comparaService',
         'getChromosome',
@@ -173,6 +176,7 @@ function getChromosomes(genome_db_id) {
                 var length = json.member[referenceLength].length;
                 var top = parseInt(jQuery("#map").css('top')) + parseInt(jQuery("#map").css('height')) - (height + 20);
                 jQuery("<div>").attr({
+                    'id': 'chr'+ json.member[referenceLength].chr_name,
                     'class': 'refmap',
                     'style': "left: " + left + "px; width:" + width + "px; height:" + height + "px; background: " + jQuery("#genome" + genome_db_id).css("background"),
                     'onClick': 'getMember("' + json.member[referenceLength].chr_name + '",' + genome_db_id + ')'
@@ -181,12 +185,20 @@ function getChromosomes(genome_db_id) {
                     'style': "position: absolute; bottom: 0px; left: " + left + "px; width:" + width + "px; "
                 }).html(json.member[referenceLength].chr_name).appendTo("#chr_maps");
 
+
+
             }
+
+            jQuery("#chr_maps").append("<div id=chromosome_aero style='position: absolute; top: 60px'><img src='./images/browser/selected.png' height='30px'></div>")
+
         }
         }
     )
 }
 function getMember(chr_name, genome_db) {
+    jQuery("#chromosome_aero").animate({"left": (jQuery("#chr"+chr_name).position().left+jQuery("#chr"+chr_name).width())})
+
+
     jQuery("#selected_region").html("")
     jQuery("#gene_widget").html("")
     jQuery("#gene_info").html("")
@@ -316,6 +328,28 @@ function getcoreMember(query) {
                 ]}}},
                 {"cigarline": "127MD110MD120MD56M", "genome": 3, "genome-name": "hordeum_vulgare", "genes": {"gene": {"gene_id": 12713, "start": 551916635, "end": 551920520, "length": 3886, "reference": "5", "strand": 1, "desc": "MLOC_60310.1", "transcripts": [
                     {"id": 32765, "start": 551916635, "end": 551920520, "length": 3886, "strand": 1, "transcript_start": 551916927, "transcript_end": 551920418, "desc": "null:MLOC_60310.1", "Exons": [
+                        {"id": 108280, "start": 551916635, "_start": 551916635, "end": 551916994, "length": 360, "strand": 1},
+                        {"id": 108281, "start": 551917112, "_start": 551917112, "end": 551917230, "length": 119, "strand": 1},
+                        {"id": 108282, "start": 551918038, "_start": 551918038, "end": 551918497, "length": 460, "strand": 1},
+                        {"id": 108283, "start": 551918655, "_start": 551918655, "end": 551918918, "length": 264, "strand": 1},
+                        {"id": 108284, "start": 551919636, "_start": 551919636, "end": 551919758, "length": 123, "strand": 1},
+                        {"id": 108285, "start": 551919874, "_start": 551919874, "end": 551919975, "length": 102, "strand": 1},
+                        {"id": 108286, "start": 551920134, "_start": 551920134, "end": 551920520, "length": 387, "strand": 1}
+                    ]}
+                ]}}},
+                {"cigarline": "127MD110MD120MD56M", "genome": 3, "genome-name": "hordeum_vulgare", "genes": {"gene": {"gene_id": 12713, "start": 551916635, "end": 551920520, "length": 3886, "reference": "5", "strand": -1, "desc": "MLOC_60310.1", "transcripts": [
+                    {"id": 32765, "start": 551916635, "end": 551920520, "length": 3886, "strand": -1, "transcript_start": 551916927, "transcript_end": 551920418, "desc": "null:MLOC_60310.1", "Exons": [
+                        {"end": 551917020, "start": 551916634, "length": 387, "id": 108286},
+                            {"end": 551917280, "start": 551917179, "length": 102, "id": 108285},
+                            {"end": 551917518, "start": 551917396, "length": 123, "id": 108284},
+                            {"end": 551918499, "start": 551918236, "length": 264, "id": 108283},
+                            {"end": 551919116, "start": 551918657, "length": 460, "id": 108282},
+                            {"end": 551920042, "start": 551919924, "length": 119, "id": 108281},
+                            {"end": 551920519, "start": 551920160, "length": 360, "id": 108280}
+                    ]}
+                ]}}},
+                {"cigarline": "127MD110MD120MD56M", "genome": 3, "genome-name": "hordeum_vulgare", "genes": {"gene": {"gene_id": 12713, "start": 551916635, "end": 551920520, "length": 3886, "reference": "5", "strand": -1, "desc": "MLOC_60310.1", "transcripts": [
+                    {"id": 32765, "start": 551916635, "end": 551920520, "length": 3886, "strand": -1, "transcript_start": 551916737, "transcript_end": 551920228, "desc": "null:MLOC_60310.1", "Exons": [
                         {"id": 108280, "start": 551916635, "_start": 551916635, "end": 551916994, "length": 360, "strand": 1},
                         {"id": 108281, "start": 551917112, "_start": 551917112, "end": 551917230, "length": 119, "strand": 1},
                         {"id": 108282, "start": 551918038, "_start": 551918038, "end": 551918497, "length": 460, "strand": 1},
@@ -518,6 +552,17 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
             gene.transcripts[transcript_len].Exons.sort(sort_by('start', true, parseInt));
 
             if (strand == -1) {
+
+                var temp_start = gene.transcripts[transcript_len].end - gene.transcripts[transcript_len].transcript_end;
+                var temp_end = gene.transcripts[transcript_len].transcript_start - gene.transcripts[transcript_len].start;
+                console.log(transcript_start+":"+transcript_end)
+                gene.transcripts[transcript_len].transcript_start = parseInt(gene.transcripts[transcript_len].start) + parseInt(temp_start);
+                gene.transcripts[transcript_len].transcript_end = parseInt(gene.transcripts[transcript_len].end) - parseInt(temp_end);
+
+                transcript_start = gene.transcripts[transcript_len].transcript_start;
+                transcript_end = gene.transcripts[transcript_len].transcript_end;
+                console.log(transcript_start+":"+transcript_end)
+
                 console.log(gene.transcripts[transcript_len].Exons.toJSON())
                 gene.transcripts[transcript_len].Exons = reverse_exons(gene.transcripts[transcript_len]);
 
@@ -529,16 +574,9 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 
                 console.log(gene.transcripts[transcript_len].Exons.toJSON())
 
-                var temp_start = gene.transcripts[transcript_len].end - gene.transcripts[transcript_len].transcript_end;
-                var temp_end = gene.transcripts[transcript_len].transcript_start - gene.transcripts[transcript_len].start;
 
-               console.log(transcript_start+":"+transcript_end)
-                gene.transcripts[transcript_len].transcript_start = parseInt(gene.transcripts[transcript_len].start) + parseInt(temp_start);
-                gene.transcripts[transcript_len].transcript_end = parseInt(gene.transcripts[transcript_len].end) - parseInt(temp_end);
 
-//                transcript_start = gene.transcripts[transcript_len].transcript_start;
-//                transcript_end = gene.transcripts[transcript_len].transcript_end;
-                console.log(transcript_start+":"+transcript_end)
+
 
 
             }

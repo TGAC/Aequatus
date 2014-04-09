@@ -23,6 +23,9 @@
     <div id=chr_maps style="height: 100px;    position: relative;    top: 10px;    width: 100%; z-index: 19999">
 
     </div>
+
+
+
     <div id="bar_image_ref"
          style="border-left: 1px solid #000000; border-right: 1px solid #000000; height: 10px; left: 0; position: relative; top: 10px; vertical-align: middle; width: 100%; z-index: 999;">
 
