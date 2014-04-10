@@ -188,6 +188,8 @@ function getChromosomes(genome_db_id) {
 
             jQuery("#chr_maps").append("<div id=chromosome_aero style='position: absolute; top: 60px'><img src='./images/browser/selected.png' height='30px'></div>")
 
+            getMember(json.member[0].chr_name, genome_db_id);
+
         }
         }
     )
@@ -227,6 +229,8 @@ function getMember(chr_name, genome_db) {
                     'style': "LEFT:" + startposition + "px; width :" + stopposition + "px; opacity: " + (overview[overview_len].graph / max) + "; height: 10px;"
                 }).appendTo("#bar_image_ref");
             }
+
+            drawSelected();
         }
         });
 }

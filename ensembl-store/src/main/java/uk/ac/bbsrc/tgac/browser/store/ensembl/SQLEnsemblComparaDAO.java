@@ -451,7 +451,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         homology_members.put("cigarline", homologous.get("cigar_line"));
 
         homology_members.put("genome", homologous.get("genome_db_id"));
-        homology_members.put("genome-name", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{homologous.get("genome_db_id")}, String.class));
+        homology_members.put("genome_name", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{homologous.get("genome_db_id")}, String.class));
         homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString()));
 
         return homology_members;

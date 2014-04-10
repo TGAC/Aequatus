@@ -2741,13 +2741,13 @@ span.deleteicon input {
 }
 
 #gene_widget{
-    height: 500px;
+    height: auto;
     /*left: 5%;*/
     position: relative;
     top: 0px;
     /*width: 1200px;*/
     z-index: 999;
-    overflow: scroll;
+    /*overflow: scroll;*/
 }
 
 .frontcorner{

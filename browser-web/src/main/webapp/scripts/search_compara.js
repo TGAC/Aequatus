@@ -25,9 +25,12 @@ function getReferences() {
                     "</div>  "
             }
             content += "</table></center>"
+
+
             jQuery("#reference_maps").html(content);
             jQuery("#reference_maps").append("<div id=genome_aero style='position: absolute; top: 50px'><img src='./images/browser/selected.png' height='45px'></div>")
             jQuery("#canvas").show();
+            getChromosomes(json.genomes[0].genome_db_id);
         }
         });
 }
