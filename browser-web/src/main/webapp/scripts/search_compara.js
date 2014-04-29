@@ -16,19 +16,16 @@ function getReferences() {
         'getGenomes',
         { 'url': ajaxurl},
         {'doOnSuccess': function (json) {
-            var content = " <center> <table width=100%><tr> "
+            var content = " <b>Genomes: </b> <select name='genomes' id='genomes' onchange='getChromosomes(jQuery(\"#genomes\").val())'> "
             for (var i = 0; i < json.genomes.length; i++) {
                 var left = (100 * i) + 50
                 content += "<td>" +
-                    "<div onclick=getChromosomes(\""+json.genomes[i].genome_db_id+"\") id = 'genome"+json.genomes[i].genome_db_id + "' style=\"box-shadow: 5px 5px 10px 1px #808080; position: relative; margin: auto; background: "+colours[i]+"; top: 10px; border: 1px solid black; height:100px; border-radius: 50px; width:100px;\"> " +
-                    "<div style='left: 5px; position: absolute; text-align: center; top: 50%; width: 90px; word-wrap: break-word; color: white;'> <b> " + json.genomes[i].name + " </b> </div> " +
-                    "</div>  "
+                    "<option value ="+ json.genomes[i].genome_db_id+">" + json.genomes[i].name + "</option> "
             }
-            content += "</table></center>"
+            content += "</select>"
 
 
             jQuery("#reference_maps").html(content);
-            jQuery("#reference_maps").append("<div id=genome_aero style='position: absolute; top: 50px'><img src='./images/browser/selected.png' height='45px'></div>")
             jQuery("#canvas").show();
             getChromosomes(json.genomes[0].genome_db_id);
         }

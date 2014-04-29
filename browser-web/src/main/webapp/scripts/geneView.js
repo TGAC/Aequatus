@@ -149,7 +149,6 @@ function getChromosomes(genome_db_id) {
     jQuery("#gene_info").html("")
 
 
-    jQuery("#genome_aero").animate({"left": (jQuery("#genome" + genome_db_id).position().left + jQuery("#genome" + genome_db_id).width())})
     Fluxion.doAjax(
         'comparaService',
         'getChromosome',
@@ -186,8 +185,6 @@ function getChromosomes(genome_db_id) {
 
             }
 
-            jQuery("#chr_maps").append("<div id=chromosome_aero style='position: absolute; top: 60px'><img src='./images/browser/selected.png' height='30px'></div>")
-
             getMember(json.member[0].chr_name, genome_db_id);
 
         }
@@ -195,7 +192,9 @@ function getChromosomes(genome_db_id) {
     )
 }
 function getMember(chr_name, genome_db) {
-    jQuery("#chromosome_aero").animate({"left": (jQuery("#chr" + chr_name).position().left + jQuery("#chr" + chr_name).width())})
+    jQuery(".selected").removeClass("selected")
+
+    jQuery("#chr" + chr_name).addClass("selected")
 
 
     jQuery("#selected_region").html("")
@@ -308,77 +307,272 @@ function getcoreMember(query) {
         'getCoreMember',
         {'query': query, 'url': ajaxurl},
         {'doOnSuccess': function (json) {
-//            var json = {"trackname": "member", "ref": {"cigarline": "98MD78M2D180MD56M", "genome": 2, "genome-name": "brachypodium_distachyon", "genes": {"gene": {"gene_id": 119, "start": 745282, "end": 749088, "length": 3807, "reference": "1", "strand": -1, "desc": "BRADI1G01090.1", "transcripts": [
-//                {"id": 137, "start": 745282, "end": 749088, "length": 3807, "strand": -1, "transcript_start": 745575, "transcript_end": 749021, "desc": "null:BRADI1G01090.1", "Exons": [
-//                    {"id": 678, "start": 748776, "_start": 748776, "end": 749088, "length": 313, "strand": -1},
-//                    {"id": 679, "start": 748543, "_start": 748543, "end": 748661, "length": 119, "strand": -1},
-//                    {"id": 680, "start": 747391, "_start": 747391, "end": 747844, "length": 454, "strand": -1},
-//                    {"id": 681, "start": 746956, "_start": 746956, "end": 747222, "length": 267, "strand": -1},
-//                    {"id": 682, "start": 746072, "_start": 746072, "end": 746194, "length": 123, "strand": -1},
-//                    {"id": 683, "start": 745783, "_start": 745783, "end": 745884, "length": 102, "strand": -1},
-//                    {"id": 684, "start": 745282, "_start": 745282, "end": 745680, "length": 399, "strand": -1}
-//                ]}
-//            ]}}}, "member": [
-//                {"cigarline": "98MD28MD110M2D176M", "genome": 1, "genome-name": "oryza_sativa", "genes": {"gene": {"gene_id": 14021, "start": 35968164, "end": 35972134, "length": 3971, "reference": "3", "strand": -1, "desc": "LOC_Os03g63710.1", "transcripts": [
-//                    {"id": 17293, "start": 35968164, "end": 35972134, "length": 3971, "strand": -1, "transcript_start": 35968642, "transcript_end": 35972067, "desc": "GTPase-activating protein, putative, expressed:LOC_Os03g63710.1", "Exons": [
-//                        {"id": 69506, "start": 35971321, "_start": 35971321, "end": 35971439, "length": 119, "strand": -1},
-//                        {"id": 69507, "start": 35970133, "_start": 35970133, "end": 35970589, "length": 457, "strand": -1},
-//                        {"id": 69508, "start": 35969740, "_start": 35969740, "end": 35970000, "length": 261, "strand": -1},
-//                        {"id": 69511, "start": 35971535, "_start": 35971535, "end": 35972134, "length": 600, "strand": -1},
-//                        {"id": 69512, "start": 35969227, "_start": 35969227, "end": 35969349, "length": 123, "strand": -1},
-//                        {"id": 69513, "start": 35968916, "_start": 35968916, "end": 35969020, "length": 105, "strand": -1},
-//                        {"id": 69514, "start": 35968164, "_start": 35968164, "end": 35968747, "length": 584, "strand": -1}
-//                    ]}
-//                ]}}},
-//                {"cigarline": "127MD231MD56M", "genome": 4, "genome-name": "aegilops_tauschii", "genes": {"gene": {"gene_id": 18464, "start": 11902, "end": 15046, "length": 3145, "reference": "Scaffold103937", "strand": -1, "desc": "EMT03746", "transcripts": [
-//                    {"id": 18464, "start": 11902, "end": 15046, "length": 3145, "strand": -1, "transcript_start": 11901, "transcript_end": 14979, "desc": "null:EMT03746", "Exons": [
-//                        {"id": 91862, "start": 14978, "_start": 14978, "end": 15046, "length": 69, "strand": -1},
-//                        {"id": 91863, "start": 14726, "_start": 14726, "end": 14844, "length": 119, "strand": -1},
-//                        {"id": 91864, "start": 13577, "_start": 13577, "end": 14036, "length": 460, "strand": -1},
-//                        {"id": 91865, "start": 13155, "_start": 13155, "end": 13421, "length": 267, "strand": -1},
-//                        {"id": 91866, "start": 12379, "_start": 12379, "end": 12501, "length": 123, "strand": -1},
-//                        {"id": 91867, "start": 12152, "_start": 12152, "end": 12253, "length": 102, "strand": -1},
-//                        {"id": 91868, "start": 11902, "_start": 11902, "end": 12006, "length": 105, "strand": -1}
-//                    ]}
-//                ]}}},
-//                {"cigarline": "127MD110MD120MD56M", "genome": 3, "genome-name": "hordeum_vulgare", "genes": {"gene": {"gene_id": 12713, "start": 551916635, "end": 551920520, "length": 3886, "reference": "5", "strand": 1, "desc": "MLOC_60310.1", "transcripts": [
-//                    {"id": 32765, "start": 551916635, "end": 551920520, "length": 3886, "strand": 1, "transcript_start": 551916927, "transcript_end": 551920418, "desc": "null:MLOC_60310.1", "Exons": [
-//                        {"id": 108280, "start": 551916635, "_start": 551916635, "end": 551916994, "length": 360, "strand": 1},
-//                        {"id": 108281, "start": 551917112, "_start": 551917112, "end": 551917230, "length": 119, "strand": 1},
-//                        {"id": 108282, "start": 551918038, "_start": 551918038, "end": 551918497, "length": 460, "strand": 1},
-//                        {"id": 108283, "start": 551918655, "_start": 551918655, "end": 551918918, "length": 264, "strand": 1},
-//                        {"id": 108284, "start": 551919636, "_start": 551919636, "end": 551919758, "length": 123, "strand": 1},
-//                        {"id": 108285, "start": 551919874, "_start": 551919874, "end": 551919975, "length": 102, "strand": 1},
-//                        {"id": 108286, "start": 551920134, "_start": 551920134, "end": 551920520, "length": 387, "strand": 1}
-//                    ]}
-//                ]}}}
-//            ]};
-//            var json = {"trackname": "member",
-//                "ref": {"cigarline": "D4M2D5M2D6MD", "genome": 1, "genome-name": "oryza_sativa", "genes": {"gene": {"gene_id": 3978, "start": 111, "end": 194, "length": 84, "reference": "1", "strand": 1, "desc": "LOC_Os01g01790.1", "transcripts": [
-//                {"id": 4850, "start": 111, "end": 194, "length": 84,  "strand": 1, "transcript_start": 115, "transcript_end": 189, "desc": "expressed protein:LOC_Os01g01790.1", "Exons": [
-//                    {"id": 19305, "start": 111, "_start": 111, "end": 126, "length": 16, "strand": 1},
-//                    {"id": 19306, "start": 137, "_start": 137, "end": 151, "length": 15, "strand": 1},
-//                    {"id": 19307, "start": 162, "_start": 162, "end": 166, "length": 5, "strand": 1},
-//                    {"id": 19308, "start": 177, "_start": 177, "end": 194, "length": 18, "strand": 1}
-//                ]}
-//            ]}}}, "member": [
-//                {"cigarline": "D11M2D5M2D", "genome": 3, "genome-name": "hordeum_vulgare", "genes": {"gene": {"gene_id": 13381, "start": 513, "end": 614, "length": 102, "reference": "3", "strand": 1, "desc": "MLOC_73243.1", "transcripts": [
-//                    {"id": 34327, "start": 513, "end": 614, "length": 102, "strand": 1, "transcript_start": 516, "transcript_end": 599, "desc": "null:MLOC_73243.1", "Exons": [
-//                        {"id": 113395, "start": 513, "_start": 513, "end": 530, "length": 18, "strand": 1},
-//                        {"id": 113396, "start": 547, "_start": 547, "end": 564, "length": 18, "strand": 1},
-//                        {"id": 113397, "start": 575, "_start": 575, "end": 579, "length": 5, "strand": 1},
-//                        {"id": 113398, "start": 590, "_start": 590, "end": 614, "length": 25, "strand": 1}
-//                    ]}
-//                ]}}},
-//                {"cigarline": "8MD12M", "genome": 2, "genome-name": "brachypodium_distachyon", "genes": {"gene": {"gene_id": 7814, "start": 203, "end": 294, "length": 92, "reference": "2", "strand": 1, "desc": "BRADI2G00697.1", "transcripts": [
-//                    {"id": 9069, "start": 203, "end": 294, "length": 92, "strand": 1, "transcript_start": 206, "transcript_end": 289, "desc": "null:BRADI2G00697.1", "Exons": [
-//                        {"id": 43057, "start": 203, "_start": 203, "end": 214, "length": 12, "strand": 1},
-//                        {"id": 43058, "start": 223, "_start": 223, "end": 231, "length": 9, "strand": 1},
-//                        {"id": 43059, "start": 240, "_start": 240, "end": 254, "length": 15, "strand": 1},
-//                        {"id": 43060, "start": 263, "_start": 263, "end": 294, "length": 32, "strand": 1}
-//                    ]}
-//                ]}}}
-//            ]}
+            var json = {
+                "trackname": "member",
+                "ref": {
+                    "cigarline": "210D2M2D4MD2MD3MD2MD2MD2M5D3MDMD120MD3M29D2MD2MD11M12D9M362D",
+                    "genome": 1985,
+                    "genome_name": "oryza_sativa",
+                    "genes": {
+                        "gene": {
+                            "gene_id": 296496,
+                            "start": 1046604,
+                            "end": 1053166,
+                            "length": 6563,
+                            "reference": "1",
+                            "strand": 1,
+                            "desc": "OS01T0118300-01",
+                            "transcripts": [
+                                {
+                                    "id": 151699,
+                                    "start": 1046604,
+                                    "end": 1053166,
+                                    "length": 6563,
+                                    "strand": 1,
+                                    "transcript_start": 1047977,
+                                    "transcript_end": 1050614,
+                                    "desc": "Note=Similar to Phosphatidyl serine synthase., Transcript_evidence=AK065788 (DDBJ, Best hit), ORF_evidence=E0Y3X2 (UniProt), NIAS_FLcDNA=J013041H16, :OS01T0118300-01",
+                                    "Exons": [
+                                        {
+                                            "id": 288987,
+                                            "start": 1046604,
+                                            "_start": 1046604,
+                                            "end": 1048136,
+                                            "length": 1533,
+                                            "strand": 1
+                                        },
+                                        {
+                                            "id": 288988,
+                                            "start": 1048358,
+                                            "_start": 1048358,
+                                            "end": 1048423,
+                                            "length": 66,
+                                            "strand": 1
+                                        },
+                                        {
+                                            "id": 288989,
+                                            "start": 1048736,
+                                            "_start": 1048736,
+                                            "end": 1048795,
+                                            "length": 60,
+                                            "strand": 1
+                                        },
+                                        {
+                                            "id": 288990,
+                                            "start": 1049159,
+                                            "_start": 1049159,
+                                            "end": 1049249,
+                                            "length": 91,
+                                            "strand": 1
+                                        },
+                                        {
+                                            "id": 288991,
+                                            "start": 1050163,
+                                            "_start": 1050163,
+                                            "end": 1050217,
+                                            "length": 55,
+                                            "strand": 1
+                                        },
+                                        {
+                                            "id": 288992,
+                                            "start": 1050308,
+                                            "_start": 1050308,
+                                            "end": 1050371,
+                                            "length": 64,
+                                            "strand": 1
+                                        },
+                                        {
+                                            "id": 288993,
+                                            "start": 1050498,
+                                            "_start": 1050498,
+                                            "end": 1050624,
+                                            "length": 127,
+                                            "strand": 1
+                                        },
+                                        {
+                                            "id": 288994,
+                                            "start": 1050712,
+                                            "_start": 1050712,
+                                            "end": 1050796,
+                                            "length": 85,
+                                            "strand": 1
+                                        },
+                                        {
+                                            "id": 288995,
+                                            "start": 1051375,
+                                            "_start": 1051375,
+                                            "end": 1051466,
+                                            "length": 92,
+                                            "strand": 1
+                                        },
+                                        {
+                                            "id": 288996,
+                                            "start": 1051947,
+                                            "_start": 1051947,
+                                            "end": 1052200,
+                                            "length": 254,
+                                            "strand": 1
+                                        },
+                                        {
+                                            "id": 288997,
+                                            "start": 1052592,
+                                            "_start": 1052592,
+                                            "end": 1052680,
+                                            "length": 89,
+                                            "strand": 1
+                                        },
+                                        {
+                                            "id": 288998,
+                                            "start": 1052768,
+                                            "_start": 1052768,
+                                            "end": 1053166,
+                                            "length": 399,
+                                            "strand": 1
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                "member": [
+
+                    {
+                        "cigarline": "210D2M2D4MD2MD3MD5MD2M5D4M5D117MD3M29D2MD2MD11M12D12MD115MD3MDM3D25M5D5M6D62M6D19M3DM3D6M13D9M18D3M30D4M16D",
+                        "genome": 1985,
+                        "genome_name": "oryza_sativa",
+                        "genes": {
+                            "gene": {
+                                "gene_id": 316372,
+                                "start": 27552789,
+                                "end": 27558220,
+                                "length": 5432,
+                                "reference": "5",
+                                "strand": 1,
+                                "desc": "OS05T0554400-01",
+                                "transcripts": [
+                                    {
+                                        "id": 175410,
+                                        "start": 27552789,
+                                        "end": 27558220,
+                                        "length": 5432,
+                                        "strand": 1,
+                                        "transcript_start": 27553180,
+                                        "transcript_end": 27558092,
+                                        "desc": "Note=Phosphatidyl serine synthase family protein., Transcript_evidence=AK107427 (DDBJ, Best hit), ORF_evidence=B6SVL1 (UniProt), NIAS_FLcDNA=002-128-A03, :OS05T0554400-01",
+                                        "Exons": [
+                                            {
+                                                "id": 387573,
+                                                "start": 27552789,
+                                                "_start": 27552789,
+                                                "end": 27552958,
+                                                "length": 170,
+                                                "strand": 1
+                                            },
+                                            {
+                                                "id": 387574,
+                                                "start": 27553094,
+                                                "_start": 27553094,
+                                                "end": 27553333,
+                                                "length": 240,
+                                                "strand": 1
+                                            },
+                                            {
+                                                "id": 387575,
+                                                "start": 27554049,
+                                                "_start": 27554049,
+                                                "end": 27554114,
+                                                "length": 66,
+                                                "strand": 1
+                                            },
+                                            {
+                                                "id": 387576,
+                                                "start": 27554295,
+                                                "_start": 27554295,
+                                                "end": 27554354,
+                                                "length": 60,
+                                                "strand": 1
+                                            },
+                                            {
+                                                "id": 387577,
+                                                "start": 27554749,
+                                                "_start": 27554749,
+                                                "end": 27554839,
+                                                "length": 91,
+                                                "strand": 1
+                                            },
+                                            {
+                                                "id": 387578,
+                                                "start": 27555217,
+                                                "_start": 27555217,
+                                                "end": 27555271,
+                                                "length": 55,
+                                                "strand": 1
+                                            },
+                                            {
+                                                "id": 387579,
+                                                "start": 27555361,
+                                                "_start": 27555361,
+                                                "end": 27555440,
+                                                "length": 80,
+                                                "strand": 1
+                                            },
+                                            {
+                                                "id": 387580,
+                                                "start": 27555554,
+                                                "_start": 27555554,
+                                                "end": 27555667,
+                                                "length": 114,
+                                                "strand": 1
+                                            },
+                                            {
+                                                "id": 387581,
+                                                "start": 27555750,
+                                                "_start": 27555750,
+                                                "end": 27555834,
+                                                "length": 85,
+                                                "strand": 1
+                                            },
+                                            {
+                                                "id": 387582,
+                                                "start": 27556361,
+                                                "_start": 27556361,
+                                                "end": 27556452,
+                                                "length": 92,
+                                                "strand": 1
+                                            },
+                                            {
+                                                "id": 387583,
+                                                "start": 27556996,
+                                                "_start": 27556996,
+                                                "end": 27557249,
+                                                "length": 254,
+                                                "strand": 1
+                                            },
+                                            {
+                                                "id": 387584,
+                                                "start": 27557346,
+                                                "_start": 27557346,
+                                                "end": 27557434,
+                                                "length": 89,
+                                                "strand": 1
+                                            },
+                                            {
+                                                "id": 387585,
+                                                "start": 27557852,
+                                                "_start": 27557852,
+                                                "end": 27558220,
+                                                "length": 369,
+                                                "strand": 1
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            }
             var core_data = json.member;
             var max = 0;
             jQuery("#gene_widget").html("")
@@ -411,7 +605,7 @@ function getcoreMember(query) {
                 browser_coordinates(max)
 
 
-                jQuery("#gene_widget").append("<div style='left:100px; width: 1000px; padding: 25px 5px; position: relative; border: 2px solid black; top: 10px' id='ref'><span style='position: absolute; left:-100px; width: 100px; word-wrap: break-word; top:-5px; '> <b>" + name + "</b></span></div>")
+                jQuery("#gene_widget").append("<div style='left:-100px; width: 1200px; position: relative; border: 2px solid black; top: 10px' id='ref_wrapper'><span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'> <b>" + stringTrim(name, 100) + "</b></span><div style='left:200px; width: 1000px; padding: 25px 0px; position: relative;' id='ref'></div>")
 
                 dispGenes("#ref", genes, max, ref_data.cigarline);
 
@@ -444,7 +638,7 @@ function getcoreMember(query) {
                     if (document.getElementById("core" + core_data[i].genome) == null) {
                         var name = core_data[i].genome_name;
 
-                        jQuery("#gene_widget").append("<div style='left:100px; width: 1000px; padding: 25px 5px;  position: relative; border: 1px solid gray; top: 10px' id='core" + core_data[i].genome + "'><span style='position: absolute; left:-100px; width: 100px; word-wrap: break-word; top: -5px;'><b>" + name + "</b></span></div>")
+                        jQuery("#gene_widget").append("<div style='left:-100px; width: 1200px; position: relative; border: 1px solid gray; top: 10px' id='core" + core_data[i].genome + "_wrapper'><span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'><b>" + stringTrim(name, 100) + "</b></span><div style='left:200px; width: 1000px; padding: 25px 0px;  position: relative; ' id='core" + core_data[i].genome + "'></div></div>")
                     }
 
                     if (core_data[i].cigarline) {
@@ -508,15 +702,17 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
             margin = "margin-top:15px;margin-bottom:25px;";
         }
 
+        label += gene.reference;
 
         if (ref) {
 
             var temp_div = jQuery("<div>").attr({
-                'id': transcript_len,
-                'onClick': "jQuery('#gene_info').html('" + JSON.stringify(gene.transcripts[transcript_len]) + "')",
+                'id': "hit" + gene.reference + "_" + transcript_len,
+                'onClick': "onClicked('hit" + gene.reference + "_" + transcript_len + "', '" + label + "')",
+//                'onClick': "jQuery('#gene_info').html('" + jQuery("#hit"+transcript_len).html() + "'); jQuery.colorbox({width: '90%',height: '90%', inline: true, href: '#gene_info'});",
                 'class': "gene",
                 'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " LEFT:" + startposition + "px; width :" + stopposition + "px;"
-            }).html("<span style='position: absolute; left:-100px; width: 100px; word-wrap: break-word;'>" + label + "(" + gene.reference + ")</span> ").appendTo(div);
+            }).html("<span style='position: absolute; left:-120px; width: 100px; word-wrap: break-word;'>" + stringTrim(label, 100) + " </span> ").appendTo(div);
 
             var strand = 0;
             if (ref.strand == gene.transcripts[transcript_len].strand) {
@@ -573,11 +769,11 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
         }
         else {
             var temp_div = jQuery("<div>").attr({
-                'id': transcript_len,
-                'onClick': "jQuery('#gene_info').html('" + JSON.stringify(gene.transcripts[transcript_len]) + "')",
+                'id': "ref_gene",
+                'onClick': "onClicked('ref" + gene.reference + "_" + transcript_len + "')",
                 'class': "gene",
                 'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " top:10px; LEFT:" + startposition + "px; width :" + stopposition + "px;"
-            }).html("<span style='position: absolute; left:-100px; width: 100px; word-wrap: break-word;'>" + label + "(" + gene.reference + ")</span> ").appendTo(div);
+            }).html("<span style='position: absolute; left:-120px; width: 100px; word-wrap: break-word;'>" + stringTrim(label, 100) + "</span> ").appendTo(div);
 
             dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length);
 
@@ -593,6 +789,8 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
 
     var trackClass = "exon";
+    var utrtrackClass = "utr";
+
     var disp_exon = false;
     var geneexons = track.Exons;
 
@@ -612,6 +810,21 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
         var exon_len = geneexons.length;
         var startposition = 0;
         var stopposition = 0;
+        var transcript_start;
+        var transcript_end;
+
+        if (track.transcript_start < track.transcript_end) {
+            transcript_start = track.transcript_start;
+            transcript_end = track.transcript_end;
+        }
+        else {
+            transcript_start = track.transcript_start;
+            transcript_end = track.transcript_end;
+        }
+
+        console.log(transcript_start + ":" + transcript_end)
+        var last = null, current = null;
+
         while (exon_len--) {
 
             var exon_start;
@@ -625,15 +838,19 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
                 exon_stop = geneexons[exon_len].start;
             }
 
+            current = exon_start;
+
+            console.log(1)
             var top = 0;
+
 
             startposition = (exon_start - newStart_temp) * parseFloat(maxLentemp) / (max_len);
             stopposition = ((exon_stop - exon_start) + 1) * parseFloat(maxLentemp) / (max_len);
 
 //            to make up for border added
             stopposition = stopposition - 4;
-
-
+//
+//
             jQuery("<div>").attr({
                 'class': trackClass,
                 'id': "exon" + track.id + "" + exon_len,
@@ -647,6 +864,86 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
             }
             disp_exon = true;
         }
+
+        var exon_len = geneexons.length;
+
+        while (exon_len--) {
+
+            var exon_start;
+            var exon_stop;
+            if (geneexons[exon_len].start < geneexons[exon_len].end) {
+                exon_start = geneexons[exon_len].start;
+                exon_stop = geneexons[exon_len].end;
+            }
+            else {
+                exon_start = geneexons[exon_len].end;
+                exon_stop = geneexons[exon_len].start;
+            }
+
+            current = exon_start;
+
+            var top = 0;
+
+            if (exon_start < transcript_start && exon_stop < transcript_start) {
+                startposition = ((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
+                stopposition = (exon_stop - exon_start) * parseFloat(maxLentemp) / (max_len);
+
+                jQuery("<div>").attr({
+                    'class': utrtrackClass,
+                    'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
+                }).appendTo(div);
+
+                last = current;
+
+            }
+            else if (exon_start < transcript_start && exon_stop > transcript_end) {
+                startposition = ((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
+                stopposition = (transcript_start - exon_start) * parseFloat(maxLentemp) / (max_len);
+
+                jQuery("<div>").attr({
+                    'class': utrtrackClass,
+                    'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
+                }).appendTo(div);
+
+                startposition = ((transcript_end - newStart_temp) - 1) * parseFloat(maxLentemp) / (max_len);
+                stopposition = (exon_stop - transcript_end + 1) * parseFloat(maxLentemp) / (max_len);
+
+
+                jQuery("<div>").attr({
+                    'class': utrtrackClass,
+                    'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
+                }).appendTo(div);
+
+                last = current;
+            }
+            else if (exon_stop > transcript_start && exon_start < transcript_start) {
+                startposition = ((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
+                stopposition = (transcript_start - exon_start) * parseFloat(maxLentemp) / (max_len);
+
+                jQuery("<div>").attr({
+                    'class': utrtrackClass,
+                    'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
+                }).appendTo(div);
+
+                last = current;
+
+            }
+            else if (exon_stop > transcript_end && exon_start < transcript_end) {
+                startposition = ((transcript_end - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
+                stopposition = (exon_stop - transcript_end) * parseFloat(maxLentemp) / (max_len);
+
+
+                jQuery("<div>").attr({
+                    'class': utrtrackClass,
+                    'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
+                }).appendTo(div);
+
+                last = current;
+
+
+            }
+        }
+
     }
 }
 
@@ -663,6 +960,8 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
     var ref_exon_number = 0;
 
     var cigar_pos = transcript_start - gene_start;
+    console.log(cigar_pos)
+
     var temp_end = (exons[exon_number].end - gene_start) + 1;
     var temp_start = 1;
     var startposition;
@@ -687,6 +986,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
             cigar_string += "";
         }
+        console.log(cigar_string)
 
         var temp_colours = colours.slice(0);
         if (strand == -1) {
@@ -706,7 +1006,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                 cigar_string = formatCigar(ref_exons, cigar_string, colours, ref_cigar)
             }
         }
-
+        console.log(cigar_string)
 
         cigar_string = cigar_string.replace(/(MD)/g, "M,D");
         cigar_string = cigar_string.replace(/(DM)/g, "D,M");
@@ -725,10 +1025,15 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
         var k = 0;
         var l = 0;
 
-
+         console.log(cigar_string)
         var cigars_array = cigar_string.split(',');
         first: for (var i = 0; i < cigars_array.length; i++) {
-
+            console.log(cigars_array[i])
+            if(cigars_array[i] == "-"){
+                console.log("hehrehrehhrhehrhehrehhrehrhehrehh")
+                k++;
+                console.log(k)
+            }else{
             var key = cigars_array[i].charAt(0);
             var length = cigars_array[i].length;
 
@@ -739,12 +1044,15 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                 length = cigars_second_array[j].length;
 
                 if (key == "M" && length > 0) {
-                    k = parseInt(l) + parseInt(j);
+
+
+//                    k = parseInt(l) + parseInt(j);
 
                     startposition = parseFloat((cigar_pos) * parseFloat(maxLentemp) / (max));
                     stopposition = parseFloat((length) * parseFloat(maxLentemp) / (max));
                     trackClass = "insert";
                     if (parseInt(cigar_pos) + parseInt(length) <= temp_end) {
+                        console.log("k " + k)
                         trackHTML(startposition, stopposition, top, trackClass, temp_div, temp_colours[k], length);
                         cigar_pos = parseInt(cigar_pos) + parseInt(length)
 
@@ -753,7 +1061,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
                         second: while (bool) {
                             stopposition = parseFloat((temp_end - cigar_pos) * parseFloat(maxLentemp) / (max));
-
+                            console.log("k " + k)
                             trackHTML(startposition, stopposition, top, trackClass + " endcorner", temp_div, temp_colours[k], (temp_end - cigar_pos));
 
                             var diff = (temp_end - cigar_pos);
@@ -771,13 +1079,16 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                             temp_start = exons[exon_number].start - gene_start;
                             temp_end = (exons[exon_number].end - gene_start) + 1;
 
-                            cigar_pos = temp_start;
+                            if (temp_start > cigar_pos) {
+                                cigar_pos = temp_start;
+                            }
 
                             startposition = parseFloat((cigar_pos) * parseFloat(maxLentemp) / (max));
 
                             stopposition = parseFloat((length) * parseFloat(maxLentemp) / (max));
 
                             if (parseInt(cigar_pos) + parseInt(length) < temp_end) {
+                                console.log("k " + k)
                                 trackHTML(startposition, stopposition, top, trackClass + " frontcorner", temp_div, temp_colours[k], length);
                                 cigar_pos = parseInt(cigar_pos) + parseInt(length)
                                 bool = false;
@@ -878,7 +1189,9 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                             temp_end = (exons[exon_number].end - gene_start) + 1;
 
 
-                            cigar_pos = temp_start;
+                            if (temp_start > cigar_pos) {
+                                cigar_pos = temp_start;
+                            }
                             startposition = parseFloat((cigar_pos) * parseFloat(maxLentemp) / (max));
                             stopposition = parseFloat((length) * parseFloat(maxLentemp) / (max));
 
@@ -900,8 +1213,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
             }
 
             l = l + (cigars_second_array.length - 1);
-
-        }
+        }      }
 
     }
 
@@ -1232,4 +1544,14 @@ function reverse_exons(transcript) {
 
 function replaceAt(str, index, character) {
     return str.substr(0, index) + character + str.substr(index + character.length);
+}
+
+function onClicked(self, label) {
+    console.log("onclicked")
+    console.log(self)
+    jQuery('#gene_info').html("<center><h2>" + label + "</h2></center> <b>Ref:</b> <br>")
+    jQuery("#ref_gene").clone().appendTo(jQuery('#gene_info'))
+    jQuery('#gene_info').append(label + "<br>")
+    jQuery("#" + self).clone().appendTo(jQuery('#gene_info'))
+    jQuery.colorbox({width: '90%', height: '90%', inline: true, href: '#gene_info'});
 }

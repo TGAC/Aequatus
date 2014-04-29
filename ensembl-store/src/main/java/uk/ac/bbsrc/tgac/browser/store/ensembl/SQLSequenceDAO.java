@@ -2355,20 +2355,24 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             JdbcTemplate new_Template;
 
             new_Template = core1Template;
-            if (genome.matches("1")) {
+            if (genome.matches("1985")) {
                 new_Template = core1Template;
                 log.info("\n\n core 1" + core1Template.getDataSource().toString() + "\n\n");
-            } else if (genome.matches("2")) {
+            } else if (genome.matches("1836")) {
                 new_Template = core2Template;
                 log.info("\n\ncore 2" + core2Template.getDataSource().toString() + "\n\n");
 
-            } else if (genome.matches("3")) {
+            } else if (genome.matches("1555")) {
                 new_Template = core3Template;
                 log.info("\n\ncore 3" + core3Template.getDataSource().toString() + "\n\n");
-            } else if (genome.matches("4")) {
+            } else if (genome.matches("1555")) {
                 new_Template = core4Template;
                 log.info("\n\ncore 4" + core4Template.getDataSource().toString() + "\n\n");
             }
+
+            log.info("\n\n\n \t\t\t stable id : " + query);
+//            query = query.replaceAll("\\.","\\\\.");
+//            log.info("\n \t\t\t stable id : " + query);
 
 //            int gene_id = new_Template.queryForObject(GET_Gene_by_stable_id, new Object[]{query}, Integer.class);
             int transcript_id = new_Template.queryForObject(GET_Transcript_by_stable_id, new Object[]{query}, Integer.class);

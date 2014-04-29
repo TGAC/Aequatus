@@ -6,12 +6,7 @@
 
 <div id="canvas" style="display: none">
 
-    <div class="sectionDivider" onclick="toggleLeftInfo(jQuery('#Genomediv_arrowclick'), 'reference_maps');">
-        Genomes
-
-        <div id="Genomediv_arrowclick" class="toggleLeftDown"></div>
-    </div>
-    <div id=reference_maps style="height: 150px;    position: relative;    top: 10px;    width: 100%;">
+    <div id=reference_maps style="height: 30px;    position: relative;    top: 10px;    width: 100%; text-align: right">
 
     </div>
 
@@ -20,10 +15,9 @@
 
         <div id="Chrdiv_arrowclick" class="toggleLeftDown"></div>
     </div>
-    <div id=chr_maps style="height: 100px;    position: relative;    top: 10px;    width: 100%; z-index: 19999">
+    <div id=chr_maps style="height: 100px;    position: relative;    top: 10px;    width: 100%; ">
 
     </div>
-
 
 
     <div id="bar_image_ref"
@@ -55,17 +49,18 @@
         <div id="vertical9" style="position:absolute; left: 1000px" class="vertical-line"></div>
         <div id="vertical10" style="position:absolute; right: 100px; margin-left: -20px; border-left: 0"
              class="vertical-line"></div>
+            <div id="gene_widget">
 
-        <div id="gene_widget">
-
-        </div>
-
-    </div>
-
-
-    <div id="gene_info" style=" position: absolute; right: 50px; top: 420px; width: 20%; word-wrap: break-word;">
+            </div>
 
     </div>
+
+<div style='display:none'>
+
+    <div id="gene_info" style=" ">
+
+    </div>
+</div>
 
 </div>
 

@@ -1330,7 +1330,7 @@ span.counter {
 /* Browser CSS Starts here*/
 /* All margins and alignments are based on percentage */
 #canvas {
-    position: fixed;
+    position: absolute;
     /*float: right;*/
     left: 0px;
     background-color: white;
@@ -2101,7 +2101,6 @@ span.counter {
 
 .exon {
     position: absolute;
-    /*background: url("../images/browser/tempexon.png") repeat-x left top;*/
     background-position: center center;
     background: white;
     border: 2px solid green;
@@ -2127,12 +2126,14 @@ span.counter {
 
 .utr {
     position: absolute;
-    /*background: url("../images/browser/tempexon.png") repeat-x left top;*/
+    background: url("../images/browser/utr.png") repeat-x left top;
     background-position: center center;
-    background: white;
     border: 1px solid #556b2f;
-    height: 5px;
-    cursor: pointer
+    height: 10px;
+    cursor: pointer;
+    opacity: 0.8;
+    z-index: 999;
+
 }
 
 .rnaseq {
@@ -2756,5 +2757,9 @@ border-radius: 5px 0 0 5px;
 
 .endcorner{
     border-radius:0 5px 5px 0;
+}
+
+.selected{
+    background-color: #ff4500;
 }
 /*geneView*/
