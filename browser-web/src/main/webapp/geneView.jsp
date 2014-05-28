@@ -6,7 +6,7 @@
 
 <div id="canvas" style="display: none">
 
-    <div id=reference_maps style="height: 30px;    position: relative;    top: 10px;    width: 100%; text-align: right">
+    <div id=reference_maps style="height: 40px;    position: relative;    top: 0px;    width: 100%; text-align: right; padding: 10px;">
 
     </div>
 

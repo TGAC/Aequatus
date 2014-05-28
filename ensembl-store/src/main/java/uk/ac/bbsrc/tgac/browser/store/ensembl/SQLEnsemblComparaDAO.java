@@ -123,9 +123,23 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_MLSSID_FOR_HOMOLOGY = "select method_link_species_set_id from homology where homology_id = ?";
 
-    public static final String GET_GENE_TREE_FOR_REFERENCE = "SELECT m1.stable_id AS Ref, m2.stable_id AS Ref_stable_id, m3.*, gam.cigar_line FROM member m1 JOIN member m2 ON (m1.canonical_member_id = m2.member_id) JOIN gene_tree_node gtn1 ON (m2.member_id = gtn1.member_id) JOIN gene_tree_root gtr ON (gtr.root_id = gtn1.root_id) JOIN gene_align_member gam USING (gene_align_id) JOIN member m3 ON (gam.member_id = m3.member_id) WHERE gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" AND  m1.member_id = ? AND m2.stable_id <> m3.stable_id;";
+    public static final String GET_GENE_TREE_FOR_REFERENCE = "SELECT m1.stable_id AS Ref, m2.stable_id AS Ref_stable_id, m3.*, gam.cigar_line, gtr.method_link_species_set_id " +
+            "FROM member m1 " +
+            "JOIN member m2 ON (m1.canonical_member_id = m2.member_id) " +
+            "JOIN gene_tree_node gtn1 ON (m2.member_id = gtn1.member_id) " +
+            "JOIN gene_tree_root gtr ON (gtr.root_id = gtn1.root_id) " +
+            "JOIN gene_align_member gam USING (gene_align_id) " +
+            "JOIN member m3 ON (gam.member_id = m3.member_id) " +
+            "WHERE gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" AND  m1.member_id = ? AND m2.stable_id <> m3.stable_id;";
 
-    public static final String GET_GENE_TREE_REFERENCE = "SELECT m1.stable_id AS Ref, m2.stable_id AS Ref_stable_id, m3.*, gam.cigar_line FROM member m1 JOIN member m2 ON (m1.canonical_member_id = m2.member_id) JOIN gene_tree_node gtn1 ON (m2.member_id = gtn1.member_id) JOIN gene_tree_root gtr ON (gtr.root_id = gtn1.root_id) JOIN gene_align_member gam USING (gene_align_id) JOIN member m3 ON (gam.member_id = m3.member_id) WHERE gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" AND  m1.member_id = ? AND m2.stable_id = m3.stable_id;";
+    public static final String GET_GENE_TREE_REFERENCE = "SELECT m1.stable_id AS Ref, m2.stable_id AS Ref_stable_id, m3.*, gam.cigar_line, gtr.method_link_species_set_id " +
+            "FROM member m1 " +
+            "JOIN member m2 ON (m1.canonical_member_id = m2.member_id) " +
+            "JOIN gene_tree_node gtn1 ON (m2.member_id = gtn1.member_id) " +
+            "JOIN gene_tree_root gtr ON (gtr.root_id = gtn1.root_id) " +
+            "JOIN gene_align_member gam USING (gene_align_id) " +
+            "JOIN member m3 ON (gam.member_id = m3.member_id) " +
+            "WHERE gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" AND  m1.member_id = ? AND m2.stable_id = m3.stable_id;";
 
 
     @Autowired
@@ -451,8 +465,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         homology_members.put("cigarline", homologous.get("cigar_line"));
 
         homology_members.put("genome", homologous.get("genome_db_id"));
+        homology_members.put("method", homologous.get("method_link_species_set_id"));
         homology_members.put("genome_name", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{homologous.get("genome_db_id")}, String.class));
-        homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString()));
+        homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("gene_member_id").toString()));
 
         return homology_members;
 
@@ -472,7 +487,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             homology_members.put("cigarline2", template.queryForObject(GET_HOMOLOGY_MEMBER_CIGAR_BY_MEMBER_ID, new Object[]{member, map_two.get("homology_id")}, String.class));
             homology_members.put("genome", homologous.get("genome_db_id"));
             homology_members.put("genome_name", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{homologous.get("genome_db_id")}, String.class));
-            homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString()));
+            homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("gene_member_id").toString()));
             homologouses.add(homology_members);
         }
 
@@ -563,11 +578,11 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     }
 
 
-    public JSONObject getGenefromCore(String query, String genome) throws IOException {
+    public JSONObject getGenefromCore(String query, String genome, String member_id) throws IOException {
         try {
             JSONObject gene = new JSONObject();
 
-            gene.put("gene", SQLSequenceDAO.getGenebyStableid(query, genome));
+            gene.put("gene", SQLSequenceDAO.getGenebyStableid(query, genome, member_id));
             return gene;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -584,8 +599,10 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         for (Map map_two : homology_member_id) {
             homology_members.put("cigarline", map_two.get("cigar_line"));
             homology_members.put("genome", map_two.get("genome_db_id"));
+            homology_members.put("method", map_two.get("method_link_species_set_id"));
+            homology_members.put("stable_id",map_two.get("stable_id").toString());
             homology_members.put("genome_name", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{map_two.get("genome_db_id")}, String.class));
-            homology_members.put("genes", getGenefromCore(map_two.get("stable_id").toString(), map_two.get("genome_db_id").toString()));
+            homology_members.put("genes", getGenefromCore(map_two.get("stable_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("gene_member_id").toString()));
             homologouses.add(homology_members);
         }
 

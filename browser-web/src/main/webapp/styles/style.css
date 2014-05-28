@@ -2128,7 +2128,7 @@ span.counter {
     position: absolute;
     background: url("../images/browser/utr.png") repeat-x left top;
     background-position: center center;
-    border: 1px solid #556b2f;
+    /*border: 1px solid #556b2f;*/
     height: 10px;
     cursor: pointer;
     opacity: 0.8;
@@ -2761,5 +2761,18 @@ border-radius: 5px 0 0 5px;
 
 .selected{
     background-color: #ff4500;
+}
+
+#genomes{
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 1px solid #000000;
+    font-size: larger;
+    height: 34px;
+    overflow: hidden;
+    width: 240px;
+}
+
+#genomes li:hover{
+    color: #ffffff;
 }
 /*geneView*/

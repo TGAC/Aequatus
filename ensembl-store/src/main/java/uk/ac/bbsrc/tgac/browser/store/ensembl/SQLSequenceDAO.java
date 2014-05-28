@@ -2347,7 +2347,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
     }
 
 
-    public static JSONObject getGenebyStableid(String query, String genome) throws SQLException {
+    public static JSONObject getGenebyStableid(String query, String genome, String member_id) throws SQLException {
         log.info("\n\ngetgenebystableid\n\n" + genome + ":" + query);
         try {
             JSONObject gene = new JSONObject();
@@ -2369,6 +2369,22 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                 new_Template = core4Template;
                 log.info("\n\ncore 4" + core4Template.getDataSource().toString() + "\n\n");
             }
+//
+//
+//            if (genome.matches("1")) {
+//                new_Template = core1Template;
+//                log.info("\n\n core 1" + core1Template.getDataSource().toString() + "\n\n");
+//            } else if (genome.matches("2")) {
+//                new_Template = core2Template;
+//                log.info("\n\ncore 2" + core2Template.getDataSource().toString() + "\n\n");
+//
+//            } else if (genome.matches("3")) {
+//                new_Template = core3Template;
+//                log.info("\n\ncore 3" + core3Template.getDataSource().toString() + "\n\n");
+//            } else if (genome.matches("4")) {
+//                new_Template = core4Template;
+//                log.info("\n\ncore 4" + core4Template.getDataSource().toString() + "\n\n");
+//            }
 
             log.info("\n\n\n \t\t\t stable id : " + query);
 //            query = query.replaceAll("\\.","\\\\.");
@@ -2388,6 +2404,8 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             gene.put("gene_id", gene_id);
             gene.put("start", start);
             gene.put("end", end);
+
+            gene.put("member_id", member_id);
             gene.put("length", end - start +1);
             gene.put("reference", new_Template.queryForObject(GET_SEQ_REGION_NAME_FROM_ID, new Object[]{ref_id}, String.class));
 

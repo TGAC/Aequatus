@@ -16,18 +16,25 @@ function getReferences() {
         'getGenomes',
         { 'url': ajaxurl},
         {'doOnSuccess': function (json) {
-            var content = " <b>Genomes: </b> <select name='genomes' id='genomes' onchange='getChromosomes(jQuery(\"#genomes\").val())'> "
+            var content = " <b>Genomes: </b> " +
+                "<select style='' name='genomes' id='genomes' onchange='getChromosomes(jQuery(\"#genomes\").val())'> "
             for (var i = 0; i < json.genomes.length; i++) {
                 var left = (100 * i) + 50
                 content += "<td>" +
-                    "<option value ="+ json.genomes[i].genome_db_id+">" + json.genomes[i].name + "</option> "
+                    "<option id='option"+json.genomes[i].name+"' style='width: 240px;  height: 34px;  font-size: larger; no-repeat right #ddd; border: 1px solid #ccc;  overflow: hidden; background: "+colours[i]+"' value ="+ json.genomes[i].genome_db_id+">" + json.genomes[i].name + "</option> "
             }
             content += "</select>"
+
+            jQuery("#genomes").change(function(){
+                var color = jQuery("option:selected", this).css("background");
+                console.log(color)
+                jQuery("#reference_maps").css("background", color);
+            });
 
 
             jQuery("#reference_maps").html(content);
             jQuery("#canvas").show();
-            getChromosomes(json.genomes[0].genome_db_id);
+            getChromosomes(json.genomes[0].genome_db_id, true);
         }
         });
 }
