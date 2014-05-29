@@ -142,6 +142,10 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             "WHERE gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" AND  m1.member_id = ? AND m2.stable_id = m3.stable_id;";
 
 
+    public static final String SEARCH_MEMBER = "SELECT * " +
+            "FROM member m1 " +
+            "where description like ? limit 100";
+
     @Autowired
     private CacheManager cacheManager;
 
@@ -604,6 +608,20 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             homology_members.put("genome_name", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{map_two.get("genome_db_id")}, String.class));
             homology_members.put("genes", getGenefromCore(map_two.get("stable_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("gene_member_id").toString()));
             homologouses.add(homology_members);
+        }
+
+        return homologouses;
+
+    }
+
+    public JSONArray searchMember(String query) throws IOException {
+
+        JSONArray homologouses = new JSONArray();
+        JSONObject homology_members = new JSONObject();
+        List<Map<String, Object>> homology_member_id = template.queryForList(SEARCH_MEMBER, new Object[]{ "%"+query+"%"});
+
+        for (Map map_two : homology_member_id) {
+           homologouses.add(map_two);
         }
 
         return homologouses;

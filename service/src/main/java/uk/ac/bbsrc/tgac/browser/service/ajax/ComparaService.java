@@ -161,6 +161,36 @@ public class ComparaService {
      * @return JSONObject with one result or list of result
      */
 
+    public JSONObject searchMember(HttpSession session, JSONObject json) {
+        String query = json.getString("query");
+
+        JSONObject response = new JSONObject();
+        try {
+
+            response.put("html", comparaStore.searchMember(query));
+
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        }
+
+    }
+
+
+    /**
+     * Returns a JSONObject that can be read as single reference or a list of results
+     * <p/>
+     * This calls the methods in sequenceStore class
+     * and search through database for the keyword
+     * first look for seq_region table
+     * then gene, transcript and gene_attrib and transcript_attrib
+     *
+     * @param session an HTTPSession comes from ajax call
+     * @param json    json object with key parameters sent from ajax call
+     * @return JSONObject with one result or list of result
+     */
+
     public JSONObject getGenomes(HttpSession session, JSONObject json) {
 
         JSONObject response = new JSONObject();

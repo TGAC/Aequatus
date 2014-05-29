@@ -89,21 +89,6 @@ function findminwidth() {
     }
     return parseInt(seqWidth);
 }
-function browser_coordinates(max) {
-
-    var temp = "<FONT style=\"BACKGROUND-COLOR: #d3d3d3\">";
-    jQuery("#vertical0").html(temp + Math.round(getBegin()));
-    jQuery("#vertical1").html(temp + Math.round(max * 0.1));
-    jQuery("#vertical2").html(temp + Math.round(max * 0.2));
-    jQuery("#vertical3").html(temp + Math.round(max * 0.3));
-    jQuery("#vertical4").html(temp + Math.round(max * 0.4));
-    jQuery("#vertical5").html(temp + Math.round(max * 0.5));
-    jQuery("#vertical6").html(temp + Math.round(max * 0.6));
-    jQuery("#vertical7").html(temp + Math.round(max * 0.7));
-    jQuery("#vertical8").html(temp + Math.round(max * 0.8));
-    jQuery("#vertical9").html(temp + Math.round(max * 0.9));
-    jQuery("#vertical10").html(temp + Math.round(max));
-}
 
 function trackToggle(trackname) {
     console.log("tracktoogle"+trackname)

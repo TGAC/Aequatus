@@ -19,7 +19,7 @@
     <script type="text/javascript" src="<c:url value='/scripts/scriptaculous/prototype.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/fluxion-ajax/fluxion-ajax-compiled.js'/>"></script>
 
-    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-1.4.2.min.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-1.7.2.min.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-ui-1.8.custom.min.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.tablesorter.min.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.drawinglibrary.js'/>"></script>
@@ -90,15 +90,22 @@
 
     <center>
 
-        <a class="headerlink" href="<c:url value="/"/>"> <font color=white> TGAC Browser
-            - ${initParam.header} </font></a>
-        </td>
-        <td>
-            <font color=white>
-                <span id="seqnameh1"></span>
-            </font>
-        </td>
-        </tr>
+        <table width="100%">
+            <tr>
+                <td>
+                    <a class="headerlink" href="<c:url value="/"/>"> <font color=white> TGAC Browser
+                    - ${initParam.header} </font></a>
+                </td>
+                <td>
+                    <font color=white>
+                        <span id="seqnameh1"></span>
+                    </font>
+                </td>
+                <td>
+                    <input type="text" id="search" value=""/>
+                    <button class="ui-state-default ui-corner-all" onclick="search_member(jQuery('#search').val());">Search</button>
+                </td>
+            </tr>
         </table>
     </center>
 

@@ -1,10 +1,10 @@
 <%@ include file="header.jsp" %>
 
 <div id="main1" style="top : 10px ; height: 1050px; ">
-
+    <div id="search_result" style="display: none"></div>
 </div>
 
-<div id="canvas" style="display: none">
+<div id="canvas" style="">
 
     <div id=reference_maps style="height: 40px;    position: relative;    top: 0px;    width: 100%; text-align: right; padding: 10px;">
 

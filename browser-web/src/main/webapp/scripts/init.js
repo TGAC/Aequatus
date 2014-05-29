@@ -90,18 +90,18 @@ function onLoad() {
             handles: "s,se,sw"
         });
     });
+//
+//    jQuery(function () {
+//        var testTextBox = jQuery('#search');
+//        var code = null;
+//        testTextBox.keypress(function (e) {
+//            code = (e.keyCode ? e.keyCode : e.which);
+//            if (code == 13) {
+//                search(jQuery('#search').val());
+//            }
+//        });
 
-    jQuery(function () {
-        var testTextBox = jQuery('#search');
-        var code = null;
-        testTextBox.keypress(function (e) {
-            code = (e.keyCode ? e.keyCode : e.which);
-            if (code == 13) {
-                search(jQuery('#search').val());
-            }
-        });
-
-    });
+//    });
 
     jQuery(function () {
         var testTextBox = jQuery('#begin');
