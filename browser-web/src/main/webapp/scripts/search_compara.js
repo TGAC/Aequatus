@@ -99,10 +99,11 @@ function search_member(query) {
             var content = "";
             for (var i = 0; i < json.html.length; i++) {
                 if (i == 0) {
-                    content += "<table class='list' id='search_hit' ><thead><tr><th>Genome_db_id</th><th>Chromosome</th><th>Position</th><th>Description</th>Stable ID<th>Link</th></tr></thead>";
+                    content += "<table class='list' id='search_hit' ><thead><tr><th>Genome_db_id</th><th>Chromosome</th><th>Position</th><th>Description</th><th>Stable ID</th><th>Link</th></tr></thead>";
                 }
 
-                content += "<tr><td> " + json.html[i].genome_db_id + "<td>" + json.html[i].chr_name + "<td>" + json.html[i].chr_start+"-"+json.html[i].chr_end + " <td> "+json.html[i].description+"</td> <td> "+json.html[i].stable_id+"</td> <td>  link </td>";
+                var link = "<span onclick='jQuery(\"#search_result\").fadeOut();  jQuery(\"#canvas\").show(); getcoreMember("+json.html[i].member_id +", true);'>Click</span>"
+                content += "<tr><td> " + json.html[i].genome_db_id + "<td>" + json.html[i].chr_name + "<td>" + json.html[i].chr_start+"-"+json.html[i].chr_end + " <td> "+json.html[i].description+"</td> <td> "+json.html[i].stable_id+"</td> <td>"+ link +"</td>";
                 if (i == json.html.length - 1) {
                     content += "</table>";
                     jQuery("#search_result").html(content);

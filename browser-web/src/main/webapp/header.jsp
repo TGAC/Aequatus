@@ -65,22 +65,7 @@
     <script type="text/javascript" src="<c:url value='/scripts/geneView.js'/>"></script>
 
     <title>${initParam.pageTitle}</title>
-    <script type="text/javascript">
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-21666189-7']);
-        _gaq.push(['_trackPageview']);
-
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-
-    </script>
 </head>
 <body>
 
@@ -102,16 +87,12 @@
                     </font>
                 </td>
                 <td>
-                    <input type="text" id="search" name="search"/>
-                    <a href="javascript:void(0)" id="search_button" class="ui-state-default ui-corner-all" onclick="fun()">Search</a>
+
                     <script type="text/javascript">
                         function fun(){
-
                                alert("searching here");
                                var val_search= jQuery("#search").val();
                                alert(val_search);
-//                               jQuery
-
                         }
                     </script>
                 </td>
@@ -129,5 +110,22 @@
 <div id="blastType" style="visibility: hidden; position: fixed;">${initParam.blastType}</div>
 <div id="fasta" style="visibility: hidden; position: fixed;">${initParam.fasta}</div>
 
+
+<script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-21666189-7']);
+    _gaq.push(['_trackPageview']);
+
+    (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
 
 <div id="content">

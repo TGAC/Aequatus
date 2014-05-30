@@ -141,6 +141,8 @@ function setRef(length) {
 }
 
 function getChromosomes(genome_db_id, chr, member_id) {
+    console.log("getChromosome")
+
     var color = jQuery("option:selected", jQuery("#genomes")).attr("background");
     jQuery("#reference_maps").css("background", color);
     jQuery("#chr_maps").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
@@ -201,6 +203,7 @@ function getChromosomes(genome_db_id, chr, member_id) {
     )
 }
 function getMember(chr_name, genome_db, member_id) {
+    console.log("getMember")
     jQuery(".selected").removeClass("selected")
 
     jQuery("#chr" + chr_name).addClass("selected")
@@ -280,6 +283,7 @@ function kickOff() {
 }
 
 function drawSelected(member) {
+    console.log("drawSelected")
 
     jQuery("#selected_region").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
     if (member == undefined) {
@@ -335,6 +339,7 @@ function drawSelected(member) {
 }
 
 function getcoreMember(query, redrawn) {
+    console.log("get core member")
     jQuery(".refMarkerShow").css("background", "black")
     jQuery("#ref" + query).css("background", "red")
     jQuery("#gene_widget").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
@@ -1422,6 +1427,8 @@ function changeReference(member_id) {
 }
 
 function rearrange_selector(query, start, chr_name) {
+    console.log("rearange_selector")
+
     var maxLentemp = parseInt(jQuery("#canvas").css("width"));
     var startposition = (start) * parseFloat(maxLentemp) / jQuery("#chr" + chr_name).attr("chr_length");
     var width = jQuery("#bar_image_selector").width() / 2;

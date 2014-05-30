@@ -1,7 +1,10 @@
 <%@ include file="header.jsp" %>
 
+<div style="position: fixed; top: 0px; right: 0px; z-index: 999">
+    <input type="text" id="test" > <button onclick="search_member(jQuery('#test').val())"> Search </button>
+</div>
 <div id="main1" style="top : 10px ; height: 1050px; ">
-    <div id="search_result" style="display: none"></div>
+    <div id="search_result" style="display: none; position:absolute; top:50px; left: 10px;"></div>
 </div>
 
 <div id="canvas" style="">
@@ -47,8 +50,7 @@
         <div id="vertical7" style="position:absolute; left: 800px" class="vertical-line"></div>
         <div id="vertical8" style="position:absolute; left: 900px" class="vertical-line"></div>
         <div id="vertical9" style="position:absolute; left: 1000px" class="vertical-line"></div>
-        <div id="vertical10" style="position:absolute; right: 100px; margin-left: -20px; border-left: 0"
-             class="vertical-line"></div>
+        <div id="vertical10" style="position:absolute; right: 100px; margin-left: -20px; border-left: 0" class="vertical-line"></div>
             <div id="gene_widget">
 
             </div>
