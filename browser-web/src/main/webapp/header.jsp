@@ -52,16 +52,7 @@
     <script type="text/javascript">jQuery.noConflict();</script>
 
     <!--Browser Functions-->
-    <script type="text/javascript" src="<c:url value='/scripts/init.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/browser.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/sequenceController.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/trackController.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/popup.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/getset.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/utils.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/search_compara.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/uploadTrackController.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/circular.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/geneView.js'/>"></script>
 
     <title>${initParam.pageTitle}</title>

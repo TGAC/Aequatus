@@ -351,16 +351,23 @@ function getcoreMember(query, redrawn) {
         {'query': query, 'url': ajaxurl},
         {'doOnSuccess': function (json) {
             if (json.ref) {
+
                 jQuery("#gene_widget").html("")
 
                 var core_data = json.member;
                 var max = 0;
+
+
                 for (var i = 0; i < core_data.length; i++) {
+
+
                     var genes = core_data[i].genes;
                     var new_max = genes.gene.length;
                     if (new_max > max) {
                         max = new_max;
                     }
+
+
                     var core_data = json.member;
                     var max = 0;
                     for (var i = 0; i < core_data.length; i++) {
@@ -371,6 +378,7 @@ function getcoreMember(query, redrawn) {
                         }
                     }
 
+
                     var ref_data = json.ref;
 
                     var genes = ref_data.genes
@@ -379,9 +387,11 @@ function getcoreMember(query, redrawn) {
                     }
                     var name = ref_data.genome_name;
 
+
                     browser_coordinates(max)
 
                     var colour = jQuery("#option" + name).css("background");
+
 
                     jQuery("#gene_widget").append("<div style='left:-100px; width: 1200px; position: relative; border: 2px solid black; top: 10px; overflow: hidden; box-shadow: 1px 1px 15px 15px #D3D3D3;' id='ref_wrapper'>" +
                         "<div class=handle-genome style='background-image: url(/images/browser/utr.png); background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
@@ -403,6 +413,8 @@ function getcoreMember(query, redrawn) {
                         exon_nu++;
                         diff = parseInt(ref_data.genes.gene.transcripts[0].Exons[exon_nu].end - ref_data.genes.gene.transcripts[0].transcript_start) + parseInt(1)
                     }
+
+
                     ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = diff;
                     ref_data.genes.gene.transcripts[0].Exons[exon_nu]._start += ref_data.genes.gene.transcripts[0].transcript_start - ref_data.genes.gene.transcripts[0].Exons[exon_nu].start;
 
@@ -424,10 +436,18 @@ function getcoreMember(query, redrawn) {
                             var colour = jQuery("#option" + name).css("background");
 
                             jQuery("#gene_widget").append("<div style='left:-100px; width: 1200px; position: relative; border: 1px solid gray; top: 10px; overflow: hidden;' id='core" + core_data[i].genome + "_wrapper'> " +
-                                "<div class =  handle-genome style='background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
+                                "<div class = handle-genome style='background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
                                 "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'><b>" + stringTrim(name, 100) + "</b></span>" +
                                 "<div style='left:200px; width: 1000px; padding: 25px 0px;  position: relative; ' id='core" + core_data[i].genome + "'></div>" +
                                 "</div>")
+
+                            jQuery("#core" + core_data[i].genome + "_wrapper").sortable(
+                                {
+                                    axis: 'y',
+                                    handle: '.handle-gene',
+                                    cursor: 'move'
+                                });
+
                         }
 
                         if (core_data[i].cigarline) {
@@ -494,7 +514,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 
     var transcript_len = gene.transcripts.length;
 
-    console.log("Transcript length "+transcript_len)
+    console.log("Transcript length " + transcript_len)
     while (transcript_len--) {
         var gene_start;
         var gene_stop;
@@ -533,11 +553,11 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 
             var temp_div = jQuery("<div>").attr({
                 'id': "hit" + gene.member_id + "_" + transcript_len,
-                'onClick': "onClicked('hit" + gene.member_id + "_" + transcript_len + "', '" + label + "','" + gene.member_id + "',"+ JSON.stringify(gene.transcripts[transcript_len])+")",
+                'onClick': "onClicked('hit" + gene.member_id + "_" + transcript_len + "', '" + label + "','" + gene.member_id + "'," + JSON.stringify(gene.transcripts[transcript_len]) + ")",
 //                'onClick': "jQuery('#gene_info').html('" + jQuery("#hit"+transcript_len).html() + "'); jQuery.colorbox({width: '90%',height: '90%', inline: true, href: '#gene_info'});",
                 'class': "gene",
                 'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " LEFT:" + startposition + "px; width :" + stopposition + "px;"
-            }).html("<span style='position: absolute; left:-120px; width: 100px; word-wrap: break-word;'>" + stringTrim(label, 100) + " </span> ").appendTo(div);
+            }).html("<span class='handle-gene' style='position: absolute; left:-120px; width: 100px; word-wrap: break-word;'>" + stringTrim(label, 100) + " </span> ").appendTo(div);
 
             var strand = 0;
             if (ref.strand == gene.transcripts[transcript_len].strand) {
@@ -595,7 +615,6 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
         else {
             var temp_div = jQuery("<div>").attr({
                 'id': "ref_gene",
-//                'onClick': "onClicked('ref" + gene.member_id + "_" + transcript_len + "')",
                 'class': "gene",
                 'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " top:10px; LEFT:" + startposition + "px; width :" + stopposition + "px;"
             }).html("<span style='position: absolute; left:-120px; width: 100px; word-wrap: break-word;'>" + stringTrim(label, 100) + "</span> ").appendTo(div);
@@ -1409,13 +1428,13 @@ function onClicked(self, label, member_id, gene) {
     jQuery("#" + self).clone().appendTo(jQuery('#gene_info'))
     var html_text = "<div>" +
         "<h2>Info</h2>" +
-        "<br> <b> Gene ID: </b>"+gene.id +
-        "<br> <b> Member ID: </b>"+ gene.member_id+
-        "<br> <b> Stable ID: </b>"+ gene.stable_id+
-        "<br> <b> Reference: </b>"+ gene.reference+
-        "<br> <b> Position: </b>"+ gene.start +":" + gene.end +
-        "<br> <b> Description: </b>"+gene.description +
-        "<br> "+
+        "<br> <b> Gene ID: </b>" + gene.id +
+        "<br> <b> Member ID: </b>" + gene.member_id +
+        "<br> <b> Stable ID: </b>" + gene.stable_id +
+        "<br> <b> Reference: </b>" + gene.reference +
+        "<br> <b> Position: </b>" + gene.start + ":" + gene.end +
+        "<br> <b> Description: </b>" + gene.description +
+        "<br> " +
         "</div>"
     jQuery('#gene_info').append(html_text);
     jQuery.colorbox({width: '90%', height: '90%', inline: true, href: '#gene_info'});
@@ -1439,4 +1458,38 @@ function rearrange_selector(query, start, chr_name) {
     }
     jQuery("#bar_image_selector").animate({"left": left}, 100);
     drawSelected(query)
+}
+
+function browser_coordinates(max) {
+    var temp = "<FONT style=\"BACKGROUND-COLOR: #d3d3d3\">";
+    jQuery("#vertical0").html(temp + Math.round(0));
+    jQuery("#vertical1").html(temp + Math.round(max * 0.1));
+    jQuery("#vertical2").html(temp + Math.round(max * 0.2));
+    jQuery("#vertical3").html(temp + Math.round(max * 0.3));
+    jQuery("#vertical4").html(temp + Math.round(max * 0.4));
+    jQuery("#vertical5").html(temp + Math.round(max * 0.5));
+    jQuery("#vertical6").html(temp + Math.round(max * 0.6));
+    jQuery("#vertical7").html(temp + Math.round(max * 0.7));
+    jQuery("#vertical8").html(temp + Math.round(max * 0.8));
+    jQuery("#vertical9").html(temp + Math.round(max * 0.9));
+    jQuery("#vertical10").html(temp + Math.round(max));
+
+
+}
+
+
+function stringTrim(string, width) {
+    var ruler = jQuery("#ruler");
+    var inLength = 0;
+    var tempStr = "";
+
+    jQuery("#ruler").html(string);
+    inLength = jQuery("#ruler").width();
+    if (inLength < width) {
+        return string;
+    }
+    else {
+        width = parseInt(string.length * width / inLength);
+        return "<span title=" + string + ">" + string.substring(0, width) + "... </span>";
+    }
 }
