@@ -44,7 +44,6 @@ function search(query) {
     jQuery('#sessioninput').fadeOut();
     jQuery("#sessionid").html("");
     minWidth = null;
-    removeAllPopup();
     jQuery('#canvas').hide();
     jQuery('#tabGenes').html('');
     jQuery('#tabGO').html('');
@@ -85,7 +84,6 @@ function search_member(query) {
     jQuery('#sessioninput').fadeOut();
     jQuery("#sessionid").html("");
     minWidth = null;
-    removeAllPopup();
     jQuery('#canvas').hide();
 
 

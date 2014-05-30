@@ -66,33 +66,6 @@
 
 </div>
 
-<%--<div id="slider">--%>
-<%--<h1>Control Panel</h1>--%>
-
-<%--<div class="sectionDivider" onclick="toggleLeftInfo(jQuery('#Tracksdiv_arrowclick'), 'Tracksdiv');">Tracks List--%>
-<%--<div id="Tracksdiv_arrowclick" class="toggleLeftDown"></div>--%>
-<%--</div>--%>
-<%--<div id="Tracksdiv">--%>
-<%--<table width="100%">--%>
-
-<%--<tr>--%>
-<%--<td>--%>
-<%--<div id="tracklist" align="left">--%>
-
-<%--</div>--%>
-<%--</td>--%>
-
-<%--</tr>--%>
-<%--</table>--%>
-<%--</div>--%>
-
-<%--<div id="openCloseWrap" style="display: none; cursor: pointer" onclick="tracklistopenclose();">--%>
-<%--<b>| | |</b>--%>
-<%--</div>--%>
-<%--</div>--%>
-
-<%--</div>--%>
-
 <span id="ruler"></span>
 
 <script>

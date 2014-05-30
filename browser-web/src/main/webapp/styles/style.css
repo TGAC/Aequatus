@@ -2775,4 +2775,19 @@ border-radius: 5px 0 0 5px;
 #genomes li:hover{
     color: #ffffff;
 }
+
+.flip{
+    -moz-transform: rotate(-180deg);
+    -webkit-transform: rotate(-180deg);
+    transform: rotate(-180deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2)
+}
+
+.flip-label{
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2)
+    right: -120px
+}
 /*geneView*/

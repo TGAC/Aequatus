@@ -440,14 +440,6 @@ function getcoreMember(query, redrawn) {
                                 "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'><b>" + stringTrim(name, 100) + "</b></span>" +
                                 "<div style='left:200px; width: 1000px; padding: 25px 0px;  position: relative; ' id='core" + core_data[i].genome + "'></div>" +
                                 "</div>")
-
-                            jQuery("#core" + core_data[i].genome + "_wrapper").sortable(
-                                {
-                                    axis: 'y',
-                                    handle: '.handle-gene',
-                                    cursor: 'move'
-                                });
-
                         }
 
                         if (core_data[i].cigarline) {
@@ -551,19 +543,25 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 
         if (ref) {
 
+            var wrapper_div = jQuery("<div>").attr({
+                'style': "position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;"
+            }).html("<span class='handle-gene' style='position: absolute; left:-120px; width: 100px; word-wrap: break-word;'>" + stringTrim(label, 100) + " </span> ").appendTo(div);
+
+
             var temp_div = jQuery("<div>").attr({
                 'id': "hit" + gene.member_id + "_" + transcript_len,
                 'onClick': "onClicked('hit" + gene.member_id + "_" + transcript_len + "', '" + label + "','" + gene.member_id + "'," + JSON.stringify(gene.transcripts[transcript_len]) + ")",
 //                'onClick': "jQuery('#gene_info').html('" + jQuery("#hit"+transcript_len).html() + "'); jQuery.colorbox({width: '90%',height: '90%', inline: true, href: '#gene_info'});",
                 'class': "gene",
                 'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " LEFT:" + startposition + "px; width :" + stopposition + "px;"
-            }).html("<span class='handle-gene' style='position: absolute; left:-120px; width: 100px; word-wrap: break-word;'>" + stringTrim(label, 100) + " </span> ").appendTo(div);
+            }).appendTo(wrapper_div);
 
             var strand = 0;
             if (ref.strand == gene.transcripts[transcript_len].strand) {
                 strand = 1;
             } else {
                 strand = -1;
+                jQuery(wrapper_div).append("<span class=\"ui-button ui-icon ui-icon-refresh\" style=\"position: absolute; top:0px; word-wrap: break-word; left: -135px;\" onclick='flip_gene(\"hit" + gene.member_id + "_" + transcript_len+"\")'>/span>")
             }
 
             gene.transcripts[transcript_len].Exons.sort(sort_by('start', true, parseInt));
@@ -1491,5 +1489,13 @@ function stringTrim(string, width) {
     else {
         width = parseInt(string.length * width / inLength);
         return "<span title=" + string + ">" + string.substring(0, width) + "... </span>";
+    }
+}
+
+function flip_gene(temp_div){
+    if(jQuery("#"+temp_div).hasClass('flip')){
+        jQuery("#"+temp_div).removeClass('flip')
+    } else{
+        jQuery("#"+temp_div).addClass('flip')
     }
 }

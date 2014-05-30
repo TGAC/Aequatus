@@ -79,13 +79,7 @@
                 </td>
                 <td>
 
-                    <script type="text/javascript">
-                        function fun(){
-                               alert("searching here");
-                               var val_search= jQuery("#search").val();
-                               alert(val_search);
-                        }
-                    </script>
+
                 </td>
             </tr>
         </table>

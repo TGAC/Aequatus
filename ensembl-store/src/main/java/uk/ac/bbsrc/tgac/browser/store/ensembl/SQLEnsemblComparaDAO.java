@@ -144,7 +144,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String SEARCH_MEMBER = "SELECT * " +
             "FROM member m1 " +
-            "where description like ? limit 100";
+            "where description like ? OR display_label = ? OR stable_id = ? limit 100";
 
     @Autowired
     private CacheManager cacheManager;
@@ -618,7 +618,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
         JSONArray homologouses = new JSONArray();
         JSONObject homology_members = new JSONObject();
-        List<Map<String, Object>> homology_member_id = template.queryForList(SEARCH_MEMBER, new Object[]{ "%"+query+"%"});
+        List<Map<String, Object>> homology_member_id = template.queryForList(SEARCH_MEMBER, new Object[]{ "%"+query+"%","%"+query+"%","%"+query+"%"});
 
         for (Map map_two : homology_member_id) {
            homologouses.add(map_two);
