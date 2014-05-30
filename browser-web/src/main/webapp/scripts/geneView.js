@@ -489,6 +489,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 
     var transcript_len = gene.transcripts.length;
 
+    console.log("Transcript length "+transcript_len)
     while (transcript_len--) {
         var gene_start;
         var gene_stop;
@@ -527,7 +528,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 
             var temp_div = jQuery("<div>").attr({
                 'id': "hit" + gene.member_id + "_" + transcript_len,
-                'onClick': "onClicked('hit" + gene.member_id + "_" + transcript_len + "', '" + label + "','" + gene.member_id + "')",
+                'onClick': "onClicked('hit" + gene.member_id + "_" + transcript_len + "', '" + label + "','" + gene.member_id + "',"+ JSON.stringify(gene.transcripts[transcript_len])+")",
 //                'onClick': "jQuery('#gene_info').html('" + jQuery("#hit"+transcript_len).html() + "'); jQuery.colorbox({width: '90%',height: '90%', inline: true, href: '#gene_info'});",
                 'class': "gene",
                 'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " LEFT:" + startposition + "px; width :" + stopposition + "px;"
@@ -1396,11 +1397,22 @@ function replaceAt(str, index, character) {
     return str.substr(0, index) + character + str.substr(index + character.length);
 }
 
-function onClicked(self, label, member_id) {
-    jQuery('#gene_info').html("<center><h2>" + label + "</h2></center> <b>Ref:</b> <br> <button onclick=' changeReference(" + member_id + ") '>Make Me Root</button>")
+function onClicked(self, label, member_id, gene) {
+    jQuery('#gene_info').html("<center><h2>" + gene.stable_id + "</h2></center>  <br> <b>Ref:</b> ")
     jQuery("#ref_gene").clone().appendTo(jQuery('#gene_info'))
-    jQuery('#gene_info').append(label + "<br>")
+    jQuery('#gene_info').append("<br> Homologous Gene: <br> <button onclick=' changeReference(" + member_id + ") '>Make Me Root</button> <br>  ")
     jQuery("#" + self).clone().appendTo(jQuery('#gene_info'))
+    var html_text = "<div>" +
+        "<h2>Info</h2>" +
+        "<br> <b> Gene ID: </b>"+gene.id +
+        "<br> <b> Member ID: </b>"+ gene.member_id+
+        "<br> <b> Stable ID: </b>"+ gene.stable_id+
+        "<br> <b> Reference: </b>"+ gene.reference+
+        "<br> <b> Position: </b>"+ gene.start +":" + gene.end +
+        "<br> <b> Description: </b>"+gene.description +
+        "<br> "+
+        "</div>"
+    jQuery('#gene_info').append(html_text);
     jQuery.colorbox({width: '90%', height: '90%', inline: true, href: '#gene_info'});
 }
 

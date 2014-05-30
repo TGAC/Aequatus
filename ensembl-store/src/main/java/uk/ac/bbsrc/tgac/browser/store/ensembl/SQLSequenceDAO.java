@@ -2404,7 +2404,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             gene.put("gene_id", gene_id);
             gene.put("start", start);
             gene.put("end", end);
-
+            gene.put("stable_id", query);
             gene.put("member_id", member_id);
             gene.put("length", end - start +1);
             gene.put("reference", new_Template.queryForObject(GET_SEQ_REGION_NAME_FROM_ID, new Object[]{ref_id}, String.class));
@@ -2429,6 +2429,11 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             transcript.put("start", start);
             transcript.put("end", end);
             transcript.put("length", end - start +1);
+            transcript.put("stable_id", query);
+            transcript.put("member_id", member_id);
+            transcript.put("reference", new_Template.queryForObject(GET_SEQ_REGION_NAME_FROM_ID, new Object[]{ref_id}, String.class));
+            transcript.put("description", map.get("description"));
+
 
             transcript.put("strand", map.get("seq_region_strand"));
             translation_start = new_Template.queryForList(GET_CDS_start_per_Gene, new Object[]{transcript_id});
