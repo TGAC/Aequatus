@@ -140,20 +140,22 @@ function setRef(length) {
 
 }
 
-function getChromosomes(genome_db_id, member) {
+function getChromosomes(genome_db_id, chr, member_id) {
     console.log("get chomosome")
-    console.log(jQuery("#genomes option:selected").text())
-    console.log(jQuery("option:selected", jQuery("#genomes")).text())
-    console.log(jQuery("option:selected", jQuery("#genomes")).attr("background"))
+    console.log(genome_db_id)
+    console.log(chr)
+    console.log(member_id)
 
     var color = jQuery("option:selected", jQuery("#genomes")).attr("background");
-    console.log(color)
     jQuery("#reference_maps").css("background", color);
     jQuery("#chr_maps").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
     jQuery("#bar_image_ref").html("")
     jQuery("#selected_region").html("")
-    jQuery("#gene_widget").html("")
-    jQuery("#gene_info").html("")
+    if (member_id == undefined) {
+        console.log("cleaning")
+        jQuery("#gene_widget").html("")
+        jQuery("#gene_info").html("")
+    }
 
 
     Fluxion.doAjax(
@@ -182,6 +184,7 @@ function getChromosomes(genome_db_id, member) {
                 jQuery("<div>").attr({
                     'id': 'chr' + json.member[referenceLength].chr_name,
                     'class': 'refmap',
+                    'chr_length': json.member[referenceLength].length,
                     'style': "left: " + left + "px; width:" + width + "px; height:" + height + "px; background: " + jQuery("#genome" + genome_db_id).css("background"),
                     'onClick': 'getMember("' + json.member[referenceLength].chr_name + '",' + genome_db_id + ')'
                 }).appendTo("#chr_maps");
@@ -192,21 +195,31 @@ function getChromosomes(genome_db_id, member) {
 
             }
 
-//            if(member){
-            getMember(json.member[0].chr_name, genome_db_id, member);
-//            }
+            if (member_id == undefined) {
+                getMember(json.member[0].chr_name, genome_db_id);
+            } else {
+                getMember(chr, genome_db_id, member_id);
+
+            }
 
         }
         }
     )
 }
-function getMember(chr_name, genome_db, member) {
+function getMember(chr_name, genome_db, member_id) {
+    console.log("getmember")
+    console.log(chr_name)
+    console.log(genome_db)
+
+    console.log(member_id)
+
     jQuery(".selected").removeClass("selected")
 
     jQuery("#chr" + chr_name).addClass("selected")
 
 
-    if (member != undefined) {
+    if (member_id == undefined) {
+        console.log("cleaning")
         jQuery("#selected_region").html("")
         jQuery("#gene_widget").html("")
         jQuery("#gene_info").html("")
@@ -240,10 +253,32 @@ function getMember(chr_name, genome_db, member) {
                 }).appendTo("#bar_image_ref");
             }
 
-            console.log("member " + member)
-//            if(member != undefined){
-            drawSelected(member);
-//            }
+            if (member_id == undefined) {
+                console.log("if")
+                drawSelected();
+            } else {
+                console.log("else")
+
+                console.log(data)
+//                var start = Math.max.apply(Math, overview.map(function (o) {
+//                    if(member_id == o.id){
+//                        return o.start;
+//                    }
+//                }));
+                var start = 0;
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].id == member_id) {
+                        start = data[i].start;
+                    }
+                }
+
+                console.log("before rearrange")
+                console.log(start)
+                console.log(jQuery("#chr" + chr_name).attr("chr_length"))
+
+
+                rearrange_selector(member_id, start, chr_name);
+            }
         }
         });
 }
@@ -270,39 +305,14 @@ function kickOff() {
         jQuery("#bar_image_selector").animate({"left": left});
         drawSelected()
     }
-
-//
-//    var testTextBox = jQuery('#search');
-//    var code = null;
-//
-//    console.log("kickoff")
-//
-//    console.log(testTextBox)
-//
-//    jQuery(function () {
-//        var testTextBox = jQuery('#search');
-//        var code = null;
-//        testTextBox.keypress(function (e) {
-//            code = (e.keyCode ? e.keyCode : e.which);
-//            if (code == 13) {
-//                search_member(jQuery('#search').val());
-//            }
-//        });
-//    });
-////
-////    testTextBox.on('keyup', function(e) {
-////        console.log("up")
-////        code = (e.keyCode ? e.keyCode : e.which);
-////        console.log("press "+code)
-////        if (code == 13) {
-////            search_member(jQuery('#search').val());
-////        }
-////    });
 }
 
 function drawSelected(member) {
+
+    console.log("draw selected")
+
     jQuery("#selected_region").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
-    if (member != undefined) {
+    if (member == undefined) {
         jQuery("#gene_widget").html("")
         jQuery("#gene_info").html("")
     }
@@ -342,10 +352,20 @@ function drawSelected(member) {
             'style': "LEFT:" + startposition + "px; width :" + stopposition + "px;",
             'onClick': "getcoreMember(\"" + new_data[data_length].id + "\")"
         }).appendTo("#selected_region");
+
+
+    }
+
+    if (member == undefined) {
+
+    } else {
+        console.log(member)
+        jQuery(".refMarkerShow").css("background", "black")
+        jQuery("#ref" + member).css("background", "red")
     }
 }
 
-function getcoreMember(query) {
+function getcoreMember(query, redrawn) {
     jQuery(".refMarkerShow").css("background", "black")
     jQuery("#ref" + query).css("background", "red")
     jQuery("#gene_widget").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
@@ -377,15 +397,7 @@ function getcoreMember(query) {
                         }
                     }
 
-
                     var ref_data = json.ref;
-                    if (ref_data.genome != jQuery("#genomes option:selected").val()) {
-                        jQuery("#genomes").val(ref_data.genome)
-                        var color = jQuery("option:selected", this).css("background");
-                        jQuery("#reference_maps").css("background", color);
-                        getChromosomes(ref_data.genome);
-                    }
-
 
                     var genes = ref_data.genes
                     if (max < genes.gene.length) {
@@ -393,10 +405,7 @@ function getcoreMember(query) {
                     }
                     var name = ref_data.genome_name;
 
-
                     browser_coordinates(max)
-
-
 
                     var colour = jQuery("#option" + name).css("background");
 
@@ -414,7 +423,6 @@ function getcoreMember(query) {
                     var exon_nu = 0
 
 
-
                     var diff = parseInt(ref_data.genes.gene.transcripts[0].Exons[exon_nu].end - ref_data.genes.gene.transcripts[0].transcript_start) + parseInt(1)
                     while (diff < 0) {
                         ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = 0
@@ -423,8 +431,6 @@ function getcoreMember(query) {
                     }
                     ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = diff;
                     ref_data.genes.gene.transcripts[0].Exons[exon_nu]._start += ref_data.genes.gene.transcripts[0].transcript_start - ref_data.genes.gene.transcripts[0].Exons[exon_nu].start;
-
-
 
 
                     var exon_nu = ref_data.genes.gene.transcripts[0].Exons.length - 1
@@ -468,6 +474,31 @@ function getcoreMember(query) {
                         handle: '.handle-genome',
                         cursor: 'move'
                     });
+
+                if (redrawn != undefined) {
+                    console.log("redrawn")
+                    if (ref_data.genome != jQuery("#genomes option:selected").val()) {
+                        jQuery("#genomes").val(ref_data.genome)
+                        var color = jQuery("option:selected", this).css("background");
+                        jQuery("#reference_maps").css("background", color);
+                        console.log(ref_data.genome)
+                        console.log(ref_data.genes.gene.reference)
+                        console.log(ref_data.genes.gene.member_id)
+
+                        getChromosomes(ref_data.genome, ref_data.genes.gene.reference, ref_data.genes.gene.member_id);
+                    } else {
+                        console.log("same genome")
+                        if (jQuery("#chr" + ref_data.genes.gene.reference).hasClass("selected")) {
+                            console.log("if")
+                            rearrange_selector(ref_data.genes.gene.member_id, ref_data.genes.gene.start, ref_data.genes.gene.reference)
+                        } else {
+                            console.log("else")
+
+                            getMember(ref_data.genes.gene.reference, ref_data.genome, ref_data.genes.gene.member_id);
+                        }
+                    }
+
+                }
             } else {
                 jQuery("#gene_widget").html("")
                 jQuery("#gene_widget").html("Selected Gene not found.")
@@ -1412,8 +1443,31 @@ function onClicked(self, label, member_id) {
 }
 
 function changeReference(member_id) {
-    getcoreMember(member_id);
+    getcoreMember(member_id, true);
     jQuery.colorbox.close();
+}
 
+function rearrange_selector(query, start, chr_name) {
+    console.log("left " + start)
 
+    var maxLentemp = parseInt(jQuery("#canvas").css("width"));
+
+    var startposition = (start) * parseFloat(maxLentemp) / jQuery("#chr" + chr_name).attr("chr_length");
+
+    console.log("rearrange " + query)
+    console.log("left " + startposition)
+
+    var width = jQuery("#bar_image_selector").width() / 2;
+
+    console.log("width " + width)
+
+    var left = (startposition - width);
+    console.log(left)
+    if (left < 0) {
+        left = 0;
+    }
+    console.log(left)
+    jQuery("#bar_image_selector").animate({"left": left}, 100);
+    console.log(left)
+    drawSelected(query)
 }

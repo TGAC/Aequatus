@@ -77,7 +77,7 @@ function search(query) {
 }
 
 function search_member(query) {
-    console.log("search member"+jQuery('#search').val()+"here")
+    console.log("search member"+jQuery('input[name="search"]').val()+"here")
     console.log("search member"+jQuery('#search').attr("value")+"here")
 
 

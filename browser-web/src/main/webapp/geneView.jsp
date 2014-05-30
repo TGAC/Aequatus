@@ -6,7 +6,7 @@
 
 <div id="canvas" style="">
 
-    <div id=reference_maps style="height: 40px;    position: relative;    top: 0px;    width: 100%; text-align: right; padding: 10px;">
+    <div id=reference_maps style="height: 40px; position: relative;top: 0px; width: 100%; text-align: right; padding: 10px;">
 
     </div>
 
@@ -15,7 +15,7 @@
 
         <div id="Chrdiv_arrowclick" class="toggleLeftDown"></div>
     </div>
-    <div id=chr_maps style="height: 100px;    position: relative;    top: 10px;    width: 100%; ">
+    <div id=chr_maps style="height: 100px;    position: relative; top: 10px;    width: 100%; ">
 
     </div>
 
