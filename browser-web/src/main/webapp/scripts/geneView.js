@@ -429,6 +429,7 @@ function getcoreMember(query, redrawn) {
 
 //                ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = diff;
 
+                    calculateDistanceMatrix(ref_data, core_data)
                     for (var i = 0; i < core_data.length; i++) {
                         var genes = core_data[i].genes
                         if (document.getElementById("core" + core_data[i].genome) == null) {
@@ -462,20 +463,15 @@ function getcoreMember(query, redrawn) {
                     });
 
                 if (redrawn != undefined) {
-                    console.log("redrawn")
                     if (ref_data.genome != jQuery("#genomes option:selected").val()) {
                         jQuery("#genomes").val(ref_data.genome)
                         var color = jQuery("option:selected", this).css("background");
                         jQuery("#reference_maps").css("background", color);
                         getChromosomes(ref_data.genome, ref_data.genes.gene.reference, ref_data.genes.gene.member_id);
                     } else {
-                        console.log("same genome")
                         if (jQuery("#chr" + ref_data.genes.gene.reference).hasClass("selected")) {
-                            console.log("if")
                             rearrange_selector(ref_data.genes.gene.member_id, ref_data.genes.gene.start, ref_data.genes.gene.reference)
                         } else {
-                            console.log("else")
-
                             getMember(ref_data.genes.gene.reference, ref_data.genome, ref_data.genes.gene.member_id);
                         }
                     }
@@ -492,7 +488,6 @@ function getcoreMember(query, redrawn) {
 }
 
 function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
-    console.log("disp_gene")
     var gene = track.gene;
 
     var trackClass;
@@ -506,7 +501,6 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 
     var transcript_len = gene.transcripts.length;
 
-    console.log("Transcript length " + transcript_len)
     while (transcript_len--) {
         var gene_start;
         var gene_stop;
@@ -1444,7 +1438,6 @@ function changeReference(member_id) {
 }
 
 function rearrange_selector(query, start, chr_name) {
-    console.log("rearange_selector")
 
     var maxLentemp = parseInt(jQuery("#canvas").css("width"));
     var startposition = (start) * parseFloat(maxLentemp) / jQuery("#chr" + chr_name).attr("chr_length");
