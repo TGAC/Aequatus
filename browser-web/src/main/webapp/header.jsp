@@ -55,6 +55,12 @@
     <script type="text/javascript" src="<c:url value='/scripts/search_compara.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/geneView.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/matrix.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/upgma.js'/>"></script>
+
+    <%--dependecies for phylo tree--%>
+    <script type="text/javascript" src="<c:url value='/scripts/jsphylo/jsphylosvg-min.js'/>" ></script>
+    <script type="text/javascript" src="<c:url value='/scripts/jsphylo/raphael-min.js'/>"></script>
+    <%--dependecies for phylo tree--%>
 
     <title>${initParam.pageTitle}</title>
 

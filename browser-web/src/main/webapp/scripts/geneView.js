@@ -430,6 +430,9 @@ function getcoreMember(query, redrawn) {
 //                ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = diff;
 
                     calculateDistanceMatrix(ref_data, core_data)
+                    string_tree = ""
+                    upgma_matrix = distance_matrix;
+                    findNearestNode()
                     for (var i = 0; i < core_data.length; i++) {
                         var genes = core_data[i].genes
                         if (document.getElementById("core" + core_data[i].genome) == null) {

@@ -51,12 +51,17 @@
         <div id="vertical8" style="position:absolute; left: 900px" class="vertical-line"></div>
         <div id="vertical9" style="position:absolute; left: 1000px" class="vertical-line"></div>
         <div id="vertical10" style="position:absolute; right: 100px; margin-left: -20px; border-left: 0" class="vertical-line"></div>
-            <div id="gene_widget">
+         <button onclick="jQuery.colorbox({width: '90%', height: '90%', inline: true, href: '#gene_tree'});">Tree</button>   <div id="gene_widget">
 
             </div>
 
     </div>
+    <div style='display:none'>
 
+        <div id="gene_tree">
+
+        </div>
+    </div>
 <div style='display:none'>
 
     <div id="gene_info" style=" ">
