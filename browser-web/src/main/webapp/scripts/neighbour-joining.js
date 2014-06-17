@@ -7,19 +7,19 @@
  */
 
 var tree = [];
-//var nj_matrix = [];
+var nj_matrix = [];
 //
 
-var nj_gene_list = ["A", "B", "C", "D", "E"]
+var nj_gene_list = []
 var nj_string_tree = ""
-var nj_matrix =
-    [
-        [100],
-        [5, 100],
-        [9, 10, 100],
-        [9, 10, 8, 100],
-        [8, 9, 7, 3, 100]
-    ];
+//var nj_matrix =
+//    [
+//        [100],
+//        [0.23, 100],
+//        [0.16, 0.23, 100],
+//        [0.20, 0.17, 0.15, 100],
+//        [0.17, 0.24, 0.11, 0.21, 100]
+//    ];
 
 var q_matrix = [];
 function findFurthestNode() {
@@ -62,20 +62,16 @@ function findFurthestNode() {
     } else {
         var dataObject = { newick: nj_string_tree };
 
-        jQuery("#gene_tree").html("")
-//
-//        var phylocanvas = new Smits.PhyloCanvas(
-//            dataObject,
-//            'gene_tree',
-//            500, 500,
-//            'circular'
-//        );
-//
-//
+
+        var width = jQuery(document).width()/5;
+
+        var height = 1000
+
         var phylocanvas = new Smits.PhyloCanvas(
             dataObject,
-            'gene_tree',
+            'gene_tree_nj',
             1000, 500
+
         );
     }
 }

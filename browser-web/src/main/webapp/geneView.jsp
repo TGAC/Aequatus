@@ -60,7 +60,12 @@
     <div style='display:none'>
 
         <div id="gene_tree">
+            <div id="gene_tree_upgma">
 
+            </div>
+            <div id="gene_tree_nj">
+
+            </div>
         </div>
     </div>
 <div style='display:none'>

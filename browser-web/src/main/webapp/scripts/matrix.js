@@ -33,6 +33,7 @@ var distance_matrix =  [];
 //    ];
 function calculateDistanceMatrix(reference, homologous) {
     gene_list[0] = "<b>"+reference.genes.gene.stable_id+"_"+reference.genome_name+"</b>";
+    nj_gene_list[0] = "<b>"+reference.genes.gene.stable_id+"_"+reference.genome_name+"</b>";
     var ref_cigar = reference.cigarline;
     var cigar_string = "";
     ref_cigar = ref_cigar.replace(/([SIXMND])/g, ":$1,");
@@ -57,6 +58,7 @@ function calculateDistanceMatrix(reference, homologous) {
 
     for (var i = 0; i < homologous.length; i++) {
         gene_list[i+1] = homologous[i].genes.gene.stable_id+"_"+homologous[i].genome_name;
+        nj_gene_list[i+1] = homologous[i].genes.gene.stable_id+"_"+homologous[i].genome_name;
 
         var homologous_cigar = homologous[i].cigarline;
         var homologous_cigar_string = "";
@@ -118,4 +120,6 @@ function calculateDistanceMatrix(reference, homologous) {
     }
 
     console.log(gene_list)
+    console.log(nj_gene_list)
+
 }

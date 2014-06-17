@@ -343,6 +343,8 @@ function getcoreMember(query, redrawn) {
     jQuery(".refMarkerShow").css("background", "black")
     jQuery("#ref" + query).css("background", "red")
     jQuery("#gene_widget").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
+    jQuery("#gene_tree_nj").html("")
+    jQuery("#gene_tree_upgma").html("")
 
 
     Fluxion.doAjax(
@@ -433,11 +435,17 @@ function getcoreMember(query, redrawn) {
 
 
                     console.log("gene")
-//                    calculateDistanceMatrix(ref_data, core_data)
-//                    string_tree = ""
-//                    upgma_matrix = distance_matrix;
-                    calculateQMatrix()
+                    nj_gene_list = []
+                    nj_string_tree = ""
+                    string_tree = ""
 
+                    calculateDistanceMatrix(ref_data, core_data)
+                    upgma_matrix = distance_matrix;
+                    findNearestNode()
+
+
+                    nj_matrix = distance_matrix;
+                    calculateQMatrix()
 
 
 

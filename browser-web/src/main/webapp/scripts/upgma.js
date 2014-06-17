@@ -36,30 +36,15 @@ function findNearestNode() {
     } else {
         var dataObject = { newick: string_tree };
 
-        jQuery("#gene_tree").html("")
 
-        var height = jQuery("gene_widget").css("height")
         var width = jQuery(document).width()/5;
 
-        console.log(height)
-        console.log(width)
-
-        height = 1000
-
-
-//        var phylocanvas = new Smits.PhyloCanvas(
-//            dataObject,
-//            'gene_tree',
-//            height, width,
-//            'circular'
-//        );
-
+        var height = 1000
 
         var phylocanvas = new Smits.PhyloCanvas(
             dataObject,
-            'gene_tree',
-            width, height
-        );
+            'gene_tree_upgma',
+            1000, 500        );
     }
 }
 
