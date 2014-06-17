@@ -2746,7 +2746,7 @@ span.deleteicon input {
     /*left: 5%;*/
     position: relative;
     top: 0px;
-    /*width: 1200px;*/
+    width: 80%;
     z-index: 999;
     /*overflow: scroll;*/
 }
@@ -2789,5 +2789,16 @@ border-radius: 5px 0 0 5px;
     transform: rotate(180deg);
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2)
     right: -120px
+}
+
+
+#gene_tree{
+    height: auto;
+    left: 0;
+    position: relative;
+    top: 0px;
+    width: 20%;
+    z-index: 999;
+    /*overflow: scroll;*/
 }
 /*geneView*/

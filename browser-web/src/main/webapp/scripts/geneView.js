@@ -429,10 +429,19 @@ function getcoreMember(query, redrawn) {
 
 //                ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = diff;
 
-                    calculateDistanceMatrix(ref_data, core_data)
-                    string_tree = ""
-                    upgma_matrix = distance_matrix;
-                    findNearestNode()
+
+
+
+                    console.log("gene")
+//                    calculateDistanceMatrix(ref_data, core_data)
+//                    string_tree = ""
+//                    upgma_matrix = distance_matrix;
+                    calculateQMatrix()
+
+
+
+
+
                     for (var i = 0; i < core_data.length; i++) {
                         var genes = core_data[i].genes
                         if (document.getElementById("core" + core_data[i].genome) == null) {
@@ -478,7 +487,6 @@ function getcoreMember(query, redrawn) {
                             getMember(ref_data.genes.gene.reference, ref_data.genome, ref_data.genes.gene.member_id);
                         }
                     }
-
                 }
             } else {
                 jQuery("#gene_widget").html("")
@@ -1494,4 +1502,14 @@ function flip_gene(temp_div){
     } else{
         jQuery("#"+temp_div).addClass('flip')
     }
+}
+
+function toggleLeftInfo(div, id) {
+    if (jQuery(div).hasClass("toggleLeft")) {
+        jQuery(div).removeClass("toggleLeft").addClass("toggleLeftDown");
+    }
+    else {
+        jQuery(div).removeClass("toggleLeftDown").addClass("toggleLeft");
+    }
+    jQuery("#" + id).toggle("blind", {}, 500);
 }

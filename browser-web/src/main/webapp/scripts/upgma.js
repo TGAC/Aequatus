@@ -38,18 +38,27 @@ function findNearestNode() {
 
         jQuery("#gene_tree").html("")
 
-        var phylocanvas = new Smits.PhyloCanvas(
-            dataObject,
-            'gene_tree',
-            500, 500,
-            'circular'
-        );
+        var height = jQuery("gene_widget").css("height")
+        var width = jQuery(document).width()/5;
+
+        console.log(height)
+        console.log(width)
+
+        height = 1000
+
+
+//        var phylocanvas = new Smits.PhyloCanvas(
+//            dataObject,
+//            'gene_tree',
+//            height, width,
+//            'circular'
+//        );
 
 
         var phylocanvas = new Smits.PhyloCanvas(
             dataObject,
             'gene_tree',
-            500, 500
+            width, height
         );
     }
 }
