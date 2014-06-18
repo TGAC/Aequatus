@@ -38,6 +38,8 @@
 
     </div>
 
+    <div>
+    </div>
     <div style="height: auto; left: 5%;  position: relative; top: 20px;width: 1200px; z-index: 999;">
 
         <div id="vertical0" style="position:absolute; left: 100px" class="vertical-line"></div>
@@ -51,7 +53,15 @@
         <div id="vertical8" style="position:absolute; left: 900px" class="vertical-line"></div>
         <div id="vertical9" style="position:absolute; left: 1000px" class="vertical-line"></div>
         <div id="vertical10" style="position:absolute; right: 100px; margin-left: -20px; border-left: 0" class="vertical-line"></div>
-         <button onclick="jQuery.colorbox({width: '90%', height: '90%', inline: true, href: '#gene_tree'});">Tree</button>
+
+        <button onclick="jQuery.colorbox({width: '90%', height: '90%', inline: true, href: '#gene_tree'});">Tree</button>
+        <input type="checkbox" onclick="jQuery('.delete').toggle()" checked> Deletion
+        <input type="checkbox" onclick="jQuery('.insert').toggle()" checked> Insertion
+        <input type="checkbox" onclick="jQuery('.match').toggle()" checked> Match
+        |
+        <input type="checkbox" onclick="jQuery('.utr').toggle()" checked> UTRs
+
+
         <div id="gene_widget">
 
             </div>

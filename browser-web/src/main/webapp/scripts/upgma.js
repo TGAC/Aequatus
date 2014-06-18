@@ -31,6 +31,9 @@ function findNearestNode() {
     gene_list.splice(min_j, 1)
 
     string_tree = new_node + ";"
+
+    console.log(string_tree)
+
     if (upgma_matrix.length > 2) {
         calculateUPGMAMatrix(min_i, min_j);
     } else {

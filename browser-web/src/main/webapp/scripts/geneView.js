@@ -911,7 +911,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
                     startposition = parseFloat((cigar_pos) * parseFloat(maxLentemp) / (max));
                     stopposition = parseFloat((length) * parseFloat(maxLentemp) / (max));
-                    trackClass = "insert";
+                    trackClass = "match";
                     if (parseInt(cigar_pos) + parseInt(length) <= temp_end) {
                         trackHTML(startposition, stopposition, top, trackClass, temp_div, temp_colours[i], length);
                         cigar_pos = parseInt(cigar_pos) + parseInt(length)
