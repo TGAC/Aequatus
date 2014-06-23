@@ -16,12 +16,12 @@ function getReferences() {
         'getGenomes',
         { 'url': ajaxurl},
         {'doOnSuccess': function (json) {
-            var content = " <b>Genomes: </b> " +
+            var content = "" +
                 "<select style='' name='genomes' id='genomes' onchange='getChromosomes(jQuery(\"#genomes\").val())'> "
             for (var i = 0; i < json.genomes.length; i++) {
                 var left = (100 * i) + 50
                 content += "<td>" +
-                    "<option id='option"+json.genomes[i].name+"' style='width: 240px;  height: 34px;  font-size: larger; no-repeat right #ddd; border: 1px solid #ccc;  overflow: hidden; background: "+colours[i]+"' value ="+ json.genomes[i].genome_db_id+" background= "+colours[i]+">" + json.genomes[i].name + "</option> "
+                    "<option id='option"+json.genomes[i].name+"'  value ="+ json.genomes[i].genome_db_id+" background= "+colours[i]+">" + json.genomes[i].name + "</option> "
             }
             content += "</select>"
 
@@ -29,7 +29,7 @@ function getReferences() {
                 var color = jQuery("option:selected", this).css("background");
                 console.log(this)
                 console.log(color)
-                jQuery("#reference_maps").css("background", color);
+                jQuery(".headerbar").css("background", color);
             });
 
 

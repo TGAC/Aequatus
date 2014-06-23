@@ -63,7 +63,7 @@ public interface EnsemblCoreStore extends Store<String> {
     public JSONArray getTableswithanalysis_id() throws IOException;
     public JSONArray getdbinfo() throws IOException;
     public String getDomains(String geneid) throws IOException;
-    public String getSeq(String query, int from, int to) throws IOException;
+//    public String getSeq(String query, int from, int to) throws IOException;
     public JSONArray getAssembly(int query, String trackId, int delta) throws IOException;
     public JSONArray getSeqRegionSearch(String query) throws IOException;
     public JSONArray getSeqRegionSearchMap(String query) throws IOException;

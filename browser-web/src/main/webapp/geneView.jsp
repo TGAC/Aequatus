@@ -1,17 +1,28 @@
 <%@ include file="header.jsp" %>
 
 <div style="position: fixed; top: 0px; right: 0px; z-index: 999">
-    <input type="text" id="test" > <button onclick="search_member(jQuery('#test').val())"> Search </button>
+    <table>
+        <tr>
+            <td>
+                <input type="text" id="search" >
+            </td>
+            <td>
+                <div id=reference_maps>
+                </div>
+            </td>
+        </tr>
+    </table>
+
 </div>
+
 <div id="main1" style="top : 10px ; height: 1050px; ">
     <div id="search_result" style="display: none; position:absolute; top:50px; left: 10px;"></div>
 </div>
 
 <div id="canvas" style="">
 
-    <div id=reference_maps style="height: 40px; position: relative;top: 0px; width: 100%; text-align: right; padding: 10px;">
 
-    </div>
+
 
     <div class="sectionDivider" onclick="toggleLeftInfo(jQuery('#Chrdiv_arrowclick'), 'chr_maps');">
         Chromosome

@@ -352,15 +352,15 @@ public class DnaSequenceService {
         int from = json.getInt("from");
         int to = json.getInt("to");
         try {
-            String queryid = sequenceStore.getSeqRegion(query).toString();
-            if (from <= to) {
-                response.put("seq", sequenceStore.getSeq(queryid, from, to));
-            } else {
-                response.put("seq", sequenceStore.getSeq(queryid, to, from));
-            }
+//            String queryid = sequenceStore.getSeqRegion(query).toString();
+//            if (from <= to) {
+//                response.put("seq", sequenceStore.getSeq(queryid, from, to));
+//            } else {
+//                response.put("seq", sequenceStore.getSeq(queryid, to, from));
+//            }
 
             return response;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             return JSONUtils.SimpleJSONError(e.getMessage());
         }

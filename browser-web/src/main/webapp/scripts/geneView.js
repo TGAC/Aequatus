@@ -144,7 +144,7 @@ function getChromosomes(genome_db_id, chr, member_id) {
     console.log("getChromosome")
 
     var color = jQuery("option:selected", jQuery("#genomes")).attr("background");
-    jQuery("#reference_maps").css("background", color);
+    jQuery(".headerbar").css("background", color);
     jQuery("#chr_maps").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
     jQuery("#bar_image_ref").html("")
     jQuery("#selected_region").html("")
@@ -259,6 +259,17 @@ function getMember(chr_name, genome_db, member_id) {
 }
 
 function kickOff() {
+
+
+    var testTextBox = jQuery('#search');
+    var code = null;
+    testTextBox.keypress(function (e) {
+        code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
+            search(jQuery('#search').val());
+        }
+    });
+
 
     jQuery("#bar_image_ref").click(function (e) {
         dragtohere(e);
@@ -432,22 +443,18 @@ function getcoreMember(query, redrawn) {
 //                ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = diff;
 
 
-
-
-                    console.log("gene")
-                    nj_gene_list = []
-                    nj_string_tree = ""
-                    string_tree = ""
-
-                    calculateDistanceMatrix(ref_data, core_data)
-                    upgma_matrix = distance_matrix;
-                    findNearestNode()
-
-
-                    nj_matrix = distance_matrix;
-                    calculateQMatrix()
-
-
+//                    console.log("gene")
+//                    nj_gene_list = []
+//                    nj_string_tree = ""
+//                    string_tree = ""
+//
+//                    calculateDistanceMatrix(ref_data, core_data)
+//                    upgma_matrix = distance_matrix;
+//                    findNearestNode()
+//
+//
+//                    nj_matrix = distance_matrix;
+//                    calculateQMatrix()
 
 
                     for (var i = 0; i < core_data.length; i++) {
@@ -574,7 +581,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
                 strand = 1;
             } else {
                 strand = -1;
-                jQuery(wrapper_div).append("<span class=\"ui-button ui-icon ui-icon-refresh\" style=\"position: absolute; top:0px; word-wrap: break-word; left: -135px;\" onclick='flip_gene(\"hit" + gene.member_id + "_" + transcript_len+"\")'>/span>")
+                jQuery(wrapper_div).append("<span class=\"ui-button ui-icon ui-icon-refresh\" style=\"position: absolute; top:0px; word-wrap: break-word; left: -135px;\" onclick='flip_gene(\"hit" + gene.member_id + "_" + transcript_len + "\")'>/span>")
             }
 
             gene.transcripts[transcript_len].Exons.sort(sort_by('start', true, parseInt));
@@ -617,7 +624,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
                 ref.transcript_end = temp_int
             }
 
-
+//            console.log(formatFasta(gene.transcripts[transcript_len]))
             dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length, transcript_len);
 
 
@@ -629,6 +636,8 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
                 'class': "gene",
                 'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " top:10px; LEFT:" + startposition + "px; width :" + stopposition + "px;"
             }).html("<span style='position: absolute; left:-120px; width: 100px; word-wrap: break-word;'>" + stringTrim(label, 100) + "</span> ").appendTo(div);
+
+            formatFasta(gene.transcripts[transcript_len])
 
             dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length);
 
@@ -1504,11 +1513,11 @@ function stringTrim(string, width) {
     }
 }
 
-function flip_gene(temp_div){
-    if(jQuery("#"+temp_div).hasClass('flip')){
-        jQuery("#"+temp_div).removeClass('flip')
-    } else{
-        jQuery("#"+temp_div).addClass('flip')
+function flip_gene(temp_div) {
+    if (jQuery("#" + temp_div).hasClass('flip')) {
+        jQuery("#" + temp_div).removeClass('flip')
+    } else {
+        jQuery("#" + temp_div).addClass('flip')
     }
 }
 
@@ -1521,3 +1530,65 @@ function toggleLeftInfo(div, id) {
     }
     jQuery("#" + id).toggle("blind", {}, 500);
 }
+
+function formatFasta(track) {
+
+    console.log("formatfasta")
+    console.log(track.strand)
+
+    var seq = track.sequence.toLowerCase();
+    var start, stop;
+
+    if (track.start > track.end) {
+        start = track.end;
+        stop = track.start;
+    }
+    else {
+        start = track.start;
+        stop = track.end;
+    }
+    var exons = track.Exons.length;
+
+    var CDS = ""
+    for (var k = 0; k < exons; k++) {
+        var substart, subend;
+        if (track.start > track.end) {
+            substart = track.Exons[k].end;
+            subend = track.Exons[k].start;
+        }
+        else {
+            substart = track.Exons[k].start;
+            subend = track.Exons[k].end;
+        }
+
+        if (track.transcript_start > substart) {
+            if (track.transcript_start < subend) {
+                substart = track.transcript_start;
+            }
+        }
+
+
+        if (track.transcript_end > substart) {
+            if (track.transcript_end < subend) {
+                subend = track.transcript_end;
+            }
+        }
+
+
+        substart -= start;
+        subend -= start
+        var exonSeq = seq.substring(substart, subend);
+        CDS += exonSeq;
+        seq = seq.substring(0, substart) + exonSeq.toUpperCase() + seq.substring(subend + 1, seq.length);
+    }
+
+    var pattern = /([ATCG]+)/g;
+    var before = '<span style="color: red;">';
+    var after = '</span>';
+    console.log("CDS");
+
+    console.log(CDS);
+
+}
+
+

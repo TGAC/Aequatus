@@ -122,7 +122,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
 
     public static final String Get_Database_information = "SELECT meta_key,meta_value from meta";// + var1;
 
-    public static final String GET_Seq_API = "SELECT sequence FROM dna where seq_region_id = ?";
+    public static final String GET_Seq_API = "SELECT SUBSTRING(sequence, ?, ?) FROM dna where seq_region_id = ?";
 
     public static final String GET_reference_for_Assembly = "SELECT * FROM assembly where cmp_seq_region_id =?";
     public static final String GET_Assembly_for_reference = "SELECT * FROM assembly where asm_seq_region_id =?";
@@ -171,7 +171,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             "where  t.gene_id = g.gene_id and t.transcript_id = et.transcript_id and et.exon_id = e.exon_id  and  g.seq_region_id = 136058 and g.analysis_id = 1";
 
 
-    private JdbcTemplate template;
+    private static JdbcTemplate template;
 
     public void setJdbcTemplate(JdbcTemplate template) {
         this.template = template;
@@ -2163,34 +2163,46 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
     }
 
 
-    public String getSeqLevel(String query, int from, int to) throws IOException {
+    public static String getSeqLevel(String query, int from, int to, JdbcTemplate template) throws IOException {
 
         String seq = "";
         try {
 
-            seq = template.queryForObject(GET_Seq_API, new Object[]{query}, String.class);
+            log.info("\n\n\n\n getseqlevel " + query + " " + from + " " + to);
             if (from < 0) {
                 from = 0;
             }
-            if (to > seq.length()) {
-                to = seq.length();
-            }
-            return seq.substring(from, to);
+
+
+            seq = template.queryForObject(GET_Seq_API, new Object[]{from, (to - from), query}, String.class);
+
+            return seq;//.substring(from, to);
         } catch (EmptyResultDataAccessException e) {
             return "";
         }
     }
 
 
-    public String getSeqRecursive(String query, int from, int to, int asm_from, int asm_to) throws IOException {
+    public static String getSeqRecursive(String query, int from, int to, int asm_from, int asm_to, JdbcTemplate template) throws IOException {
+
 
         try {
+
+
+            log.info("\n\n\n\n getseqrecusrsive " + from + " " + to);
+
+
             String seq = "";
 
             List<Map<String, Object>> maps = template.queryForList(GET_SEQS_LIST_API, new Object[]{query, from, to, from, to, from, to, from, to});
             for (Map map : maps) {
                 String query_coord_temp = template.queryForObject(GET_Coord_systemid_FROM_ID, new Object[]{map.get("cmp_seq_region_id")}, String.class);
+
+                log.info("\n\n\n\n getseqrecursive coord" + query_coord_temp);
+
                 String attrib_temp = template.queryForObject(GET_coord_attrib, new Object[]{query_coord_temp}, String.class);
+                log.info("\n\n\n\n getseqrecusrsive " + attrib_temp);
+
                 if (attrib_temp.indexOf("sequence") >= 0) {
                     int asm_start = Integer.parseInt(map.get("asm_start").toString());
                     int asm_end = Integer.parseInt(map.get("asm_end").toString());
@@ -2208,7 +2220,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                     } else {
                         end_temp = to - asm_start + 1;
                     }
-                    seq += getSeqLevel(map.get("cmp_seq_region_id").toString(), start_temp, end_temp);
+                    seq += getSeqLevel(map.get("cmp_seq_region_id").toString(), start_temp, end_temp, template);
                 } else {
 
                     maps = template.queryForList(GET_SEQS_LIST_API, new Object[]{map.get("cmp_seq_region_id"), from, to, from, to, from, to, from, to});
@@ -2228,7 +2240,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                         to = (to - from);
 
                     }
-                    seq += getSeqRecursive(map.get("cmp_seq_region_id").toString(), from, to, asm_from, asm_to);
+                    seq += getSeqRecursive(map.get("cmp_seq_region_id").toString(), from, to, asm_from, asm_to, template);
                 }
             }
 
@@ -2241,19 +2253,34 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
     }
 
 
-    public String getSeq(String query, int from, int to) throws IOException {
+    public static String getSeq(String query, int from, int to, JdbcTemplate template) throws IOException {
+
         try {
+
+            log.info("\n\n\n\n getseq " + query + " " + from + " " + to);
+
+
             String seq = "";
             String query_coord = template.queryForObject(GET_Coord_systemid_FROM_ID, new Object[]{query}, String.class);
+
+            log.info("\n\n\n\n getseq coord " + query_coord);
+
             String attrib = template.queryForObject(GET_coord_attrib, new Object[]{query_coord}, String.class);
+
+            log.info("\n\n\n\n getseq " + attrib);
+
             if (attrib.indexOf("sequence") >= 0) {
-                seq = getSeqLevel(query, from, to);
+                seq = getSeqLevel(query, from, to, template);
             } else {
                 List<Map<String, Object>> maps = template.queryForList(GET_SEQS_LIST_API, new Object[]{query, from, to, from, to, from, to, from, to});
                 for (Map map : maps) {
 
                     String query_coord_temp = template.queryForObject(GET_Coord_systemid_FROM_ID, new Object[]{map.get("cmp_seq_region_id")}, String.class);
+                    log.info("\n\n\n\n getseq2 coord " + query_coord_temp);
+
                     String attrib_temp = template.queryForObject(GET_coord_attrib, new Object[]{query_coord_temp}, String.class);
+
+                    log.info("\n\n\n\n getseq2 " + attrib_temp);
 
                     if (attrib_temp.indexOf("sequence") >= 0) {
                         int asm_start = Integer.parseInt(map.get("asm_start").toString());
@@ -2273,7 +2300,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                             end_temp = to - asm_start + 1;
                         }
 
-                        seq = getSeqLevel(map.get("cmp_seq_region_id").toString(), start_temp, end_temp);
+                        seq = getSeqLevel(map.get("cmp_seq_region_id").toString(), start_temp, end_temp, template);
                     } else {
 
                         maps = template.queryForList(GET_SEQS_LIST_API, new Object[]{map.get("cmp_seq_region_id"), from, to, from, to, from, to, from, to});
@@ -2293,7 +2320,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                         //          else {
                         //            to = (to - from);
                         //          }
-                        seq += getSeqRecursive(map.get("cmp_seq_region_id").toString(), from, to, asm_start, asm_end);
+                        seq += getSeqRecursive(map.get("cmp_seq_region_id").toString(), from, to, asm_start, asm_end, template);
                     }
                 }
 
@@ -2348,8 +2375,11 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
 
 
     public static JSONObject getGenebyStableid(String query, String genome, String member_id) throws SQLException {
-        log.info("\n\ngetgenebystableid\n\n" + genome + ":" + query);
         try {
+
+            log.info("\n\ngetgenebystableid\n\n" + genome + ":" + query);
+
+
             JSONObject gene = new JSONObject();
 
             JdbcTemplate new_Template;
@@ -2399,14 +2429,14 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             List<Map<String, Object>> translation_end;
             int start = Integer.parseInt(gene_info.get("seq_region_start").toString());
             int end = Integer.parseInt(gene_info.get("seq_region_end").toString());
-            int ref_id = Integer.parseInt(gene_info.get("seq_region_id").toString());
+            String ref_id = gene_info.get("seq_region_id").toString();
 
             gene.put("gene_id", gene_id);
             gene.put("start", start);
             gene.put("end", end);
             gene.put("stable_id", query);
             gene.put("member_id", member_id);
-            gene.put("length", end - start +1);
+            gene.put("length", end - start + 1);
             gene.put("reference", new_Template.queryForObject(GET_SEQ_REGION_NAME_FROM_ID, new Object[]{ref_id}, String.class));
 
 
@@ -2428,11 +2458,16 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             transcript.put("id", transcript_id);
             transcript.put("start", start);
             transcript.put("end", end);
-            transcript.put("length", end - start +1);
+            transcript.put("length", end - start + 1);
             transcript.put("stable_id", query);
             transcript.put("member_id", member_id);
             transcript.put("reference", new_Template.queryForObject(GET_SEQ_REGION_NAME_FROM_ID, new Object[]{ref_id}, String.class));
             transcript.put("description", map.get("description"));
+
+            log.info("\n\n\n\n sequence ");
+
+
+            transcript.put("sequence", getSeq(ref_id, start, end, new_Template));
 
 
             transcript.put("strand", map.get("seq_region_strand"));
@@ -2445,25 +2480,35 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                 log.info("\n\n\n\tstart next " + new_Template.queryForList(GET_EXON_BY_ID, new Object[]{start_seq.get("start_exon_id")}).toString());
 
                 int exon_start = Integer.parseInt(new_Template.queryForList(GET_EXON_BY_ID, new Object[]{start_seq.get("start_exon_id")}).get(0).get("seq_region_start").toString());
-                transcript.put("transcript_start", exon_start + Integer.parseInt(start_seq.get("seq_start").toString()));
+                int exon_end = Integer.parseInt(new_Template.queryForList(GET_EXON_BY_ID, new Object[]{start_seq.get("start_exon_id")}).get(0).get("seq_region_end").toString());
+
+                if (gene_info.get("seq_region_strand").toString().equals("-1")) {
+                    transcript.put("transcript_start", exon_end - Integer.parseInt(start_seq.get("seq_start").toString()));
+                } else {
+                    transcript.put("transcript_start", exon_start + Integer.parseInt(start_seq.get("seq_start").toString()));
+                }
             }
 
             for (Map end_seq : translation_end) {
                 log.info("\n\n\n\tend " + end_seq.toString());
 
+                int exon_start = Integer.parseInt(new_Template.queryForList(GET_EXON_BY_ID, new Object[]{end_seq.get("end_exon_id")}).get(0).get("seq_region_start").toString());
                 int exon_end = Integer.parseInt(new_Template.queryForList(GET_EXON_BY_ID, new Object[]{end_seq.get("end_exon_id")}).get(0).get("seq_region_end").toString());
 
-                transcript.put("transcript_end", exon_end - Integer.parseInt(end_seq.get("seq_end").toString()));
+                if (gene_info.get("seq_region_strand").toString().equals("-1")) {
+                    transcript.put("transcript_end", exon_end - Integer.parseInt(end_seq.get("seq_end").toString()));
+                } else {
+                    transcript.put("transcript_end", exon_end + Integer.parseInt(end_seq.get("seq_end").toString()));
+                }
             }
 
             if (transcript.getInt("transcript_start") > transcript.getInt("transcript_end")) {
                 int temp = transcript.getInt("transcript_start");
                 transcript.put("transcript_start", transcript.getInt("transcript_end"));
                 transcript.put("transcript_end", temp);
-
             }
 
-            transcript.put("desc", map.get("description") +":"+ query);
+            transcript.put("desc", map.get("description") + ":" + query);
             JSONArray exons_array = new JSONArray();
             List<Map<String, Object>> exons = new_Template.queryForList(GET_EXON_per_Gene, new Object[]{transcript_id});
             for (Map map_temp : exons) {
@@ -2477,7 +2522,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                 exon.put("start", start);
                 exon.put("_start", start);
                 exon.put("end", end);
-                exon.put("length", end - start +1);
+                exon.put("length", end - start + 1);
 
                 exon.put("strand", map_temp.get("seq_region_strand"));
                 exons_array.add(exon);

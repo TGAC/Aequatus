@@ -63,6 +63,19 @@
     <script type="text/javascript" src="<c:url value='/scripts/jsphylo/raphael-min.js'/>"></script>
     <%--dependecies for phylo tree--%>
 
+    <%--&lt;%&ndash;Bootstrap&ndash;%&gt;--%>
+    <%--<script type="text/javascript" src="<c:url value='/scripts/bootstrap-3.1.1-dist/js/bootstrap.js'/>" ></script>--%>
+    <%--<script type="text/javascript" src="<c:url value='/scripts/bootstrap-3.1.1-dist/js/bootstrap.min.js'/>" ></script>--%>
+
+    <%--<!-- Latest compiled and minified CSS -->--%>
+    <%--<link rel="stylesheet" href="<c:url value='/scripts/bootstrap-3.1.1-dist/css/bootstrap-theme.css'/>" type="text/css">--%>
+    <%--<link rel="stylesheet" href="<c:url value='/scripts/bootstrap-3.1.1-dist/css/bootstrap.css'/>" type="text/css">--%>
+
+    <%--<!-- Optional theme -->--%>
+    <%--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">--%>
+
+    <%--&lt;%&ndash;Bootstrap&ndash;%&gt;--%>
+
     <title>${initParam.pageTitle}</title>
 
 </head>
