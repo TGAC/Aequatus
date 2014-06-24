@@ -10,6 +10,9 @@ var data = "";
 
 var colours = ['rgb(166,206,227)', 'rgb(31,120,180)', 'rgb(178,223,138)', 'rgb(51,160,44)', 'rgb(251,154,153)', 'rgb(227,26,28)', 'rgb(253,191,111)', 'rgb(255,127,0)', 'rgb(202,178,214)', 'rgb(106,61,154)', 'rgb(255,255,153)', 'rgb(177,89,40)', 'rgb(141,211,199)', 'rgb(255,255,179)', 'rgb(190,186,218)', 'rgb(251,128,114)', 'rgb(128,177,211)', 'rgb(253,180,98)', 'rgb(179,222,105)', 'rgb(252,205,229)', 'rgb(217,217,217)', 'rgb(188,128,189)', 'rgb(204,235,197)', 'rgb(255,237,111)']
 
+
+var gapped_seq_list = [];
+var gene_list_array = [];
 function search_geneView(query, from, to, jsonid, oldtracks) {
 
     seqregionSearchPopup_geneView("", "", "", "", "", "");
@@ -449,12 +452,15 @@ function getcoreMember(query, redrawn) {
 //                    string_tree = ""
 //
 //                    calculateDistanceMatrix(ref_data, core_data)
+//
 //                    upgma_matrix = distance_matrix;
 //                    findNearestNode()
 //
 //
 //                    nj_matrix = distance_matrix;
 //                    calculateQMatrix()
+
+
 
 
                     for (var i = 0; i < core_data.length; i++) {
@@ -478,9 +484,13 @@ function getcoreMember(query, redrawn) {
                             dispGenes("#core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
                         }
 
+
                     }
 
                 }
+
+                console.log(gene_list_array)
+                calculateDNADistanceMatrix()
 
                 jQuery("#gene_widget").sortable(
                     {
@@ -624,6 +634,10 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
                 ref.transcript_end = temp_int
             }
 
+            gene_list_array.push(gene.transcripts[transcript_len].stable_id)
+            console.log(gene.transcripts[transcript_len].stable_id)
+            gapped_seq_list.push(expand_DNA_seq(formatFasta(gene.transcripts[transcript_len]), cigarline))
+
 //            console.log(formatFasta(gene.transcripts[transcript_len]))
             dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length, transcript_len);
 
@@ -637,7 +651,9 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
                 'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " top:10px; LEFT:" + startposition + "px; width :" + stopposition + "px;"
             }).html("<span style='position: absolute; left:-120px; width: 100px; word-wrap: break-word;'>" + stringTrim(label, 100) + "</span> ").appendTo(div);
 
-            formatFasta(gene.transcripts[transcript_len])
+            gene_list_array.push(gene.transcripts[transcript_len].stable_id)
+            gapped_seq_list.push(expand_DNA_seq(formatFasta(gene.transcripts[transcript_len]), cigarline, gene.transcripts[transcript_len].stable_id))
+
 
             dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length);
 
@@ -1534,7 +1550,6 @@ function toggleLeftInfo(div, id) {
 function formatFasta(track) {
 
     console.log("formatfasta")
-    console.log(track.strand)
 
     var seq = track.sequence.toLowerCase();
     var start, stop;
@@ -1550,10 +1565,8 @@ function formatFasta(track) {
     var exons = track.Exons.length;
 
     var CDS = ""
-    console.log(track.transcript_start + "-" + track.transcript_end)
 
     for (var k = 0; k < exons; k++) {
-        console.log("Exon " + k);
 
         var exonSeq = "";
 
@@ -1567,15 +1580,11 @@ function formatFasta(track) {
             subend = track.Exons[k].end;
         }
 
-        console.log(substart + "-" + subend)
-
         if (track.strand == "-1") {
-            console.log("reverse")
             track.Exons[k]._sequence = track.Exons[k].sequence
             track.Exons[k].sequence = track.Exons[k]._sequence.split("").reverse().join("")
             track.Exons[k].sequence = reverse_compliment(track.Exons[k]._sequence)
 
-            console.log(1)
             if (track.transcript_end < subend) {
                 var diff = track.Exons[k].sequence.length - ((track.transcript_end - substart) +1)
                 exonSeq = track.Exons[k].sequence.substring(diff-1);
@@ -1584,23 +1593,16 @@ function formatFasta(track) {
                 exonSeq = track.Exons[k].sequence;
             }
 
-            console.log(2)
-
             if (track.transcript_start > substart) {
                 if (track.transcript_end < subend) {
-                    console.log("if")
                     exonSeq = exonSeq.substring(0, track.transcript_end - track.transcript_start);
-                    console.log("if2")
                 } else {
-                    console.log("else")
                     var diff = track.Exons[k].sequence.length - ((track.transcript_start - substart) +1)
-
                     exonSeq = exonSeq.substring(diff);
-                    console.log("else2")
                 }
-                console.log(exonSeq)
-
             }
+            console.log(exonSeq.length)
+            CDS = CDS+ exonSeq;
         } else {
             if (track.transcript_start > substart) {
                 exonSeq = track.Exons[k].sequence.substring((track.transcript_start - substart) - 1);
@@ -1616,20 +1618,11 @@ function formatFasta(track) {
                 }
             }
 
+            CDS += exonSeq;
         }
 
-        console.log(exonSeq)
-
-
-        CDS += exonSeq;
     }
-
-    var pattern = /([ATCG]+)/g;
-    var before = '<span style="color: red;">';
-    var after = '</span>';
-    console.log(CDS)
-
-
+    return CDS;
 }
 
 function reverse_compliment(sequence) {
