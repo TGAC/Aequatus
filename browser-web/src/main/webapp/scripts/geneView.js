@@ -1550,9 +1550,15 @@ function formatFasta(track) {
     var exons = track.Exons.length;
 
     var CDS = ""
+    console.log(track.transcript_start + "-" + track.transcript_end)
+
     for (var k = 0; k < exons; k++) {
+        console.log("Exon " + k);
+
+        var exonSeq = "";
+
         var substart, subend;
-        if (track.start > track.end) {
+        if (track.Exons[k].start > track.Exons[k].end) {
             substart = track.Exons[k].end;
             subend = track.Exons[k].start;
         }
@@ -1561,34 +1567,86 @@ function formatFasta(track) {
             subend = track.Exons[k].end;
         }
 
-        if (track.transcript_start > substart) {
-            if (track.transcript_start < subend) {
-                substart = track.transcript_start;
-            }
-        }
+        console.log(substart + "-" + subend)
 
+        if (track.strand == "-1") {
+            console.log("reverse")
+            track.Exons[k]._sequence = track.Exons[k].sequence
+            track.Exons[k].sequence = track.Exons[k]._sequence.split("").reverse().join("")
+            track.Exons[k].sequence = reverse_compliment(track.Exons[k]._sequence)
 
-        if (track.transcript_end > substart) {
+            console.log(1)
             if (track.transcript_end < subend) {
-                subend = track.transcript_end;
+                var diff = track.Exons[k].sequence.length - ((track.transcript_end - substart) +1)
+                exonSeq = track.Exons[k].sequence.substring(diff-1);
+
+            } else {
+                exonSeq = track.Exons[k].sequence;
             }
+
+            console.log(2)
+
+            if (track.transcript_start > substart) {
+                if (track.transcript_end < subend) {
+                    console.log("if")
+                    exonSeq = exonSeq.substring(0, track.transcript_end - track.transcript_start);
+                    console.log("if2")
+                } else {
+                    console.log("else")
+                    var diff = track.Exons[k].sequence.length - ((track.transcript_start - substart) +1)
+
+                    exonSeq = exonSeq.substring(diff);
+                    console.log("else2")
+                }
+                console.log(exonSeq)
+
+            }
+        } else {
+            if (track.transcript_start > substart) {
+                exonSeq = track.Exons[k].sequence.substring((track.transcript_start - substart) - 1);
+            } else {
+                exonSeq = track.Exons[k].sequence;
+            }
+
+            if (track.transcript_end < subend) {
+                if (track.transcript_start > substart) {
+                    exonSeq = exonSeq.substring(0, track.transcript_end - track.transcript_start);
+                } else {
+                    exonSeq = exonSeq.substring(0, track.transcript_end - substart);
+                }
+            }
+
         }
 
+        console.log(exonSeq)
 
-        substart -= start;
-        subend -= start
-        var exonSeq = seq.substring(substart, subend);
+
         CDS += exonSeq;
-        seq = seq.substring(0, substart) + exonSeq.toUpperCase() + seq.substring(subend + 1, seq.length);
     }
 
     var pattern = /([ATCG]+)/g;
     var before = '<span style="color: red;">';
     var after = '</span>';
-    console.log("CDS");
+    console.log(CDS)
 
-    console.log(CDS);
 
+}
+
+function reverse_compliment(sequence) {
+    var complimentry = ""
+
+    for (var i = 0; i < sequence.length; i++) {
+        if (sequence.charAt(i).toUpperCase() == "A") {
+            complimentry = "T" + complimentry
+        } else if (sequence.charAt(i).toUpperCase() == "G") {
+            complimentry = "C" + complimentry
+        } else if (sequence.charAt(i).toUpperCase() == "C") {
+            complimentry = "G" + complimentry
+        } else if (sequence.charAt(i).toUpperCase() == "T") {
+            complimentry = "A" + complimentry
+        }
+    }
+    return complimentry;
 }
 
 

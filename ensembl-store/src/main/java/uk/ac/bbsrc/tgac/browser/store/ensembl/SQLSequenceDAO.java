@@ -2174,7 +2174,8 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             }
 
 
-            seq = template.queryForObject(GET_Seq_API, new Object[]{from, (to - from), query}, String.class);
+            seq = template.queryForObject(GET_Seq_API, new Object[]{from, (to - from)+1, query}, String.class);
+            log.info("\n\n\n\n getseqlevel length" + query + " " + from + " " + to+"\t"+seq+":"+seq.length());
 
             return seq;//.substring(from, to);
         } catch (EmptyResultDataAccessException e) {
@@ -2213,7 +2214,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                     if (from <= asm_start) {
                         start_temp = start_cmp;
                     } else {
-                        start_temp = end_cmp - (asm_end - from) + 1;
+                        start_temp = end_cmp - (asm_end - from);
                     }
                     if (to >= asm_end) {
                         end_temp = end_cmp;
@@ -2292,7 +2293,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                         if (from <= asm_start) {
                             start_temp = start_cmp;
                         } else {
-                            start_temp = end_cmp - (asm_end - from) + 1;
+                            start_temp = end_cmp - (asm_end - from);
                         }
                         if (to >= asm_end) {
                             end_temp = end_cmp;
@@ -2498,7 +2499,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                 if (gene_info.get("seq_region_strand").toString().equals("-1")) {
                     transcript.put("transcript_end", exon_end - Integer.parseInt(end_seq.get("seq_end").toString()));
                 } else {
-                    transcript.put("transcript_end", exon_end + Integer.parseInt(end_seq.get("seq_end").toString()));
+                    transcript.put("transcript_end", exon_start + Integer.parseInt(end_seq.get("seq_end").toString()));
                 }
             }
 
@@ -2525,6 +2526,8 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                 exon.put("length", end - start + 1);
 
                 exon.put("strand", map_temp.get("seq_region_strand"));
+                exon .put("sequence", getSeq(ref_id, start, end, new_Template));
+
                 exons_array.add(exon);
             }
             transcript.put("Exons", exons_array);
