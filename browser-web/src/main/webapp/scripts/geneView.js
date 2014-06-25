@@ -13,6 +13,8 @@ var colours = ['rgb(166,206,227)', 'rgb(31,120,180)', 'rgb(178,223,138)', 'rgb(5
 
 var gapped_seq_list = [];
 var gene_list_array = [];
+var cigar_list = [];
+
 function search_geneView(query, from, to, jsonid, oldtracks) {
 
     seqregionSearchPopup_geneView("", "", "", "", "", "");
@@ -461,8 +463,6 @@ function getcoreMember(query, redrawn) {
 //                    calculateQMatrix()
 
 
-
-
                     for (var i = 0; i < core_data.length; i++) {
                         var genes = core_data[i].genes
                         if (document.getElementById("core" + core_data[i].genome) == null) {
@@ -488,9 +488,30 @@ function getcoreMember(query, redrawn) {
                     }
 
                 }
+                console.log("before matrix")
 
                 console.log(gene_list_array)
-                calculateDNADistanceMatrix()
+                console.log(gene_list_array.length)
+
+                var DNAMatrix = calculateDNADistanceMatrix(gene_list_array, gapped_seq_list)
+                var CIGARMatrix = calculateDistanceMatrix(gene_list_array, cigar_list)
+                console.log("DNA ===========")
+                console.log(gene_list_array)
+                console.log(gene_list_array.length)
+
+                var DNA_Newick = findNearestNode(DNAMatrix, gene_list_array)
+
+                console.log("CIGAR ===========")
+                console.log(gene_list_array)
+                console.log(gene_list_array.length)
+
+                var CIGAR_Newick = findNearestNode(CIGARMatrix, gene_list_array)
+
+
+//                var NJ_CIGAR_Newick = findFurthestNode(DNAMatrix, gene_list_array)
+//                var NJ_DNA_Newick = findFurthestNode(CIGARMatrix, gene_list_array)
+//                                    console.log(NJ_CIGAR_Newick)
+//                console.log(NJ_DNA_Newick)
 
                 jQuery("#gene_widget").sortable(
                     {
@@ -635,8 +656,12 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
             }
 
             gene_list_array.push(gene.transcripts[transcript_len].stable_id)
-            console.log(gene.transcripts[transcript_len].stable_id)
+
+
+            console.log(gene_list_array)
             gapped_seq_list.push(expand_DNA_seq(formatFasta(gene.transcripts[transcript_len]), cigarline))
+            cigar_list.push(cigarline)
+
 
 //            console.log(formatFasta(gene.transcripts[transcript_len]))
             dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length, transcript_len);
@@ -653,6 +678,8 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 
             gene_list_array.push(gene.transcripts[transcript_len].stable_id)
             gapped_seq_list.push(expand_DNA_seq(formatFasta(gene.transcripts[transcript_len]), cigarline, gene.transcripts[transcript_len].stable_id))
+            cigar_list.push(cigarline)
+            console.log(gene_list_array)
 
 
             dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length);
@@ -1586,8 +1613,8 @@ function formatFasta(track) {
             track.Exons[k].sequence = reverse_compliment(track.Exons[k]._sequence)
 
             if (track.transcript_end < subend) {
-                var diff = track.Exons[k].sequence.length - ((track.transcript_end - substart) +1)
-                exonSeq = track.Exons[k].sequence.substring(diff-1);
+                var diff = track.Exons[k].sequence.length - ((track.transcript_end - substart) + 1)
+                exonSeq = track.Exons[k].sequence.substring(diff - 1);
 
             } else {
                 exonSeq = track.Exons[k].sequence;
@@ -1597,12 +1624,12 @@ function formatFasta(track) {
                 if (track.transcript_end < subend) {
                     exonSeq = exonSeq.substring(0, track.transcript_end - track.transcript_start);
                 } else {
-                    var diff = track.Exons[k].sequence.length - ((track.transcript_start - substart) +1)
+                    var diff = track.Exons[k].sequence.length - ((track.transcript_start - substart) + 1)
                     exonSeq = exonSeq.substring(diff);
                 }
             }
-            console.log(exonSeq.length)
-            CDS = CDS+ exonSeq;
+//            console.log(exonSeq.length)
+            CDS = CDS + exonSeq;
         } else {
             if (track.transcript_start > substart) {
                 exonSeq = track.Exons[k].sequence.substring((track.transcript_start - substart) - 1);

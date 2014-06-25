@@ -6,11 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var tree = [];
-var nj_matrix = [];
-//
-
-var nj_gene_list = []
 var nj_string_tree = ""
 //var nj_matrix =
 //    [
@@ -21,45 +16,54 @@ var nj_string_tree = ""
 //        [0.17, 0.24, 0.11, 0.21, 100]
 //    ];
 
-var q_matrix = [];
-function findFurthestNode() {
+function findFurthestNode(nj_matrix, gene_list_main) {
 
-    var max_score = 0;
-    var max_i = 0;
-    var max_j = 0;
+    console.log("findfurthestnode")
+
+    var q_matrix = [];
+
+
+    console.log("q matrix")
+    for (var i = 0; i < nj_matrix.length; i++) {
+        q_matrix[i] = [];
+
+        for (var j = 0; j < i; j++) {
+            q_matrix[i][j] = (nj_matrix.length - 2) * nj_matrix[i][j] - sigma(nj_matrix, i) - sigma(nj_matrix, j)
+        }
+    }
+
+
+    var nj_gene_list = gene_list_main.slice(0);
+
+    var min_score = 0;
+    var min_i = 0;
+    var min_j = 0;
     for (var i = 0; i < q_matrix.length; i++) {
         for (var j = 0; j < i; j++) {
-            if (parseFloat(q_matrix[i][j]) < parseFloat(max_score)) {
-                max_score = q_matrix[i][j];
-                max_i = i;
-                max_j = j;
+            if (parseFloat(q_matrix[i][j]) < parseFloat(min_score)) {
+                min_score = q_matrix[i][j];
+                min_i = i;
+                min_j = j;
             }
         }
     }
 
-//
-    console.log(nj_gene_list)
-
-    var new_node = "(" + nj_gene_list[max_i] + "," + nj_gene_list[max_j] + ")"
+    var new_node = "(" + nj_gene_list[min_i] + "," + nj_gene_list[min_j] + ")"
     nj_gene_list[nj_gene_list.length] = new_node
 
-    console.log(nj_string_tree)
+    nj_gene_list.splice(min_i, 1)
 
-
-    console.log(nj_gene_list)
-
-    nj_gene_list.splice(max_i, 1)
-
-    nj_gene_list.splice(max_j, 1)
+    nj_gene_list.splice(min_j, 1)
 
     nj_string_tree = new_node + ";"
 
-    console.log(nj_gene_list)
 
-    console.log(nj_string_tree)
     if (q_matrix.length > 2) {
-        calculateNJMatrix(max_i, max_j);
+        calculateNJMatrix(nj_matrix, min_i, min_j, nj_gene_list);
     } else {
+
+        console.log(nj_string_tree);
+
         var dataObject = { newick: nj_string_tree };
 
 
@@ -73,32 +77,33 @@ function findFurthestNode() {
             1000, 500
 
         );
+        return nj_string_tree;
     }
 }
 
-function calculateQMatrix() {
-   q_matrix = [];
+function calculateQMatrix(nj_matrix, gene_list) {
+    q_matrix = [];
 
     console.log("q matrix")
     for (var i = 0; i < nj_matrix.length; i++) {
         q_matrix[i] = [];
 
         for (var j = 0; j < i; j++) {
-            q_matrix[i][j] = (nj_matrix.length - 2) * nj_matrix[i][j] - sigma(i) - sigma(j)
+            q_matrix[i][j] = (nj_matrix.length - 2) * nj_matrix[i][j] - sigma(nj_matrix, i) - sigma(nj_matrix, j)
         }
     }
 
-    console.log("print q matrix")
+//    console.log("print q matrix")
+//
+//    for (var i = 0; i < nj_matrix.length; i++) {
+//
+//        console.log(q_matrix[i]);
+//    }
 
-    for (var i = 0; i < nj_matrix.length; i++) {
-
-        console.log(q_matrix[i]);
-    }
-
-    findFurthestNode()
+    return findFurthestNode(nj_matrix, q_matrix, gene_list)
 }
 
-function sigma(a) {
+function sigma(nj_matrix, a) {
     var sigma = 0;
     for (var i = 0; i < nj_matrix.length; i++) {
         if (a != i) {
@@ -116,7 +121,7 @@ function sigma(a) {
     return sigma
 }
 
-function calculateNJMatrix(a, b) {
+function calculateNJMatrix(nj_matrix, a, b, gene_list) {
 
     console.log("calculate nj matrix")
     var temp_nj_matrix = nj_matrix;
@@ -172,16 +177,12 @@ function calculateNJMatrix(a, b) {
         }
     }
 
-    console.log("final NJ \n ===================")
-    for (var j = 0; j < nj_matrix.length; j++) {
-        console.log(nj_matrix[j])
-    }
+//    console.log("final NJ \n ===================")
+//    for (var j = 0; j < nj_matrix.length; j++) {
+//        console.log(nj_matrix[j])
+//    }
 
     console.log(" ===================")
 
-calculateQMatrix();
+    findFurthestNode(nj_matrix, gene_list);
 }
-
-
-
-

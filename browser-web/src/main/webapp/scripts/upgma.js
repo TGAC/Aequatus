@@ -6,10 +6,13 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var tree = [];
-var upgma_matrix = [];
-function findNearestNode() {
+function findNearestNode(upgma_matrix, gene_list_main) {
+    var string_tree = "";
 
+    var gene_list = gene_list_main.slice(0);
+    console.log("findnearestnode")
+
+    console.log(gene_list)
     var min_score = 100;
     var min_i = 0;
     var min_j = 0;
@@ -32,27 +35,31 @@ function findNearestNode() {
 
     string_tree = new_node + ";"
 
-    console.log(string_tree)
+
+    console.log("string tree \t" + string_tree)
 
     if (upgma_matrix.length > 2) {
-        calculateUPGMAMatrix(min_i, min_j);
+        calculateUPGMAMatrix(upgma_matrix, min_i, min_j, gene_list);
     } else {
+
         var dataObject = { newick: string_tree };
 
 
-        var width = jQuery(document).width()/5;
+        var width = jQuery(document).width() / 5;
 
         var height = 1000
 
         var phylocanvas = new Smits.PhyloCanvas(
             dataObject,
             'gene_tree_upgma',
-            1000, 500        );
+            1000, 500);
+
+        return string_tree;
     }
 }
 
-function calculateUPGMAMatrix(a, b) {
-
+function calculateUPGMAMatrix(upgma_matrix, a, b, gene_list) {
+    console.log("calculateupgma")
     var temp_upgma_matrix = upgma_matrix;
     upgma_matrix = [];
     var k = 0;
@@ -103,15 +110,15 @@ function calculateUPGMAMatrix(a, b) {
     }
 
 
-    console.log("final UPGMA \n ===================")
-    for (var j = 0; j < upgma_matrix.length; j++) {
-        console.log(upgma_matrix[j])
-    }
+//    console.log("final UPGMA \n ===================")
+//    for (var j = 0; j < upgma_matrix.length; j++) {
+//        console.log(upgma_matrix[j])
+//    }
+//
+//    console.log(" ===================")
 
-    console.log(" ===================")
 
-
-    findNearestNode();
+    findNearestNode(upgma_matrix, gene_list);
 }
 
 

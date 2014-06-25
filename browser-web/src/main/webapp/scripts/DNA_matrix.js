@@ -10,9 +10,9 @@
 var gene_list = [];
 var string_tree = "";
 
-var distance_matrix = [];
+var nj_matrix = [];
 //
-//var distance_matrix =
+//var nj_matrix =
 //    [
 //        [100],
 //        [6, 100],
@@ -21,7 +21,7 @@ var distance_matrix = [];
 //        [10, 10, 6, 6, 100]
 //    ];
 
-//var distance_matrix =
+//var nj_matrix =
 //    [
 //        [100],
 //        [19, 100],
@@ -40,8 +40,6 @@ function expand_DNA_seq(seq, cigar, stable) {
     cigar = expand_cigar(cigar)
 
     var j = 0;
-    console.log(seq.length)
-    console.log(cigar.replace(/D/g, "").length)
     for (var i = 0; i < cigar.length; i++) {
         if (cigar.charAt(i) == "M") {
             gapped_seq += seq.charAt(j)
@@ -51,71 +49,85 @@ function expand_DNA_seq(seq, cigar, stable) {
         }
     }
 
-    console.log(gapped_seq)
     return gapped_seq;
 }
-function calculateDNADistanceMatrix() {
-    console.log("calculateDNADistanceMatrix()")
-    var distance_matrix = [];
+function calculateDNADistanceMatrix(gene_list_array, gapped_seq_list) {
+    console.log("calculateDNADistanceMatrix")
+    var nj_matrix = [];
     var upgma_matrix = [];
 
-    distance_matrix[0] = [];
-    distance_matrix[0][0] = 1
+    nj_matrix[0] = [];
+    nj_matrix[0][0] = 1
 
     upgma_matrix[0] = []
     upgma_matrix[0][0] = 1
+
+    var match = 0;
+    var missmatch = 0;
+    var gap = 0;
     for (var i = 1; i < gene_list_array.length; i++) {
-        distance_matrix[i] = [];
+        nj_matrix[i] = [];
         upgma_matrix[i] = []
         for (var j = 1; j < i; j++) {
-            var score = 0;
-            var dist_score = 0;
+            match = 0;
+            missmatch = 0;
+            gap = 0;
             for (var k = 0; k < gapped_seq_list[j].length; k++) {
-                if (gapped_seq_list[j].charAt(k) == gapped_seq_list[0].charAt(k))// && homologous_cigar_string_array[j].charAt(k) == 'M')
+                if (gapped_seq_list[j].charAt(k) == gapped_seq_list[0].charAt(k) && gapped_seq_list[j].charAt(k) != '-')
                 {
-                    score++
+                    match++
+                }
+                else if (gapped_seq_list[j].charAt(k) == gapped_seq_list[0].charAt(k))
+                {
+                    gap++
                 }
                 else {
-                    dist_score++;
+                    missmatch++;
                 }
             }
 
-            distance_matrix[i][j] = dist_score / gapped_seq_list[i].length;
-            upgma_matrix[i][j] = score / gapped_seq_list[i].length;
+
+
+            nj_matrix[i][j] = missmatch / (match+missmatch);
+            upgma_matrix[i][j] = missmatch / (match+missmatch);
         }
 
-        score = 0;
+         match = 0;
+         missmatch = 0;
+         gap = 0;
 
         for (var k = 1; k < gapped_seq_list[i].length; k++) {
-            if (gapped_seq_list[i].charAt(k) == gapped_seq_list[0].charAt(k))// && homologous_cigar_string_array[i].charAt(k) == 'M')
+            if (gapped_seq_list[i].charAt(k) == gapped_seq_list[0].charAt(k) && gapped_seq_list[i].charAt(k) == '-')
             {
-                score++
+                match++
+
+            } else if (gapped_seq_list[i].charAt(k) == gapped_seq_list[0].charAt(k))
+            {
+                gap++
 
             } else {
-                dist_score++;
+                missmatch++;
             }
         }
 //
-        distance_matrix[i][0] = dist_score / gapped_seq_list[i].length;
-        upgma_matrix[i][0] = score / gapped_seq_list[i].length;
+
+        nj_matrix[i][0] = missmatch / (match+missmatch);
+        upgma_matrix[i][0] = missmatch / (match+missmatch);
 
     }
 
 
-    for (var j = 0; j < distance_matrix.length; j++) {
-        console.log(distance_matrix[j])
+    for (var j = 0; j < nj_matrix.length; j++) {
+        console.log(nj_matrix[j])
     }
 
 
     console.log("=======")
 
 
-    for (var j = 0; j < upgma_matrix.length; j++) {
-        console.log(upgma_matrix[j])
-    }
 
-    console.log(gene_list)
-    console.log(nj_gene_list)
+
+    return nj_matrix;
 
 }
 
