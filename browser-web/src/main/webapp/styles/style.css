@@ -2102,11 +2102,11 @@ span.counter {
 .exon {
     position: absolute;
     background-position: center center;
-    background: white;
-    border: 2px solid green;
+    background: black;
+    /*border: 2px solid green;*/
     height: 5px;
     cursor: pointer;
-    border-radius:5px;
+    /*border-radius:5px;*/
 }
 
 .track_label {
