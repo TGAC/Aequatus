@@ -2106,7 +2106,7 @@ span.counter {
     border: 2px solid green;
     height: 5px;
     cursor: pointer;
-    /*border-radius:5px;*/
+    border-radius:5px;
 }
 
 .track_label {
@@ -2817,9 +2817,9 @@ border-radius: 5px 0 0 5px;
 .forward {
     width: 0px;
     height: 0px;
-    border-right: 0px solid transparent;
+    /*border-right: 0px solid transparent;*/
     border-top: 7px solid white;
-    border-left: 10px solid black;
+    border-left: 10px solid transparent;
     border-bottom: 7px solid white;
     position: absolute;
     z-index: 1999;

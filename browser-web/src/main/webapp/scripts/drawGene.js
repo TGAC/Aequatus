@@ -242,7 +242,7 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
 //                }).appendTo(div)
 //
 //            }
-
+//
             if (disp_exon) {
                 jQuery("<span>").attr({
                     'class': spanclass,

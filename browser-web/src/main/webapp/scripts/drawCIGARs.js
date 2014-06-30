@@ -119,7 +119,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                             stopposition = parseFloat(((temp_end-temp_start) - cigar_pos) * parseFloat(maxLentemp) / (max));
                             temp_div = "#exon" + id + "" + exons[exon_number].id
 
-                            trackHTML(startposition, stopposition, top, trackClass + " endcorner", temp_div, temp_colours[i], (temp_end - cigar_pos));
+                            trackHTML(startposition, stopposition, top, trackClass, temp_div, temp_colours[i], (temp_end - cigar_pos));
 
                             length = length - ((temp_end-temp_start) - cigar_pos);
 
@@ -143,7 +143,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
                             if (parseInt(cigar_pos) + parseInt(length) < temp_end) {
                                 temp_div = "#exon" + id + "" + exons[exon_number].id
-                                trackHTML(startposition, stopposition, top, trackClass + " frontcorner", temp_div, temp_colours[i], length);
+                                trackHTML(startposition, stopposition, top, trackClass, temp_div, temp_colours[i], length);
                                 cigar_pos = parseInt(cigar_pos) + parseInt(length)
                                 bool = false;
                             }
@@ -277,7 +277,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
     function trackHTMLDelete(startposition, stopposition, top, trackClass, temp_div, colour, title) {
         var track_html_local;
         track_html_local = "<div class='" + trackClass + "' " +
-            "STYLE=\"height: 14px; z-index: 1999; TOP:-5px; LEFT:" + startposition + "px; margin-left: -7px;" +
+            "STYLE=\"height: 10px; z-index: 1999; TOP:-5px; LEFT:" + startposition + "px; margin-left: -7px;" +
             "width:" + (stopposition) + "px \" title=" + title + "> </div>";
         jQuery(temp_div).append(track_html_local);
     }
@@ -286,7 +286,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
         var track_html_local;
 
         track_html_local = "<div class='" + trackClass + "' " +
-            "STYLE=\"height: 14px; z-index: 1999; TOP:0px; LEFT:" + startposition + "px; opacity:0.5; background:" + colour + "; " +
+            "STYLE=\"height: 10px; z-index: 1999; TOP:0px; LEFT:" + startposition + "px; opacity:0.7; background:" + colour + "; " +
             "width:" + (stopposition) + "px \" title=" + title + "> </div>";
         jQuery(temp_div).append(track_html_local);
     }
@@ -466,7 +466,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
     function trackHTMLDelete(startposition, stopposition, top, trackClass, temp_div, colour, title) {
         var track_html_local;
         track_html_local = "<div class='" + trackClass + "' " +
-            "STYLE=\"height: 14px; z-index: 1999; TOP:-5px; LEFT:" + startposition + "px; margin-left: -7px;" +
+            "STYLE=\"height: 10px; z-index: 1999; TOP:-5px; LEFT:" + startposition + "px; margin-left: -7px;" +
             "width:" + (stopposition) + "px \" title=" + title + "> </div>";
         jQuery(temp_div).append(track_html_local);
     }
@@ -474,7 +474,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
     function trackHTML(startposition, stopposition, top, trackClass, temp_div, colour, title) {
         var track_html_local;
         track_html_local = "<div class='" + trackClass + "' " +
-            "STYLE=\"position: absolute; height: 14px; z-index: 1999; TOP:0px; LEFT:" + startposition + "px; opacity:0.5; background:" + colour + "; " +
+            "STYLE=\"position: absolute; height: 10px; z-index: 1999; TOP:0px; LEFT:" + startposition + "px; opacity:0.7; background:" + colour + "; " +
             "width:" + (stopposition) + "px \" title=" + title + "> </div>";
         jQuery(temp_div).append(track_html_local);
     }
