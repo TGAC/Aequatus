@@ -129,7 +129,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
             dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length, transcript_len);
 
 
-            dispCigarLine(cigarline, 1, top, ((gene_stop - gene_start) + 1), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, ref.Exons.toJSON(), transcript_start, transcript_end, strand, ref_cigar, ref.strand);
+            dispCigarLine(cigarline, 1, top, ((gene_stop - gene_start) + 1), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, ref.Exons.toJSON(), transcript_start, transcript_end, strand, ref_cigar, ref.strand, gene.transcripts[transcript_len].id);
         }
         else {
             var temp_div = jQuery("<div>").attr({
@@ -172,6 +172,11 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
             spanclass = "ui-icon ui-icon-carat-1-w";
         }
 
+//        var spanclass = "forward";
+//
+//        if (strand == -1 || strand == "-1") {
+//            spanclass = "reverse";
+//        }
         var newStart_temp = gene_start;
         var maxLentemp = width;
 
@@ -216,13 +221,28 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
 
 //            to make up for border added
 //            stopposition = stopposition - 4;
-//
-//
+
+
             jQuery("<div>").attr({
                 'class': trackClass,
                 'id': "exon" + track.id + "" + geneexons[exon_len].id,
                 'style': "position:absolute; cursor:pointer; height: 10px; z-index: 999;  TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
             }).appendTo(div);
+//
+//            if (stopposition > 10) {
+//                if (spanclass == "forward") {
+//                    startposition = startposition + (stopposition - 8)
+//
+//                }
+//
+//
+//                jQuery("<div>").attr({
+//                    'class' : spanclass,
+//                    'style': "left:"+startposition+"px;"
+//                }).appendTo(div)
+//
+//            }
+
             if (disp_exon) {
                 jQuery("<span>").attr({
                     'class': spanclass,

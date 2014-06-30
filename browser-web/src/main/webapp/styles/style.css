@@ -2102,8 +2102,8 @@ span.counter {
 .exon {
     position: absolute;
     background-position: center center;
-    background: black;
-    /*border: 2px solid green;*/
+    /*background: black;*/
+    border: 2px solid green;
     height: 5px;
     cursor: pointer;
     /*border-radius:5px;*/
@@ -2802,3 +2802,25 @@ border-radius: 5px 0 0 5px;
     /*overflow: scroll;*/
 }
 /*geneView*/
+
+.reverse{
+    width: 0px;
+    height: 0px;
+    border-right: 10px solid transparent;
+    border-top: 7px solid white;
+    border-left: 0px solid white;
+    border-bottom: 7px solid white;
+    position: absolute;
+    z-index: 1999;
+}
+
+.forward {
+    width: 0px;
+    height: 0px;
+    border-right: 0px solid transparent;
+    border-top: 7px solid white;
+    border-left: 10px solid black;
+    border-bottom: 7px solid white;
+    position: absolute;
+    z-index: 1999;
+}
