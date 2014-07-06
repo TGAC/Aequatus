@@ -10,8 +10,6 @@ Aequatus Browser
 Aequatus Browser: Visualising complex similarity relationships among species
 =====================================================================
 
-&copy; 2014. [The Genome Analysis Centre] [1], Norwich, UK
-
 
 # <a name="contacts"></a> Aequatus Browser project contacts: 
 * Anil Thanki <Anil.Thanki@tgac.ac.uk>
@@ -31,3 +29,5 @@ http://tgac-browser.tgac.ac.uk/plants_compara
 Aequatus Browser funded by BBSRC, UK and transPLANT, EU
 
 ![BBSRC, UK](http://upload.wikimedia.org/wikipedia/en/d/dd/BBSRClogonew.png) ![alt EU transPLANT](http://www.transplantdb.eu/sites/transplantdb.eu/files/tplogo_transparent.png)
+
+&copy; 2014. The Genome Analysis Centre, Norwich, UK
