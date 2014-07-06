@@ -23,7 +23,7 @@ Full Aequatus Browser code will be available by end of August - 2014
 
 # <a name="demo"></a> Demo:
 ------
-http://tgac-browser.tgac.ac.uk/plants_comapara
+http://tgac-browser.tgac.ac.uk/plants_compara
 
 # <a name="funding"></a>Funding:
 ------
