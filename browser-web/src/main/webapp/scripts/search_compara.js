@@ -18,6 +18,9 @@ function getReferences() {
         {'doOnSuccess': function (json) {
             var content = "" +
                 "<select style='' name='genomes' id='genomes' onchange='getChromosomes(jQuery(\"#genomes\").val())'> "
+
+            json.genomes.sort(naturalSort)
+
             for (var i = 0; i < json.genomes.length; i++) {
                 var left = (100 * i) + 50
                 content += "<td>" +

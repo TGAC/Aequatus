@@ -176,6 +176,9 @@ function getChromosomes(genome_db_id, chr, member_id) {
 
             var width = 15;
             var distance = (parseInt(maxLen) - (width * referenceLength)) / (referenceLength + 1);
+
+            json.member.sort(naturalSort)
+
             while (referenceLength--) {
 
                 var left = parseInt(referenceLength * (width)) + parseInt(distance * referenceLength) + parseInt(distance);
@@ -183,21 +186,21 @@ function getChromosomes(genome_db_id, chr, member_id) {
                 var length = json.member[referenceLength].length;
                 var top = parseInt(jQuery("#map").css('top')) + parseInt(jQuery("#map").css('height')) - (height + 20);
                 jQuery("<div>").attr({
-                    'id': 'chr' + json.member[referenceLength].chr_name,
+                    'id': 'chr' + json.member[referenceLength].name,
                     'class': 'refmap',
                     'chr_length': json.member[referenceLength].length,
                     'style': "left: " + left + "px; width:" + width + "px; height:" + height + "px; background: " + jQuery("#genome" + genome_db_id).css("background"),
-                    'onClick': 'getMember("' + json.member[referenceLength].chr_name + '",' + genome_db_id + ')'
+                    'onClick': 'getMember("' + json.member[referenceLength].name + '",' + genome_db_id + ')'
                 }).appendTo("#chr_maps");
                 jQuery("<div>").attr({
                     'style': "position: absolute; bottom: 0px; left: " + left + "px; width:" + width + "px; "
-                }).html(json.member[referenceLength].chr_name).appendTo("#chr_maps");
+                }).html(json.member[referenceLength].name).appendTo("#chr_maps");
 
 
             }
 
             if (member_id == undefined) {
-                getMember(json.member[0].chr_name, genome_db_id);
+                getMember(json.member[0].name, genome_db_id);
             } else {
                 getMember(chr, genome_db_id, member_id);
 
@@ -488,14 +491,14 @@ function getcoreMember(query, redrawn) {
                     }
 
                 }
-//                console.log("before matrix")
+                console.log("before matrix")
 //
-//                console.log(gene_list_array)
-//                console.log(gene_list_array.length)
+                console.log(gene_list_array)
+                console.log(gene_list_array.length)
 //
 //                var DNAMatrix = calculateDNADistanceMatrix(gene_list_array, gapped_seq_list)
 //                var CIGARMatrix = calculateDistanceMatrix(gene_list_array, cigar_list)
-//                console.log("DNA ===========")
+                console.log("DNA ===========")
 //                console.log(gene_list_array)
 //                console.log(gene_list_array.length)
 //
@@ -885,6 +888,110 @@ function reverse_compliment(sequence) {
         }
     }
     return complimentry;
+}
+
+function convertPeptide(cdnaseq) {
+
+    var ptn_seq = "";
+    var seq = cdnaseq;
+
+
+    var i = 0;
+    for (i; i <= seq.length - 3; i = i + 3) {
+        var chunk = seq.substring(i, i + 3);
+        if (chunk.indexOf("N") > -1) {
+            ptn_seq += "X";
+        }
+        else if (chunk == "GCT" || chunk == "GCC" || chunk == "GCA" || chunk == "GCG") {
+            ptn_seq += "A";
+        }
+//    CGU, CGC, CGA, CGG, AGA, AGG
+        else if (chunk == "CGT" || chunk == "CGC" || chunk == "CGA" || chunk == "CGG" || chunk == "AGA" || chunk == "AGG") {
+            ptn_seq += "R";
+        }
+//    AAU, AAC
+        else if (chunk == "AAT" || chunk == "AAC") {
+            ptn_seq += "N";
+        }
+//    GAU, GAC
+        else if (chunk == "GAT" || chunk == "GAC") {
+            ptn_seq += "D";
+        }
+//    UGU, UGC
+        else if (chunk == "TGT" || chunk == "TGC") {
+            ptn_seq += "C";
+        }
+//    CAA, CAG
+        else if (chunk == "CAA" || chunk == "CAG") {
+            ptn_seq += "Q";
+        }
+//    GAA, GAG
+        else if (chunk == "GAA" || chunk == "GAG") {
+            ptn_seq += "E";
+        }
+//      GGU, GGC, GGA, GGG
+        else if (chunk == "GGT" || chunk == "GGC" || chunk == "GGA" || chunk == "GGG") {
+            ptn_seq += "G";
+        }
+//    CAU, CAC
+        else if (chunk == "CAT" || chunk == "CAC") {
+            ptn_seq += "H";
+        }
+//      AUU, AUC, AUA
+        else if (chunk == "ATT" || chunk == "ATC" || chunk == "ATA") {
+            ptn_seq += "I";
+        }
+//     AUG
+        else if (chunk == "ATG") {
+            ptn_seq += "M";
+        }
+//     UUA, UUG, CUU, CUC, CUA, CUG
+        else if (chunk == "TTA" || chunk == "TTG" || chunk == "CTT" || chunk == "CTC" || chunk == "CTA" || chunk == "CTG") {
+            ptn_seq += "L";
+        }
+//         AAA, AAG
+        else if (chunk == "AAA" || chunk == "AAG") {
+            ptn_seq += "K";
+        }
+//    UUU, UUC
+        else if (chunk == "TTT" || chunk == "TTC") {
+            ptn_seq += "F";
+        }
+        //    CCU, CCC, CCA, CCG
+        else if (chunk == "CCT" || chunk == "CCC" || chunk == "CCA" || chunk == "CCG") {
+            ptn_seq += "P";
+        }
+        //  UCU, UCC, UCA, UCG, AGU, AGC
+        else if (chunk == "TCT" || chunk == "TCC" || chunk == "TCA" || chunk == "TCG" || chunk == "AGT" || chunk == "AGC") {
+            ptn_seq += "S";
+        }
+        //      ACU, ACC, ACA, ACG
+        else if (chunk == "ACT" || chunk == "ACC" || chunk == "ACA" || chunk == "ACG") {
+            ptn_seq += "T";
+        }
+        //      UGG
+        else if (chunk == "TGG") {
+            ptn_seq += "W";
+        }
+//    UAU, UAC
+        else if (chunk == "TAT" || chunk == "TAC") {
+            ptn_seq += "Y";
+        }
+        //   GUU, GUC, GUA, GUG
+        else if (chunk == "GTT" || chunk == "GTC" || chunk == "GTA" || chunk == "GTG") {
+            ptn_seq += "V";
+        }
+        //  	UAA, UGA, UAG
+        else if (chunk == "TAA" || chunk == "TGA" || chunk == "TAG") {
+            ptn_seq += "*";
+        }
+
+        else {
+            ptn_seq += "-";
+        }
+    }
+
+    return ptn_seq;
 }
 
 

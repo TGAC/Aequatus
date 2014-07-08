@@ -60,6 +60,7 @@
     <script type="text/javascript" src="<c:url value='/scripts/upgma.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/neighbour-joining.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/DNA_matrix.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/natural-sort.js'/>"></script>
 
 <%--dependecies for phylo tree--%>
     <script type="text/javascript" src="<c:url value='/scripts/jsphylo/jsphylosvg-min.js'/>" ></script>
@@ -93,7 +94,7 @@
         <table width="100%">
             <tr>
                 <td>
-                    <a class="headerlink" href="<c:url value="/"/>"> <font color=white> TGAC Browser
+                    <a class="headerlink" href="<c:url value="/"/>"> <font color=white> Aequatus Browser
                     - ${initParam.header} </font></a>
                 </td>
                 <td>

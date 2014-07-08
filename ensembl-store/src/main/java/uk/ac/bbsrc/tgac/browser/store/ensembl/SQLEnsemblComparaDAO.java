@@ -101,7 +101,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public static final String GET_MEMBER_BY_MEMBER_ID = "select member_id as id, chr_start as start, chr_end as end, chr_strand as strand, chr_name, genome_db_id, display_label as 'desc', stable_id from member where member_id = ?";
 
 
-    public static final String GET_CHROMOSOME_BY_GENOME_ID = "select distinct chr_name from member where genome_db_id = ?";
+    public static final String GET_CHROMOSOME_BY_GENOME_ID = "select distinct chr_name as name from member where genome_db_id = ?";
 
 
     public static final String GET_HOMOLOGY_MEMBER_CIGAR_BY_MEMBER_ID = "select cigar_line from homology_member where member_id = ? and homology_id = ?";
@@ -552,8 +552,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
             for (Map map : maps) {
 
-                if (template.queryForObject(COUNT_CHR_DNAFRAG_BY_NAME, new Object[]{map.get("chr_name").toString(), query}, Integer.class) > 0) {
-                    Map<String, Object> maps_2 = template.queryForMap(GET_CHR_DNAFRAG_BY_NAME, new Object[]{map.get("chr_name").toString(), query});
+                if (template.queryForObject(COUNT_CHR_DNAFRAG_BY_NAME, new Object[]{map.get("name").toString(), query}, Integer.class) > 0) {
+                    Map<String, Object> maps_2 = template.queryForMap(GET_CHR_DNAFRAG_BY_NAME, new Object[]{map.get("name").toString(), query});
                     map.put("length", maps_2.get("length"));
                     map.put("id", maps_2.get("dnafrag_id"));
 
