@@ -7,21 +7,22 @@ Aequatus Browser
 
 
 # <a name="description"></a>
+Description: 
+=================
 Aequatus Browser: Visualising complex similarity relationships among species
-=====================================================================
 
-
-# <a name="contacts"></a> Aequatus Browser project contacts: 
+# <a name="contacts"></a> Project contacts: 
 * Anil Thanki <Anil.Thanki@tgac.ac.uk>
 * Sarah Ayling <Sarah.Ayling@tgac.ac.uk>
 * Robert Davey <Robert.Davey@tgac.ac.uk>
  
-Full Aequatus Browser code will be available by end of August - 2014
------------
 
 # <a name="demo"></a> Demo:
 ------
 http://tgac-browser.tgac.ac.uk/plants_compara
+
+Full Aequatus Browser code will be available by end of August - 2014
+
 
 # <a name="funding"></a>Funding:
 ------
