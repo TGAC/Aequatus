@@ -73,6 +73,9 @@
         <input type="checkbox" onclick="jQuery('.utr').toggle()" checked> UTRs
 
 
+        <div id="gene_tree_nj" style="left: 0;   overflow: visible;   position: absolute;  width: 100px;">
+
+        </div>
         <div id="gene_widget">
 
             </div>
@@ -84,9 +87,7 @@
             <div id="gene_tree_upgma">
 
             </div>
-            <div id="gene_tree_nj">
 
-            </div>
         </div>
     </div>
 <div style='display:none'>

@@ -65,7 +65,11 @@
 <%--dependecies for phylo tree--%>
     <script type="text/javascript" src="<c:url value='/scripts/jsphylo/jsphylosvg-min.js'/>" ></script>
     <script type="text/javascript" src="<c:url value='/scripts/jsphylo/raphael-min.js'/>"></script>
-    <%--dependecies for phylo tree--%>
+
+    <script type="text/javascript" src="<c:url value='/scripts/nwk.parser.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/d3_tree.js'/>"></script>
+
+<%--dependecies for phylo tree--%>
 
     <%--&lt;%&ndash;Bootstrap&ndash;%&gt;--%>
     <%--<script type="text/javascript" src="<c:url value='/scripts/bootstrap-3.1.1-dist/js/bootstrap.js'/>" ></script>--%>

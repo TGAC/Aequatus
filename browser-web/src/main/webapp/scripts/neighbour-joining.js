@@ -84,19 +84,39 @@ function findFurthestNode(nj_matrix, gene_list_main) {
 
         console.log(nj_string_tree);
 
-        var dataObject = { newick: nj_string_tree };
 
+        var tree = nwk.parser.parse(nj_string_tree);
 
-        var width = jQuery(document).width()/5;
+        console.log(tree)
+        var json_tree = nwk.converter.toJSON(tree)
 
-        var height = 1000
+        console.log("here")
 
-        var phylocanvas = new Smits.PhyloCanvas(
-            dataObject,
-            'gene_tree_nj',
-            1000, 500
+        json_tree = json_tree.replace(/\\/g,"")
 
-        );
+        json_tree = json_tree.replace(/"\[/g,"[")
+        json_tree = json_tree.replace(/]"/g,"]")
+//        json_tree = json_tree..split(', "children": []').join(""); //replace(/, "children": \[]"/g,"")
+
+        console.log(json_tree)
+
+        drawTree(JSON.parse(json_tree))
+
+        console.log("here2")
+
+//        var dataObject = { newick: nj_string_tree };
+//
+//
+//        var width = jQuery(document).width()/5;
+//
+//        var height = 1000
+//
+//        var phylocanvas = new Smits.PhyloCanvas(
+//            dataObject,
+//            'gene_tree_nj',
+//            100, 500
+//
+//        );
         return nj_string_tree;
     }
 }
