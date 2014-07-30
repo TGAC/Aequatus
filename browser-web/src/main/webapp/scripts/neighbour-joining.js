@@ -20,9 +20,11 @@ function findFurthestNode(nj_matrix, gene_list_main) {
 
     console.log("findfurthestnode")
 
+    console.log(nj_matrix)
+
     var q_matrix = [];
-
-
+//
+//
     console.log("q matrix")
     for (var i = 0; i < nj_matrix.length; i++) {
         q_matrix[i] = [];
@@ -32,15 +34,23 @@ function findFurthestNode(nj_matrix, gene_list_main) {
         }
     }
 
+    console.log("Q \n ===================")
+    for (var j = 0; j < q_matrix.length; j++) {
+        console.log(q_matrix[j])
+    }
+
+    console.log(" ===================")
+
+
 
     var nj_gene_list = gene_list_main.slice(0);
 
-    var min_score = 0;
-    var min_i = 0;
-    var min_j = 0;
-    for (var i = 0; i < q_matrix.length; i++) {
-        for (var j = 0; j < i; j++) {
-            if (parseFloat(q_matrix[i][j]) < parseFloat(min_score)) {
+    var min_score = null;
+    var min_i = null;
+    var min_j = null;
+    for (var i = 1; i < q_matrix.length; i++) {
+        for (var j = 1; j < i; j++) {
+            if (parseFloat(q_matrix[i][j]) > parseFloat(min_score)){}else {
                 min_score = q_matrix[i][j];
                 min_i = i;
                 min_j = j;
@@ -48,7 +58,8 @@ function findFurthestNode(nj_matrix, gene_list_main) {
         }
     }
 
-    var new_node = "(" + nj_gene_list[min_i] + "," + nj_gene_list[min_j] + ")"
+    if( min_score != null){
+        var new_node = "(" + nj_gene_list[min_i] + "," + nj_gene_list[min_j] + ")"
     nj_gene_list[nj_gene_list.length] = new_node
 
     nj_gene_list.splice(min_i, 1)
@@ -57,9 +68,18 @@ function findFurthestNode(nj_matrix, gene_list_main) {
 
     nj_string_tree = new_node + ";"
 
+    console.log(nj_string_tree)
+//
+////
+
+    }
+    else{
+        console.log(nj_gene_list)
+
+    }
 
     if (q_matrix.length > 2) {
-        calculateNJMatrix(nj_matrix, min_i, min_j, nj_gene_list);
+    calculateNJMatrix(nj_matrix, min_i, min_j, nj_gene_list);
     } else {
 
         console.log(nj_string_tree);
@@ -80,9 +100,9 @@ function findFurthestNode(nj_matrix, gene_list_main) {
         return nj_string_tree;
     }
 }
-
+//
 function calculateQMatrix(nj_matrix, gene_list) {
-    q_matrix = [];
+    var q_matrix = [];
 
     console.log("q matrix")
     for (var i = 0; i < nj_matrix.length; i++) {
@@ -123,8 +143,8 @@ function sigma(nj_matrix, a) {
 
 function calculateNJMatrix(nj_matrix, a, b, gene_list) {
 
-    console.log("calculate nj matrix")
-    var temp_nj_matrix = nj_matrix;
+    console.log("calculate nj matrix "+a+" "+b)
+    var temp_nj_matrix = nj_matrix.slice(0);
     nj_matrix = [];
     var k = 0;
     for (var i = 0; i < temp_nj_matrix.length; i++) {
@@ -147,6 +167,13 @@ function calculateNJMatrix(nj_matrix, a, b, gene_list) {
 
         }
     }
+
+    console.log("NJ \n ===================")
+    for (var j = 0; j < nj_matrix.length; j++) {
+        console.log(nj_matrix[j])
+    }
+
+    console.log(" ===================")
 
     nj_matrix[nj_matrix.length] = [];
 
@@ -177,12 +204,18 @@ function calculateNJMatrix(nj_matrix, a, b, gene_list) {
         }
     }
 
-//    console.log("final NJ \n ===================")
-//    for (var j = 0; j < nj_matrix.length; j++) {
-//        console.log(nj_matrix[j])
-//    }
+    console.log("final NJ \n ===================")
+    for (var j = 0; j < nj_matrix.length; j++) {
+        console.log(nj_matrix[j])
+    }
 
     console.log(" ===================")
 
-    findFurthestNode(nj_matrix, gene_list);
+    console.log(gene_list)
+
+//    var r = confirm("Press a button");
+//    if (r == true) {
+        findFurthestNode(nj_matrix, gene_list);
+//    } else {
+//    }
 }

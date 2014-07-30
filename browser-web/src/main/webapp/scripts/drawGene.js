@@ -128,8 +128,12 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 //            console.log(formatFasta(gene.transcripts[transcript_len]))
             dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length, transcript_len);
 
+            console.log("after exon")
 
+            console.log(gene.member_id)
             dispCigarLine(cigarline, 1, top, ((gene_stop - gene_start) + 1), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, ref.Exons.toJSON(), transcript_start, transcript_end, strand, ref_cigar, ref.strand, gene.transcripts[transcript_len].id);
+
+            console.log("after cigar")
         }
         else {
             var temp_div = jQuery("<div>").attr({

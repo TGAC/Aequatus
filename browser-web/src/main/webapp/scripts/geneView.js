@@ -496,7 +496,7 @@ function getcoreMember(query, redrawn) {
                 console.log(gene_list_array)
                 console.log(gene_list_array.length)
 //
-//                var DNAMatrix = calculateDNADistanceMatrix(gene_list_array, gapped_seq_list)
+                var DNAMatrix = calculateDNADistanceMatrix(gene_list_array, gapped_seq_list)
 //                var CIGARMatrix = calculateDistanceMatrix(gene_list_array, cigar_list)
                 console.log("DNA ===========")
 //                console.log(gene_list_array)
@@ -511,7 +511,7 @@ function getcoreMember(query, redrawn) {
 //                var CIGAR_Newick = findNearestNode(CIGARMatrix, gene_list_array)
 
 
-//                var NJ_CIGAR_Newick = findFurthestNode(DNAMatrix, gene_list_array)
+                var NJ_CIGAR_Newick = findFurthestNode(DNAMatrix, gene_list_array)
 //                var NJ_DNA_Newick = findFurthestNode(CIGARMatrix, gene_list_array)
 //                                    console.log(NJ_CIGAR_Newick)
 //                console.log(NJ_DNA_Newick)

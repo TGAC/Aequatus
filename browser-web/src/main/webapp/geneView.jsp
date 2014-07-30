@@ -51,7 +51,7 @@
 
     <div>
     </div>
-    <div style="height: auto; left: 5%;  position: relative; top: 20px;width: 1200px; z-index: 999;">
+    <div style="height: auto; margin-left: auto;  margin-right: auto; position: relative; top: 20px;width: 1200px; z-index: 999;">
 
         <div id="vertical0" style="position:absolute; left: 100px" class="vertical-line"></div>
         <div id="vertical1" style="position:absolute; left: 200px" class="vertical-line"></div>

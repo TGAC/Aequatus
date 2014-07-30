@@ -11,6 +11,35 @@ var gene_list = [];
 var string_tree = "";
 
 var nj_matrix = [];
+
+var amino_acids = ["A", "R", "N", "D", "C", "Q", "E", "G", "H", "I", "L", "K", "M", "F", "P", "S", "T", "W", "Y", "V", "B", "Z", "X", "-"];
+
+var blosum_62 = [
+    [4, -1, -2, -2, 0, -1, -1, 0, -2, -1, -1, -1, -1, -2, -1, 1, 0, -3, -2, 0, -2, -1, 0, -4],
+    [-1, 5, 0, -2, -3, 1, 0, -2, 0, -3, -2, 2, -1, -3, -2, -1, -1, -3, -2, -3, -1, 0, -1, -4],
+    [-2, 0, 6, 1, -3, 0, 0, 0, 1, -3, -3, 0, -2, -3, -2, 1, 0, -4, -2, -3, 3, 0, -1, -4],
+    [-2, -2, 1, 6, -3, 0, 2, -1, -1, -3, -4, -1, -3, -3, -1, 0, -1, -4, -3, -3, 4, 1, -1, -4],
+    [0, -3, -3, -3, 9, -3, -4, -3, -3, -1, -1, -3, -1, -2, -3, -1, -1, -2, -2, -1, -3, -3, -2, -4],
+    [-1, 1, 0, 0, -3, 5, 2, -2, 0, -3, -2, 1, 0, -3, -1, 0, -1, -2, -1, -2, 0, 3, -1, -4],
+    [-1, 0, 0, 2, -4, 2, 5, -2, 0, -3, -3, 1, -2, -3, -1, 0, -1, -3, -2, -2, 1, 4, -1, -4],
+    [0, -2, 0, -1, -3, -2, -2, 6, -2, -4, -4, -2, -3, -3, -2, 0, -2, -2, -3, -3, -1, -2, -1, -4],
+    [-2, 0, 1, -1, -3, 0, 0, -2, 8, -3, -3, -1, -2, -1, -2, -1, -2, -2, 2, -3, 0, 0, -1, -4],
+    [-1, -3, -3, -3, -1, -3, -3, -4, -3, 4, 2, -3, 1, 0, -3, -2, -1, -3, -1, 3, -3, -3, -1, -4],
+    [-1, -2, -3, -4, -1, -2, -3, -4, -3, 2, 4, -2, 2, 0, -3, -2, -1, -2, -1, 1, -4, -3, -1, -4],
+    [-1, 2, 0, -1, -3, 1, 1, -2, -1, -3, -2, 5, -1, -3, -1, 0, -1, -3, -2, -2, 0, 1, -1, -4],
+    [-1, -1, -2, -3, -1, 0, -2, -3, -2, 1, 2, -1, 5, 0, -2, -1, -1, -1, -1, 1, -3, -1, -1, -4],
+    [-2, -3, -3, -3, -2, -3, -3, -3, -1, 0, 0, -3, 0, 6, -4, -2, -2, 1, 3, -1, -3, -3, -1, -4],
+    [-1, -2, -2, -1, -3, -1, -1, -2, -2, -3, -3, -1, -2, -4, 7, -1, -1, -4, -3, -2, -2, -1, -2, -4],
+    [1, -1, 1, 0, -1, 0, 0, 0, -1, -2, -2, 0, -1, -2, -1, 4, 1, -3, -2, -2, 0, 0, 0, -4],
+    [0, -1, 0, -1, -1, -1, -1, -2, -2, -1, -1, -1, -1, -2, -1, 1, 5, -2, -2, 0, -1, -1, 0, -4],
+    [-3, -3, -4, -4, -2, -2, -3, -2, -2, -3, -2, -3, -1, 1, -4, -3, -2, 11, 2, -3, -4, -3, -2, -4],
+    [-2, -2, -2, -3, -2, -1, -2, -3, 2, -1, -1, -2, -1, 3, -3, -2, -2, 2, 7, -1, -3, -2, -1, -4],
+    [0, -3, -3, -3, -1, -2, -2, -3, -3, 3, 1, -2, 1, -1, -2, -2, 0, -3, -1, 4, -3, -2, -1, -4],
+    [-2, -1, 3, 4, -3, 0, 1, -1, 0, -3, -4, 0, -3, -3, -2, 0, -1, -4, -3, -3, 4, 1, -1, -4],
+    [-1, 0, 0, 1, -3, 3, 4, -2, 0, -3, -3, 1, -1, -3, -1, 0, -1, -3, -2, -2, 1, 4, -1, -4],
+    [0, -1, -1, -1, -2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -2, 0, 0, -2, -1, -1, -1, -1, -1, -4],
+    [-4, -4, -4, -4, -4, -4, -4, -4, -4, -4, -4, -4, -4, -4, -4, -4, -4, -4, -4, -4, -4, -4, -4, 1]
+]
 //
 //var nj_matrix =
 //    [
@@ -39,7 +68,14 @@ function expand_DNA_seq(seq, cigar, stable) {
 
     cigar = expand_cigar(cigar)
 
+    console.log("seq length = "+seq.length)
+    console.log("cigar length = "+cigar.replace(/D/g,"").length)
+    console.log("cigar length = "+cigar.length)
+
+    seq = convertPeptide(seq)
     var j = 0;
+
+
     for (var i = 0; i < cigar.length; i++) {
         if (cigar.charAt(i) == "M") {
             gapped_seq += seq.charAt(j)
@@ -48,11 +84,26 @@ function expand_DNA_seq(seq, cigar, stable) {
             gapped_seq += "-"
         }
     }
+//
+//    var j = 0;
+//    for (var i = 0; i < cigar.length; i++) {
+//        if (cigar.charAt(i) == "M") {
+//            gapped_seq += seq.charAt(j)
+//            j++;
+//        } else {
+//            gapped_seq += "-"
+//        }
+//    }
+
+
 
     return gapped_seq;
 }
 function calculateDNADistanceMatrix(gene_list_array, gapped_seq_list) {
     console.log("calculateDNADistanceMatrix")
+
+//    gene_list_array = ['A','B', 'C']
+//    gapped_seq_list = ['ACHACTAG-DHCAH','ACHACTADYH-CAH','ACH-ACTAADHCAH']
     var nj_matrix = [];
     var upgma_matrix = [];
 
@@ -62,58 +113,50 @@ function calculateDNADistanceMatrix(gene_list_array, gapped_seq_list) {
     upgma_matrix[0] = []
     upgma_matrix[0][0] = 1
 
-    var match = 0;
-    var missmatch = 0;
-    var gap = 0;
+
+    console.log("=--=-=-=-=-=-=-=-=-=-=-")
+
+
     for (var i = 1; i < gene_list_array.length; i++) {
+
+        console.log(" i " + i)
         nj_matrix[i] = [];
         upgma_matrix[i] = []
         for (var j = 1; j < i; j++) {
-            match = 0;
-            missmatch = 0;
-            gap = 0;
+
+            console.log("gapped_seq_list[j]  " + j)
+
+            var score = 0
             for (var k = 0; k < gapped_seq_list[j].length; k++) {
-                if (gapped_seq_list[j].charAt(k) == gapped_seq_list[0].charAt(k) && gapped_seq_list[j].charAt(k) != '-')
-                {
-                    match++
-                }
-                else if (gapped_seq_list[j].charAt(k) == gapped_seq_list[0].charAt(k))
-                {
-                    gap++
-                }
-                else {
-                    missmatch++;
+
+                var k_seq = gapped_seq_list[j].charAt(k)
+                var l = amino_acids.indexOf(k_seq);
+                var m = amino_acids.indexOf(gapped_seq_list[0].charAt(k))
+                if (l >= 0 && m >= 0) {
+                    score += -1*blosum_62[l][m];
                 }
             }
 
 
-
-            nj_matrix[i][j] = missmatch / (match+missmatch);
-            upgma_matrix[i][j] = missmatch / (match+missmatch);
+            nj_matrix[i][j] = score / gapped_seq_list[j].length;
+            upgma_matrix[i][j] = score / gapped_seq_list[j].length;
         }
 
-         match = 0;
-         missmatch = 0;
-         gap = 0;
 
-        for (var k = 1; k < gapped_seq_list[i].length; k++) {
-            if (gapped_seq_list[i].charAt(k) == gapped_seq_list[0].charAt(k) && gapped_seq_list[i].charAt(k) == '-')
-            {
-                match++
+        var score = 0
+        console.log("first column " + i)
 
-            } else if (gapped_seq_list[i].charAt(k) == gapped_seq_list[0].charAt(k))
-            {
-                gap++
+        for (var k = 0; k < gapped_seq_list[i].length; k++) {
+            var k_seq = gapped_seq_list[i].charAt(k)
+            var l = amino_acids.indexOf(k_seq);
+            var m = amino_acids.indexOf(gapped_seq_list[0].charAt(k))
+            if (l >= 0 && m >= 0) {
+                score += -1*blosum_62[l][m];
 
-            } else {
-                missmatch++;
             }
         }
-//
-
-        nj_matrix[i][0] = missmatch / (match+missmatch);
-        upgma_matrix[i][0] = missmatch / (match+missmatch);
-
+        nj_matrix[i][0] = score / gapped_seq_list[i].length;
+        upgma_matrix[i][0] = score / gapped_seq_list[i].length;
     }
 
 
@@ -124,7 +167,7 @@ function calculateDNADistanceMatrix(gene_list_array, gapped_seq_list) {
 
     console.log("=======")
 
-
+    console.log("=--=-=-=-=-=-=-=-=-=-=-")
 
 
     return nj_matrix;
