@@ -13,7 +13,9 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 
     var newStart_temp = 1;
     var newEnd_temp = max;
-    var maxLentemp = jQuery(div).css("width");
+    var maxLentemp = jQuery(document).width()*0.8;
+
+    console.log("maxlentemp "+maxLentemp)
 
     var label = "";
     var j = 0;
@@ -58,11 +60,11 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 
             var wrapper_div = jQuery("<div>").attr({
                 'style': "position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;"
-            }).html("<span class='handle-gene' style='position: absolute; left:-120px; width: 100px; word-wrap: break-word;'>" + stringTrim(label, 100) + " </span> ").appendTo(div);
+            }).html("<span class='handle-gene' style='position: absolute; left:105%; width: 100px; word-wrap: break-word;'>" + stringTrim(label, 100) + " </span> ").appendTo(div);
 
 
             var temp_div = jQuery("<div>").attr({
-                'id': "hit" + gene.member_id + "_" + transcript_len,
+                'id': "id" + gene.member_id,
                 'onClick': "onClicked('hit" + gene.member_id + "_" + transcript_len + "', '" + label + "','" + gene.member_id + "'," + JSON.stringify(gene.transcripts[transcript_len]) + ")",
 //                'onClick': "jQuery('#gene_info').html('" + jQuery("#hit"+transcript_len).html() + "'); jQuery.colorbox({width: '90%',height: '90%', inline: true, href: '#gene_info'});",
                 'class': "gene",
@@ -74,7 +76,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
                 strand = 1;
             } else {
                 strand = -1;
-                jQuery(wrapper_div).append("<span class=\"ui-button ui-icon ui-icon-refresh\" style=\"position: absolute; top:0px; word-wrap: break-word; left: -135px;\" onclick='flip_gene(\"hit" + gene.member_id + "_" + transcript_len + "\")'>/span>")
+                jQuery(wrapper_div).append("<span class=\"ui-button ui-icon ui-icon-refresh\" style=\"position: absolute; top:0px; word-wrap: break-word; left: 103%;\" onclick='flip_gene(\"hit" + gene.member_id + "_" + transcript_len + "\")'>/span>")
             }
 
             gene.transcripts[transcript_len].Exons.sort(sort_by('start', true, parseInt));
@@ -117,7 +119,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
                 ref.transcript_end = temp_int
             }
 
-            gene_list_array.push(gene.transcripts[transcript_len].stable_id)
+            gene_list_array.push(gene.member_id)
 
 
             console.log(gene_list_array)
@@ -136,13 +138,19 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
             console.log("after cigar")
         }
         else {
+            var wrapper_div = jQuery("<div>").attr({
+                'style': "position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;"
+            }).html("<span class='handle-gene' style='position: absolute; left:105%; width: 100px; word-wrap: break-word;'>" + stringTrim(label, 100) + " </span> ").appendTo(div);
+
+
             var temp_div = jQuery("<div>").attr({
-                'id': "ref_gene",
+                'id': "id"+gene.member_id,
                 'class': "gene",
                 'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " top:10px; LEFT:" + startposition + "px; width :" + stopposition + "px;"
-            }).html("<span style='position: absolute; left:-120px; width: 100px; word-wrap: break-word;'>" + stringTrim(label, 100) + "</span> ").appendTo(div);
+            }).appendTo(wrapper_div);
 
-            gene_list_array.push(gene.transcripts[transcript_len].stable_id)
+            console.log(gene.member_id)
+            gene_list_array.push(gene.member_id)
             gapped_seq_list.push(expand_DNA_seq(formatFasta(gene.transcripts[transcript_len]), cigarline, gene.transcripts[transcript_len].stable_id))
             cigar_list.push(cigarline)
             console.log(gene_list_array)
@@ -232,7 +240,7 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
                 'id': "exon" + track.id + "" + geneexons[exon_len].id,
                 'style': "position:absolute; cursor:pointer; height: 10px; z-index: 999;  TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
             }).appendTo(div);
-//
+////
 //            if (stopposition > 10) {
 //                if (spanclass == "forward") {
 //                    startposition = startposition + (stopposition - 8)

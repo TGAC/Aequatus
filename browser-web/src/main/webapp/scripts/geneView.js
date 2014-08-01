@@ -414,10 +414,10 @@ function getcoreMember(query, redrawn) {
                     var colour = jQuery("#option" + name).css("background");
 
 
-                    jQuery("#gene_widget").append("<div style='left:-100px; width: 1200px; position: relative; border: 2px solid black; top: 10px; overflow: hidden; box-shadow: 1px 1px 15px 15px #D3D3D3;' id='ref_wrapper'>" +
+                    jQuery("#gene_widget").append("<div style='left:0px; width: 100%; position: relative; border: 2px solid black; top: 10px; box-shadow: 1px 1px 15px 15px #D3D3D3;' id='ref_wrapper'>" +
                         "<div class=handle-genome style='background-image: url(/images/browser/utr.png); background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
                         "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'> <b>" + stringTrim(name, 100) + "</b></span>" +
-                        "<div style='left:200px; width: 1000px; padding: 25px 0px; position: relative;' id='ref'></div>")
+                        "<div style='left:10%; width: 90%; padding: 25px 0px; position: relative;' id='ref'></div>")
 
 
                     dispGenes("#ref", genes, max, ref_data.cigarline);
@@ -472,10 +472,10 @@ function getcoreMember(query, redrawn) {
                             var name = core_data[i].genome_name;
                             var colour = jQuery("#option" + name).css("background");
 
-                            jQuery("#gene_widget").append("<div style='left:-100px; width: 1200px; position: relative; border: 1px solid gray; top: 10px; overflow: hidden;' id='core" + core_data[i].genome + "_wrapper'> " +
+                            jQuery("#gene_widget").append("<div style='left:0px; width: 100%; position: relative; border: 1px solid gray; top: 10px; ' id='core" + core_data[i].genome + "_wrapper'> " +
                                 "<div class = handle-genome style='background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
                                 "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'><b>" + stringTrim(name, 100) + "</b></span>" +
-                                "<div style='left:200px; width: 1000px; padding: 25px 0px;  position: relative; ' id='core" + core_data[i].genome + "'></div>" +
+                                "<div style='left:10%; width: 90%; padding: 25px 0px;  position: relative; ' id='core" + core_data[i].genome + "'></div>" +
                                 "</div>")
                         }
 

@@ -51,7 +51,7 @@
 
     <div>
     </div>
-    <div style="height: auto; margin-left: auto;  margin-right: auto; position: relative; top: 20px;width: 1200px; z-index: 999;">
+    <div style="height: auto; margin-left: auto;  margin-right: auto; position: relative; top: 20px;width: 80%; z-index: 999;">
 
         <div id="vertical0" style="position:absolute; left: 100px" class="vertical-line"></div>
         <div id="vertical1" style="position:absolute; left: 200px" class="vertical-line"></div>
@@ -73,10 +73,10 @@
         <input type="checkbox" onclick="jQuery('.utr').toggle()" checked> UTRs
 
 
-        <div id="gene_tree_nj" style="left: 0;   overflow: visible;   position: absolute;  width: 100px;">
+        <div id="gene_tree_nj" style="left: -10%;   overflow: visible;   position: absolute;  width: 100%;">
 
         </div>
-        <div id="gene_widget">
+        <div id="gene_widget" style='display:none'>
 
             </div>
 

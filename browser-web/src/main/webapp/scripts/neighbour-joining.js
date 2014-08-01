@@ -18,14 +18,14 @@ var nj_string_tree = ""
 
 function findFurthestNode(nj_matrix, gene_list_main) {
 
-    console.log("findfurthestnode")
-
-    console.log(nj_matrix)
+//    console.log("findfurthestnode")
+//
+//    console.log(nj_matrix)
 
     var q_matrix = [];
 //
 //
-    console.log("q matrix")
+//    console.log("q matrix")
     for (var i = 0; i < nj_matrix.length; i++) {
         q_matrix[i] = [];
 
@@ -34,12 +34,12 @@ function findFurthestNode(nj_matrix, gene_list_main) {
         }
     }
 
-    console.log("Q \n ===================")
-    for (var j = 0; j < q_matrix.length; j++) {
-        console.log(q_matrix[j])
-    }
-
-    console.log(" ===================")
+//    console.log("Q \n ===================")
+//    for (var j = 0; j < q_matrix.length; j++) {
+//        console.log(q_matrix[j])
+//    }
+//
+//    console.log(" ===================")
 
 
 
@@ -74,23 +74,28 @@ function findFurthestNode(nj_matrix, gene_list_main) {
 
     }
     else{
+        console.log("gene list");
+
         console.log(nj_gene_list)
+
+        var new_node = "(" + nj_gene_list[0] + "," + nj_gene_list[1] + ")"
+        nj_string_tree = new_node + ";"
 
     }
 
     if (q_matrix.length > 2) {
     calculateNJMatrix(nj_matrix, min_i, min_j, nj_gene_list);
     } else {
+        console.log("Newick");
 
         console.log(nj_string_tree);
 
 
         var tree = nwk.parser.parse(nj_string_tree);
 
-        console.log(tree)
         var json_tree = nwk.converter.toJSON(tree)
 
-        console.log("here")
+//        console.log("here")
 
         json_tree = json_tree.replace(/\\/g,"")
 
@@ -102,7 +107,7 @@ function findFurthestNode(nj_matrix, gene_list_main) {
 
         drawTree(JSON.parse(json_tree))
 
-        console.log("here2")
+//        console.log("here2")
 
 //        var dataObject = { newick: nj_string_tree };
 //
@@ -163,7 +168,7 @@ function sigma(nj_matrix, a) {
 
 function calculateNJMatrix(nj_matrix, a, b, gene_list) {
 
-    console.log("calculate nj matrix "+a+" "+b)
+//    console.log("calculate nj matrix "+a+" "+b)
     var temp_nj_matrix = nj_matrix.slice(0);
     nj_matrix = [];
     var k = 0;
@@ -188,12 +193,12 @@ function calculateNJMatrix(nj_matrix, a, b, gene_list) {
         }
     }
 
-    console.log("NJ \n ===================")
-    for (var j = 0; j < nj_matrix.length; j++) {
-        console.log(nj_matrix[j])
-    }
-
-    console.log(" ===================")
+//    console.log("NJ \n ===================")
+//    for (var j = 0; j < nj_matrix.length; j++) {
+//        console.log(nj_matrix[j])
+//    }
+//
+//    console.log(" ===================")
 
     nj_matrix[nj_matrix.length] = [];
 
@@ -224,14 +229,14 @@ function calculateNJMatrix(nj_matrix, a, b, gene_list) {
         }
     }
 
-    console.log("final NJ \n ===================")
-    for (var j = 0; j < nj_matrix.length; j++) {
-        console.log(nj_matrix[j])
-    }
-
-    console.log(" ===================")
-
-    console.log(gene_list)
+//    console.log("final NJ \n ===================")
+//    for (var j = 0; j < nj_matrix.length; j++) {
+//        console.log(nj_matrix[j])
+//    }
+//
+//    console.log(" ===================")
+//
+//    console.log(gene_list)
 
 //    var r = confirm("Press a button");
 //    if (r == true) {

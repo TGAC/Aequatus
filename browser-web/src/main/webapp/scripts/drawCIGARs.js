@@ -77,13 +77,6 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
         cigar_string = cigar_string.replace(/(_M)/g, "_,M");
         cigar_string = cigar_string.replace(/(M_)/g, "M,_");
         cigar_string = cigar_string.replace(/(_D)/g, "_,D");
-//        cigar_string = cigar_string.replace(/(_-)/g, "_,-");
-//        cigar_string = cigar_string.replace(/(-_)/g, "-,_");
-//        cigar_string = cigar_string.replace(/(M-)/g, "M,-");
-//        cigar_string = cigar_string.replace(/(D-)/g, "D,-");
-//        cigar_string = cigar_string.replace(/(-M)/g, "-,M");
-//        cigar_string = cigar_string.replace(/(-D)/g, "-,D");
-//
 
         var k = 0;
         var l = 0;
@@ -109,7 +102,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                     if (parseInt(cigar_pos) + parseInt(length) <= (temp_end - temp_start)) {
                         temp_div = "#exon" + id + "" + exons[exon_number].id
 
-                        trackHTML(startposition, stopposition, top, trackClass, temp_div, temp_colours[i], length);
+                        trackHTML(startposition, stopposition, top, trackClass, temp_div, temp_colours[i], length, i);
                         cigar_pos = parseInt(cigar_pos) + parseInt(length)
 
 
@@ -121,7 +114,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                             stopposition = parseFloat(((temp_end - temp_start) - cigar_pos) * parseFloat(maxLentemp) / (max));
                             temp_div = "#exon" + id + "" + exons[exon_number].id
 
-                            trackHTML(startposition, stopposition, top, trackClass, temp_div, temp_colours[i], (temp_end - cigar_pos));
+                            trackHTML(startposition, stopposition, top, trackClass, temp_div, temp_colours[i], (temp_end - cigar_pos), i);
 
                             length = length - ((temp_end - temp_start) - cigar_pos);
 
@@ -144,7 +137,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
                             if (parseInt(cigar_pos) + parseInt(length) < (temp_end - temp_start)) {
                                 temp_div = "#exon" + id + "" + exons[exon_number].id
-                                trackHTML(startposition, stopposition, top, trackClass, temp_div, temp_colours[i], length);
+                                trackHTML(startposition, stopposition, top, trackClass, temp_div, temp_colours[i], length, i);
                                 cigar_pos = parseInt(cigar_pos) + parseInt(length)
                                 bool = false;
                             }
@@ -158,54 +151,6 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                 else if (key == "D" && length > 0) {
 
                     trackClass = "delete ui-icon ui-icon-carat-1-s";
-//
-//                    startposition = parseFloat((cigar_pos) * parseFloat(maxLentemp) / (max));
-//                    stopposition = parseFloat((length) * parseFloat(maxLentemp) / (max));
-//
-//                    if (parseInt(cigar_pos) + parseInt(length) <= temp_end) {
-//                        trackHTML(startposition, stopposition, top, trackClass, temp_div, "white", cigar_pos);
-//                        cigar_pos = parseInt(cigar_pos) + parseInt(length)
-//
-//                    } else {
-//
-//
-//                        var bool = true;
-//
-//                        forth: while (bool) {
-//
-//                            stopposition = parseFloat((temp_end - cigar_pos) * parseFloat(maxLentemp) / (max));
-//
-//                            trackHTML(startposition, stopposition, top, trackClass, temp_div, "white", cigar_pos);
-//
-//
-//                            var diff = (temp_end - cigar_pos);
-//                            length = length - diff;
-//
-//                            exon_number++;
-//
-//                            if (exon_number >= no_of_exons) {
-//                                break forth;
-//                                continue first;
-//                            }
-//                            temp_start = exons[exon_number].start - gene_start;
-//                            temp_end = exons[exon_number].end - gene_start;
-//
-//                            cigar_pos = temp_start;
-//                            startposition = parseFloat((cigar_pos) * parseFloat(maxLentemp) / (max));
-//                            stopposition = parseFloat((length) * parseFloat(maxLentemp) / (max));
-//
-//                            if (parseInt(cigar_pos) + parseInt(length) < temp_end) {
-//
-//                                trackHTML(startposition, stopposition, top, trackClass, temp_div, "white", cigar_pos);
-//                                cigar_pos = parseInt(cigar_pos) + parseInt(length)
-//                                bool = false;
-//                            }
-//                            else {
-//                                trackClass += " elselse"
-//                            }
-//                        }
-//                    }
-
                     startposition = parseInt((cigar_pos) * parseFloat(maxLentemp) / (max));
                     stopposition = 15;
                     temp_div = "#exon" + id + "" + exons[exon_number].id
@@ -240,6 +185,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
 //                            var diff = (temp_end - cigar_pos);
                             length = length - ((temp_end - temp_start) - cigar_pos);
+
 
                             exon_number++;
 
@@ -280,17 +226,18 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
     function trackHTMLDelete(startposition, stopposition, top, trackClass, temp_div, colour, title) {
         var track_html_local;
+
         track_html_local = "<div class='" + trackClass + "' " +
             "STYLE=\"height: 10px; z-index: 1999; TOP:-5px; LEFT:" + startposition + "px; margin-left: -7px;" +
             "width:" + (stopposition) + "px \" title=" + title + "> </div>";
         jQuery(temp_div).append(track_html_local);
     }
 
-    function trackHTML(startposition, stopposition, top, trackClass, temp_div, colour, title) {
+    function trackHTML(startposition, stopposition, top, trackClass, temp_div, colour, title, i) {
         var track_html_local;
 
-        track_html_local = "<div class='" + trackClass + "' " +
-            "STYLE=\"height: 10px; z-index: 1999; TOP:0px; LEFT:" + startposition + "px; opacity:0.7; background:" + colour + "; " +
+        track_html_local = "<div onmouseover=onMouseOver('"+colour+"') onmouseout=onMouseOut('"+colour+"')  class='" + trackClass + " exon_"+i+"'" +
+            "STYLE=\"height: 10px; z-index: 1999; TOP:0px; LEFT:" + startposition + "px; opacity:0.7; background-color:" + colour + "; " +
             "width:" + (stopposition) + "px \" title=" + title + "> </div>";
         jQuery(temp_div).append(track_html_local);
     }
@@ -360,7 +307,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
 
                 if (parseInt(cigar_pos) + parseInt(length) <= (temp_end - temp_start)) {
                     temp_div = "#exon" + id + "" + exons[exon_number].id
-                    trackHTML(startposition, stopposition, top, trackClass, temp_div, colours[exon_number], length);
+                    trackHTML(startposition, stopposition, top, trackClass, temp_div, colours[exon_number], length, exon_number);
                     cigar_pos = parseInt(cigar_pos) + parseInt(length)
                 } else {
 
@@ -371,7 +318,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
                         stopposition = parseFloat(((temp_end - temp_start) - cigar_pos) * parseFloat(maxLentemp) / (max));
 
                         temp_div = "#exon" + id + "" + exons[exon_number].id
-                        trackHTML(startposition, stopposition, top, trackClass, temp_div, colours[exon_number], temp_end - cigar_pos);
+                        trackHTML(startposition, stopposition, top, trackClass, temp_div, colours[exon_number], temp_end - cigar_pos, exon_number);
 
                         length = length - ((temp_end - temp_start) - cigar_pos);
 
@@ -393,7 +340,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
                         if (parseInt(cigar_pos) + parseInt(length) <= (temp_end - temp_start)) {
                             temp_div = "#exon" + id + "" + exons[exon_number].id
 
-                            trackHTML(startposition, stopposition, top, trackClass, temp_div, colours[exon_number], length);
+                            trackHTML(startposition, stopposition, top, trackClass, temp_div, colours[exon_number], length, exon_number);
                             cigar_pos = parseInt(cigar_pos) + parseInt(length)
                             bool = false;
                         }
@@ -408,52 +355,6 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
 
                 trackClass = "delete ui-icon ui-icon-carat-1-s";
 
-//                startposition = parseFloat((cigar_pos) * parseFloat(maxLentemp) / (max));
-//                stopposition = parseFloat((length) * parseFloat(maxLentemp) / (max));
-//
-//                if (parseInt(cigar_pos) + parseInt(length) <= temp_end) {
-//                    trackHTML(startposition, stopposition, top, trackClass, temp_div, "gray", cigar_pos);
-//                    cigar_pos = parseInt(cigar_pos) + parseInt(length)
-//
-//                } else {
-//
-//
-//                    var bool = true;
-//
-//                    forth: while (bool) {
-//
-//                        stopposition = parseFloat((temp_end - cigar_pos) * parseFloat(maxLentemp) / (max));
-//
-//                        trackHTML(startposition, stopposition, top, trackClass, temp_div, "gray", cigar_pos);
-//
-//
-//                        var diff = (temp_end - cigar_pos);
-//                        length = length - diff;
-//
-//                        exon_number++;
-//
-//                        if (exon_number >= no_of_exons) {
-//                            break forth;
-//                            continue first;
-//                        }
-//                        temp_start = exons[exon_number].start - gene_start;
-//                        temp_end = exons[exon_number].end - gene_start;
-//
-//                        cigar_pos = temp_start;
-//                        startposition = parseFloat((cigar_pos) * parseFloat(maxLentemp) / (max));
-//                        stopposition = parseFloat((length) * parseFloat(maxLentemp) / (max));
-//
-//                        if (parseInt(cigar_pos) + parseInt(length) < temp_end) {
-//
-//                            trackHTML(startposition, stopposition, top, trackClass, temp_div, "gray", cigar_pos);
-//                            cigar_pos = parseInt(cigar_pos) + parseInt(length)
-//                            bool = false;
-//                        }
-//                        else {
-//                            trackClass += " elselse"
-//                        }
-//                    }
-//                }
                 trackClass = "delete ui-icon ui-icon-carat-1-s";
 
                 startposition = parseInt((cigar_pos) * parseFloat(maxLentemp) / (max));
@@ -468,17 +369,45 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
 
     function trackHTMLDelete(startposition, stopposition, top, trackClass, temp_div, colour, title) {
         var track_html_local;
+
         track_html_local = "<div class='" + trackClass + "' " +
             "STYLE=\"height: 10px; z-index: 1999; TOP:-5px; LEFT:" + startposition + "px; margin-left: -7px;" +
             "width:" + (stopposition) + "px \" title=" + title + "> </div>";
         jQuery(temp_div).append(track_html_local);
     }
 
-    function trackHTML(startposition, stopposition, top, trackClass, temp_div, colour, title) {
+    function trackHTML(startposition, stopposition, top, trackClass, temp_div, colour, title, i) {
         var track_html_local;
-        track_html_local = "<div class='" + trackClass + "' " +
-            "STYLE=\"position: absolute; height: 10px; z-index: 1999; TOP:0px; LEFT:" + startposition + "px; opacity:0.7; background:" + colour + "; " +
+
+        track_html_local = "<div onmouseover=onMouseOver('"+colour+"') onmouseout=onMouseOut('"+colour+"') class='" + trackClass + " exon_"+i+"' " +
+            "STYLE=\"position: absolute; height: 10px; z-index: 1999; TOP:0px; LEFT:" + startposition + "px; opacity:0.7; background-color:" + colour + "; " +
             "width:" + (stopposition) + "px \" title=" + title + "> </div>";
         jQuery(temp_div).append(track_html_local);
     }
+}
+
+function onMouseOver(i){
+    console.log("onmouseover "+i)
+    jQuery(".insert").css({ opacity: 0.2 })
+    jQuery(".match").css({ opacity: 0.2})
+//    jQuery(".exon_"+i).css({ opacity: 1 })
+    jQuery('.match').filter(function() {
+        var colour = jQuery(this).css('backgroundColor').replace(/\s+/g,"");
+
+        if(colour == i){
+            return 1;
+        }
+    }).css('opacity', 0.7);
+
+    console.log(jQuery('.match').filter(function() {
+        var match = i; // match background-color: black
+        return (jQuery(this).css('backgroundColor') == match );
+    }))
+}
+
+function onMouseOut(i){
+    console.log("onmouseout "+i)
+    jQuery(".match").css({ opacity: 0.7 })
+
+    jQuery(".insert").css({ opacity: 0.7 })
 }

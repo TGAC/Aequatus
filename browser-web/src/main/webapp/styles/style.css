@@ -2101,8 +2101,7 @@ span.counter {
 
 .exon {
     position: absolute;
-    background-position: center center;
-    /*background: black;*/
+    background: none repeat scroll 0 0 white;
     border: 2px solid green;
     height: 5px;
     cursor: pointer;
@@ -2743,10 +2742,10 @@ span.deleteicon input {
 
 #gene_widget{
     height: auto;
-    left: 200px;
+    left: 0px;
     position: relative;
     top: 20px;
-    width: 80%;
+    width: 100%;
     z-index: 999;
     /*overflow: scroll;*/
 }
