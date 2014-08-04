@@ -43,12 +43,9 @@
     <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/canvg.js"></script>
 
 
-    <link rel="stylesheet" href="<c:url value='/scripts/jquery/css/smoothness/jquery-ui-1.8.custom.css'/>"
-
-          type="text/css">
+    <link rel="stylesheet" href="<c:url value='/scripts/jquery/css/smoothness/jquery-ui-1.8.custom.css'/>" type="text/css">
     <script type="text/javascript" src="<c:url value='/scripts/jquery/colorbox/jquery.colorbox-min.js'/>"></script>
-    <link rel="stylesheet" href="<c:url value='/scripts/jquery/colorbox/colorbox.css'/>"
-          type="text/css">
+    <link rel="stylesheet" href="<c:url value='/scripts/jquery/colorbox/colorbox.css'/>" type="text/css">
     <script type="text/javascript">jQuery.noConflict();</script>
 
     <!--Browser Functions-->

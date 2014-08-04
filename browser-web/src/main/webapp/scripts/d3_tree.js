@@ -70,31 +70,47 @@ function drawTree(json_tree) {
         // Normalize for fixed-depth.
 
         nodes.forEach(function (d) {
-        if(max < d.depth){
-            max = d.depth;
-        }
+            if (max < d.depth) {
+                max = d.depth;
+            }
         });
 
         nodes.forEach(function (d, i) {
-            if (d.children.size() == 0) {
-                console.log("if "+i+" "+ d.id)
-                d.y = 100;
-            }else{
-                console.log("else "+i+" "+ d.id)
-
-                d.y = d.depth * 100/ max;
-
+            if (d.children) {
+                if (d.children.size() == 0) {
+                    d.y = 100;
+                } else {
+                    d.y = d.depth * 100 / max;
+                }
+            } else {
+                console.log("else")
+//                if (d._children.size() == 0) {
+                    d.y = 100;
+//                } else {
+//                    d.y = d.depth * 100 / max;
+//                }
             }
-
         });
 
         var i = 1;
         nodes.forEach(function (d, j) {
-            if (d.children.size() == 0) {
-                d.x = i * 50;
-                i++;
-            }   else{
-                d.x = (i + 0.5) * 50;
+            if (d.children) {
+                if (d.children.size() == 0) {
+                    d.x = i * 50;
+                    i++;
+                } else {
+                    d.x = i * 50;
+                }
+            }
+            else {
+                console.log("else else")
+
+//                if (d._children.size() == 0) {
+                    d.x = i * 50;
+                    i++;
+//                } else {
+//                    d.x = i * 50;
+//                }
             }
         });
 
@@ -116,8 +132,8 @@ function drawTree(json_tree) {
 
         nodeEnter.append("circle")
             .attr("r", 1e-6)
-            .style("fill", function (d) {
-                return d._children ? "lightsteelblue" : "#fff";
+            .style("fill", function (d, i) {
+                return colours[i];
             });
 
         nodeEnter.append("text")
@@ -142,8 +158,8 @@ function drawTree(json_tree) {
 
         nodeUpdate.select("circle")
             .attr("r", 4.5)
-            .style("fill", function (d) {
-                return d._children ? "lightsteelblue" : "#fff";
+            .style("fill", function (d, i) {
+                return colours[i];
             });
 
         nodeUpdate.select("text")
@@ -169,9 +185,14 @@ function drawTree(json_tree) {
             .attr('height', '52px')
             .attr('x', 10)
             .attr('y', 0)
+            .style("fill", "red")
             .append('xhtml:div')
             .style("width", width)
             .style("height", "50px")
+//            .style("position", "absolute")
+            .style("z-index", "999")
+            .style("top", "10px")
+            .style("left", "10px")
             .html(function (d) {
                 return jQuery("#id" + d.data).parent().html();
             });
@@ -181,7 +202,7 @@ function drawTree(json_tree) {
             .attr('width', '1200px')
             .attr('height', '52px')
             .attr('x', 10)
-            .attr('y', 0);
+            .attr('y', -26);
 
 
 //        nodeEnter.append("rect")

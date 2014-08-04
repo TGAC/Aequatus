@@ -375,6 +375,8 @@ function getcoreMember(query, redrawn) {
 
                 jQuery("#gene_widget").html("")
 
+                gene_list_array = []
+
                 var core_data = json.member;
                 var max = 0;
 
