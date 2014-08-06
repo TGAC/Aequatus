@@ -9,12 +9,9 @@
 
 function drawTree(json_tree) {
 
-    console.log("draw tree")
-
-    console.log(json_tree)
     var margin = {top: 0, right: 0, bottom: 0, left: 0},
-        width = jQuery(document).width() * 0.9,
-        height = 800 - margin.top - margin.bottom;
+        width = jQuery(document).width(),
+        height = 2000 - margin.top - margin.bottom;
 
     var i = 0,
         duration = 750,
@@ -37,22 +34,16 @@ function drawTree(json_tree) {
     d3.json(json_tree, function () {
 
         root = json_tree;
-
-//        console.log(root.children)
         root.x0 = height / 2;
         root.y0 = 0;
 
         function collapse(d) {
-            console.log("collpase")
-            console.log(d)
             if (d.children) {
                 d._children = d.children;
                 d._children.forEach(collapse);
                 d.children = null;
             }
         }
-
-//        root.children.forEach(collapse);
 
         update(root);
     });
@@ -61,7 +52,6 @@ function drawTree(json_tree) {
 
 
     function update(source) {
-        console.log("update")
         // Compute the new tree layout.
         var nodes = tree.nodes(root),
             links = tree.links(nodes);
@@ -84,16 +74,16 @@ function drawTree(json_tree) {
                 }
             } else {
                 console.log("else")
-//                if (d._children.size() == 0) {
-                    d.y = 100;
-//                } else {
-//                    d.y = d.depth * 100 / max;
-//                }
+                d.y = 100;
             }
         });
 
         var i = 1;
         nodes.forEach(function (d, j) {
+            if (d.parent) {
+                d.parent.x = (i - 0.5) * 50
+            }
+
             if (d.children) {
                 if (d.children.size() == 0) {
                     d.x = i * 50;
@@ -103,16 +93,11 @@ function drawTree(json_tree) {
                 }
             }
             else {
-                console.log("else else")
-
-//                if (d._children.size() == 0) {
-                    d.x = i * 50;
-                    i++;
-//                } else {
-//                    d.x = i * 50;
-//                }
+                d.x = i * 50;
+                i++;
             }
         });
+
 
         // Update the nodes…
         var node = svg.selectAll("g.node")
@@ -120,15 +105,24 @@ function drawTree(json_tree) {
                 return d.id || (d.id = ++i);
             });
 
-
         // Enter any new nodes at the parent's previous position.
         var nodeEnter = node.enter().append("g")
             .attr("class", "node")
             .attr("transform", function (d) {
-                console.log(source)
                 return "translate(" + source.y0 + "," + source.x0 + ")";
             })
-            .on("click", click);
+            .on("click", function (d) {
+                if (d.children && d.children != null) {
+                    if (d.children.size() > 0) {
+                        click(d)
+                    }
+                } else {
+                    if (d._children.size() > 0) {
+                        click(d)
+                    }
+                }
+            })
+
 
         nodeEnter.append("circle")
             .attr("r", 1e-6)
@@ -136,17 +130,26 @@ function drawTree(json_tree) {
                 return colours[i];
             });
 
+
         nodeEnter.append("text")
             .attr("x", function (d) {
-                return d.children || d._children ? -10 : 10;
+                if (d.children && d.children != null) {
+                    if (d.children.size() == 0) {
+                        return 1200;
+                    }
+                }
             })
             .attr("dy", ".35em")
             .attr("text-anchor", function (d) {
                 return d.children || d._children ? "end" : "start";
             })
-//            .text(function (d) {
-//                return d.data;
-//            })
+            .text(function (d) {
+                if (d.children && d.children != null) {
+                    if (d.children.size() == 0) {
+                        return d.data;
+                    }
+                }
+            })
             .style("fill-opacity", 1e-6);
 
         // Transition nodes to their new position.
@@ -198,35 +201,10 @@ function drawTree(json_tree) {
             });
 
         nodeUpdate.select("foreignObject")
-
-            .attr('width', '1200px')
+            .attr('width', width)
             .attr('height', '52px')
             .attr('x', 10)
             .attr('y', -26);
-
-
-//        nodeEnter.append("rect")
-////                .attr('pointer-events', 'none')
-////                .attr("class", "tooltip")
-////                .style("opacity", 1)
-////                .html("FIRST LINE <br> SECOND LINE")
-//            .attr("x", "0px")
-//            .attr("width", "100px")
-//            .style("fill", "red")
-//            .style("stroke", "red")
-//            .attr("y",(d.y +"px"))
-//            .attr("height", "10px")
-////
-//            nodeEnter.append("div")
-////                .data(nodes)
-//                .attr('pointer-events', 'none')
-//                .attr("class", "tooltip")
-//                .style("opacity", 1)
-//                .html("FIRST LINE <br> SECOND LINE")
-//                .style("left", "0px")
-//                .style("top", ("0px"));
-////
-
 
         // Update the links…
         var link = svg.selectAll("path.link")
@@ -265,7 +243,7 @@ function drawTree(json_tree) {
 
 // Toggle children on click.
     function click(d) {
-        if (d.children) {
+        if (d.children && d.children != null) {
             d._children = d.children;
             d.children = null;
         } else {
