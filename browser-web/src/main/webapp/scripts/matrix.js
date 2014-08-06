@@ -31,11 +31,9 @@ var distance_matrix =  [];
 //    ];
 function calculateDistanceMatrix(gene_list_array, cigar_list_array) {
 
-//    console.log("calculateDistanceMatrix")
-
     var cigar_list = []
     for (var i = 0; i < cigar_list_array.length; i++) {
-     cigar_list.push(expand_cigar(cigar_list_array[i]))
+     cigar_list.push(expand_cigar(cigar_list_array[i], 3))
     }
 
     var distance_matrix = [];
@@ -67,13 +65,6 @@ function calculateDistanceMatrix(gene_list_array, cigar_list_array) {
 
         distance_matrix[i][0] = score / cigar_list[i].length;
     }
-
-//    console.log("=======")
-//
-//    for (var j = 0; j < distance_matrix.length; j++) {
-//        console.log(distance_matrix[j])
-//    }
-
 
     return distance_matrix;
 
