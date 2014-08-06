@@ -73,7 +73,7 @@
         <input type="checkbox" onclick="jQuery('.utr').toggle()" checked> UTRs
 
 
-        <div id="gene_tree_nj" style="left: -10%;   overflow: visible;   position: absolute;  width: 100%;">
+        <div id="gene_tree_nj" style=" overflow: visible;   position: absolute;  width: 100%;">
 
         </div>
         <div id="gene_widget" style='display:none'>
@@ -103,7 +103,6 @@
 
 <script>
     jQuery(document).ready(function () {
-        console.log("ready")
         kickOff();
         getReferences();
     });

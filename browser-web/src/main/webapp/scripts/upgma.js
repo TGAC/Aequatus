@@ -10,9 +10,6 @@ function findNearestNode(upgma_matrix, gene_list_main) {
     var string_tree = "";
 
     var gene_list = gene_list_main.slice(0);
-    console.log("findnearestnode")
-
-    console.log(gene_list)
     var min_score = 100;
     var min_i = 0;
     var min_j = 0;
@@ -36,8 +33,6 @@ function findNearestNode(upgma_matrix, gene_list_main) {
     string_tree = new_node + ";"
 
 
-    console.log("string tree \t" + string_tree)
-
     if (upgma_matrix.length > 2) {
         calculateUPGMAMatrix(upgma_matrix, min_i, min_j, gene_list);
     } else {
@@ -59,7 +54,6 @@ function findNearestNode(upgma_matrix, gene_list_main) {
 }
 
 function calculateUPGMAMatrix(upgma_matrix, a, b, gene_list) {
-    console.log("calculateupgma")
     var temp_upgma_matrix = upgma_matrix;
     upgma_matrix = [];
     var k = 0;
@@ -108,15 +102,6 @@ function calculateUPGMAMatrix(upgma_matrix, a, b, gene_list) {
             k++;
         }
     }
-
-
-//    console.log("final UPGMA \n ===================")
-//    for (var j = 0; j < upgma_matrix.length; j++) {
-//        console.log(upgma_matrix[j])
-//    }
-//
-//    console.log(" ===================")
-
 
     findNearestNode(upgma_matrix, gene_list);
 }

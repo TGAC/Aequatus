@@ -10,7 +10,6 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
     exons.sort(sort_by('start', true, parseInt));
 
-    console.log(" no of exons " + exons.length)
     var track_html = "";
     var trackClass = "";
     var newStart_temp = transcript_start;
@@ -387,7 +386,6 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
 }
 
 function onMouseOver(i){
-    console.log("onmouseover "+i)
     jQuery(".insert").css({ opacity: 0.2 })
     jQuery(".match").css({ opacity: 0.2})
 //    jQuery(".exon_"+i).css({ opacity: 1 })
@@ -399,15 +397,9 @@ function onMouseOver(i){
         }
     }).css('opacity', 0.7);
 
-    console.log(jQuery('.match').filter(function() {
-        var match = i; // match background-color: black
-        return (jQuery(this).css('backgroundColor') == match );
-    }))
 }
 
 function onMouseOut(i){
-    console.log("onmouseout "+i)
     jQuery(".match").css({ opacity: 0.7 })
-
     jQuery(".insert").css({ opacity: 0.7 })
 }

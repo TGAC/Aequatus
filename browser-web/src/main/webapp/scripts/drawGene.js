@@ -15,8 +15,6 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
     var newEnd_temp = max;
     var maxLentemp = jQuery(document).width()*0.8;
 
-    console.log("maxlentemp "+maxLentemp)
-
     var label = "";
     var j = 0;
 
@@ -60,7 +58,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 
             var wrapper_div = jQuery("<div>").attr({
                 'style': "position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;"
-            }).html("<span class='handle-gene' style='position: absolute; left:105%; width: 100px; word-wrap: break-word;'>" + stringTrim(label, 100) + " </span> ").appendTo(div);
+            }).html("<span class='handle-gene' style='position: absolute; margin-left: 10px; left:"+stopposition+"px;  width: 100px; word-wrap: break-word;'>" + gene.member_id + " </span> ").appendTo(div);
 
 
             var temp_div = jQuery("<div>").attr({
@@ -76,41 +74,10 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
                 strand = 1;
             } else {
                 strand = -1;
-                jQuery(wrapper_div).append("<span class=\"ui-button ui-icon ui-icon-refresh\" style=\"position: absolute; top:0px; word-wrap: break-word; left: 103%;\" onclick='flip_gene(\"hit" + gene.member_id + "_" + transcript_len + "\")'>/span>")
+                jQuery(wrapper_div).append("<span class=\"ui-button ui-icon ui-icon-refresh\" style=\"position: absolute; margin-left: 5px; top:0px; word-wrap: break-word; left: "+stopposition+"px;\" onclick='flip_gene(\"hit" + gene.member_id + "_" + transcript_len + "\")'>/span>")
             }
 
             gene.transcripts[transcript_len].Exons.sort(sort_by('start', true, parseInt));
-
-//            if (strand == -1) {
-//
-//                var temp_start = gene.transcripts[transcript_len].end - gene.transcripts[transcript_len].transcript_end;
-//                var temp_end = gene.transcripts[transcript_len].transcript_start - gene.transcripts[transcript_len].start;
-//                console.log(transcript_start+":"+transcript_end)
-//                gene.transcripts[transcript_len].transcript_start = parseInt(gene.transcripts[transcript_len].start) + parseInt(temp_start);
-//                gene.transcripts[transcript_len].transcript_end = parseInt(gene.transcripts[transcript_len].end) - parseInt(temp_end);
-//
-//                transcript_start = gene.transcripts[transcript_len].transcript_start;
-//                transcript_end = gene.transcripts[transcript_len].transcript_end;
-//                console.log(transcript_start+":"+transcript_end)
-//
-//                console.log(gene.transcripts[transcript_len].Exons.toJSON())
-//                gene.transcripts[transcript_len].Exons = reverse_exons(gene.transcripts[transcript_len]);
-//
-//                jQuery("<div>").attr({
-//                    'class': "",
-//                    'style': "position:absolute; background:red; opacity:0.2; z-index; 599; cursor:pointer; height: 24px; top:-5px; LEFT:0px; width :100%;"
-//                }).appendTo(temp_div);
-//                gene.transcripts[transcript_len].Exons.sort(sort_by('start', true, parseInt));
-//
-//                console.log(gene.transcripts[transcript_len].Exons.toJSON())
-//
-//
-//
-//
-//
-//
-//            }
-
 
             var temp_int;
             if (ref.transcript_start > ref.transcript_end) {
@@ -122,25 +89,17 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
             gene_list_array.push(gene.member_id)
 
 
-            console.log(gene_list_array)
-            gapped_seq_list.push(expand_DNA_seq(formatFasta(gene.transcripts[transcript_len]), cigarline))
             cigar_list.push(cigarline)
 
-
-//            console.log(formatFasta(gene.transcripts[transcript_len]))
             dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length, transcript_len);
 
-            console.log("after exon")
-
-            console.log(gene.member_id)
             dispCigarLine(cigarline, 1, top, ((gene_stop - gene_start) + 1), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, ref.Exons.toJSON(), transcript_start, transcript_end, strand, ref_cigar, ref.strand, gene.transcripts[transcript_len].id);
 
-            console.log("after cigar")
         }
         else {
             var wrapper_div = jQuery("<div>").attr({
                 'style': "position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;"
-            }).html("<span class='handle-gene' style='position: absolute; left:105%; width: 100px; word-wrap: break-word;'>" + stringTrim(label, 100) + " </span> ").appendTo(div);
+            }).html("<span class='handle-gene' style='position: absolute; margin-left:10px; left:"+stopposition+"px; width: 100px; word-wrap: break-word;'> <b>" + gene.member_id + "  </b> </span> ").appendTo(div);
 
 
             var temp_div = jQuery("<div>").attr({
@@ -149,17 +108,12 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
                 'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " top:10px; LEFT:" + startposition + "px; width :" + stopposition + "px;"
             }).appendTo(wrapper_div);
 
-            console.log(gene.member_id)
             gene_list_array.push(gene.member_id)
-            gapped_seq_list.push(expand_DNA_seq(formatFasta(gene.transcripts[transcript_len]), cigarline, gene.transcripts[transcript_len].stable_id))
             cigar_list.push(cigarline)
-            console.log(gene_list_array)
-
 
             dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length);
 
             dispCigarLineRef(cigarline, 1, top, ((gene_stop - gene_start) + 1), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, gene.transcripts[transcript_len].Exons.toJSON(), transcript_start, transcript_end, gene.transcripts[transcript_len].id);
-
 
         }
 

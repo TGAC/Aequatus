@@ -146,7 +146,6 @@ function setRef(length) {
 }
 
 function getChromosomes(genome_db_id, chr, member_id) {
-    console.log("getChromosome")
 
     var color = jQuery("option:selected", jQuery("#genomes")).attr("background");
     jQuery(".headerbar").css("background", color);
@@ -211,7 +210,6 @@ function getChromosomes(genome_db_id, chr, member_id) {
     )
 }
 function getMember(chr_name, genome_db, member_id) {
-    console.log("getMember")
     jQuery(".selected").removeClass("selected")
 
     jQuery("#chr" + chr_name).addClass("selected")
@@ -302,7 +300,6 @@ function kickOff() {
 }
 
 function drawSelected(member) {
-    console.log("drawSelected")
 
     jQuery("#selected_region").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
     if (member == undefined) {
@@ -358,7 +355,6 @@ function drawSelected(member) {
 }
 
 function getcoreMember(query, redrawn) {
-    console.log("get core member")
     jQuery(".refMarkerShow").css("background", "black")
     jQuery("#ref" + query).css("background", "red")
     jQuery("#gene_widget").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
@@ -421,6 +417,7 @@ function getcoreMember(query, redrawn) {
                         "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'> <b>" + stringTrim(name, 100) + "</b></span>" +
                         "<div style='left:10%; width: 90%; padding: 25px 0px; position: relative;' id='ref'></div>")
 
+                    gapped_seq_list.push(expand_DNA_seq(ref_data.seq, ref_data.cigarline))
 
                     dispGenes("#ref", genes, max, ref_data.cigarline);
 
@@ -481,6 +478,8 @@ function getcoreMember(query, redrawn) {
                                 "</div>")
                         }
 
+                        gapped_seq_list.push(expand_DNA_seq(core_data[i].seq, core_data[i].cigarline))
+
                         if (core_data[i].cigarline) {
                             dispGenes("#core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
                         }
@@ -492,15 +491,11 @@ function getcoreMember(query, redrawn) {
 
                     }
 
+
                 }
-                console.log("before matrix")
-//
-                console.log(gene_list_array)
-                console.log(gene_list_array.length)
 //
                 var DNAMatrix = calculateDNADistanceMatrix(gene_list_array, gapped_seq_list)
 //                var CIGARMatrix = calculateDistanceMatrix(gene_list_array, cigar_list)
-                console.log("DNA ===========")
 //                console.log(gene_list_array)
 //                console.log(gene_list_array.length)
 //
@@ -798,8 +793,6 @@ function toggleLeftInfo(div, id) {
 }
 
 function formatFasta(track) {
-
-    console.log("formatfasta")
 
     var seq = track.sequence.toLowerCase();
     var start, stop;
