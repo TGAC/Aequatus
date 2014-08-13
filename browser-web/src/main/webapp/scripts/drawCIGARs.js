@@ -6,6 +6,11 @@
  * To change this template use File | Settings | File Templates.
  */
 function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_div, ref_exons, transcript_start, transcript_end, strand, ref_cigar, ref_strand, id) {
+
+
+    var member_id = jQuery(temp_div).attr('id');
+
+
     exons = jQuery.parseJSON(exons);
 
     exons.sort(sort_by('start', true, parseInt));
@@ -20,14 +25,27 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
     var cigar_pos = (transcript_start - gene_start) + 1;
 
+    var temp_start = 1;
+
+    for(var e=0; e<exons.length; e++){
+        if(exons[e].end > transcript_start){
+            cigar_pos = (transcript_start - exons[e].start) + 1;
+            temp_start = (exons[e].start - gene_start) + 1;
+            exon_number = e
+            break;
+        }
+    }
+
+
     var temp_end = (exons[exon_number].end - gene_start) + 1;
+
     if (temp_end < cigar_pos) {
         while (temp_end < cigar_pos) {
             exon_number++;
             temp_end = (exons[exon_number].end - gene_start) + 1;
         }
     }
-    var temp_start = 1;
+
     var startposition;
     var stopposition;
     var no_of_exons = exons.length;
@@ -94,7 +112,6 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
 //                    k = parseInt(l) + parseInt(j);
 
-
                     startposition = parseFloat((cigar_pos) * parseFloat(maxLentemp) / (max));
                     stopposition = parseFloat((length) * parseFloat(maxLentemp) / (max));
                     trackClass = "match";
@@ -136,6 +153,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
                             if (parseInt(cigar_pos) + parseInt(length) < (temp_end - temp_start)) {
                                 temp_div = "#exon" + id + "" + exons[exon_number].id
+
                                 trackHTML(startposition, stopposition, top, trackClass, temp_div, temp_colours[i], length, i);
                                 cigar_pos = parseInt(cigar_pos) + parseInt(length)
                                 bool = false;
@@ -233,6 +251,13 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
     }
 
     function trackHTML(startposition, stopposition, top, trackClass, temp_div, colour, title, i) {
+
+        if(member_id == "id1306886"){
+            console.log(temp_div)
+            console.log(member_id)
+            console.log(startposition)
+        }
+
         var track_html_local;
 
         track_html_local = "<div onmouseover=onMouseOver('"+colour+"') onmouseout=onMouseOut('"+colour+"')  class='" + trackClass + " exon_"+i+"'" +

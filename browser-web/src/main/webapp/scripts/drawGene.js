@@ -308,6 +308,23 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
 
 
             }
+
+            else if (exon_start > transcript_start && exon_stop > transcript_end) {
+                startposition = 1;
+                stopposition = (exon_stop - exon_start) * parseFloat(maxLentemp) / (max_len);
+
+//                startposition += 1;
+//                stopposition -= 2;
+
+                jQuery("<div>").attr({
+                    'class': utrtrackClass,
+                    'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
+                }).appendTo("#exon"+ track.id + "" + geneexons[exon_len].id);
+
+                last = current;
+
+
+            }
         }
 
     }
