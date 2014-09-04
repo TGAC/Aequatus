@@ -338,6 +338,8 @@ public class ComparaService {
 
             response.put("member",comparaStore.getGeneTreeforMember(query));
 
+            response.put("tree",comparaStore.getGeneTree(query));
+
 
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
