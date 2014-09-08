@@ -38,8 +38,7 @@ import uk.ac.bbsrc.tgac.browser.core.store.ComparaStore;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -151,7 +150,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public static final String GET_CHILDREN_NODE = "SELECT * FROM gene_tree_node WHERE parent_id = ?;";
 
 
-    public static final String GET_GENE_MEMBER_ID_FOR_REFERENCE = "SELECT m3.member_id, gtr.root_id " +
+    public static final String GET_GENE_MEMBER_ID_FOR_REFERENCE = "SELECT m3.member_id, gtr.root_id,  m3.gene_member_id " +
             "FROM member m1 " +
             "JOIN member m2 ON (m1.canonical_member_id = m2.member_id) " +
             "JOIN gene_tree_node gtn1 ON (m2.member_id = gtn1.member_id) " +
@@ -644,68 +643,78 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     }
 
-    public JSONArray getGeneTree(String query) throws IOException {
+    public JSONObject getGeneTree(String query) throws IOException {
         log.info("\n\n\ngetgenetree " + query);
-        JSONArray homologouses = new JSONArray();
         JSONObject homology_members = new JSONObject();
         List<Map<String, Object>> root_id = template.queryForList(GET_GENE_MEMBER_ID_FOR_REFERENCE, new Object[]{query});
-        JSONArray parent = new JSONArray();
-
+        List<List<Integer>> trees = new ArrayList<List<Integer>>();
         for (Map map_two : root_id) {
-            log.info("getgenetree " + map_two.get("member_id"));
+            List<Integer> homologouses = new ArrayList<Integer>();
             Map<String, Object> children_node = template.queryForMap(GET_GENE_NODE_WITH_MEMBER, new Object[]{map_two.get("member_id"), map_two.get("root_id")});
 
-            JSONObject node = new JSONObject();
-
-
-            node.put("parent", children_node.get("parent_id"));
-            node.put("member", children_node.get("member_id"));
-            node.put("node", children_node.get("node_id"));
-
-            parent.add(node);
-
+            homologouses.add(Integer.parseInt(children_node.get("node_id").toString()));
             if (!children_node.get("root_id").toString().equals(children_node.get("node_id").toString())) {
-//                node.put("child", recursive_children_node(children_node.get("node_id").toString(), children_node.get("root_id").toString(), homologouses));
-                parent = recursive_children_node(children_node.get("node_id").toString(), children_node.get("root_id").toString(), parent);
-
+                recursive_children_node(children_node.get("node_id").toString(), children_node.get("root_id").toString(), homologouses);
+                trees.add(homologouses);
             }
+            Collections.reverse(homologouses);
+            homology_members.put(map_two.get("gene_member_id"), homologouses);
         }
-        homology_members.put("child", homologouses);
+        log.info("afgert " + trees);
+
+        trees = sortListByValue(trees);
+
+        log.info("afgert " + trees);
 
 
-        return parent;
+
+        log.info("afgert after  " + trees);
+
+
+
+        return homology_members;
 
     }
 
-    public JSONArray recursive_children_node(String node_id, String root_id, JSONArray homo) throws IOException {
+    public JSONArray recursive_children_node(String node_id, String root_id, List<Integer> homologouses) throws IOException {
         log.info("\n\n\nrecursive_children_node " + node_id);
 
-        JSONArray homologouses = new JSONArray();
+        JSONArray homologouses_temp = new JSONArray();
         JSONObject homology_members = new JSONObject();
-        JSONArray parent = new JSONArray();
 
         JSONObject node = new JSONObject();
 
-        Map<String, Object> children_node = template.queryForMap(GET_NODE_INFORMATION, new Object[]{node_id});
+        List<Map<String, Object>> children_node = template.queryForList(GET_NODE_INFORMATION, new Object[]{node_id});
 
-
-        node.put("parent", children_node.get("parent_id"));
-        node.put("member", children_node.get("member_id"));
-        node.put("node", children_node.get("node_id"));
-
-        node.put("child", homo);
-        parent.add(node);
-
-        if (!children_node.get("parent_id").toString().equals(root_id)) {
-//                node.put("child", recursive_children_node(map_two.get("parent_id").toString(), root_id, homo));
-            parent = recursive_children_node(children_node.get("parent_id").toString(), root_id, parent);
+        for (Map map_two : children_node) {
+            if (!map_two.get("parent_id").toString().equals(root_id)) {
+                homologouses.add(Integer.parseInt(map_two.get("parent_id").toString()));
+                homologouses_temp.addAll(recursive_children_node(map_two.get("parent_id").toString(), root_id, homologouses));
+            }
         }
+        log.info("\n\n\tarray " + homologouses);
+        log.info("\n\n\tarray " + homologouses_temp);
 
-        homology_members.put("child", homologouses);
-
-        return parent;
-
+        return homologouses_temp;
     }
+
+    public static List<List<Integer>> sortListByValue(List<List<Integer>> list) {
+
+        Collections.sort(list, new Comparator<List<Integer>>() {
+
+
+            @Override
+            public int compare(List<Integer> o1, List<Integer> o2) {
+                //return Integer.compare(o1.size(), o2.size()); //JDK7
+
+                //Use this if you're using a version prior to 1.7.
+                return Integer.valueOf(o1.size()).compareTo(o2.size());
+            }
+        });
+
+        return list;
+    }
+
 
 //    public JSONObject children_node(String parent_id, String root_id) throws IOException {
 //        log.info("\n\n\nrecursive_children_node "+parent_id);
