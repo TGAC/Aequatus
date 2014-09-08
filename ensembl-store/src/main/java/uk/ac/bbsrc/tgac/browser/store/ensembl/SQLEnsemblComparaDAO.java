@@ -164,6 +164,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_NODE_INFORMATION = "SELECT * FROM gene_tree_node WHERE node_id = ?;";
 
+    public static final String GET_MEMBER_ID_FROM_NODE = "SELECT member_id FROM gene_tree_node WHERE node_id = ?;";
+
     public static final String GET_SEQUENCE_ID = "SELECT sequence_id FROM member where member_id = ?";
 
     public static final String SEARCH_MEMBER = "SELECT * " +
@@ -643,7 +645,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     }
 
-    public JSONObject getGeneTree(String query) throws IOException {
+    public JSONArray getGeneTree(String query) throws IOException {
         log.info("\n\n\ngetgenetree " + query);
         JSONObject homology_members = new JSONObject();
         List<Map<String, Object>> root_id = template.queryForList(GET_GENE_MEMBER_ID_FOR_REFERENCE, new Object[]{query});
@@ -667,12 +669,64 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         log.info("afgert " + trees);
 
 
-
         log.info("afgert after  " + trees);
 
 
+        JSONObject test_tree = new JSONObject();
+        JSONArray test_array = new JSONArray();
 
-        return homology_members;
+        main:
+        for (int i = 0; i < trees.size() - 1; i++) {
+            for (int k = 1; k < trees.get(i).size(); k++) {
+                int node = trees.get(i).get(k);
+                for (int j = i + 1; j < trees.size(); j++) {
+                    JSONObject child = new JSONObject();
+                    if (k < trees.get(j).size()) {
+                        child.put("child_id", node);
+                        child.put("parent_id", trees.get(i).get(k - 1));
+                        child.put("member_id",template.queryForObject(GET_MEMBER_ID_FROM_NODE, new Object[]{node}, String.class));
+                        child.put("child", new JSONArray());
+                        if (!test_array.contains(child)) {
+                            test_array.add(child);
+                        }
+                    }
+                }
+            }
+        }
+
+        log.info("json array tree " + test_array);
+
+        List<JSONObject> tree_list = new ArrayList<JSONObject>();
+
+        for(int i=test_array.size()-1; i>=0; i--){
+            JSONObject temp = test_array.getJSONObject(i);
+
+            JSONObject temp2 = new JSONObject();
+            String parent = temp.getString("parent_id");
+            for(int j=test_array.size()-1; j>=0; j--){
+                JSONObject temp3 = test_array.getJSONObject(j);
+                String child = temp3.getString("child_id");
+
+                log.info("\n\nequalst "+parent + " "+ child);
+
+                if(parent.equals(child)){
+                    log.info("\n\nequalst ");
+
+                    JSONArray temp4 = temp3.getJSONArray("child");
+                    temp4.add(temp);
+                    test_array.remove(i);
+                    break;
+                }
+
+
+            }
+
+
+        }
+        log.info("getting it "+test_array);
+
+
+        return test_array;
 
     }
 
