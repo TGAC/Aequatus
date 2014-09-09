@@ -58,7 +58,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 
             var wrapper_div = jQuery("<div>").attr({
                 'style': "position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;"
-            }).html("<span class='handle-gene' style='position: absolute; margin-left: 10px; left:"+stopposition+"px;  width: 100px; word-wrap: break-word;'>" + gene.member_id + " </span> ").appendTo(div);
+            }).html("<span class='handle-gene' style='position: absolute; margin-left: 10px; left:"+stopposition+"px;  width: 100px; word-wrap: break-word;'>" + gene.stable_id + " </span> ").appendTo(div);
 
 
             var temp_div = jQuery("<div>").attr({
@@ -99,7 +99,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
         else {
             var wrapper_div = jQuery("<div>").attr({
                 'style': "position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;"
-            }).html("<span class='handle-gene' style='position: absolute; margin-left:10px; left:"+stopposition+"px; width: 100px; word-wrap: break-word;'> <b>" + gene.member_id + "  </b> </span> ").appendTo(div);
+            }).html("<span class='handle-gene' style='position: absolute; margin-left:10px; left:"+stopposition+"px; width: 100px; word-wrap: break-word;'> <b>" + gene.stable_id + "  </b> </span> ").appendTo(div);
 
 
             var temp_div = jQuery("<div>").attr({

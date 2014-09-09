@@ -157,7 +157,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             "JOIN gene_tree_root gtr ON (gtr.root_id = gtn1.root_id) " +
             "JOIN gene_align_member gam USING (gene_align_id) " +
             "JOIN member m3 ON (gam.member_id = m3.member_id) " +
-            "WHERE gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" AND  m1.member_id = ?  AND m2.stable_id <> m3.stable_id;";
+            "WHERE gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" AND  m1.member_id = ? ;";
 
 
     public static final String GET_GENE_NODE_WITH_MEMBER = "SELECT * FROM gene_tree_node WHERE member_id = ? AND root_id = ?;";
@@ -499,7 +499,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         homology_members.put("genome", homologous.get("genome_db_id"));
         homology_members.put("method", homologous.get("method_link_species_set_id"));
         homology_members.put("genome_name", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{homologous.get("genome_db_id")}, String.class));
-        homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("gene_member_id").toString()));
+        homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("member_id").toString()));
         String sequence_id = template.queryForObject(GET_SEQUENCE_ID, new Object[]{homologous.get("peptide_id")}, String.class);
         homology_members.put("seq", template.queryForObject(SEQUENCE_FROM_ID, new Object[]{sequence_id}, String.class));
         return homology_members;
@@ -520,7 +520,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             homology_members.put("cigarline2", template.queryForObject(GET_HOMOLOGY_MEMBER_CIGAR_BY_MEMBER_ID, new Object[]{member, map_two.get("homology_id")}, String.class));
             homology_members.put("genome", homologous.get("genome_db_id"));
             homology_members.put("genome_name", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{homologous.get("genome_db_id")}, String.class));
-            homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("gene_member_id").toString()));
+            homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("member_id").toString()));
             homologouses.add(homology_members);
         }
 
@@ -635,7 +635,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             homology_members.put("method", map_two.get("method_link_species_set_id"));
             homology_members.put("stable_id", map_two.get("stable_id").toString());
             homology_members.put("genome_name", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{map_two.get("genome_db_id")}, String.class));
-            homology_members.put("genes", getGenefromCore(map_two.get("stable_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("gene_member_id").toString()));
+            homology_members.put("genes", getGenefromCore(map_two.get("stable_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("member_id").toString()));
             String sequence_id = map_two.get("sequence_id").toString();
             homology_members.put("seq", template.queryForObject(SEQUENCE_FROM_ID, new Object[]{sequence_id}, String.class));
             homologouses.add(homology_members);
@@ -645,47 +645,52 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     }
 
-    public JSONArray getGeneTree(String query) throws IOException {
+    public JSONObject getGeneTree(String query) throws IOException {
         log.info("\n\n\ngetgenetree " + query);
         JSONObject homology_members = new JSONObject();
         List<Map<String, Object>> root_id = template.queryForList(GET_GENE_MEMBER_ID_FOR_REFERENCE, new Object[]{query});
         List<List<Integer>> trees = new ArrayList<List<Integer>>();
         for (Map map_two : root_id) {
             List<Integer> homologouses = new ArrayList<Integer>();
+            log.info("\n\n\tmember-id = "+map_two.get("member_id"));
             Map<String, Object> children_node = template.queryForMap(GET_GENE_NODE_WITH_MEMBER, new Object[]{map_two.get("member_id"), map_two.get("root_id")});
 
+            log.info("\n\n\tnode-id = "+children_node.get("node_id"));
+
             homologouses.add(Integer.parseInt(children_node.get("node_id").toString()));
-            if (!children_node.get("root_id").toString().equals(children_node.get("node_id").toString())) {
+//            if (!children_node.get("root_id").toString().equals(children_node.get("node_id").toString())) {
                 recursive_children_node(children_node.get("node_id").toString(), children_node.get("root_id").toString(), homologouses);
                 trees.add(homologouses);
-            }
+//            }
             Collections.reverse(homologouses);
             homology_members.put(map_two.get("gene_member_id"), homologouses);
         }
-        log.info("afgert " + trees);
+
+
+        log.info("homology_members "+homology_members);
+        log.info("homology_members "+trees);
 
         trees = sortListByValue(trees);
 
-        log.info("afgert " + trees);
-
-
-        log.info("afgert after  " + trees);
-
+        log.info("homology_members "+trees);
 
         JSONObject test_tree = new JSONObject();
         JSONArray test_array = new JSONArray();
 
         main:
-        for (int i = 0; i < trees.size() - 1; i++) {
+        for (int i = 0; i < trees.size(); i++) {
+            log.info("homology_members i "+trees.get(i));
+
             for (int k = 1; k < trees.get(i).size(); k++) {
                 int node = trees.get(i).get(k);
-                for (int j = i + 1; j < trees.size(); j++) {
+                for (int j = 0; j < trees.size(); j++) {
+                    log.info("homology_members j "+trees.get(j));
                     JSONObject child = new JSONObject();
                     if (k < trees.get(j).size()) {
                         child.put("child_id", node);
                         child.put("parent_id", trees.get(i).get(k - 1));
                         child.put("member_id",template.queryForObject(GET_MEMBER_ID_FROM_NODE, new Object[]{node}, String.class));
-                        child.put("child", new JSONArray());
+                        child.put("children", new JSONArray());
                         if (!test_array.contains(child)) {
                             test_array.add(child);
                         }
@@ -694,7 +699,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             }
         }
 
-        log.info("json array tree " + test_array);
+
+        log.info("getting it "+test_array);
 
         List<JSONObject> tree_list = new ArrayList<JSONObject>();
 
@@ -712,7 +718,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                 if(parent.equals(child)){
                     log.info("\n\nequalst ");
 
-                    JSONArray temp4 = temp3.getJSONArray("child");
+                    JSONArray temp4 = temp3.getJSONArray("children");
                     temp4.add(temp);
                     test_array.remove(i);
                     break;
@@ -723,10 +729,13 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
 
         }
-        log.info("getting it "+test_array);
+
+                log.info("getting it "+test_array);
+
+        return test_array.getJSONObject(0);
 
 
-        return test_array;
+//        return test_array;
 
     }
 
@@ -741,8 +750,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         List<Map<String, Object>> children_node = template.queryForList(GET_NODE_INFORMATION, new Object[]{node_id});
 
         for (Map map_two : children_node) {
+            homologouses.add(Integer.parseInt(map_two.get("parent_id").toString()));
             if (!map_two.get("parent_id").toString().equals(root_id)) {
-                homologouses.add(Integer.parseInt(map_two.get("parent_id").toString()));
                 homologouses_temp.addAll(recursive_children_node(map_two.get("parent_id").toString(), root_id, homologouses));
             }
         }
