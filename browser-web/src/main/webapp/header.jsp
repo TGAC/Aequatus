@@ -16,36 +16,24 @@
 
     <link rel="stylesheet" href="<c:url value='/styles/style.css'/>" type="text/css">
 
+    <%--<script src="http://d3js.org/d3.v3.js"></script>--%>
+
     <script type="text/javascript" src="<c:url value='/scripts/scriptaculous/prototype.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/fluxion-ajax/fluxion-ajax-compiled.js'/>"></script>
 
     <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-1.4.2.min.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-ui-1.8.custom.min.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.tablesorter.min.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.drawinglibrary.js'/>"></script>
+    <%--<script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.tablesorter.min.js'/>"></script>--%>
     <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.cookie.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jcanvas.min.js'/>"></script>
+    <%--<script type="text/javascript" src="<c:url value='/scripts/jquery/js/jcanvas.min.js'/>"></script>--%>
 
-    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.drawinglibrary.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.svg.min.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.svgdom.min.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.svg.pack.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-ui.js'/>"></script>
-    <%--<script type="text/javascript"  src="<c:url value='/scripts/jquery/js/jquery.jqplot.js'/>"></script>--%>
-    <%--<script type="text/javascript"  src="<c:url value='/scripts/jquery/js/jqplot.canvasAxisLabelRenderer.js'/>"></script>--%>
-    <%--<script type="text/javascript"  src="<c:url value='/scripts/jquery/js/jqplot.canvasTextRenderer.js'/>"></script>--%>
+    <script type="text/javascript" src="<c:url value='/scripts/fluxion-ajax/fluxion-ajax-compiled.js'/>"></script>
 
     <script src="<c:url value='/scripts/d3.js/d3.v3.min.js'/>"></script>
-    <%--<script src="http://d3js.org/d3.v3.js"></script>--%>
 
 
-    <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
-    <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/canvg.js"></script>
 
 
     <link rel="stylesheet" href="<c:url value='/scripts/jquery/css/smoothness/jquery-ui-1.8.custom.css'/>" type="text/css">
-    <script type="text/javascript" src="<c:url value='/scripts/jquery/colorbox/jquery.colorbox-min.js'/>"></script>
-    <link rel="stylesheet" href="<c:url value='/scripts/jquery/colorbox/colorbox.css'/>" type="text/css">
     <script type="text/javascript">jQuery.noConflict();</script>
 
     <!--Browser Functions-->
@@ -60,10 +48,7 @@
     <script type="text/javascript" src="<c:url value='/scripts/natural-sort.js'/>"></script>
 
 <%--dependecies for phylo tree--%>
-    <script type="text/javascript" src="<c:url value='/scripts/jsphylo/jsphylosvg-min.js'/>" ></script>
-    <script type="text/javascript" src="<c:url value='/scripts/jsphylo/raphael-min.js'/>"></script>
 
-    <script type="text/javascript" src="<c:url value='/scripts/nwk.parser.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/d3_tree.js'/>"></script>
 
 <%--dependecies for phylo tree--%>
