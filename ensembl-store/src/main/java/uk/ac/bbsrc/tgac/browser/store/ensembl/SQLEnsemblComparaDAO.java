@@ -93,9 +93,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_MEMBER_BY_CHROMOSOME_NAME = "select member_id as id, chr_start as start, chr_end as end, chr_strand as strand, chr_name, genome_db_id from member where chr_name = ? and ((chr_start > ? AND chr_end < ?) OR (chr_start < ? AND chr_end > ?) OR (chr_end > ? AND chr_end < ?) OR (chr_start > ? AND chr_start < ?))";
 
-    public static final String GET_ALL_MEMBER_BY_CHROMOSOME_NAME = "select member_id as id, stable_id, chr_start as start, chr_end as end from member where chr_name = ? and genome_db_id = ?";
+    public static final String GET_ALL_MEMBER_BY_CHROMOSOME_NAME = "select member_id as id, stable_id, chr_start as start, chr_end as end from member where genome_db_id = ? and chr_name = ?";
 
-    public static final String GET_ALL_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE = "select count(member_id) from member where chr_name = ? and genome_db_id = ? AND chr_start >= ? and chr_end <= ?";
+    public static final String GET_ALL_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE = "select count(member_id) from member where genome_db_id = ? AND chr_name = ? and chr_start >= ? and chr_end <= ?";
 
     public static final String GET_MEMBER_BY_MEMBER_ID = "select member_id as id, chr_start as start, chr_end as end, chr_strand as strand, chr_name, genome_db_id, display_label as 'desc', stable_id from member where member_id = ?";
 
@@ -503,7 +503,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         homology_members.put("genome_name", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{homologous.get("genome_db_id")}, String.class));
         homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("member_id").toString()));
         String sequence_id = template.queryForObject(GET_SEQUENCE_ID, new Object[]{homologous.get("peptide_id")}, String.class);
-        homology_members.put("seq", template.queryForObject(SEQUENCE_FROM_ID, new Object[]{sequence_id}, String.class));
+//        homology_members.put("seq", template.queryForObject(SEQUENCE_FROM_ID, new Object[]{sequence_id}, String.class));
         return homology_members;
 
     }
@@ -533,7 +533,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public JSONArray getAllMember(String query, String genome_db) throws IOException {
         try {
             JSONArray members = new JSONArray();
-            List<Map<String, Object>> maps = template.queryForList(GET_ALL_MEMBER_BY_CHROMOSOME_NAME, new Object[]{query, genome_db});
+            List<Map<String, Object>> maps = template.queryForList(GET_ALL_MEMBER_BY_CHROMOSOME_NAME, new Object[]{genome_db, query});
 
             for (Map map : maps) {
 
@@ -559,7 +559,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                 for (int i = 1; i <= 200; i++) {
                     JSONObject eachTrack = new JSONObject();
                     to = (i * Math.round(length / 200));
-                    int no_of_tracks = template.queryForObject(GET_ALL_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE, new Object[]{query, genome_db, from, to}, Integer.class);
+                    int no_of_tracks = template.queryForObject(GET_ALL_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE, new Object[]{genome_db, query, from, to}, Integer.class);
                     eachTrack.put("start", from);
                     eachTrack.put("end", to);
                     eachTrack.put("graph", no_of_tracks);
@@ -639,7 +639,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             homology_members.put("genome_name", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{map_two.get("genome_db_id")}, String.class));
             homology_members.put("genes", getGenefromCore(map_two.get("stable_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("member_id").toString()));
             String sequence_id = map_two.get("sequence_id").toString();
-            homology_members.put("seq", template.queryForObject(SEQUENCE_FROM_ID, new Object[]{sequence_id}, String.class));
+//            homology_members.put("seq", template.queryForObject(SEQUENCE_FROM_ID, new Object[]{sequence_id}, String.class));
             homologouses.add(homology_members);
         }
 

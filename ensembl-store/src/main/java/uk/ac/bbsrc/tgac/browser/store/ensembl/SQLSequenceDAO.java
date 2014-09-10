@@ -2468,7 +2468,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             log.info("\n\n\n\n sequence ");
 
 
-            transcript.put("sequence", getSeq(ref_id, start, end, new_Template));
+//            transcript.put("sequence", getSeq(ref_id, start, end, new_Template));
 
 
             transcript.put("strand", map.get("seq_region_strand"));
@@ -2526,7 +2526,6 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                 exon.put("length", end - start + 1);
 
                 exon.put("strand", map_temp.get("seq_region_strand"));
-                exon .put("sequence", getSeq(ref_id, start, end, new_Template));
 
                 exons_array.add(exon);
             }
