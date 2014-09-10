@@ -4,7 +4,7 @@
     <table>
         <tr>
             <td>
-                <input type="text" id="search" >
+                <input type="text" id="search">
             </td>
             <td>
                 <div id=reference_maps>
@@ -20,8 +20,6 @@
 </div>
 
 <div id="canvas" style="">
-
-
 
 
     <div class="sectionDivider" onclick="toggleLeftInfo(jQuery('#Chrdiv_arrowclick'), 'chr_maps');">
@@ -53,32 +51,73 @@
     </div>
     <div style="height: auto; margin-left: auto;  margin-right: auto; position: relative; top: 20px;width: 80%; z-index: 999;">
 
-        <div id="vertical0" style="position:absolute; left: 100px" class="vertical-line"></div>
-        <div id="vertical1" style="position:absolute; left: 200px" class="vertical-line"></div>
-        <div id="vertical2" style="position:absolute; left: 300px" class="vertical-line"></div>
-        <div id="vertical3" style="position:absolute; left: 400px" class="vertical-line"></div>
-        <div id="vertical4" style="position:absolute; left: 500px" class="vertical-line"></div>
-        <div id="vertical5" style="position:absolute; left: 600px" class="vertical-line"></div>
-        <div id="vertical6" style="position:absolute; left: 700px" class="vertical-line"></div>
-        <div id="vertical7" style="position:absolute; left: 800px" class="vertical-line"></div>
-        <div id="vertical8" style="position:absolute; left: 900px" class="vertical-line"></div>
-        <div id="vertical9" style="position:absolute; left: 1000px" class="vertical-line"></div>
-        <div id="vertical10" style="position:absolute; right: 100px; margin-left: -20px; border-left: 0" class="vertical-line"></div>
+        <%--<div id="vertical0" style="position:absolute; left: 100px" class="vertical-line"></div>--%>
+        <%--<div id="vertical1" style="position:absolute; left: 200px" class="vertical-line"></div>--%>
+        <%--<div id="vertical2" style="position:absolute; left: 300px" class="vertical-line"></div>--%>
+        <%--<div id="vertical3" style="position:absolute; left: 400px" class="vertical-line"></div>--%>
+        <%--<div id="vertical4" style="position:absolute; left: 500px" class="vertical-line"></div>--%>
+        <%--<div id="vertical5" style="position:absolute; left: 600px" class="vertical-line"></div>--%>
+        <%--<div id="vertical6" style="position:absolute; left: 700px" class="vertical-line"></div>--%>
+        <%--<div id="vertical7" style="position:absolute; left: 800px" class="vertical-line"></div>--%>
+        <%--<div id="vertical8" style="position:absolute; left: 900px" class="vertical-line"></div>--%>
+        <%--<div id="vertical9" style="position:absolute; left: 1000px" class="vertical-line"></div>--%>
+        <%--<div id="vertical10" style="position:absolute; right: 100px; margin-left: -20px; border-left: 0"--%>
+             <%--class="vertical-line"></div>--%>
 
-        <button onclick="jQuery.colorbox({width: '90%', height: '90%', inline: true, href: '#gene_tree'});">Tree</button>
-        <input type="checkbox" onclick="jQuery('.delete').toggle()" checked> Deletion
-        <input type="checkbox" onclick="jQuery('.insert').toggle()" checked> Insertion
-        <input type="checkbox" onclick="jQuery('.match').toggle()" checked> Match
-        |
-        <input type="checkbox" onclick="jQuery('.utr').toggle()" checked> UTRs
+        <div style="background: none repeat scroll 0% 0% lightgray; position: fixed; left: 0px; width: 100px; border: 2px solid gray; height: auto; padding: 5px; border-radius: 0px 5px 5px 0px;">
+            <input type="checkbox" onclick="jQuery('.delete').toggle()" checked> Deletion <br>
+            <input type="checkbox" onclick="jQuery('.insert').toggle()" checked> Insertion <br>
+            <input type="checkbox" onclick="jQuery('.match').toggle()" checked> Match <br>
+            <input type="checkbox" onclick="jQuery('.utr').toggle()" checked> UTRs <br>
 
+            <p></p>
 
+            <div>
+                Legends:
+                <table>
+                    <tr>
+                        <td>
+                            <div class="circleBase type2" style="background: rgb(166,206,227);"></div>
+                        </td>
+                        <td>
+                            Duplication
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="circleBase type2" style="background: rgb(31,120,180);"></div>
+                        </td>
+                        <td>
+                            Dubious
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="circleBase type2" style="background: rgb(178,223,138)"></div>
+                        </td>
+                        <td>
+                            Speciation
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="circleBase type2" style="background: rgb(51,160,44)"></div>
+                        </td>
+                        <td>
+                            Gene Split
+                        </td>
+
+                    </tr>
+                </table>
+
+            </div>
+        </div>
         <div id="gene_tree_nj" style=" overflow: visible;   position: absolute;  width: 100%;">
 
         </div>
         <div id="gene_widget" style='display:none'>
 
-            </div>
+        </div>
 
     </div>
     <div style='display:none'>
@@ -90,12 +129,12 @@
 
         </div>
     </div>
-<div style='display:none'>
+    <div style='display:none'>
 
-    <div id="gene_info" style=" ">
+        <div id="gene_info" style=" ">
 
+        </div>
     </div>
-</div>
 
 </div>
 

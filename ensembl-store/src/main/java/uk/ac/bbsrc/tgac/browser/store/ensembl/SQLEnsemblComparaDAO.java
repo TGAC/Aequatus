@@ -166,6 +166,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_MEMBER_ID_FROM_NODE = "SELECT member_id FROM gene_tree_node WHERE node_id = ?;";
 
+    public static final String GET_NODE_TYPE = "SELECT node_type from gene_tree_node_attr where node_id = ?";
+
     public static final String GET_SEQUENCE_ID = "SELECT sequence_id FROM member where member_id = ?";
 
     public static final String SEARCH_MEMBER = "SELECT * " +
@@ -690,6 +692,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                         child.put("child_id", node);
                         child.put("parent_id", trees.get(i).get(k - 1));
                         child.put("member_id",template.queryForObject(GET_MEMBER_ID_FROM_NODE, new Object[]{node}, String.class));
+                        if(template.queryForList(GET_NODE_TYPE, new Object[]{node}, String.class).size() > 0){
+                            child.put("type", template.queryForObject(GET_NODE_TYPE, new Object[]{node}, String.class));
+                        }
                         child.put("children", new JSONArray());
                         if (!test_array.contains(child)) {
                             test_array.add(child);

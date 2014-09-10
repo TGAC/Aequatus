@@ -267,7 +267,17 @@ function drawTree(json_tree) {
         nodeEnter.append("circle")
             .attr("r", 1e-6)
             .style("fill", function (d, i) {
-                return colours[i];
+                if(d.type == "duplication"){
+                    return colours[0];
+                } else if(d.type == "duplication"){
+                    return colours[1];
+                } else if(d.type == "duplication"){
+                    return colours[2];
+                } else if(d.type == "duplication"){
+                    return colours[3];
+                } else{
+                    return "white";
+                }
             });
 
 
@@ -302,7 +312,17 @@ function drawTree(json_tree) {
         nodeUpdate.select("circle")
             .attr("r", 4.5)
             .style("fill", function (d, i) {
-                return colours[i];
+                if(d.type == "duplication"){
+                    return colours[0];
+                } else if(d.type == "duplication"){
+                    return colours[1];
+                } else if(d.type == "duplication"){
+                    return colours[2];
+                } else if(d.type == "duplication"){
+                    return colours[3];
+                } else{
+                    return "white";
+                }
             });
 
         nodeUpdate.select("text")
