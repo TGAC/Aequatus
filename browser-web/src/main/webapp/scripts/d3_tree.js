@@ -9,171 +9,33 @@
 
 function drawTree(json_tree) {
 
-//    var json_tree =
-//    {
-//        "child_id": 6716216,
-//        "parent_id": 6716214,
-//        "children": [
-//            {
-//                "child_id": 6716217,
-//                "parent_id": 6716216,
-//                "children": [
-//                    {
-//                        "child_id": 6716222,
-//                        "parent_id": 6716217,
-//                        "children": [
-//                            {
-//                                "child_id": 6716223,
-//                                "parent_id": 6716222,
-//                                "children": [
-//                                    {
-//                                        "child_id": 6716225,
-//                                        "parent_id": 6716223,
-//                                        "children": [
-//                                            {
-//                                                "child_id": 6716227,
-//                                                "parent_id": 6716225,
-//                                                "children": [
-//                                                    {
-//                                                        "child_id": 6716228,
-//                                                        "parent_id": 6716227,
-//                                                        "children": [
-//                                                            {
-//                                                                "child_id": 6716249,
-//                                                                "parent_id": 6716228,
-//                                                                "children": [
-//                                                                    {
-//                                                                        "child_id": 6716269,
-//                                                                        "parent_id": 6716249,
-//                                                                        "children": [
-//                                                                            {
-//                                                                                "child_id": 6716271,
-//                                                                                "parent_id": 6716269,
-//                                                                                "children": [
-//                                                                                    {
-//                                                                                        "child_id": 6716273,
-//                                                                                        "parent_id": 6716271,
-//                                                                                        "children": [
-//                                                                                            {
-//                                                                                                "child_id": 645979,
-//                                                                                                "parent_id": 6716273,
-//                                                                                                "member_id": "32271",
-//                                                                                                "children": []
-//                                                                                            }
-//                                                                                        ]
-//                                                                                    },
-//                                                                                    {
-//                                                                                        "child_id": 645939,
-//                                                                                        "parent_id": 6716271,
-//                                                                                        "member_id": "1834574",
-//                                                                                        "children": []
-//                                                                                    }
-//                                                                                ]
-//                                                                            }
-//                                                                        ]
-//                                                                    }
-//                                                                ]
-//                                                            }
-//                                                        ]
-//                                                    }
-//                                                ]
-//                                            }
-//                                        ]
-//                                    }
-//                                ]
-//                            },
-//                            {
-//                                "child_id": 6716309,
-//                                "parent_id": 6716222,
-//                                "children": [
-//                                    {
-//                                        "child_id": 6716310,
-//                                        "parent_id": 6716309,
-//                                        "children": [
-//                                            {
-//                                                "child_id": 6716329,
-//                                                "parent_id": 6716310,
-//                                                "children": [
-//                                                    {
-//                                                        "child_id": 6716330,
-//                                                        "parent_id": 6716329,
-//                                                        "children": [
-//                                                            {
-//                                                                "child_id": 6716333,
-//                                                                "parent_id": 6716330,
-//                                                                "children": [
-//                                                                    {
-//                                                                        "child_id": 6716345,
-//                                                                        "parent_id": 6716333,
-//                                                                        "children": [
-//                                                                            {
-//                                                                                "child_id": 6716346,
-//                                                                                "parent_id": 6716345,
-//                                                                                "children": [
-//                                                                                    {
-//                                                                                        "child_id": 6716348,
-//                                                                                        "parent_id": 6716346,
-//                                                                                        "children": [
-//                                                                                            {
-//                                                                                                "child_id": 645949,
-//                                                                                                "parent_id": 6716348,
-//                                                                                                "member_id": "298800",
-//                                                                                                "children": []
-//                                                                                            }
-//                                                                                        ]
-//                                                                                    }
-//                                                                                ]
-//                                                                            },
-//                                                                            {
-//                                                                                "child_id": 645968,
-//                                                                                "parent_id": 6716345,
-//                                                                                "member_id": "1704256",
-//                                                                                "children": []
-//                                                                            }
-//                                                                        ]
-//                                                                    }
-//                                                                ]
-//                                                            }
-//                                                        ]
-//                                                    }
-//                                                ]
-//                                            }
-//                                        ]
-//                                    }
-//                                ]
-//                            }
-//                        ]
-//                    }
-//                ]
-//            }
-//        ]
-//    }
-
     var margin = {top: 0, right: 0, bottom: 0, left: 0},
-        width = jQuery(document).width(),
-        height = 2000 - margin.top - margin.bottom;
+        width = 400,//jQuery(document).width(),
+        height = 500 - margin.top - margin.bottom;
+
+    var cluster = d3.layout.tree()
+        .size([height, width - 160]);
+
+    var diagonal = d3.svg.diagonal()
+        .projection(function(d) { return [d.y, d.x]; });
+
+    var svg = d3.select("#gene_tree_nj").append("svg")
+        .attr("width", width + margin.right + margin.left)
+        .attr("height", height + margin.top + margin.bottom)
+        .style("overflow", "visible")
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 
     var i = 0,
         duration = 750,
         root;
 
-    var tree = d3.layout.cluster()
-        .size([height, width]);
-
-    var diagonal = d3.svg.diagonal()
-        .projection(function (d) {
-            return [d.y, d.x];
-        });
-
-    var svg = d3.select("#gene_tree_nj").append("svg")
-        .attr("width", width + margin.right + margin.left)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     d3.json(json_tree, function () {
 
         root = json_tree;
+
         root.x0 = height / 2;
         root.y0 = 0;
 
@@ -193,8 +55,8 @@ function drawTree(json_tree) {
 
     function update(source) {
         // Compute the new tree layout.
-        var nodes = tree.nodes(root),
-            links = tree.links(nodes);
+        var nodes = cluster.nodes(root),
+            links = cluster.links(nodes);
 
         var max = 0;
         // Normalize for fixed-depth.
@@ -202,39 +64,6 @@ function drawTree(json_tree) {
         nodes.forEach(function (d) {
             if (max < d.depth) {
                 max = d.depth;
-            }
-        });
-
-        nodes.forEach(function (d, i) {
-            if (d.children) {
-                if (d.children.size() == 0) {
-                    d.y = 100;
-                } else {
-                    d.y = d.depth * 100 / max;
-                }
-            } else {
-                console.log("else")
-                d.y = 100;
-            }
-        });
-
-        var i = 1;
-        nodes.forEach(function (d, j) {
-            if (d.parent) {
-                d.parent.x = (i - 0.5) * 50
-            }
-
-            if (d.children) {
-                if (d.children.size() == 0) {
-                    d.x = i * 50;
-                    i++;
-                } else {
-                    d.x = i * 50;
-                }
-            }
-            else {
-                d.x = i * 50;
-                i++;
             }
         });
 
@@ -350,9 +179,8 @@ function drawTree(json_tree) {
             .attr('y', 0)
             .style("fill", "red")
             .append('xhtml:div')
-            .style("width", width)
+            .style("width", "1200px")
             .style("height", "50px")
-//            .style("position", "absolute")
             .style("z-index", "999")
             .style("top", "10px")
             .style("left", "10px")
@@ -362,7 +190,7 @@ function drawTree(json_tree) {
             });
 
         nodeUpdate.select("foreignObject")
-            .attr('width', width)
+            .attr('width', "1200px")
             .attr('height', '52px')
             .attr('x', 10)
             .attr('y', -26);

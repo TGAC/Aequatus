@@ -417,7 +417,7 @@ function getcoreMember(query, redrawn) {
                         "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'> <b>" + stringTrim(name, 100) + "</b></span>" +
                         "<div style='left:10%; width: 90%; padding: 25px 0px; position: relative;' id='ref'></div>")
 
-                    gapped_seq_list.push(expand_DNA_seq(ref_data.seq, ref_data.cigarline))
+//                    gapped_seq_list.push(expand_DNA_seq(ref_data.seq, ref_data.cigarline))
 
                     dispGenes("#ref", genes, max, ref_data.cigarline);
 
@@ -478,7 +478,7 @@ function getcoreMember(query, redrawn) {
                                 "</div>")
                         }
 
-                        gapped_seq_list.push(expand_DNA_seq(core_data[i].seq, core_data[i].cigarline))
+//                        gapped_seq_list.push(expand_DNA_seq(core_data[i].seq, core_data[i].cigarline))
 
                         if (core_data[i].cigarline) {
                             dispGenes("#core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);

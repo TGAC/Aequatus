@@ -19,7 +19,6 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
     var j = 0;
 
     var transcript_len = gene.transcripts.length;
-
     while (transcript_len--) {
         var gene_start;
         var gene_stop;
