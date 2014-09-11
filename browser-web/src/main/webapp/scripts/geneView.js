@@ -415,9 +415,7 @@ function getcoreMember(query, redrawn) {
                     jQuery("#gene_widget").append("<div style='left:0px; width: 100%; position: relative; border: 2px solid black; top: 10px; box-shadow: 1px 1px 15px 15px #D3D3D3;' id='ref_wrapper'>" +
                         "<div class=handle-genome style='background-image: url(/images/browser/utr.png); background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
                         "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'> <b>" + stringTrim(name, 100) + "</b></span>" +
-                        "<div style='left:10%; width: 90%; padding: 25px 0px; position: relative;' id='ref'></div>")
-
-//                    gapped_seq_list.push(expand_DNA_seq(ref_data.seq, ref_data.cigarline))
+                        "<div style='left:10%; width: auto; padding: 25px 0px; position: relative;' id='ref'></div>")
 
                     dispGenes("#ref", genes, max, ref_data.cigarline);
 
@@ -441,29 +439,6 @@ function getcoreMember(query, redrawn) {
 
                     var exon_nu = ref_data.genes.gene.transcripts[0].Exons.length - 1
                     var diff = parseInt(ref_data.genes.gene.transcripts[0].transcript_end - ref_data.genes.gene.transcripts[0].Exons[exon_nu]._start) + parseInt(1)
-//                while (diff < 0) {
-//                    ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = 0
-//                    exon_nu--;
-//                    diff = parseInt(ref_data.genes.gene.transcripts[0].transcript_end - ref_data.genes.gene.transcripts[0].Exons[exon_nu]._start) + parseInt(1)
-//                }
-
-//                ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = diff;
-
-
-//                    console.log("gene")
-//                    nj_gene_list = []
-//                    nj_string_tree = ""
-//                    string_tree = ""
-//
-//                    calculateDistanceMatrix(ref_data, core_data)
-//
-//                    upgma_matrix = distance_matrix;
-//                    findNearestNode()
-//
-//
-//                    nj_matrix = distance_matrix;
-//                    calculateQMatrix()
-
 
                     for (var i = 0; i < core_data.length; i++) {
                         var genes = core_data[i].genes
@@ -474,11 +449,9 @@ function getcoreMember(query, redrawn) {
                             jQuery("#gene_widget").append("<div style='left:0px; width: 100%; position: relative; border: 1px solid gray; top: 10px; ' id='core" + core_data[i].genome + "_wrapper'> " +
                                 "<div class = handle-genome style='background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
                                 "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'><b>" + stringTrim(name, 100) + "</b></span>" +
-                                "<div style='left:10%; width: 90%; padding: 25px 0px;  position: relative; ' id='core" + core_data[i].genome + "'></div>" +
+                                "<div style='left:10%; width: auto; padding: 25px 0px;  position: relative; ' id='core" + core_data[i].genome + "'></div>" +
                                 "</div>")
                         }
-
-//                        gapped_seq_list.push(expand_DNA_seq(core_data[i].seq, core_data[i].cigarline))
 
                         if (core_data[i].cigarline) {
                             dispGenes("#core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
@@ -493,28 +466,8 @@ function getcoreMember(query, redrawn) {
 
 
                 }
-//
 
                 drawTree(json.tree)
-
-//                var DNAMatrix = calculateDNADistanceMatrix(gene_list_array, gapped_seq_list)
-//                var CIGARMatrix = calculateDistanceMatrix(gene_list_array, cigar_list)
-//                console.log(gene_list_array)
-//                console.log(gene_list_array.length)
-//
-//                var DNA_Newick = findNearestNode(DNAMatrix, gene_list_array)
-//
-//                console.log("CIGAR ===========")
-//                console.log(gene_list_array)
-//                console.log(gene_list_array.length)
-//
-//                var CIGAR_Newick = findNearestNode(CIGARMatrix, gene_list_array)
-
-
-//                var NJ_CIGAR_Newick = findFurthestNode(DNAMatrix, gene_list_array)
-//                var NJ_DNA_Newick = findFurthestNode(CIGARMatrix, gene_list_array)
-//                                    console.log(NJ_CIGAR_Newick)
-//                console.log(NJ_DNA_Newick)
 
                 jQuery("#gene_widget").sortable(
                     {
