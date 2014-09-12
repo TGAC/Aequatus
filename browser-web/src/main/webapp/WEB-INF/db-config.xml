@@ -27,57 +27,8 @@
         <property name="password" value="${db.password}"/>
     </bean>
 
-    <bean id="core1dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="${db.driver}"/>
-        <property name="url" value="${core_db1.url}"/>
-        <property name="username" value="${core_db1.username}"/>
-        <property name="password" value="${core_db1.password}"/>
-    </bean>
-
-    <bean id="core2dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="${db.driver}"/>
-        <property name="url" value="${core_db2.url}"/>
-        <property name="username" value="${core_db2.username}"/>
-        <property name="password" value="${core_db2.password}"/>
-    </bean>
-
-    <bean id="core3dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="${db.driver}"/>
-        <property name="url" value="${core_db3.url}"/>
-        <property name="username" value="${core_db3.username}"/>
-        <property name="password" value="${core_db3.password}"/>
-    </bean>
-
-    <bean id="core4dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="${db.driver}"/>
-        <property name="url" value="${core_db4.url}"/>
-        <property name="username" value="${core_db4.username}"/>
-        <property name="password" value="${core_db4.password}"/>
-    </bean>
-
-
     <bean name="interfaceTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
         <property name="dataSource" ref="dataSource"/>
-        <property name="nativeJdbcExtractor" ref="nativeJdbcExtractor"/>
-    </bean>
-
-    <bean name="core1Template" class="org.springframework.jdbc.core.JdbcTemplate">
-    <property name="dataSource" ref="core1dataSource"/>
-    <property name="nativeJdbcExtractor" ref="nativeJdbcExtractor"/>
-</bean>
-
-    <bean name="core2Template" class="org.springframework.jdbc.core.JdbcTemplate">
-        <property name="dataSource" ref="core2dataSource"/>
-        <property name="nativeJdbcExtractor" ref="nativeJdbcExtractor"/>
-    </bean>
-
-    <bean name="core3Template" class="org.springframework.jdbc.core.JdbcTemplate">
-        <property name="dataSource" ref="core3dataSource"/>
-        <property name="nativeJdbcExtractor" ref="nativeJdbcExtractor"/>
-    </bean>
-
-    <bean name="core4Template" class="org.springframework.jdbc.core.JdbcTemplate">
-        <property name="dataSource" ref="core4dataSource"/>
         <property name="nativeJdbcExtractor" ref="nativeJdbcExtractor"/>
     </bean>
 
@@ -90,10 +41,6 @@
 
     <bean id="sequenceDAO" class="uk.ac.bbsrc.tgac.browser.store.ensembl.SQLSequenceDAO">
         <property name="jdbcTemplate" ref="interfaceTemplate"/>
-        <property name="core1Template" ref="core1Template"/>
-        <property name="core2Template" ref="core2Template"/>
-        <property name="core3Template" ref="core3Template"/>
-        <property name="core4Template" ref="core4Template"/>
     </bean>
 
 

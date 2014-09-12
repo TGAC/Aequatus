@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import uk.ac.bbsrc.tgac.browser.core.store.*;
 
 import java.io.IOException;
@@ -2375,7 +2376,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
     }
 
 
-    public static JSONObject getGenebyStableid(String query, String genome, String member_id) throws SQLException {
+    public static JSONObject getGenebyStableid(String query, String genome, String member_id, String db_url) throws SQLException {
         try {
 
             log.info("\n\ngetgenebystableid\n\n" + genome + ":" + query);
@@ -2383,45 +2384,11 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
 
             JSONObject gene = new JSONObject();
 
-            JdbcTemplate new_Template;
 
-            new_Template = core1Template;
-            if (genome.matches("1985")) {
-                new_Template = core1Template;
-                log.info("\n\n core 1" + core1Template.getDataSource().toString() + "\n\n");
-            } else if (genome.matches("1836")) {
-                new_Template = core2Template;
-                log.info("\n\ncore 2" + core2Template.getDataSource().toString() + "\n\n");
-
-            } else if (genome.matches("1555")) {
-                new_Template = core3Template;
-                log.info("\n\ncore 3" + core3Template.getDataSource().toString() + "\n\n");
-            } else if (genome.matches("1555")) {
-                new_Template = core4Template;
-                log.info("\n\ncore 4" + core4Template.getDataSource().toString() + "\n\n");
-            }
-//
-//
-//            if (genome.matches("1")) {
-//                new_Template = core1Template;
-//                log.info("\n\n core 1" + core1Template.getDataSource().toString() + "\n\n");
-//            } else if (genome.matches("2")) {
-//                new_Template = core2Template;
-//                log.info("\n\ncore 2" + core2Template.getDataSource().toString() + "\n\n");
-//
-//            } else if (genome.matches("3")) {
-//                new_Template = core3Template;
-//                log.info("\n\ncore 3" + core3Template.getDataSource().toString() + "\n\n");
-//            } else if (genome.matches("4")) {
-//                new_Template = core4Template;
-//                log.info("\n\ncore 4" + core4Template.getDataSource().toString() + "\n\n");
-//            }
+            JdbcTemplate new_Template = new JdbcTemplate(getDataSource("com.mysql.jdbc.Driver","jdbc:mysql://"+db_url.split(";")[0],db_url.split(";")[1],db_url.split(";")[2]));
 
             log.info("\n\n\n \t\t\t stable id : " + query);
-//            query = query.replaceAll("\\.","\\\\.");
-//            log.info("\n \t\t\t stable id : " + query);
 
-//            int gene_id = new_Template.queryForObject(GET_Gene_by_stable_id, new Object[]{query}, Integer.class);
             int transcript_id = new_Template.queryForObject(GET_Transcript_by_stable_id, new Object[]{query}, Integer.class);
             int gene_id = new_Template.queryForObject(GET_Gene_by_transcript_id, new Object[]{transcript_id}, Integer.class);
 
@@ -2542,4 +2509,15 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             throw new SQLException("Gene not found: " + e.getMessage());
         }
     }
+
+    public static DriverManagerDataSource getDataSource(String driverClassName, String url, String dbUsername, String dbPassword) {
+        log.info("\n\n\n\nget data source");
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(driverClassName);
+        dataSource.setUrl(url);
+        dataSource.setUsername(dbUsername);
+        dataSource.setPassword(dbPassword);
+        return dataSource;
+    }
+
 }

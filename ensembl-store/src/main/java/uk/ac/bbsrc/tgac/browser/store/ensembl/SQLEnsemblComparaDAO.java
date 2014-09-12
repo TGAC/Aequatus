@@ -176,6 +176,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String SEQUENCE_FROM_ID = "SELECT sequence from sequence where sequence_id = ?";
 
+    public static final String GET_LOCATION_FOR_GENOME = "select locator from genome_db where genome_db_id = ?";
+
     @Autowired
     private CacheManager cacheManager;
 
@@ -501,7 +503,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         homology_members.put("genome", homologous.get("genome_db_id"));
         homology_members.put("method", homologous.get("method_link_species_set_id"));
         homology_members.put("genome_name", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{homologous.get("genome_db_id")}, String.class));
-        homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("member_id").toString()));
+        homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("member_id").toString(), homologous.get("genome_db_id").toString()));
         String sequence_id = template.queryForObject(GET_SEQUENCE_ID, new Object[]{homologous.get("peptide_id")}, String.class);
 //        homology_members.put("seq", template.queryForObject(SEQUENCE_FROM_ID, new Object[]{sequence_id}, String.class));
         return homology_members;
@@ -522,7 +524,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             homology_members.put("cigarline2", template.queryForObject(GET_HOMOLOGY_MEMBER_CIGAR_BY_MEMBER_ID, new Object[]{member, map_two.get("homology_id")}, String.class));
             homology_members.put("genome", homologous.get("genome_db_id"));
             homology_members.put("genome_name", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{homologous.get("genome_db_id")}, String.class));
-            homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("member_id").toString()));
+            homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("member_id").toString(), homologous.get("genome_db_id").toString()));
             homologouses.add(homology_members);
         }
 
@@ -613,11 +615,11 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     }
 
 
-    public JSONObject getGenefromCore(String query, String genome, String member_id) throws IOException {
+    public JSONObject getGenefromCore(String query, String genome, String member_id, String genome_db_id) throws IOException {
         try {
             JSONObject gene = new JSONObject();
 
-            gene.put("gene", SQLSequenceDAO.getGenebyStableid(query, genome, member_id));
+            gene.put("gene", SQLSequenceDAO.getGenebyStableid(query, genome, member_id, template.queryForObject(GET_LOCATION_FOR_GENOME, new Object[]{genome_db_id}, String.class)));
             return gene;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -637,7 +639,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             homology_members.put("method", map_two.get("method_link_species_set_id"));
             homology_members.put("stable_id", map_two.get("stable_id").toString());
             homology_members.put("genome_name", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{map_two.get("genome_db_id")}, String.class));
-            homology_members.put("genes", getGenefromCore(map_two.get("stable_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("member_id").toString()));
+            homology_members.put("genes", getGenefromCore(map_two.get("stable_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("member_id").toString(), map_two.get("genome_db_id").toString()));
             String sequence_id = map_two.get("sequence_id").toString();
 //            homology_members.put("seq", template.queryForObject(SEQUENCE_FROM_ID, new Object[]{sequence_id}, String.class));
             homologouses.add(homology_members);
