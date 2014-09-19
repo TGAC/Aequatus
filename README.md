@@ -19,7 +19,7 @@ Aequatus Browser: Visualising complex similarity relationships among species
 
 # <a name="demo"></a> Demo:
 
-http://tgac-browser.tgac.ac.uk/plants_compara
+http://tgac-browser.tgac.ac.uk/aequatus-browser
 
 Full Aequatus Browser code will be available by end of August - 2014
 
