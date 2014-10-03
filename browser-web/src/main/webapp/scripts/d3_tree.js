@@ -168,7 +168,7 @@ function drawTree(json_tree) {
 
         nodeUpdate.select("circle")
             .attr("r", function (d) {
-                if (d.children)// && d.children != null) {
+                if (d.member_id == ref_member)// && d.children != null) {
                 {
                     return 4;
                 }
