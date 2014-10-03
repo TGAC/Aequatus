@@ -129,7 +129,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             "JOIN gene_tree_root gtr ON (gtr.root_id = gtn1.root_id) " +
             "JOIN gene_align_member gam USING (gene_align_id) " +
             "JOIN member m3 ON (gam.member_id = m3.member_id) " +
-            "WHERE gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" AND  m1.member_id = ?  AND m2.stable_id <> m3.stable_id;";
+            "WHERE gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" AND  m1.member_id = ?  AND m2.stable_id <> m3.stable_id and m3.genome_db_id in (select genome_db_id from genome_db);";
 
     public static final String GET_GENE_TREE_REFERENCE = "SELECT m1.stable_id AS Ref, m1.canonical_member_id AS peptide_id, m2.stable_id AS Ref_stable_id, m3.*, gam.cigar_line, gtr.method_link_species_set_id " +
             "FROM member m1 " +
@@ -157,7 +157,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             "JOIN gene_tree_root gtr ON (gtr.root_id = gtn1.root_id) " +
             "JOIN gene_align_member gam USING (gene_align_id) " +
             "JOIN member m3 ON (gam.member_id = m3.member_id) " +
-            "WHERE gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" AND  m1.member_id = ? ;";
+            "WHERE gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" AND  m1.member_id = ? and m3.genome_db_id in (select genome_db_id from genome_db);";
 
 
     public static final String GET_GENE_NODE_WITH_MEMBER = "SELECT * FROM gene_tree_node WHERE member_id = ? AND root_id = ?;";
@@ -165,6 +165,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public static final String GET_NODE_INFORMATION = "SELECT * FROM gene_tree_node WHERE node_id = ?;";
 
     public static final String GET_MEMBER_ID_FROM_NODE = "SELECT member_id FROM gene_tree_node WHERE node_id = ?;";
+
+    public static final String GET_GENOME_ID_FROM_MEMBER_ID = "SELECT m.genome_db_id FROM gene_tree_node gtn, member m WHERE gtn.node_id = ? AND gtn.member_id = m.member_id;";
 
     public static final String GET_NODE_TYPE = "SELECT node_type from gene_tree_node_attr where node_id = ?";
 
@@ -585,6 +587,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
             for (Map map : maps) {
 
+                log.info("\n\n chr name" + map+" "+query);
                 if (template.queryForObject(COUNT_CHR_DNAFRAG_BY_NAME, new Object[]{map.get("name").toString(), query}, Integer.class) > 0) {
                     Map<String, Object> maps_2 = template.queryForMap(GET_CHR_DNAFRAG_BY_NAME, new Object[]{map.get("name").toString(), query});
                     map.put("length", maps_2.get("length"));
@@ -694,6 +697,11 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                         child.put("child_id", node);
                         child.put("parent_id", trees.get(i).get(k - 1));
                         child.put("member_id",template.queryForObject(GET_MEMBER_ID_FROM_NODE, new Object[]{node}, String.class));
+
+                        if(child.containsKey("member_id")){
+                        child.put("genome",template.queryForObject(GET_GENOME_ID_FROM_MEMBER_ID, new Object[]{node}, String.class));
+                        }
+
                         if(template.queryForList(GET_NODE_TYPE, new Object[]{node}, String.class).size() > 0){
                             child.put("type", template.queryForObject(GET_NODE_TYPE, new Object[]{node}, String.class));
                         }

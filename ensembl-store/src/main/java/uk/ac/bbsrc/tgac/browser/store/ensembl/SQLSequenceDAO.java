@@ -155,7 +155,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
     public static final String Check_feature_available = "SELECT DISTINCT analysis_id from ";// + var1;
 
     public static final String GET_Gene_by_stable_id = "select gene_id from gene where stable_id = ?;";//"select * from gene_view where seq_region_id = ? and analysis_id = ?;";//
-    public static final String GET_Transcript_by_stable_id = "select transcript_id from transcript where stable_id = ?;";//"select * from gene_view where seq_region_id = ? and analysis_id = ?;";//
+    public static final String GET_Transcript_by_stable_id = "select transcript_id from translation where stable_id = ?;";//"select * from gene_view where seq_region_id = ? and analysis_id = ?;";//
     public static final String GET_Transcript_by_Transcript_ID = "SELECT transcript_id,seq_region_id, seq_region_start,seq_region_end, description,seq_region_strand FROM transcript where transcript_id =?";//AND ((seq_region_start > ? AND seq_region_end < ?) OR (seq_region_start < ? AND seq_region_end > ?) OR (seq_region_end > ? AND seq_region_end < ?) OR (seq_region_start > ? AND seq_region_start < ?))";
     public static final String GET_Gene_by_transcript_id = "select gene_id from transcript where transcript_id = ?;";//"select * from gene_view where seq_region_id = ? and analysis_id = ?;";//
 

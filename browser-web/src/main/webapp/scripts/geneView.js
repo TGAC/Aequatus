@@ -14,6 +14,7 @@ var colours = ['rgb(166,206,227)', 'rgb(31,120,180)', 'rgb(178,223,138)', 'rgb(5
 var gapped_seq_list = [];
 var gene_list_array = [];
 var cigar_list = [];
+var ref_member = null
 
 function search_geneView(query, from, to, jsonid, oldtracks) {
 
@@ -424,6 +425,7 @@ function getcoreMember(query, redrawn) {
 
                     var exon_nu = 0
 
+                    ref_member = ref_data.genes.gene.member_id
 
                     var diff = parseInt(ref_data.genes.gene.transcripts[0].Exons[exon_nu].end - ref_data.genes.gene.transcripts[0].transcript_start) + parseInt(1)
                     while (diff < 0) {
