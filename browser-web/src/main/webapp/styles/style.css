@@ -1622,6 +1622,7 @@ span.counter {
     border-left: 0;
     border-right: 0;
     float: left;
+
 }
 
 .vertical-line {
@@ -2106,6 +2107,10 @@ span.counter {
     height: 5px;
     cursor: pointer;
     border-radius:5px;
+
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
 }
 
 .track_label {

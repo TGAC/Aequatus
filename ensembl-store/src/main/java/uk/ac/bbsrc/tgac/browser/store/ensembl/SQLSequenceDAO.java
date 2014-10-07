@@ -2381,7 +2381,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
 
             log.info("\n\ngetgenebystableid\n\n" + genome + ":" + query);
 
-
+            int length = 0;
             JSONObject gene = new JSONObject();
 
 
@@ -2492,10 +2492,13 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                 exon.put("end", end);
                 exon.put("length", end - start + 1);
 
+                length += (end - start +1);
                 exon.put("strand", map_temp.get("seq_region_strand"));
 
                 exons_array.add(exon);
             }
+
+            transcript.put("exon_length", length);
             transcript.put("Exons", exons_array);
 
             transcripts_array.add(transcript);

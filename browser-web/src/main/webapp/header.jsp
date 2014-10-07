@@ -40,6 +40,7 @@
     <script type="text/javascript" src="<c:url value='/scripts/search_compara.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/geneView.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/drawGene.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/drawGeneExonOnly.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/drawCIGARs.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/matrix.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/upgma.js'/>"></script>

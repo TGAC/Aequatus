@@ -101,13 +101,13 @@ function drawTree(json_tree) {
 
         nodeEnter.append("circle")
             .attr("r", function (d) {
-                if (d.children)// && d.children != null) {
-                {
+//                if (d.children)// && d.children != null) {
+//                {
                     return 4;
-                }
-                else {
-                    return 6;
-                }
+//                }
+//                else {
+//                    return 6;
+//                }
             })
             .style("fill", function (d, i) {
                 if (d.type == "duplication") {
@@ -170,10 +170,10 @@ function drawTree(json_tree) {
             .attr("r", function (d) {
                 if (d.member_id == ref_member)// && d.children != null) {
                 {
-                    return 4;
+                    return 6;
                 }
                 else {
-                    return 6;
+                    return 4;
                 }
             })
             .style("fill", function (d, i) {

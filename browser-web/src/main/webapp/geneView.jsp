@@ -70,6 +70,9 @@
             <input type="checkbox" onclick="jQuery('.match').toggle()" checked> Match <br>
             <input type="checkbox" onclick="jQuery('.utr').toggle()" checked> UTRs <br>
 
+<hr>
+                <input type="radio" name="view_type" checked value="with"> With Introns
+                <input type="radio" name="view_type" value="without"> Without Introns
             <p></p>
 
             <div>
@@ -111,6 +114,8 @@
                 </table>
 
             </div>
+
+
         </div>
         <div id="gene_tree_nj" style=" overflow: visible;   position: absolute;  width: 100%;">
 

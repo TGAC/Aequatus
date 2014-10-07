@@ -7,7 +7,6 @@
  */
 function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_div, ref_exons, transcript_start, transcript_end, strand, ref_cigar, ref_strand, id) {
 
-
     var member_id = jQuery(temp_div).attr('id');
 
 
@@ -23,12 +22,15 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
     var exon_number = 0;
     var ref_exon_number = 0;
 
+    max = exons[exon_number].length
+    maxLentemp = jQuery("#exon" + id + "" + exons[exon_number].id).css('width');
+
     var cigar_pos = (transcript_start - gene_start) + 1;
 
     var temp_start = 1;
 
-    for(var e=0; e<exons.length; e++){
-        if(exons[e].end > transcript_start){
+    for (var e = 0; e < exons.length; e++) {
+        if (exons[e].end > transcript_start) {
             cigar_pos = (transcript_start - exons[e].start) + 1;
             temp_start = (exons[e].start - gene_start) + 1;
             exon_number = e
@@ -42,6 +44,10 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
     if (temp_end < cigar_pos) {
         while (temp_end < cigar_pos) {
             exon_number++;
+
+            max = exons[exon_number].length
+            maxLentemp = jQuery("#exon" + id + "" + exons[exon_number].id).css('width');
+
             temp_end = (exons[exon_number].end - gene_start) + 1;
         }
     }
@@ -141,6 +147,8 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                                 break first;
                             }
 
+                            max = exons[exon_number].length
+                            maxLentemp = jQuery("#exon" + id + "" + exons[exon_number].id).css('width');
 
                             temp_start = exons[exon_number].start - gene_start;
                             temp_end = (exons[exon_number].end - gene_start) + 1;
@@ -209,6 +217,11 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                             if (exon_number >= no_of_exons) {
                                 break first;
                             }
+
+                            max = exons[exon_number].length
+                            maxLentemp = jQuery("#exon" + id + "" + exons[exon_number].id).css('width');
+
+
                             temp_start = exons[exon_number].start - gene_start;
                             temp_end = (exons[exon_number].end - gene_start) + 1;
 
@@ -252,15 +265,9 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
     function trackHTML(startposition, stopposition, top, trackClass, temp_div, colour, title, i) {
 
-        if(member_id == "id1306886"){
-            console.log(temp_div)
-            console.log(member_id)
-            console.log(startposition)
-        }
-
         var track_html_local;
 
-        track_html_local = "<div onmouseover=onMouseOver('"+colour+"') onmouseout=onMouseOut('"+colour+"')  class='" + trackClass + " exon_"+i+"'" +
+        track_html_local = "<div onmouseover=onMouseOver('" + colour + "') onmouseout=onMouseOut('" + colour + "')  class='" + trackClass + " exon_" + i + "'" +
             "STYLE=\"height: 10px; z-index: 1999; TOP:0px; LEFT:" + startposition + "px; opacity:0.7; background-color:" + colour + "; " +
             "width:" + (stopposition) + "px \" title=" + title + "> </div>";
         jQuery(temp_div).append(track_html_local);
@@ -289,6 +296,10 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
     var stopposition;
     var no_of_exons = ref_exons.length;
     var cigar_string = "";
+
+    max = exons[exon_number].length
+    maxLentemp = parseInt(jQuery("#exon" + id + "" + exons[exon_number].id).css('width'));
+
 
     if (cigars != '*') {
 
@@ -325,9 +336,10 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
             if (key == "M") {
                 trackClass = "match";
 
-
                 startposition = parseFloat((cigar_pos) * parseFloat(maxLentemp) / (max));
                 stopposition = parseFloat((length) * parseFloat(maxLentemp) / (max));
+
+
 
                 if (parseInt(cigar_pos) + parseInt(length) <= (temp_end - temp_start)) {
                     temp_div = "#exon" + id + "" + exons[exon_number].id
@@ -348,10 +360,14 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
 
                         exon_number++;
 
+
                         if (exon_number >= no_of_exons) {
                             break second;
                             continue first;
                         }
+
+                        max = exons[exon_number].length
+                        maxLentemp = parseInt(jQuery("#exon" + id + "" + exons[exon_number].id).css('width'));
 
                         temp_start = exons[exon_number].start - gene_start;
                         temp_end = (exons[exon_number].end - gene_start) + 1;
@@ -403,28 +419,28 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
     function trackHTML(startposition, stopposition, top, trackClass, temp_div, colour, title, i) {
         var track_html_local;
 
-        track_html_local = "<div onmouseover=onMouseOver('"+colour+"') onmouseout=onMouseOut('"+colour+"') class='" + trackClass + " exon_"+i+"' " +
+        track_html_local = "<div onmouseover=onMouseOver('" + colour + "') onmouseout=onMouseOut('" + colour + "') class='" + trackClass + " exon_" + i + "' " +
             "STYLE=\"position: absolute; height: 10px; z-index: 1999; TOP:0px; LEFT:" + startposition + "px; opacity:0.7; background-color:" + colour + "; " +
             "width:" + (stopposition) + "px \" title=" + title + "> </div>";
         jQuery(temp_div).append(track_html_local);
     }
 }
 
-function onMouseOver(i){
+function onMouseOver(i) {
     jQuery(".insert").css({ opacity: 0.2 })
     jQuery(".match").css({ opacity: 0.2})
 //    jQuery(".exon_"+i).css({ opacity: 1 })
-    jQuery('.match').filter(function() {
-        var colour = jQuery(this).css('backgroundColor').replace(/\s+/g,"");
+    jQuery('.match').filter(function () {
+        var colour = jQuery(this).css('backgroundColor').replace(/\s+/g, "");
 
-        if(colour == i){
+        if (colour == i) {
             return 1;
         }
     }).css('opacity', 0.7);
 
 }
 
-function onMouseOut(i){
+function onMouseOut(i) {
     jQuery(".match").css({ opacity: 0.7 })
     jQuery(".insert").css({ opacity: 0.7 })
 }

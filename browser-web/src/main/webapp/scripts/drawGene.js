@@ -7,6 +7,9 @@
  */
 
 function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
+
+    console.log("dispGenes")
+
     var gene = track.gene;
 
     var trackClass;
@@ -122,6 +125,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 
 function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
 
+    console.log("dispgeneexon1")
     var trackClass = "exon";
     var utrtrackClass = "utr";
 
