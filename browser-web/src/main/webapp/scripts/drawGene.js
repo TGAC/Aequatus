@@ -8,7 +8,6 @@
 
 function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 
-    console.log("dispGenes")
 
     var gene = track.gene;
 
@@ -16,7 +15,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 
     var newStart_temp = 1;
     var newEnd_temp = max;
-    var maxLentemp = jQuery(document).width()*0.8;
+    var maxLentemp = jQuery(document).width()*0.6;
 
     var label = "";
     var j = 0;
@@ -95,13 +94,13 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 
             dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length, transcript_len);
 
-            dispCigarLine(cigarline, 1, top, ((gene_stop - gene_start) + 1), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, ref.Exons.toJSON(), transcript_start, transcript_end, strand, ref_cigar, ref.strand, gene.transcripts[transcript_len].id);
+            dispCigarLine(cigarline, 1, top, ((gene_stop - gene_start) + 1), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, ref.Exons.toJSON(), transcript_start, transcript_end, strand, ref_cigar, ref.strand, gene.transcripts[transcript_len].id, "#gene_widget");
 
         }
         else {
             var wrapper_div = jQuery("<div>").attr({
                 'style': "position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;"
-            }).html("<span class='handle-gene' style='position: absolute; margin-left:10px; left:"+stopposition+"px; word-wrap: break-word;'> <b>" + gene.stable_id + "  </b> </span> ").appendTo(div);
+            }).html("<span class='handle-gene' style='position: absolute; margin-left:10px; left:"+stopposition+"px; word-wrap: break-word; color:red; '> <b>" + gene.stable_id + "  </b> </span> ").appendTo(div);
 
 
             var temp_div = jQuery("<div>").attr({
@@ -115,7 +114,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 
             dispGeneExon(gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length);
 
-            dispCigarLineRef(cigarline, 1, top, ((gene_stop - gene_start) + 1), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, gene.transcripts[transcript_len].Exons.toJSON(), transcript_start, transcript_end, gene.transcripts[transcript_len].id);
+            dispCigarLineRef(cigarline, 1, top, ((gene_stop - gene_start) + 1), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, gene.transcripts[transcript_len].Exons.toJSON(), transcript_start, transcript_end, gene.transcripts[transcript_len].id, "#gene_widget");
 
         }
 
@@ -124,8 +123,6 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 }
 
 function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
-
-    console.log("dispgeneexon1")
     var trackClass = "exon";
     var utrtrackClass = "utr";
 
@@ -238,6 +235,8 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
 
             current = exon_start;
 
+            var temp_div = ("#gene_widget #"+jQuery(div).attr('id')+" #exon"+ track.id + "" + geneexons[exon_len].id)
+
             var top = 0;
 
             if (exon_start < transcript_start && exon_stop < transcript_start) {
@@ -249,7 +248,7 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
                 jQuery("<div>").attr({
                     'class': utrtrackClass,
                     'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
-                }).appendTo("#exon"+ track.id + "" + geneexons[exon_len].id);
+                }).appendTo(temp_div)
 
                 last = current;
 
@@ -264,7 +263,8 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
                 jQuery("<div>").attr({
                     'class': utrtrackClass,
                     'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
-                }).appendTo("#exon"+ track.id + "" + geneexons[exon_len].id);
+                }).appendTo(temp_div)
+
 
 //                startposition += 1;
 //                stopposition -= 2;
@@ -276,7 +276,8 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
                 jQuery("<div>").attr({
                     'class': utrtrackClass,
                     'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
-                }).appendTo("#exon"+ track.id + "" + geneexons[exon_len].id);
+                }).appendTo(temp_div)
+
 
                 last = current;
             }
@@ -290,7 +291,8 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
                 jQuery("<div>").attr({
                     'class': utrtrackClass,
                     'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
-                }).appendTo("#exon"+ track.id + "" + geneexons[exon_len].id);
+                }).appendTo(temp_div)
+
 
                 last = current;
 
@@ -305,7 +307,8 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
                 jQuery("<div>").attr({
                     'class': utrtrackClass,
                     'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
-                }).appendTo("#exon"+ track.id + "" + geneexons[exon_len].id);
+                }).appendTo(temp_div)
+
 
                 last = current;
 
@@ -322,7 +325,8 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
                 jQuery("<div>").attr({
                     'class': utrtrackClass,
                     'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
-                }).appendTo("#exon"+ track.id + "" + geneexons[exon_len].id);
+                }).appendTo(temp_div)
+
 
                 last = current;
 

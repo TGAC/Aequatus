@@ -71,8 +71,8 @@
             <input type="checkbox" onclick="jQuery('.utr').toggle()" checked> UTRs <br>
 
 <hr>
-                <input type="radio" name="view_type" checked value="with"> With Introns
-                <input type="radio" name="view_type" value="without"> Without Introns
+                <input type="radio" name="view_type" checked value="with"  onchange="changeToNormal()"> With Introns
+                <input type="radio" name="view_type" value="without" onchange="changeToExon()"> Without Introns
             <p></p>
 
             <div>
@@ -120,10 +120,12 @@
         <div id="gene_tree_nj" style=" overflow: visible;   position: absolute;  width: 100%;">
 
         </div>
-        <div id="gene_widget" style='display:none'>
+        <div id="gene_widget" style='position: relative; display:none'>
 
         </div>
+            <div id="gene_widget_exons" style='position: relative; top: 100px; display:none'>
 
+            </div>
     </div>
     <div style='display:none'>
 

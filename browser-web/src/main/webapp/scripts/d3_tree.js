@@ -101,13 +101,7 @@ function drawTree(json_tree) {
 
         nodeEnter.append("circle")
             .attr("r", function (d) {
-//                if (d.children)// && d.children != null) {
-//                {
                     return 4;
-//                }
-//                else {
-//                    return 6;
-//                }
             })
             .style("fill", function (d, i) {
                 if (d.type == "duplication") {
@@ -121,8 +115,6 @@ function drawTree(json_tree) {
                 } else {
                     return "white";
                 }
-
-
             })
             .style("stroke-width", function (d, i) {
                 if (d.member_id == ref_member) {
@@ -215,7 +207,10 @@ function drawTree(json_tree) {
             .style("fill-opacity", 1e-6);
 
         nodeEnter.append("foreignObject")
-
+            .attr("class", "node_gene_holder")
+            .attr("id", function(d) {
+                return "node_gene_holder"+d.member_id
+            })
             .attr('width', width)
             .attr('height', '52px')
             .attr('x', 10)
@@ -223,7 +218,7 @@ function drawTree(json_tree) {
             .style("fill", "red")
             .append('xhtml:div')
             .style("width", function (d) {
-                return parseInt(jQuery("#id" + d.member_id).width()) + 200
+                return parseInt(jQuery("#gene_widget #id" + d.member_id).css('width')) + 200
 
             })
             .style("height", "50px")
@@ -231,12 +226,12 @@ function drawTree(json_tree) {
             .style("top", "10px")
             .style("left", "10px")
             .html(function (d) {
-                return jQuery("#id" + d.member_id).parent().html();
+                return jQuery("#gene_widget #id" + d.member_id).parent().html();
             });
 
         nodeUpdate.select("foreignObject")
             .attr('width', function (d) {
-                return parseInt(jQuery("#id" + d.member_id).width()) + 200
+                return parseInt(jQuery("#gene_widget #id" + d.member_id).css('width')) + 200
             })
             .attr('height', '52px')
             .attr('x', 10)
@@ -299,4 +294,24 @@ function drawTree(json_tree) {
             .size([y, width - 160]);
 
     }
+}
+
+function changeToNormal(){
+    jQuery(".node_gene_holder").each(function() {
+
+        var id =  jQuery(this).attr('id').replace("node_gene_holder","");
+        console.log("id "+id)
+        jQuery(this).html(jQuery("#gene_widget #id" + id).parent().html())
+    })
+}
+
+function changeToExon(){
+
+    jQuery(".node_gene_holder").each(function() {
+
+        var id =  jQuery(this).attr('id').replace("node_gene_holder","");
+        console.log("id "+id)
+        jQuery(this).html(jQuery("#gene_widget_exons #id" + id).parent().html())
+    })
+
 }
