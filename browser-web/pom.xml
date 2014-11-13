@@ -80,7 +80,7 @@
                             <webResources>
                                 <resource>
                                     <directory>${profile-path}/${profile}</directory>
-                                    <targetPath>WEB-INF</targetPath>
+                                    <targetPath>WEB-INF/classes</targetPath>
                                     <filtering>true</filtering>
                                 </resource>
                             </webResources>
@@ -287,6 +287,17 @@
             <artifactId>ehcache-core</artifactId>
             <version>2.5.1</version>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.codehaus.plexus</groupId>-->
+            <!--<artifactId>plexus-io</artifactId>-->
+            <!--<version>1.0</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+            <!--<groupId>org.codehaus.plexus</groupId>-->
+            <!--<artifactId>plexus-io</artifactId>-->
+            <!--<version>1.0.1</version>-->
+        <!--</dependency>-->
     </dependencies>
     <properties>
         <jdom-version>1.1</jdom-version>

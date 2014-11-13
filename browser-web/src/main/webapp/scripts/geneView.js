@@ -377,7 +377,6 @@ function getcoreMember(query, redrawn) {
                 var core_data = json.member;
                 var max = 0;
 
-
                 for (var i = 0; i < core_data.length; i++) {
 
 
@@ -391,6 +390,7 @@ function getcoreMember(query, redrawn) {
                     var core_data = json.member;
                     var max = 0;
                     for (var i = 0; i < core_data.length; i++) {
+                        console.log("i " + i)
                         var genes = core_data[i].genes;
                         var new_max = genes.gene.length;
                         if (new_max > max) {
@@ -401,7 +401,7 @@ function getcoreMember(query, redrawn) {
 
                     var ref_data = json.ref;
 
-                    if(jQuery('input[name=view_type]:checked').val() == "with"){
+                    if (jQuery('input[name=view_type]:checked').val() == "with") {
                         console.log("with")
                     }
 
@@ -416,7 +416,6 @@ function getcoreMember(query, redrawn) {
 
                     var colour = jQuery("#option" + name).css("background");
 
-
                     jQuery("#gene_widget").append("<div style='left:0px; width: 100%; position: relative; border: 2px solid black; top: 10px; box-shadow: 1px 1px 15px 15px #D3D3D3;' id='ref_wrapper'>" +
                         "<div class=handle-genome style='background-image: url(/images/browser/utr.png); background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
                         "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'> <b>" + stringTrim(name, 100) + "</b></span>" +
@@ -429,13 +428,8 @@ function getcoreMember(query, redrawn) {
                         "<div style='left:10%; width: auto; padding: 25px 0px; position: relative;' id='ref'></div>")
 
 
-//                    if(jQuery('input[name=view_type]:checked').val() == "with"){
-                        console.log("with")
-                        dispGenes("#gene_widget #ref", genes, max, ref_data.cigarline);
-//                    }   else{
-                        dispGenesExon("#gene_widget_exons #ref", genes, max, ref_data.cigarline);
-//                    }
-
+                    dispGenes("#gene_widget #ref", genes, max, ref_data.cigarline);
+                    dispGenesExon("#gene_widget_exons #ref", genes, max, ref_data.cigarline);
 
                     ref_data.genes.gene.transcripts[0].Exons.sort(sort_by('start', true, parseInt));
 
@@ -449,7 +443,6 @@ function getcoreMember(query, redrawn) {
                         exon_nu++;
                         diff = parseInt(ref_data.genes.gene.transcripts[0].Exons[exon_nu].end - ref_data.genes.gene.transcripts[0].transcript_start) + parseInt(1)
                     }
-
 
                     ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = diff;
                     ref_data.genes.gene.transcripts[0].Exons[exon_nu]._start += ref_data.genes.gene.transcripts[0].transcript_start - ref_data.genes.gene.transcripts[0].Exons[exon_nu].start;
@@ -477,32 +470,27 @@ function getcoreMember(query, redrawn) {
                                 "</div>")
                         }
 
-//                        if(jQuery('input[name=view_type]:checked').val() == "with"){
-                            console.log("with")
-                            if (core_data[i].cigarline) {
-                                dispGenes("#gene_widget  #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
-                            }
+                        if (core_data[i].cigarline) {
+                            dispGenes("#gene_widget  #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
+                        }
 
-                            else {
-                                dispGenes("#gene_widget  #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
-                            }
-//                        }else{
-                            if (core_data[i].cigarline) {
-                                dispGenesExon("#gene_widget_exons #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
-                            }
+                        else {
+                            dispGenes("#gene_widget  #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
+                        }
+                        if (core_data[i].cigarline) {
+                            dispGenesExon("#gene_widget_exons #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
+                        }
 
-                            else {
-                                dispGenesExon("#gene_widget_exons #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
-                            }
-//                        }
-
-
+                        else {
+                            dispGenesExon("#gene_widget_exons #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
+                        }
                     }
 
 
                 }
 
                 drawTree(json.tree)
+
 
                 jQuery("#gene_widget").sortable(
                     {
@@ -534,9 +522,6 @@ function getcoreMember(query, redrawn) {
         }
         });
 }
-
-
-
 
 
 var sort_by = function (field, reverse, primer) {

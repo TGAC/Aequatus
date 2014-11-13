@@ -39,6 +39,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import uk.ac.bbsrc.tgac.browser.core.store.*;
+import uk.ac.bbsrc.tgac.browser.store.ensembl.DatabaseSchemaSelector;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -2376,18 +2377,14 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
     }
 
 
-    public static JSONObject getGenebyStableid(String query, String genome, String member_id, String db_url) throws SQLException {
+    public static JSONObject getGenebyStableid(String query, String genome, String member_id, String db_url) {
         try {
-
-            log.info("\n\ngetgenebystableid\n\n" + genome + ":" + query);
 
             int length = 0;
             JSONObject gene = new JSONObject();
 
 
-            JdbcTemplate new_Template = new JdbcTemplate(getDataSource("com.mysql.jdbc.Driver","jdbc:mysql://"+db_url.split(";")[0],db_url.split(";")[1],db_url.split(";")[2]));
-
-            log.info("\n\n\n \t\t\t stable id : " + query);
+            JdbcTemplate new_Template = DatabaseSchemaSelector.getConnection(genome);
 
             int transcript_id = new_Template.queryForObject(GET_Transcript_by_stable_id, new Object[]{query}, Integer.class);
             int gene_id = new_Template.queryForObject(GET_Gene_by_transcript_id, new Object[]{transcript_id}, Integer.class);
@@ -2411,11 +2408,8 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             gene.put("strand", gene_info.get("seq_region_strand"));
             gene.put("desc", query);//gene_info.get("description"));
 
-//            List<Map<String, Object>>  transcripts = new_Template.queryForList(GET_transcript, new Object[]{gene_id});
             JSONArray transcripts_array = new JSONArray();
-//            for(Map map:transcripts){
             Map<String, Object> map = new_Template.queryForMap(GET_Transcript_by_Transcript_ID, new Object[]{transcript_id});
-            log.info("\n\ntranscripts " + map.toString() + "\n\n");
 
             JSONObject transcript = new JSONObject();
 
@@ -2509,18 +2503,11 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             return gene;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new SQLException("Gene not found: " + e.getMessage());
+            log.info("Gene not found: " + e.getMessage());
+            return null;
         }
     }
 
-    public static DriverManagerDataSource getDataSource(String driverClassName, String url, String dbUsername, String dbPassword) {
-        log.info("\n\n\n\nget data source");
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(driverClassName);
-        dataSource.setUrl(url);
-        dataSource.setUsername(dbUsername);
-        dataSource.setPassword(dbPassword);
-        return dataSource;
-    }
+
 
 }
