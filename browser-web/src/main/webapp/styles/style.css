@@ -2559,14 +2559,14 @@ span.deleteicon input {
 
 .refmap {
     background: none repeat scroll 0 0 lightgray;
-    border: 1px solid gray;
+    /*border: 1px solid gray;*/
     border-radius: 7px 7px 7px 7px;
     bottom: 20px;
     cursor: pointer;
     opacity: 1;
     overflow: hidden;
     position: absolute;
-    box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.3) inset;
+    /*box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.3) inset;*/
 }
 
 #refmap {
@@ -2877,8 +2877,8 @@ div.tooltip {
     border: 3px solid red;
 }
 .type2 {
-    width: 10px;
-    height: 10px;
+    width: 20px;
+    height: 20px;
     background: #ccc;
     border: 1px solid #4682b4;
 }

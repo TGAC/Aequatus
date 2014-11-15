@@ -159,13 +159,13 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_SEQUENCE_ID = "SELECT sequence_id FROM member where member_id = ?";
 
-    public static final String SEARCH_MEMBER = "SELECT * " +
-            "FROM member m1 " +
-            "where description like ? OR display_label = ? OR stable_id = ? limit 100";
+
 
     public static final String SEQUENCE_FROM_ID = "SELECT sequence from sequence where sequence_id = ?";
 
     public static final String GET_LOCATION_FOR_GENOME = "select locator from genome_db where genome_db_id = ?";
+
+
 
 
     @Autowired
@@ -702,7 +702,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         trees = sortListByValue(trees);
 
         JSONObject test_tree = new JSONObject();
-        JSONArray test_array = new JSONArray();// = JSONArray.fromObject(trees);
+        JSONArray test_array = new JSONArray();
 
 //        main:
         for (int i = 0; i < trees.size(); i++) {
@@ -796,6 +796,10 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
 
     public JSONArray searchMember(String query) throws IOException {
+
+        final String SEARCH_MEMBER = "SELECT * " +
+                "FROM member m1 " +
+                "where (description like ? OR display_label = ? OR stable_id = ?) and m1.genome_db_id in " + genome_ids +"limit 100";
 
         JSONArray homologouses = new JSONArray();
         JSONObject homology_members = new JSONObject();

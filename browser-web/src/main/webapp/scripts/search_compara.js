@@ -8,6 +8,9 @@
 
 
 function getReferences() {
+
+
+
     var colours = ['rgb(166,206,227)','rgb(31,120,180)','rgb(178,223,138)','rgb(51,160,44)','rgb(251,154,153)','rgb(227,26,28)','rgb(253,191,111)','rgb(255,127,0)','rgb(202,178,214)'];
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
     Fluxion.doAjax(
@@ -40,6 +43,10 @@ function getReferences() {
         });
 }
 function search(query) {
+
+    var name = arguments.callee.toString();
+    console.log(name)
+
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
     jQuery('#sessioninput').fadeOut();
     jQuery("#sessionid").html("");
@@ -77,11 +84,21 @@ function search(query) {
 
 function search_member(query) {
 
+                 console.log("search member")
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
     jQuery('#sessioninput').fadeOut();
     jQuery("#sessionid").html("");
     minWidth = null;
-    jQuery('#canvas').hide();
+//    jQuery('#canvas').hide();
+    jQuery("#chr_maps").html("");
+    jQuery("#bar_image_ref").html("")
+    jQuery("#selected_region").html("")
+    jQuery("#gene_tree_nj").html("")
+    jQuery("#gene_tree_upgma").html("")
+    jQuery("#gene_widget_exons").html("")
+
+    console.log("search member cleaned")
+
 
 
     jQuery("#searchresultHead").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>");
@@ -97,15 +114,17 @@ function search_member(query) {
                     content += "<table class='list' id='search_hit' ><thead><tr><th>Genome_db_id</th><th>Chromosome</th><th>Position</th><th>Description</th><th>Stable ID</th><th>Link</th></tr></thead>";
                 }
 
-                var link = "<span onclick='jQuery(\"#search_result\").fadeOut();  jQuery(\"#canvas\").show(); getcoreMember("+json.html[i].member_id +", true);'>Click</span>"
+                var link = "<span onclick='jQuery(\"#canvas\").show(); getChromosomes("+json.html[i].genome_db_id+","+ json.html[i].chr_name+","+  json.html[i].member_id+"); getcoreMember("+json.html[i].member_id+");'>Click</span>"
+
                 content += "<tr><td> " + json.html[i].genome_db_id + "<td>" + json.html[i].chr_name + "<td>" + json.html[i].chr_start+"-"+json.html[i].chr_end + " <td> "+json.html[i].description+"</td> <td> "+json.html[i].stable_id+"</td> <td>"+ link +"</td>";
+
                 if (i == json.html.length - 1) {
                     content += "</table>";
                     jQuery("#search_result").html(content);
                     jQuery("#search_result").fadeIn();
+                    jQuery("#search_hit").tablesorter();
                 }
 
-                jQuery("#search_hit").tablesorter();
             }
         }
         });

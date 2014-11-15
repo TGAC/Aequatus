@@ -34,6 +34,10 @@
 
 
     <link rel="stylesheet" href="<c:url value='/scripts/jquery/css/smoothness/jquery-ui-1.8.custom.css'/>" type="text/css">
+    <link rel="stylesheet" href="<c:url value='/styles/font-awesome-4.2.0/css/font-awesome.css'/>" type="text/css">
+
+
+
     <script type="text/javascript">jQuery.noConflict();</script>
 
     <!--Browser Functions-->
@@ -47,6 +51,7 @@
     <script type="text/javascript" src="<c:url value='/scripts/neighbour-joining.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/DNA_matrix.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/natural-sort.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/controls.js'/>"></script>
 
 <%--dependecies for phylo tree--%>
 

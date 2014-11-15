@@ -14,7 +14,6 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
     var trackClass;
 
     var newStart_temp = 1;
-    var newEnd_temp = max;
     var maxLentemp = jQuery(document).width()*0.6;
 
     var label = "";
@@ -22,6 +21,9 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
 
     var transcript_len = gene.transcripts.length;
     while (transcript_len--) {
+
+        max = gene.transcripts[transcript_len].length
+        var newEnd_temp = max;
         var gene_start;
         var gene_stop;
         var gene_length = gene.transcripts[transcript_len].length;
@@ -269,7 +271,7 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
 //                startposition += 1;
 //                stopposition -= 2;
 
-                startposition = ((transcript_end - exon_start) - 1) * parseFloat(maxLentemp) / (max_len);
+                startposition = 0;//((transcript_end - exon_start) - 1) * parseFloat(maxLentemp) / (max_len);
                 stopposition = (exon_stop - transcript_end + 1) * parseFloat(maxLentemp) / (max_len);
 
 

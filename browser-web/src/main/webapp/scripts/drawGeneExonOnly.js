@@ -21,6 +21,7 @@ function dispGenesExon(div, track, max, cigarline, ref, ref_cigar) {
 
     var transcript_len = gene.transcripts.length;
     while (transcript_len--) {
+        max = gene.transcripts[transcript_len].length
         var newEnd_temp = max;
         var gene_start;
         var gene_stop;
@@ -259,7 +260,7 @@ function dispExon(track, genestrand, div, gene_start, width, max_len, id) {
             var temp_div = ("#gene_widget_exons #"+jQuery(div).attr('id')+" #exon"+ track.id + "" + geneexons[exon_len].id)
 
             if (exon_start < transcript_start && exon_stop < transcript_start) {
-                startposition = ((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
+                startposition = 0;//((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
                 stopposition = (exon_stop - exon_start) * parseFloat(maxLentemp) / (max_len);
 
                 stopposition = parseInt(stopposition)
@@ -268,7 +269,7 @@ function dispExon(track, genestrand, div, gene_start, width, max_len, id) {
 //                stopposition -= 2;
                 jQuery("<div>").attr({
                     'class': utrtrackClass,
-                    'style': " TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
+                    'style': "position:relative; float:left; TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
                 }).appendTo(temp_div)
 
 
@@ -276,7 +277,7 @@ function dispExon(track, genestrand, div, gene_start, width, max_len, id) {
 
             }
             else if (exon_start < transcript_start && exon_stop > transcript_end) {
-                startposition = ((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
+                startposition = 0;// ((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
                 stopposition = (transcript_start - exon_start) * parseFloat(maxLentemp) / (max_len);
 
                 stopposition = parseInt(stopposition)
@@ -286,7 +287,7 @@ function dispExon(track, genestrand, div, gene_start, width, max_len, id) {
 
                 jQuery("<div>").attr({
                     'class': utrtrackClass,
-                    'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
+                    'style': "position:relative; float:left; TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
                 }).appendTo(temp_div)
 
 
@@ -294,20 +295,20 @@ function dispExon(track, genestrand, div, gene_start, width, max_len, id) {
 //                stopposition -= 2;
 
                 startposition = ((transcript_end - exon_start) - 1) * parseFloat(maxLentemp) / (max_len);
-                stopposition = (exon_stop - transcript_end + 1) * parseFloat(maxLentemp) / (max_len);
+                stopposition = 0;//(exon_stop - transcript_end + 1) * parseFloat(maxLentemp) / (max_len);
                 stopposition = parseInt(stopposition)
 
 
                 jQuery("<div>").attr({
                     'class': utrtrackClass,
-                    'style': " TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
+                    'style': "position:relative; float:left; TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
                 }).appendTo(temp_div)
 
 
                 last = current;
             }
             else if (exon_stop > transcript_start && exon_start < transcript_start) {
-                startposition = ((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
+                startposition = 0;// ((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
                 stopposition = (transcript_start - exon_start) * parseFloat(maxLentemp) / (max_len);
                 stopposition = parseInt(stopposition)
 
@@ -316,7 +317,7 @@ function dispExon(track, genestrand, div, gene_start, width, max_len, id) {
 
                 jQuery("<div>").attr({
                     'class': utrtrackClass,
-                    'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
+                    'style': "position:relative; float:left;TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
                 }).appendTo(temp_div)
 
 
@@ -334,7 +335,7 @@ function dispExon(track, genestrand, div, gene_start, width, max_len, id) {
 
                 jQuery("<div>").attr({
                     'class': utrtrackClass,
-                    'style': " TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
+                    'style': "position:relative; float:left; TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
                 }).appendTo(temp_div)
 
 
@@ -353,7 +354,7 @@ function dispExon(track, genestrand, div, gene_start, width, max_len, id) {
 
                 jQuery("<div>").attr({
                     'class': utrtrackClass,
-                    'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
+                    'style': "position:relative; float:left; TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
                 }).appendTo(temp_div)
 
 

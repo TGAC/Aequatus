@@ -104,13 +104,13 @@ function drawTree(json_tree) {
                     return 4;
             })
             .style("fill", function (d, i) {
-                if (d.type == "duplication") {
+                if (d.node_type == "duplication") {
                     return colours[0];
-                } else if (d.type == "dubious") {
+                } else if (d.node_type == "dubious") {
                     return colours[1];
-                } else if (d.type == "speciation") {
+                } else if (d.node_type == "speciation") {
                     return colours[2];
-                } else if (d.type == "gene_split") {
+                } else if (d.node_type == "gene_split") {
                     return colours[3];
                 } else {
                     return "white";
@@ -169,13 +169,13 @@ function drawTree(json_tree) {
                 }
             })
             .style("fill", function (d, i) {
-                if (d.type == "duplication") {
+                if (d.node_type == "duplication") {
                     return colours[0];
-                } else if (d.type == "dubious") {
+                } else if (d.node_type == "dubious") {
                     return colours[1];
-                } else if (d.type == "speciation") {
+                } else if (d.node_type == "speciation") {
                     return colours[2];
-                } else if (d.type == "gene_split") {
+                } else if (d.node_type == "gene_split") {
                     return colours[3];
                 } else {
                     return "white";
@@ -300,17 +300,13 @@ function changeToNormal(){
     jQuery(".node_gene_holder").each(function() {
 
         var id =  jQuery(this).attr('id').replace("node_gene_holder","");
-        console.log("id "+id)
         jQuery(this).html(jQuery("#gene_widget #id" + id).parent().html())
     })
 }
 
 function changeToExon(){
-
     jQuery(".node_gene_holder").each(function() {
-
         var id =  jQuery(this).attr('id').replace("node_gene_holder","");
-        console.log("id "+id)
         jQuery(this).html(jQuery("#gene_widget_exons #id" + id).parent().html())
     })
 
