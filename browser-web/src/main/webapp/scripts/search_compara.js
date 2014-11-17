@@ -19,14 +19,16 @@ function getReferences() {
         { 'url': ajaxurl},
         {'doOnSuccess': function (json) {
             var content = "" +
-                "<select style='' name='genomes' id='genomes' onchange='getChromosomes(jQuery(\"#genomes\").val())'> "
+                "<select style='' name='genomes' id='genomes'  style=\"float:left; position: relative; background: none repeat scroll 0% 0% white; color: gray; font-size: larger; height: 30px; padding: 2px; margin: 2px;\"  onchange='getChromosomes(jQuery(\"#genomes\").val())'> "
 
             json.genomes.sort(naturalSort)
 
             for (var i = 0; i < json.genomes.length; i++) {
                 var left = (100 * i) + 50
                 content += "<td>" +
-                    "<option id='option"+json.genomes[i].name+"'  value ="+ json.genomes[i].genome_db_id+" background= "+colours[i]+">" + json.genomes[i].name + "</option> "
+//                    "<option id='option"+json.genomes[i].name+"'  value ="+ json.genomes[i].genome_db_id+" background= "+colours[i]+">" + json.genomes[i].name + "</option> "
+                "<option style=\"padding: 5px;\" id='option"+json.genomes[i].name+"'  value ="+ json.genomes[i].genome_db_id+" background= "+colours[i]+">" + json.genomes[i].name + "</option> "
+
             }
             content += "</select>"
 
@@ -36,7 +38,7 @@ function getReferences() {
             });
 
 
-            jQuery("#reference_maps").html(content);
+            jQuery("#reference_maps").append(content);
             jQuery("#canvas").show();
             getChromosomes(json.genomes[0].genome_db_id, true);
         }

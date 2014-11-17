@@ -31,11 +31,9 @@
     <script src="<c:url value='/scripts/d3.js/d3.v3.min.js'/>"></script>
 
 
-
-
-    <link rel="stylesheet" href="<c:url value='/scripts/jquery/css/smoothness/jquery-ui-1.8.custom.css'/>" type="text/css">
+    <link rel="stylesheet" href="<c:url value='/scripts/jquery/css/smoothness/jquery-ui-1.8.custom.css'/>"
+          type="text/css">
     <link rel="stylesheet" href="<c:url value='/styles/font-awesome-4.2.0/css/font-awesome.css'/>" type="text/css">
-
 
 
     <script type="text/javascript">jQuery.noConflict();</script>
@@ -53,11 +51,11 @@
     <script type="text/javascript" src="<c:url value='/scripts/natural-sort.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/controls.js'/>"></script>
 
-<%--dependecies for phylo tree--%>
+    <%--dependecies for phylo tree--%>
 
     <script type="text/javascript" src="<c:url value='/scripts/d3_tree.js'/>"></script>
 
-<%--dependecies for phylo tree--%>
+    <%--dependecies for phylo tree--%>
 
     <%--&lt;%&ndash;Bootstrap&ndash;%&gt;--%>
     <%--<script type="text/javascript" src="<c:url value='/scripts/bootstrap-3.1.1-dist/js/bootstrap.js'/>" ></script>--%>
@@ -87,7 +85,7 @@
             <tr>
                 <td>
                     <a class="headerlink" href="<c:url value="/"/>"> <font color=white> Aequatus Browser
-                    - ${initParam.header} </font></a>
+                        - ${initParam.header} </font></a>
                 </td>
                 <td>
                     <font color=white>
@@ -101,6 +99,8 @@
             </tr>
         </table>
     </center>
+
+
 
 </div>
 
