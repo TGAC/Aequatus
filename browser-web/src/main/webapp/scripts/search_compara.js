@@ -98,6 +98,7 @@ function search_member(query) {
     jQuery("#gene_tree_nj").html("")
     jQuery("#gene_tree_upgma").html("")
     jQuery("#gene_widget_exons").html("")
+    jQuery('#canvas').hide();
 
     console.log("search member cleaned")
 
