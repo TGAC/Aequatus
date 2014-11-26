@@ -11,29 +11,29 @@
         <property name="invalidSessionUrl" value="/index.jsp"/>
     </bean>
     
-    <bean id="dnaSequenceService"
-          class="uk.ac.bbsrc.tgac.browser.service.ajax.DnaSequenceService">
-         <!--<property name="seqStore" ref="sequenceStore"/>-->
-    </bean>
+    <!--<bean id="dnaSequenceService"-->
+          <!--class="uk.ac.bbsrc.tgac.browser.service.ajax.DnaSequenceService">-->
+         <!--&lt;!&ndash;<property name="seqStore" ref="sequenceStore"/>&ndash;&gt;-->
+    <!--</bean>-->
 
     <bean id="comparaService"
           class="uk.ac.bbsrc.tgac.browser.service.ajax.ComparaService">
          <!--<property name="seqStore" ref="sequenceStore"/>-->
     </bean>
 
-    <bean id="fileService"
-          class="uk.ac.bbsrc.tgac.browser.service.ajax.FileService">
-    </bean>
+    <!--<bean id="fileService"-->
+          <!--class="uk.ac.bbsrc.tgac.browser.service.ajax.FileService">-->
+    <!--</bean>-->
 
-    <bean id="blastservice"
-          class="uk.ac.bbsrc.tgac.browser.service.ajax.BlastService">
-    </bean>
-    <bean id="blastservicelocal"
-             class="uk.ac.bbsrc.tgac.browser.service.ajax.BlastServiceLocal">
-       </bean>
+    <!--<bean id="blastservice"-->
+          <!--class="uk.ac.bbsrc.tgac.browser.service.ajax.BlastService">-->
+    <!--</bean>-->
+    <!--<bean id="blastservicelocal"-->
+             <!--class="uk.ac.bbsrc.tgac.browser.service.ajax.BlastServiceLocal">-->
+       <!--</bean>-->
 
-    <bean id="blastServiceNCBI"
-                 class="uk.ac.bbsrc.tgac.browser.service.ajax.BlastNCBI">
-    </bean>
+    <!--<bean id="blastServiceNCBI"-->
+                 <!--class="uk.ac.bbsrc.tgac.browser.service.ajax.BlastNCBI">-->
+    <!--</bean>-->
 </beans>
 
