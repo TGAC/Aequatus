@@ -226,7 +226,11 @@ function drawTree(json_tree) {
             .style("top", "10px")
             .style("left", "10px")
             .html(function (d) {
-                return jQuery("#gene_widget #id" + d.member_id).parent().html();
+                if (jQuery('input[name=view_type]:checked').val() == "with") {
+                    return jQuery("#gene_widget #id" + d.member_id).parent().html();
+                } else {
+                    return jQuery("#gene_widget_exons #id" + d.member_id).parent().html();
+                }
             });
 
         nodeUpdate.select("foreignObject")
@@ -292,7 +296,6 @@ function drawTree(json_tree) {
         svg.attr("height", y);
         cluster = d3.layout.cluster()
             .size([y, width - 160]);
-
     }
 }
 
