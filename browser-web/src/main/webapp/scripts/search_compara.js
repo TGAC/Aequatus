@@ -46,9 +46,6 @@ function getReferences() {
 }
 function search(query) {
 
-    var name = arguments.callee.toString();
-    console.log(name)
-
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
     jQuery('#sessioninput').fadeOut();
     jQuery("#sessionid").html("");
@@ -86,12 +83,10 @@ function search(query) {
 
 function search_member(query) {
 
-                 console.log("search member")
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
     jQuery('#sessioninput').fadeOut();
     jQuery("#sessionid").html("");
     minWidth = null;
-//    jQuery('#canvas').hide();
     jQuery("#chr_maps").html("");
     jQuery("#bar_image_ref").html("")
     jQuery("#selected_region").html("")
@@ -99,10 +94,6 @@ function search_member(query) {
     jQuery("#gene_tree_upgma").html("")
     jQuery("#gene_widget_exons").html("")
     jQuery('#canvas').hide();
-
-    console.log("search member cleaned")
-
-
 
     jQuery("#searchresultHead").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>");
     var reference = jQuery('#genomes').val();

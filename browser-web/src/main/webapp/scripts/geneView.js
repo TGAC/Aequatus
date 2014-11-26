@@ -55,8 +55,6 @@ function search_geneView(query, from, to, jsonid, oldtracks) {
 
 
 function seqregionSearchPopup_geneView(query, reference, from, to, jsonid, oldtracks) {
-    var name = arguments.callee.toString();
-    console.log(name)
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
     jQuery('#sessioninput').fadeOut();
     jQuery("#sessionid").html("");
@@ -369,17 +367,12 @@ function drawSelected(member) {
     if (member == undefined) {
 
     } else {
-
-        console.log("draw selected else ")
-
         jQuery(".refMarkerShow").css("background", "black")
         jQuery("#ref" + member).css("background", "red")
     }
 }
 
 function getcoreMember(query, redrawn) {
-    var name = arguments.callee.toString();
-    console.log(name)
     jQuery(".refMarkerShow").css("background", "black")
     jQuery("#ref" + query).css("background", "red")
     jQuery("#gene_widget").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
@@ -402,8 +395,6 @@ function getcoreMember(query, redrawn) {
 
 
                 for (var i = 0; i < core_data.length; i++) {
-                     console.log(" 1st i "+i)
-
                     var genes = core_data[i].genes;
                     var new_max = genes.gene.length;
                     if (new_max > max) {
@@ -414,8 +405,6 @@ function getcoreMember(query, redrawn) {
                     var core_data = json.member;
                     var max = 0;
                     for (var i = 0; i < core_data.length; i++) {
-                        console.log(" 2nd i "+i)
-
                         var genes = core_data[i].genes;
                         var new_max = genes.gene.length;
                         if (new_max > max) {
@@ -425,10 +414,6 @@ function getcoreMember(query, redrawn) {
 
 
                     var ref_data = json.ref;
-
-                    if(jQuery('input[name=view_type]:checked').val() == "with"){
-                        console.log("with")
-                    }
 
                     var genes = ref_data.genes
                     if (max < genes.gene.length) {
@@ -480,8 +465,6 @@ function getcoreMember(query, redrawn) {
 
                     for (var i = 0; i < core_data.length; i++) {
 
-                        console.log(" 3rd i "+i)
-
                         var genes = core_data[i].genes
                         if (document.getElementById("core" + core_data[i].genome) == null) {
                             var name = core_data[i].genome_name;
@@ -500,7 +483,6 @@ function getcoreMember(query, redrawn) {
                                 "</div>")
                         }
 
-//                        if(jQuery('input[name=view_type]:checked').val() == "with"){
                         if (core_data[i].cigarline) {
                             dispGenes("#gene_widget  #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
                         }
@@ -508,7 +490,6 @@ function getcoreMember(query, redrawn) {
                         else {
                             dispGenes("#gene_widget  #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
                         }
-//                        }else{
                         if (core_data[i].cigarline) {
                             dispGenesExon("#gene_widget_exons #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
                         }
@@ -516,11 +497,7 @@ function getcoreMember(query, redrawn) {
                         else {
                             dispGenesExon("#gene_widget_exons #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
                         }
-//                        }
-
-
                     }
-
                 }
 
                 drawTree(json.tree)
@@ -738,7 +715,6 @@ function changeReference(member_id) {
 }
 
 function rearrange_selector(query, start, chr_name) {
-    console.log("rearramge selector "+query)
     var maxLentemp = parseInt(jQuery("#canvas").css("width"));
     var startposition = (start) * parseFloat(maxLentemp) / jQuery("#chr" + chr_name).attr("chr_length");
     var width = jQuery("#bar_image_selector").width() / 2;
@@ -855,7 +831,6 @@ function formatFasta(track) {
                     exonSeq = exonSeq.substring(diff);
                 }
             }
-//            console.log(exonSeq.length)
             CDS = CDS + exonSeq;
         } else {
             if (track.transcript_start > substart) {
