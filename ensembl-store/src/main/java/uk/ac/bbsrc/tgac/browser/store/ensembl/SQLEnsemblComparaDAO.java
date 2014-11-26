@@ -159,6 +159,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_SEQUENCE_ID = "SELECT sequence_id FROM member where member_id = ?";
 
+    public static final String GET_MEMBER_FROM_ID = "SELECT * FROM member where member_id = ?";
+
+
 
 
     public static final String SEQUENCE_FROM_ID = "SELECT sequence from sequence where sequence_id = ?";
@@ -799,14 +802,20 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
         final String SEARCH_MEMBER = "SELECT * " +
                 "FROM member m1 " +
-                "where (description like ? OR display_label = ? OR stable_id = ?) and m1.genome_db_id in " + genome_ids +"limit 100";
+                "where (description like ? OR display_label like ? OR stable_id like ?) and m1.genome_db_id in " + genome_ids +" limit 100";
+
 
         JSONArray homologouses = new JSONArray();
-        JSONObject homology_members = new JSONObject();
         List<Map<String, Object>> homology_member_id = template.queryForList(SEARCH_MEMBER, new Object[]{"%" + query + "%", "%" + query + "%", "%" + query + "%"});
 
         for (Map map_two : homology_member_id) {
-            homologouses.add(map_two);
+            if(map_two.get("canonical_member_id") ==  null){
+                Map temp = template.queryForMap(GET_MEMBER_FROM_ID, new Object[]{map_two.get("gene_member_id")});
+                homologouses.add(temp);
+
+            }  else{
+                homologouses.add(map_two);
+            }
         }
 
         return homologouses;
