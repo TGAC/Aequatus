@@ -59,31 +59,7 @@
         </license>
     </licenses>
 
-    <!-- Mailing Lists -->
-    <!--
-      <mailingLists>
-        <mailingList>
-          <name>fluxion-users</name>
-          <subscribe>
-            https://lists.sourceforge.net/mailman/listinfo/fluxion-users
-          </subscribe>
-          <unsubscribe>
-            https://lists.sourceforge.net/mailman/listinfo/fluxion-users
-          </unsubscribe>
-          <post>fluxion-users@lists.sourceforge.net</post>
-        </mailingList>
-        <mailingList>
-          <name>fluxion-devel</name>
-          <subscribe>
-            https://lists.sourceforge.net/mailman/listinfo/fluxion-devel
-          </subscribe>
-          <unsubscribe>
-            https://lists.sourceforge.net/mailman/listinfo/fluxion-devel
-          </unsubscribe>
-          <post>fluxion-devel@lists.sourceforge.net</post>
-        </mailingList>
-      </mailingLists>
-    -->
+
     <!-- Bug Tracker -->
     <issueManagement>
         <system>sourceforge</system>
@@ -206,16 +182,6 @@
             </snapshots>
         </repository>
 
-
-        <!--<repository>-->
-            <!--<id>net.sourceforge.sam</id>-->
-            <!--<name>sam</name>-->
-            <!--<url>https://repos.tgac.bbsrc.ac.uk/maven/repo</url>-->
-            <!--<snapshots>-->
-                <!--<enabled>true</enabled>-->
-            <!--</snapshots>-->
-        <!--</repository>-->
-
         <repository>
             <id>spring-maven-release</id>
             <name>Springframework Maven Repository</name>
@@ -245,14 +211,6 @@
             <id>tgac-repo</id>
             <name>TGAC Maven Repository</name>
             <url>https://repos.tgac.bbsrc.ac.uk/maven/repo</url>
-            <!--
-            <releases>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <updatePolicy>never</updatePolicy>
-            </snapshots>
-            -->
         </pluginRepository>
 
         <pluginRepository>
@@ -320,7 +278,6 @@
         <module>ensembl-store</module>
         <module>service</module>
         <module>browser-web</module>
-        <module>browser-process</module>
     </modules>
 
 

@@ -1,1 +1,0 @@
-java $JAVA_OPTS -Done-jar.class.path=. -jar browser-process-0.0.1.one-jar.jar

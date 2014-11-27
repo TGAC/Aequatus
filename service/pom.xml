@@ -67,11 +67,6 @@
             <artifactId>core</artifactId>
             <version>0.0.1</version>
         </dependency>
-        <dependency>
-            <groupId>uk.ac.bbsrc.tgac.tgac-browser</groupId>
-            <artifactId>browser-process</artifactId>
-            <version>0.0.1</version>
-        </dependency>
 
         <dependency>
             <groupId>uk.ac.bbsrc.tgac.tgac-browser</groupId>
@@ -113,12 +108,6 @@
             <version>1.0-alpha-3</version>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>net.sourceforge.sam</groupId>-->
-            <!--<artifactId>sam</artifactId>-->
-            <!--<version>1.84</version>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>net.sourceforge.fluxion.ajax.beans</groupId>
             <artifactId>fluxion-ajax-beans</artifactId>
@@ -131,21 +120,7 @@
             <version>2.4</version>
             <classifier>jdk15</classifier>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>net.sourceforge.sam</groupId>-->
-            <!--<artifactId>sam</artifactId>-->
-            <!--<version>1.84</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>net.sourceforge.sam</groupId>-->
-            <!--<artifactId>sam</artifactId>-->
-            <!--<version>1.84</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>net.sourceforge.sam</groupId>-->
-            <!--<artifactId>sam</artifactId>-->
-            <!--<version>1.84</version>-->
-        <!--</dependency>-->
+
     </dependencies>
 
     <properties>
