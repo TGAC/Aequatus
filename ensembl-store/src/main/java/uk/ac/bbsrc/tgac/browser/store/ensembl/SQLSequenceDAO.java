@@ -117,7 +117,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
 
 
             gene.put("strand", gene_info.get("seq_region_strand"));
-            gene.put("desc", query);//gene_info.get("description"));
+            gene.put("desc", gene_info.get("description"));
 
             JSONArray transcripts_array = new JSONArray();
             Map<String, Object> map = new_Template.queryForMap(GET_Transcript_by_Transcript_ID, new Object[]{transcript_id});
