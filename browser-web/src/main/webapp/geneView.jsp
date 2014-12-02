@@ -122,13 +122,13 @@
     </table>
 </div>
 
-<div style="position: fixed; top: 0px; right: 0px; z-index: 999; width: auto; height: auto;">
+<div style="position: fixed; top: 0px; right: 0px; z-index: 2999; width: auto; height: auto;">
     <table cellspacing="0" cellpadding="0" border="0">
         <tbody>
         <tr>
             <td>
                 <input type="text"
-                       style="border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color gray; -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; height: 28px; font-size: large; color: gray; max-width: 200px; float: left;"
+                       style="border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color gray; -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; height: 26px; font-size: large; color: gray; max-width: 200px; float: left;"
                        id="search">
 
                 <div style="text-align: center; background: none repeat scroll 0% 0% green; top: 0px; float: left; position: relative; padding: 2px 5px;"
@@ -151,7 +151,7 @@
 
 
 
-    <div id=chr_maps style="background: #d3d3d3; height: 120px; position: relative;   width: 100%; ">
+    <div id=chr_maps style="background: #eee9e9; height: 120px; position: relative;   width: 100%; ">
 
     </div>
 
@@ -205,6 +205,11 @@
 </div>
 
 </div>
+
+<div id="popup" class="bubbleleft" style="width:auto; padding: 10px">
+
+</div>
+
 
 <span id="ruler"></span>
 
