@@ -48,8 +48,6 @@ function drawTree(json_tree) {
                 d.children = null;
             }
         }
-
-
         update(root, ref_member);
     });
 
@@ -72,7 +70,7 @@ function drawTree(json_tree) {
         updateWindow(count)
 
         nodes = cluster.nodes(root)
-         var   links = cluster.links(nodes);
+        var links = cluster.links(nodes);
 
         // Update the nodes…
         var node = svg.selectAll("g.node")
@@ -87,13 +85,19 @@ function drawTree(json_tree) {
                 return "translate(" + source.y0 + "," + source.x0 + ")";
             })
             .on("click", function (d) {
-                if (d.children && d.children != null) {
-                    if (d.children.size() > 0) {
-                        click(d)
-                    }
+                if (d.member_id) {
+//                    console.log("here")
+////                    callPopup(d)
+//
                 } else {
-                    if (d._children.size() > 0) {
-                        click(d)
+                    if (d.children && d.children != null) {
+                        if (d.children.size() > 0) {
+                            click(d)
+                        }
+                    } else {
+                        if (d._children.size() > 0) {
+                            click(d)
+                        }
                     }
                 }
             })
@@ -101,7 +105,7 @@ function drawTree(json_tree) {
 
         nodeEnter.append("circle")
             .attr("r", function (d) {
-                    return 4;
+                return 4;
             })
             .style("fill", function (d, i) {
                 if (d.node_type == "duplication") {
@@ -208,12 +212,12 @@ function drawTree(json_tree) {
 
         nodeEnter.append("foreignObject")
             .attr("class", "node_gene_holder")
-            .attr("id", function(d) {
-                return "node_gene_holder"+d.member_id
+            .attr("id", function (d) {
+                return "node_gene_holder" + d.member_id
             })
             .attr('width', width)
-            .attr('height', '52px')
-            .attr('x', 10)
+            .attr('height', '40px')
+            .attr('x', 20)
             .attr('y', 0)
             .style("fill", "red")
             .append('xhtml:div')
@@ -237,9 +241,9 @@ function drawTree(json_tree) {
             .attr('width', function (d) {
                 return parseInt(jQuery("#gene_widget #id" + d.member_id).css('width')) + 200
             })
-            .attr('height', '52px')
+            .attr('height', '40px')
             .attr('x', 10)
-            .attr('y', -26);
+            .attr('y', -20);
 
         // Update the links…
         var link = svg.selectAll("path.link")
@@ -278,12 +282,24 @@ function drawTree(json_tree) {
 
 // Toggle children on click.
     function click(d) {
-        if (d.children && d.children != null) {
-            d._children = d.children;
-            d.children = null;
-        } else {
+        if (d.close && d.close == true) {
             d.children = d._children;
             d._children = null;
+            d.close = false
+        } else {
+            if (d.children && d.children != null) {
+                if (d.children.size() == 1) {
+                    d._children = d.children;
+                    d.children = pack(d)
+                    d.close = true
+                } else {
+                    d._children = d.children;
+                    d.children = null;
+                }
+            } else {
+                d.children = d._children;
+                d._children = null;
+            }
         }
         update(d, ref_member);
     }
@@ -297,20 +313,41 @@ function drawTree(json_tree) {
         cluster = d3.layout.cluster()
             .size([y, width - 160]);
     }
+
+    function pack(d) {
+
+        var cont = true;
+        var child = d;
+        var children = null;
+
+        while (cont) {
+            if (child.children && child.children.size() == 1) {
+                child = (child.children[0])
+            } else {
+                if (child.children) {
+                    children = child.children
+                }
+                else {
+                    children = child.parent.children
+                }
+                cont = false;
+                break;
+            }
+        }
+        return children;
+    }
 }
 
-function changeToNormal(){
-    jQuery(".node_gene_holder").each(function() {
-
-        var id =  jQuery(this).attr('id').replace("node_gene_holder","");
-        jQuery(this).html(jQuery("#gene_widget #id" + id).parent().html())
+function changeToNormal() {
+    jQuery(".node_gene_holder").each(function () {
+        var id = jQuery(this).attr('id').replace("node_gene_holder", "");
+        jQuery(this).html("<div style=\"height: 40px; z-index: 999; top: 20px; left: 10px;\">" + jQuery("#gene_widget #id" + id).parent().html() + "</div>")
     })
 }
 
-function changeToExon(){
-    jQuery(".node_gene_holder").each(function() {
-        var id =  jQuery(this).attr('id').replace("node_gene_holder","");
-        jQuery(this).html(jQuery("#gene_widget_exons #id" + id).parent().html())
+function changeToExon() {
+    jQuery(".node_gene_holder").each(function () {
+        var id = jQuery(this).attr('id').replace("node_gene_holder", "");
+        jQuery(this).html("<div style=\"height: 40px; z-index: 999; top: 20px; left: 10px;\">" + jQuery("#gene_widget_exons #id" + id).parent().html() + "</div>")
     })
-
 }
