@@ -15,7 +15,6 @@ function openPanel(div_id) {
         jQuery("#control_panel").animate({left: 0});
         toogleControlDivs(div_id)
         if (div_id.indexOf("search_div") >= 0) {
-            console.log("auto")
             jQuery("#search_result").css('width','')
         }
         last_opened = div_id
@@ -29,7 +28,6 @@ function toogleControlDivs(div_id) {
 
 
 function openClosePanel() {
-    console.log(last_opened)
 
     if (jQuery("#control_panel").position().left < 0) {
         jQuery("#control_panel").animate({left: 0});
