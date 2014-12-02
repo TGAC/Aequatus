@@ -50,8 +50,10 @@
     <script type="text/javascript" src="<c:url value='/scripts/DNA_matrix.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/natural-sort.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/controls.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/util.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/popup.js'/>"></script>
 
-    <%--dependecies for phylo tree--%>
+<%--dependecies for phylo tree--%>
 
     <script type="text/javascript" src="<c:url value='/scripts/d3_tree.js'/>"></script>
 
