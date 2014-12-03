@@ -8,23 +8,31 @@
             <td width="300px" id=control_divs>
                 <div style="display: none; padding: 10px; height: 248px; background: none repeat scroll 0% 0% cyan; font-size: large;"
                      id="settings_div">
-                    <input type="checkbox" checked="" onclick="jQuery('.delete').toggle()"
+                    <input id="deleteCheck" type="checkbox" checked="" onclick="jQuery('.delete').toggle()"
                            style="width: 25px; height: 25px; color: white; background: none repeat scroll 0% 0% red; border: 0px none;">
                     Deletion <br>
-                    <input type="checkbox" checked="" onclick="jQuery('.insert').toggle()"
+                    <input id="insertCheck" type="checkbox" checked="" onclick="jQuery('.insert').toggle()"
                            style="width: 25px; height: 25px; background: none repeat scroll 0% 0% white; color: white;">
                     Insertion <br>
-                    <input type="checkbox" checked="" onclick="jQuery('.match').toggle()"
+                    <input id="matchCheck" type="checkbox" checked="" onclick="jQuery('.match').toggle()"
                            style="width: 25px; height: 25px; background: none repeat scroll 0% 0% white; color: white;">
                     Match <br>
-                    <input type="checkbox" checked="" onclick="jQuery('.utr').toggle()"
+                    <input id="utrCheck"  type="checkbox" checked="" onclick="jQuery('.utr').toggle()"
                            style="width: 25px; height: 25px; background: none repeat scroll 0% 0% white; color: white;">
                     UTRs <br>
 
                     <br>
+                    Label
+                    <br>
+                    <input type="radio" onchange=" changeToStable()" value="stable" checked="" name="label_type" checked>
+                    Stable Id
+
+                    <input type="radio" onchange=" changeToGeneInfo()" value="gene_info" name="label_type"> Gene Info
+
+                    <br>
                     Introns
                     <br>
-                    <input type="radio" onchange="changeToNormal()" value="with" checked="" name="view_type">
+                    <input type="radio" onchange="changeToNormal()" value="with" checked="" name="view_type" checked>
                     With
 
                     <input type="radio" onchange="changeToExon()" value="without" name="view_type"> Without

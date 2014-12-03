@@ -352,3 +352,13 @@ function changeToExon() {
         jQuery(this).html("<div style=\"position: fixed; height: 40px; top:10px; z-index: 999; left: 10px;\">" + jQuery("#gene_widget_exons #id" + id).parent().html() + "</div>")
     })
 }
+
+function changeToStable() {
+    jQuery(".label").hide();
+    jQuery(".stable").show();
+}
+
+function changeToGeneInfo() {
+    jQuery(".label").hide();
+    jQuery(".geneinfo").show();
+}

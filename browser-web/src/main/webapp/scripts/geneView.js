@@ -307,7 +307,7 @@ function getcoreMember(query, redrawn) {
                 "<div style='left:10%; width: auto; padding: 25px 0px; position: relative;' id='ref'></div>")
 
 
-            dispGenes("#gene_widget #ref", genes, max, ref_data.cigarline);
+            dispGenes("#gene_widget #ref", genes, max, ref_data.cigarline, undefined, undefined, name);
             dispGenesExon("#gene_widget_exons #ref", genes, max, ref_data.cigarline);
 
             ref_data.genes.gene.transcripts[0].Exons.sort(sort_by('start', true, parseInt));
@@ -334,8 +334,9 @@ function getcoreMember(query, redrawn) {
             for (var i = 0; i < core_data.length; i++) {
 
                 var genes = core_data[i].genes
+                var name = core_data[i].genome_name;
+
                 if (document.getElementById("core" + core_data[i].genome) == null) {
-                    var name = core_data[i].genome_name;
                     var colour = jQuery("#option" + name).css("background");
 
                     jQuery("#gene_widget").append("<div style='left:0px; width: 100%; position: relative; border: 1px solid gray; top: 10px; ' id='core" + core_data[i].genome + "_wrapper'> " +
@@ -352,11 +353,11 @@ function getcoreMember(query, redrawn) {
                 }
 
                 if (core_data[i].cigarline) {
-                    dispGenes("#gene_widget  #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
+                    dispGenes("#gene_widget  #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline, name);
                 }
 
                 else {
-                    dispGenes("#gene_widget  #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
+                    dispGenes("#gene_widget  #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline, name);
                 }
                 if (core_data[i].cigarline) {
                     dispGenesExon("#gene_widget_exons #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
@@ -367,6 +368,8 @@ function getcoreMember(query, redrawn) {
                 }
             }
         }
+
+        checkVisuals();
 
         drawTree(json.tree)
 

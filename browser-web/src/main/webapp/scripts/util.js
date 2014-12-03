@@ -29,3 +29,51 @@ function stringTrim(string, width, newClass) {
     }
 
 }
+
+function checkVisuals(){
+
+    if(jQuery("#deleteCheck").is(':checked'))
+    jQuery(".delete").show();  // checked
+else
+    jQuery(".delete").hide();  // unchecked
+
+    if(jQuery("#matchCheck").is(':checked'))
+        jQuery(".match").show();  // checked
+    else
+        jQuery(".match").hide();  // unchecked
+
+    if(jQuery("#insertCheck").is(':checked'))
+        jQuery(".insert").show();  // checked
+    else
+        jQuery(".insert").hide();  // unchecked
+
+    if(jQuery("#utrCheck").is(':checked'))
+        jQuery(".utr").show();  // checked
+    else
+        jQuery(".utr").hide();  // unchecked jQuery('.utr').toggle()
+
+    if(jQuery('input[name=label_type]:radio:checked').val() == "stable"){
+        jQuery(".label").hide();
+        jQuery(".stable").show();
+    }else{
+        jQuery(".label").hide();
+        jQuery(".geneinfo").show();
+    }
+
+
+
+}
+//    <input type="checkbox" checked="" onclick="jQuery('.delete').toggle()"
+//    style="width: 25px; height: 25px; color: white; background: none repeat scroll 0% 0% red; border: 0px none;">
+//    Deletion <br>
+//        <input type="checkbox" checked="" onclick="jQuery('.insert').toggle()"
+//        style="width: 25px; height: 25px; background: none repeat scroll 0% 0% white; color: white;">
+//        Insertion <br>
+//            <input type="checkbox" checked="" onclick="jQuery('.match').toggle()"
+//            style="width: 25px; height: 25px; background: none repeat scroll 0% 0% white; color: white;">
+//            Match <br>
+//                <input type="checkbox" checked="" onclick="jQuery('.utr').toggle()"
+//                style="width: 25px; height: 25px; background: none repea
+//
+//
+//}
