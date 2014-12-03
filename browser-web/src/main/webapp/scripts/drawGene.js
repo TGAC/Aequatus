@@ -69,7 +69,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
                 'onClick': "onClicked('hit" + gene.member_id + "_" + transcript_len + "', '" + label + "','" + gene.member_id + "'," + JSON.stringify(gene.transcripts[transcript_len]) + ")",
 //                'onClick': "jQuery('#gene_info').html('" + jQuery("#hit"+transcript_len).html() + "'); jQuery.colorbox({width: '90%',height: '90%', inline: true, href: '#gene_info'});",
                 'class': "gene",
-                'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " LEFT:" + startposition + "px; width :" + stopposition + "px;"
+                'style': "position:relative;  cursor:pointer; height: 14px;  LEFT:" + startposition + "px; width :" + stopposition + "px;"
             }).appendTo(wrapper_div);
 
             var strand = 0;
@@ -108,7 +108,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar) {
             var temp_div = jQuery("<div>").attr({
                 'id': "id"+gene.member_id,
                 'class': "gene",
-                'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " LEFT:" + startposition + "px; width :" + stopposition + "px;"
+                'style': "position:relative;  cursor:pointer; height: 14px;  LEFT:" + startposition + "px; width :" + stopposition + "px;"
             }).appendTo(wrapper_div);
 
             gene_list_array.push(gene.member_id)

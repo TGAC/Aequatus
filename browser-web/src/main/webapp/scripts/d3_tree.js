@@ -218,7 +218,7 @@ function drawTree(json_tree) {
             .attr('width', width)
             .attr('height', '40px')
             .attr('x', 20)
-            .attr('y', 0)
+            .attr('y', -20)
             .style("fill", "red")
             .append('xhtml:div')
             .style("width", function (d) {
@@ -227,8 +227,9 @@ function drawTree(json_tree) {
             })
             .style("height", "50px")
             .style("z-index", "999")
-            .style("top", "10px")
+            .style("position", "fixed")
             .style("left", "10px")
+            .style("top", "10px")
             .html(function (d) {
                 if (jQuery('input[name=view_type]:checked').val() == "with") {
                     return jQuery("#gene_widget #id" + d.member_id).parent().html();
@@ -341,13 +342,13 @@ function drawTree(json_tree) {
 function changeToNormal() {
     jQuery(".node_gene_holder").each(function () {
         var id = jQuery(this).attr('id').replace("node_gene_holder", "");
-        jQuery(this).html("<div style=\"height: 40px; z-index: 999; top: 20px; left: 10px;\">" + jQuery("#gene_widget #id" + id).parent().html() + "</div>")
+        jQuery(this).html("<div style=\"position: fixed; height: 40px;  top:10px; z-index: 999; left: 10px;\">" + jQuery("#gene_widget #id" + id).parent().html() + "</div>")
     })
 }
 
 function changeToExon() {
     jQuery(".node_gene_holder").each(function () {
         var id = jQuery(this).attr('id').replace("node_gene_holder", "");
-        jQuery(this).html("<div style=\"height: 40px; z-index: 999; top: 20px; left: 10px;\">" + jQuery("#gene_widget_exons #id" + id).parent().html() + "</div>")
+        jQuery(this).html("<div style=\"position: fixed; height: 40px; top:10px; z-index: 999; left: 10px;\">" + jQuery("#gene_widget_exons #id" + id).parent().html() + "</div>")
     })
 }
