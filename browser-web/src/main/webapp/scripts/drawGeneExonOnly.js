@@ -72,7 +72,7 @@ function dispGenesExon(div, track, max, cigarline, ref, ref_cigar, genome) {
                 'id': "id" + gene.member_id,
                 'onClick': "onClicked('"+gene.desc+"','"+gene.stable_id+"','"+gene.member_id+"')",
                 'class': "gene",
-                'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " LEFT:" + startposition + "px; width :" + stopposition + "px;"
+                'style': "position:relative;  cursor:pointer; height: 14px; LEFT:" + startposition + "px; width :" + stopposition + "px;"
             }).appendTo(wrapper_div);
 
             var strand = 0;
@@ -120,7 +120,7 @@ function dispGenesExon(div, track, max, cigarline, ref, ref_cigar, genome) {
                 'id': "id" + gene.member_id,
                 'onClick': "onClicked('"+gene.desc+"','"+gene.stable_id+"','"+gene.member_id+"')",
                 'class': "gene",
-                'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " LEFT:" + startposition + "px; width :" + stopposition + "px;"
+                'style': "position:relative;  cursor:pointer; height: 14px; LEFT:" + startposition + "px; width :" + stopposition + "px;"
             }).appendTo(wrapper_div);
 
             gene_list_array.push(gene.member_id)
