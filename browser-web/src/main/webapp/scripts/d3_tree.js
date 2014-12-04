@@ -55,6 +55,14 @@ function drawTree(json_tree) {
 
 
     function update(source, ref_member) {
+        var view_type = null
+        if (jQuery('input[name=view_type]:checked').val() == "with") {
+            view_type = true;
+        }
+        else{
+            view_type = false;
+        }
+
         // Compute the new tree layout.
 
         var nodes = cluster.nodes(root)
@@ -134,26 +142,26 @@ function drawTree(json_tree) {
             });
 
 
-        nodeEnter.append("text")
-            .attr("x", function (d) {
-                if (d.children && d.children != null) {
-                    if (d.children.size() == 0) {
-                        return 1200;
-                    }
-                }
-            })
-            .attr("dy", ".35em")
-            .attr("text-anchor", function (d) {
-                return d.children || d._children ? "end" : "start";
-            })
-            .text(function (d) {
-                if (d.children && d.children != null) {
-                    if (d.children.size() == 0) {
-                        return d.data;
-                    }
-                }
-            })
-            .style("fill-opacity", 1e-6);
+//        nodeEnter.append("text")
+//            .attr("x", function (d) {
+//                if (d.children && d.children != null) {
+//                    if (d.children.size() == 0) {
+//                        return 1200;
+//                    }
+//                }
+//            })
+//            .attr("dy", ".35em")
+//            .attr("text-anchor", function (d) {
+//                return d.children || d._children ? "end" : "start";
+//            })
+//            .text(function (d) {
+//                if (d.children && d.children != null) {
+//                    if (d.children.size() == 0) {
+//                        return d.data;
+//                    }
+//                }
+//            })
+//            .style("fill-opacity", 1e-6);
 
         // Transition nodes to their new position.
         var nodeUpdate = node.transition()
@@ -193,8 +201,8 @@ function drawTree(json_tree) {
                 }
             });
 
-        nodeUpdate.select("text")
-            .style("fill-opacity", 1);
+//        nodeUpdate.select("text")
+//            .style("fill-opacity", 1);
 
         // Transition exiting nodes to the parent's new position.
         var nodeExit = node.exit().transition()
@@ -207,10 +215,16 @@ function drawTree(json_tree) {
         nodeExit.select("circle")
             .attr("r", 1e-6);
 
-        nodeExit.select("text")
-            .style("fill-opacity", 1e-6);
+//        nodeExit.select("text")
+//            .style("fill-opacity", 1e-6);
 
-        nodeEnter.append("foreignObject")
+        nodeEnter.filter(function(d) {
+            if (d.member_id) {
+                return true; //This item will be included in the selection
+            } else {
+                return false; //This item will be excluded, e.g. "cheese"
+            }
+        }).append("foreignObject")
             .attr("class", "node_gene_holder")
             .attr("id", function (d) {
                 return "node_gene_holder" + d.member_id
@@ -231,7 +245,7 @@ function drawTree(json_tree) {
             .style("left", "10px")
             .style("top", "10px")
             .html(function (d) {
-                if (jQuery('input[name=view_type]:checked').val() == "with") {
+                if (view_type == true) {
                     return jQuery("#gene_widget #id" + d.member_id).parent().html();
                 } else {
                     return jQuery("#gene_widget_exons #id" + d.member_id).parent().html();
