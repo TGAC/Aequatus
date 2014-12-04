@@ -15,7 +15,9 @@ function openPanel(div_id) {
         jQuery("#control_panel").animate({left: 0});
         toogleControlDivs(div_id)
         if (div_id.indexOf("search_div") >= 0) {
-            jQuery("#search_result").css('width','')
+            jQuery("#search_result").animate({width: '360px'})
+        } else{
+            jQuery("#search_result").animate({width: 0});
         }
         last_opened = div_id
     }
@@ -31,7 +33,8 @@ function openClosePanel() {
 
     if (jQuery("#control_panel").position().left < 0) {
         jQuery("#control_panel").animate({left: 0});
-        jQuery("#search_result").css('width','')
+        jQuery("#search_result").animate({width: '360px'})
+
     }
     else {
         jQuery("#control_panel").animate({left: -300});

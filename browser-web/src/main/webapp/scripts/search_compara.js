@@ -94,6 +94,7 @@ function search_member(query) {
     jQuery("#gene_tree_upgma").html("")
     jQuery("#gene_widget_exons").html("")
     jQuery('#canvas').hide();
+    jQuery("#search_result").html("");
 
     jQuery("#searchresultHead").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>");
     var reference = jQuery('#genomes').val();
@@ -105,12 +106,12 @@ function search_member(query) {
             var content = "";
             for (var i = 0; i < json.html.length; i++) {
                 if (i == 0) {
-                    content += "<table class='list' id='search_hit' ><thead><tr><th>Genome_db_id</th><th>Chromosome</th><th>Position</th><th>Description</th><th>Stable ID</th><th>Link</th></tr></thead>";
+                    content += "<table class='list' id='search_hit' ><thead><tr><th>Genome</th><th>Chromosome</th><th>Description</th><th>Stable ID</th><th>Link</th></tr></thead>";
                 }
 
                 var link = "<span onclick='jQuery(\"#canvas\").show(); getChromosomes("+json.html[i].genome_db_id+","+ json.html[i].chr_name+","+  json.html[i].member_id+"); getcoreMember("+json.html[i].member_id+");'>Click</span>"
 
-                content += "<tr><td> " + json.html[i].genome_db_id + "<td>" + json.html[i].chr_name + "<td>" + json.html[i].chr_start+"-"+json.html[i].chr_end + " <td> "+json.html[i].description+"</td> <td> "+json.html[i].stable_id+"</td> <td>"+ link +"</td>";
+                content += "<tr><td> " + json.html[i].genome + "<td>" + json.html[i].chr_name + "<td> "+json.html[i].description+"</td> <td> "+json.html[i].stable_id+"</td> <td>"+ link +"</td>";
 
                 if (i == json.html.length - 1) {
                     content += "</table>";

@@ -152,7 +152,23 @@ function kickOff() {
     testTextBox.keypress(function (e) {
         code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
+            if(parseInt(jQuery("#control_panel").css("left")) < 0){
+                openPanel('#search_div')
+            }
+            jQuery("#search_history").html(jQuery("#control_search").val());
+            jQuery("#control_search").val(jQuery('#search').val());
             search_member(jQuery('#search').val());
+        }
+    });
+
+    var testTextBox = jQuery('#control_search');
+    var code = null;
+    testTextBox.keypress(function (e) {
+        code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
+            jQuery("#search_history").html(jQuery("#search").val());
+            jQuery("#search").val(jQuery('#control_search').val());
+            search_member(jQuery('#control_search').val());
         }
     });
 
@@ -838,18 +854,24 @@ function drawSynteny(redrawn){
                 });
 
             if (redrawn != undefined) {
+                console.log("redrawn")
                 if (ref_data.genome != jQuery("#genomes option:selected").val()) {
+                    console.log("if")
                     jQuery("#genomes").val(ref_data.genome)
                     var color = jQuery("option:selected", this).css("background");
                     jQuery("#reference_maps").css("background", color);
                     getChromosomes(ref_data.genome, ref_data.genes.gene.reference, ref_data.genes.gene.member_id);
                 } else {
+                    console.log("else")
+
                     if (jQuery("#chr" + ref_data.genes.gene.reference).hasClass("selected")) {
                         rearrange_selector(ref_data.genes.gene.member_id, ref_data.genes.gene.start, ref_data.genes.gene.reference)
                     } else {
                         getMember(ref_data.genes.gene.reference, ref_data.genome, ref_data.genes.gene.member_id);
                     }
                 }
+            }    else{
+                console.log("else")
             }
         } else {
             jQuery("#gene_widget").html("")

@@ -42,10 +42,17 @@
                      style="display: block; height: 248px; background: none repeat scroll 0% 0% green; padding: 10px;">
                     <input id="control_search" type="text"
                            style="border: 0px solid transparent; position: absolute; left: 0px; top: 75px; height: 45px; width: 298px; color: gray; font-size: 30px;">
-                    <button onclick=" search_member(jQuery('#control_search').val());"
+                    <button onclick="jQuery('#search_history').html(jQuery('#search').val()); jQuery('#search').val(jQuery('#control_search').val()); search_member(jQuery('#control_search').val());"
                             style="border: 0px none; font-size: large; padding: 10px 25px; margin-left: auto; margin-right: auto; position: absolute; top: 150px; left: 100px; background: none repeat scroll 0% 0% black; color: white;">
                         Search
                     </button>
+
+                   <br>
+                    <div style="position: absolute; top: 200px; text-align: center; width: 300px; color: white; font-weight: lighter; font-size: small;">Search History:
+                        <span id="search_history" style="font-size: medium; font-weight: lighter;" onclick="jQuery('#search').val(jQuery('#search_history').html()); jQuery('#search_history').html(jQuery('#control_search').val());jQuery('#control_search').val(jQuery('#search').val()); search_member(jQuery('#control_search').val());">
+
+                        </span>
+                    </div>
                 </div>
                 <div style="display: none; background: none repeat scroll 0% 0% peru; padding: 10px; height: 248px; text-align: center; font-size: 20px;"
                      id="info_div">
@@ -121,9 +128,11 @@
                         class="fa fa-exchange fa-3x"> </i>
                 </div>
             </td>
+            </tr>
+        <tr>
             <td>
                 <div id="search_result"
-                     style="position: absolute; top: 74px; overflow-y: scroll; height: 500px; overflow: hidden; background: none repeat scroll 0% 0% yellow; width:auto; height: 500px; overflow: scroll;"></div>
+                     style="position: absolute; overflow-y: scroll; height: 500px; overflow: hidden; width:0px; height: 500px; overflow: scroll;"></div>
             </td>
         </tr>
         </tbody>

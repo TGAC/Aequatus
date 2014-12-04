@@ -811,9 +811,10 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         for (Map map_two : homology_member_id) {
             if(map_two.get("canonical_member_id") ==  null){
                 Map temp = template.queryForMap(GET_MEMBER_FROM_ID, new Object[]{map_two.get("gene_member_id")});
+                temp.put("genome", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{temp.get("genome_db_id")}, String.class));
                 homologouses.add(temp);
-
             }  else{
+                map_two.put("genome", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{map_two.get("genome_db_id")}, String.class));
                 homologouses.add(map_two);
             }
         }
