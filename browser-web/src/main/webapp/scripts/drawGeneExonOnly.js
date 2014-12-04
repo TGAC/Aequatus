@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-function dispGenesExon(div, track, max, cigarline, ref, ref_cigar) {
+function dispGenesExon(div, track, max, cigarline, ref, ref_cigar, genome) {
 
     var gene = track.gene;
 
@@ -60,12 +60,17 @@ function dispGenesExon(div, track, max, cigarline, ref, ref_cigar) {
 
             var wrapper_div = jQuery("<div>").attr({
                 'style': "position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;"
-            }).html("<span class='handle-gene' style='position: absolute; margin-left: 10px; left:"+stopposition+"px;  word-wrap: break-word;'>" + gene.stable_id + " </span> ").appendTo(div);
-
+            }).html(
+                    "<div class='handle-gene' style='position: absolute; margin-left: 10px; left: "+stopposition+"px; word-wrap: break-word; width: 200px; height: 20px;'>" +
+                        "<span class='handle-gene label geneinfo' style='position: relative; margin-left: 10px;   word-wrap: break-word;'>" + genome + ":" + stringTrim(gene.desc, 100) + " </span>" +
+                        "<span class='handle-gene label stable' style='position: relative; margin-left: 10px;  word-wrap: break-word;'>" + gene.stable_id + " </span>" +
+                        "</div>"
+//                    "<span class='handle-gene' style='position: absolute; margin-left: 10px; left:"+stopposition+"px;  word-wrap: break-word;'>" + genome +":"+stringTrim(gene.desc, 100) + " </span> <span class='handle-gene' style='position: absolute; margin-left: 10px; left:"+stopposition+"px;  word-wrap: break-word;'>" + gene.stable_id + " </span> "
+                ).appendTo(div);
 
             var temp_div = jQuery("<div>").attr({
                 'id': "id" + gene.member_id,
-                'onClick': "onClicked('hit" + gene.member_id + "_" + transcript_len + "', '" + label + "','" + gene.member_id + "'," + JSON.stringify(gene.transcripts[transcript_len]) + ")",
+                'onClick': "onClicked('"+gene.desc+"','"+gene.stable_id+"','"+gene.member_id+"')",
                 'class': "gene",
                 'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " LEFT:" + startposition + "px; width :" + stopposition + "px;"
             }).appendTo(wrapper_div);
@@ -104,10 +109,16 @@ function dispGenesExon(div, track, max, cigarline, ref, ref_cigar) {
         else {
             var wrapper_div = jQuery("<div>").attr({
                 'style': "position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;"
-            }).html("<span class='handle-gene' style='position: absolute; margin-left:10px; left:"+stopposition+"px; word-wrap: break-word; color: red'> <b>" + gene.stable_id + "  </b> </span> ").appendTo(div);
+            }).html(
+                    "<div class='handle-gene' style='position: absolute; margin-left: 10px; left: "+stopposition+"px; word-wrap: break-word; width: 200px; height: 20px;'>" +
+                        "<span class='handle-gene label geneinfo' style='position: relative; margin-left: 10px;  word-wrap: break-word;'>" + genome + ":" + stringTrim(gene.desc, 100) + " </span>" +
+                        "<span class='handle-gene label stable' style='position: relative; margin-left: 10px; word-wrap: break-word;'>" + gene.stable_id + " </span>" +
+                        "</div>"
+                ).appendTo(div);
 
             var temp_div = jQuery("<div>").attr({
                 'id': "id" + gene.member_id,
+                'onClick': "onClicked('"+gene.desc+"','"+gene.stable_id+"','"+gene.member_id+"')",
                 'class': "gene",
                 'style': "position:relative;  cursor:pointer; height: 14px; " + margin + " LEFT:" + startposition + "px; width :" + stopposition + "px;"
             }).appendTo(wrapper_div);
