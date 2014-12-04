@@ -6,20 +6,15 @@
  * To change this template use File | Settings | File Templates.
  */
 
-
 var mouseX, mouseY;
-function newpopup(d) {
-    console.log("newpopup")
-//    removePopup()
 
-    jQuery('#popup').html("<a href='http://www.ensembl.org/Multi/Search/Results?q=" + d.stable_id + "'>Link to Ensembl</a>, <button onclick=' changeReference(" + d.member_id + ") '>Make Me Root</button> <br> "+ d.desc)
+function newpopup(desc,stable_id,member_id) {
+    jQuery('#makemetop_button').html("<button onclick=' changeReference(\"" + stable_id + "\") '>Make Me Root</button>")
 
+    jQuery('#gene_desc').html(desc)
 
+    jQuery('#ensemblLink').html("<a href='http://www.ensembl.org/Multi/Search/Results?q=" + stable_id + "'>Link to Ensembl</a>")
 
-
-// decide side of popup left / right
-
-    console.log(mouseX)
     if (mouseX + jQuery("#popup").width() > jQuery("#main1").width()) {
         jQuery("#popup").css({"left": mouseX - jQuery("#popup").width() - 5});
         jQuery("#popup").css({"top": (mouseY - jQuery("#popup").height() - 46)});
@@ -32,4 +27,8 @@ function newpopup(d) {
     }
 
     jQuery("#popup").fadeIn();
+}
+
+function removePopup(){
+    jQuery("#popup").fadeOut()
 }

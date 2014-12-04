@@ -215,6 +215,33 @@
 </div>
 
 <div id="popup" class="bubbleleft" style="width:auto; padding: 10px">
+    <span style="right:0; position:absolute;" class="ui-button ui-icon ui-icon-close" onclick=removePopup();></span>
+
+   <br>
+
+    <table>
+        <tr>
+            <td>
+                <div id=gene_desc>
+
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td align=right>
+                <div style="float: right" id=makemetop_button>
+
+                </div>
+
+
+
+                <div style="float: right"  id=ensemblLink>
+
+                </div>
+            </td>
+        </tr>
+    </table>
+
 
 </div>
 

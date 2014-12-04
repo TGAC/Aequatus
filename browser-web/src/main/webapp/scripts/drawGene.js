@@ -62,7 +62,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar, genome) {
             var wrapper_div = jQuery("<div>").attr({
                 'style': "position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;"
             }).html(
-                    "<div class='handle-gene' style='position: absolute; margin-left: 10px; left: 1140.07px; word-wrap: break-word; width: 200px; height: 20px;'>" +
+                    "<div class='handle-gene' style='position: absolute; margin-left: 10px; left: "+stopposition+"px; word-wrap: break-word; width: 200px; height: 20px;'>" +
                         "<span class='handle-gene label geneinfo' style='position: relative; margin-left: 10px;   word-wrap: break-word;'>" + genome + ":" + stringTrim(gene.desc, 100) + " </span>" +
                         "<span class='handle-gene label stable' style='position: relative; margin-left: 10px;  word-wrap: break-word;'>" + gene.stable_id + " </span>" +
                         "</div>"
@@ -72,7 +72,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar, genome) {
 
             var temp_div = jQuery("<div>").attr({
                 'id': "id" + gene.member_id,
-                'onClick': "onClicked('hit" + gene.member_id + "_" + transcript_len + "', '" + label + "','" + gene.member_id + "'," + JSON.stringify(gene.transcripts[transcript_len]) + ")",
+                'onClick': "onClicked('"+gene.desc+"','"+gene.stable_id+"','"+gene.member_id+"')",
 //                'onClick': "jQuery('#gene_info').html('" + jQuery("#hit"+transcript_len).html() + "'); jQuery.colorbox({width: '90%',height: '90%', inline: true, href: '#gene_info'});",
                 'class': "gene",
                 'style': "position:relative;  cursor:pointer; height: 14px;  LEFT:" + startposition + "px; width :" + stopposition + "px;"
@@ -109,7 +109,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar, genome) {
             var wrapper_div = jQuery("<div>").attr({
                 'style': "position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;"
             }).html(
-                    "<div class='handle-gene' style='position: absolute; margin-left: 10px; left: 1140.07px; word-wrap: break-word; width: 200px; height: 20px;'>" +
+                    "<div class='handle-gene' style='position: absolute; margin-left: 10px; left: "+stopposition+"px; word-wrap: break-word; width: 200px; height: 20px;'>" +
                         "<span class='handle-gene label geneinfo' style='position: relative; margin-left: 10px;  word-wrap: break-word;'>" + genome + ":" + stringTrim(gene.desc, 100) + " </span>" +
                         "<span class='handle-gene label stable' style='position: relative; margin-left: 10px; word-wrap: break-word;'>" + gene.stable_id + " </span>" +
                         "</div>"
@@ -118,6 +118,7 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar, genome) {
 
             var temp_div = jQuery("<div>").attr({
                 'id': "id" + gene.member_id,
+                'onClick': "onClicked('"+gene.desc+"','"+gene.stable_id+"','"+gene.member_id+"')",
                 'class': "gene",
                 'style': "position:relative;  cursor:pointer; height: 14px;  LEFT:" + startposition + "px; width :" + stopposition + "px;"
             }).appendTo(wrapper_div);
@@ -207,21 +208,7 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
                 'id': "exon" + track.id + "" + geneexons[exon_len].id,
                 'style': "position:absolute; cursor:pointer; height: 10px; z-index: 999;  TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
             }).appendTo(div);
-////
-//            if (stopposition > 10) {
-//                if (spanclass == "forward") {
-//                    startposition = startposition + (stopposition - 8)
-//
-//                }
-//
-//
-//                jQuery("<div>").attr({
-//                    'class' : spanclass,
-//                    'style': "left:"+startposition+"px;"
-//                }).appendTo(div)
-//
-//            }
-//
+
             if (disp_exon) {
                 jQuery("<span>").attr({
                     'class': spanclass,

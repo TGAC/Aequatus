@@ -15,8 +15,7 @@ var gapped_seq_list = [];
 var gene_list_array = [];
 var cigar_list = [];
 var ref_member = null
-
-
+var syntenic_data = null;
 
 
 function getChromosomes(genome_db_id, chr, member_id) {
@@ -141,6 +140,12 @@ function getMember(chr_name, genome_db, member_id) {
 }
 
 function kickOff() {
+
+    jQuery(document).mousemove(function (e) {
+        mouseX = e.pageX;
+        mouseY = e.pageY;
+    });
+
     var name = arguments.callee.toString();
     var testTextBox = jQuery('#search');
     var code = null;
@@ -254,151 +259,9 @@ function getcoreMember(query, redrawn) {
         'getCoreMember',
         {'query': query, 'url': ajaxurl},
         {'doOnSuccess': function (json) {
+            syntenic_data = json
 
-    if (json.ref) {
-        gene_list_array = []
-
-        var core_data = json.member;
-        var max = 0;
-
-
-        for (var i = 0; i < core_data.length; i++) {
-            var genes = core_data[i].genes;
-            var new_max = genes.gene.length;
-            if (new_max > max) {
-                max = new_max;
-            }
-
-
-            var core_data = json.member;
-            var max = 0;
-            for (var i = 0; i < core_data.length; i++) {
-                var genes = core_data[i].genes;
-                var new_max = genes.gene.length;
-                if (new_max > max) {
-                    max = new_max;
-                }
-            }
-
-
-            var ref_data = json.ref;
-
-            var genes = ref_data.genes
-            if (max < genes.gene.length) {
-                max = genes.gene.length;
-            }
-            var name = ref_data.genome_name;
-
-
-            browser_coordinates(max)
-
-            var colour = jQuery("#option" + name).css("background");
-
-
-            jQuery("#gene_widget").append("<div style='left:0px; width: 100%; position: relative; border: 2px solid black; top: 10px; box-shadow: 1px 1px 15px 15px #D3D3D3;' id='ref_wrapper'>" +
-                "<div class=handle-genome style='background-image: url(/images/browser/utr.png); background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
-                "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'> <b>" + stringTrim(name, 100) + "</b></span>" +
-                "<div style='left:10%; width: auto; padding: 25px 0px; position: relative;' id='ref'></div>")
-
-
-            jQuery("#gene_widget_exons").append("<div style='left:0px; width: 100%; position: relative; border: 2px solid black; top: 10px; box-shadow: 1px 1px 15px 15px #D3D3D3;' id='ref_wrapper'>" +
-                "<div class=handle-genome style='background-image: url(/images/browser/utr.png); background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
-                "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'> <b>" + stringTrim(name, 100) + "</b></span>" +
-                "<div style='left:10%; width: auto; padding: 25px 0px; position: relative;' id='ref'></div>")
-
-
-            dispGenes("#gene_widget #ref", genes, max, ref_data.cigarline, undefined, undefined, name);
-            dispGenesExon("#gene_widget_exons #ref", genes, max, ref_data.cigarline);
-
-            ref_data.genes.gene.transcripts[0].Exons.sort(sort_by('start', true, parseInt));
-
-            var exon_nu = 0
-
-            ref_member = ref_data.genes.gene.member_id
-
-            var diff = parseInt(ref_data.genes.gene.transcripts[0].Exons[exon_nu].end - ref_data.genes.gene.transcripts[0].transcript_start) + parseInt(1)
-            while (diff < 0) {
-                ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = 0
-                exon_nu++;
-                diff = parseInt(ref_data.genes.gene.transcripts[0].Exons[exon_nu].end - ref_data.genes.gene.transcripts[0].transcript_start) + parseInt(1)
-            }
-
-
-            ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = diff;
-            ref_data.genes.gene.transcripts[0].Exons[exon_nu]._start += ref_data.genes.gene.transcripts[0].transcript_start - ref_data.genes.gene.transcripts[0].Exons[exon_nu].start;
-
-
-            var exon_nu = ref_data.genes.gene.transcripts[0].Exons.length - 1
-            var diff = parseInt(ref_data.genes.gene.transcripts[0].transcript_end - ref_data.genes.gene.transcripts[0].Exons[exon_nu]._start) + parseInt(1)
-
-            for (var i = 0; i < core_data.length; i++) {
-
-                var genes = core_data[i].genes
-                var name = core_data[i].genome_name;
-
-                if (document.getElementById("core" + core_data[i].genome) == null) {
-                    var colour = jQuery("#option" + name).css("background");
-
-                    jQuery("#gene_widget").append("<div style='left:0px; width: 100%; position: relative; border: 1px solid gray; top: 10px; ' id='core" + core_data[i].genome + "_wrapper'> " +
-                        "<div class = handle-genome style='background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
-                        "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'><b>" + stringTrim(name, 100) + "</b></span>" +
-                        "<div style='left:10%; width: auto; padding: 25px 0px;  position: relative; ' id='core" + core_data[i].genome + "'></div>" +
-                        "</div>")
-
-                    jQuery("#gene_widget_exons").append("<div style='left:0px; width: 100%; position: relative; border: 1px solid gray; top: 10px; ' id='core" + core_data[i].genome + "_wrapper'> " +
-                        "<div class = handle-genome style='background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
-                        "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'><b>" + stringTrim(name, 100) + "</b></span>" +
-                        "<div style='left:10%; width: auto; padding: 25px 0px;  position: relative; ' id='core" + core_data[i].genome + "'></div>" +
-                        "</div>")
-                }
-
-                if (core_data[i].cigarline) {
-                    dispGenes("#gene_widget  #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline, name);
-                }
-
-                else {
-                    dispGenes("#gene_widget  #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline, name);
-                }
-                if (core_data[i].cigarline) {
-                    dispGenesExon("#gene_widget_exons #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
-                }
-
-                else {
-                    dispGenesExon("#gene_widget_exons #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline);
-                }
-            }
-        }
-
-        checkVisuals();
-
-        drawTree(json.tree)
-
-        jQuery("#gene_widget").sortable(
-            {
-                axis: 'y',
-                handle: '.handle-genome',
-                cursor: 'move'
-            });
-
-        if (redrawn != undefined) {
-            if (ref_data.genome != jQuery("#genomes option:selected").val()) {
-                jQuery("#genomes").val(ref_data.genome)
-                var color = jQuery("option:selected", this).css("background");
-                jQuery("#reference_maps").css("background", color);
-                getChromosomes(ref_data.genome, ref_data.genes.gene.reference, ref_data.genes.gene.member_id);
-            } else {
-                if (jQuery("#chr" + ref_data.genes.gene.reference).hasClass("selected")) {
-                    rearrange_selector(ref_data.genes.gene.member_id, ref_data.genes.gene.start, ref_data.genes.gene.reference)
-                } else {
-                    getMember(ref_data.genes.gene.reference, ref_data.genome, ref_data.genes.gene.member_id);
-                }
-            }
-        }
-    } else {
-        jQuery("#gene_widget").html("")
-        jQuery("#gene_widget").html("Selected Gene not found.")
-        jQuery("#gene_tree_nj").html("<span style='font-size: large; text-align: center'>Selected Gene not found.</span>")
-    }
+            drawSynteny();
         }
         });
 }
@@ -437,7 +300,7 @@ function formatCigar(ref_exons, hit_cigar, colours, ref_cigar, reverse, ref_stra
     var j = 0;
     while (i < no_of_exons) {
         var ref_exon = ref_exons[i].length;
-        if(parseInt(ref_exons[i].length) > 0){
+        if (parseInt(ref_exons[i].length) > 0) {
             ref_exon_array.push(ref_exon)
         }
         i++;
@@ -560,28 +423,28 @@ function replaceAt(str, index, character) {
     return str.substr(0, index) + character + str.substr(index + character.length);
 }
 
-function onClicked(self, label, member_id, gene) {
-    jQuery('#gene_info').html("<center><h2>" + gene.stable_id + "</h2></center>  <br> <b>Ref:</b> ")
-    jQuery("#ref_gene").clone().appendTo(jQuery('#gene_info'))
-    jQuery('#gene_info').append("<br> Homologous Gene: <br> <button onclick=' changeReference(" + member_id + ") '>Make Me Root</button> <br>  ")
-    jQuery("#" + self).clone().appendTo(jQuery('#gene_info'))
-    var html_text = "<div>" +
-        "<h2>Info</h2>" +
-        "<br> <b> Gene ID: </b>" + gene.id +
-        "<br> <b> Member ID: </b>" + gene.member_id +
-        "<br> <b> Stable ID: </b>" + gene.stable_id +
-        "<br> <b> Reference: </b>" + gene.reference +
-        "<br> <b> Position: </b>" + gene.start + ":" + gene.end +
-        "<br> <b> Description: </b>" + gene.description +
-        "<br> " +
-        "</div>"
-    jQuery('#gene_info').append(html_text);
-    jQuery.colorbox({width: '90%', height: '90%', inline: true, href: '#gene_info'});
+function onClicked(desc, stable_id, member_id) {
+    newpopup(desc, stable_id, member_id)
 }
 
-function changeReference(member_id) {
-    getcoreMember(member_id, true);
-    jQuery.colorbox.close();
+function changeReference(stable_id) {
+    jQuery("#gene_tree_nj").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
+
+    var temp_ref = syntenic_data.ref;
+    var new_ref = null;
+    var new_member = [];
+    new_member.push(temp_ref)
+
+    for (var i = 0; i < syntenic_data.member.length; i++) {
+        if (syntenic_data.member[i].stable_id === stable_id) {
+            new_ref = syntenic_data.member[i];
+        } else{
+           new_member.push(syntenic_data.member[i])
+        }
+    }
+    syntenic_data.ref = new_ref;
+    syntenic_data.member = new_member;
+    drawSynteny();
 }
 
 function rearrange_selector(query, start, chr_name) {
@@ -843,5 +706,156 @@ function convertPeptide(cdnaseq) {
     }
 
     return ptn_seq;
+}
+
+function drawSynteny(redrawn){
+
+    console.log("drawSynteny")
+        var json = syntenic_data;
+        if (json.ref) {
+            gene_list_array = []
+
+            var core_data = json.member;
+            var max = 0;
+
+
+            for (var i = 0; i < core_data.length; i++) {
+                var genes = core_data[i].genes;
+                var new_max = genes.gene.length;
+                if (new_max > max) {
+                    max = new_max;
+                }
+
+
+                var core_data = json.member;
+                var max = 0;
+                for (var i = 0; i < core_data.length; i++) {
+                    var genes = core_data[i].genes;
+                    var new_max = genes.gene.length;
+                    if (new_max > max) {
+                        max = new_max;
+                    }
+                }
+
+
+                var ref_data = json.ref;
+
+                var genes = ref_data.genes
+                if (max < genes.gene.length) {
+                    max = genes.gene.length;
+                }
+                var name = ref_data.genome_name;
+
+
+                browser_coordinates(max)
+
+                var colour = jQuery("#option" + name).css("background");
+
+
+                jQuery("#gene_widget").append("<div style='left:0px; width: 100%; position: relative; border: 2px solid black; top: 10px; box-shadow: 1px 1px 15px 15px #D3D3D3;' id='ref_wrapper'>" +
+                    "<div class=handle-genome style='background-image: url(/images/browser/utr.png); background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
+                    "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'> <b>" + stringTrim(name, 100) + "</b></span>" +
+                    "<div style='left:10%; width: auto; padding: 25px 0px; position: relative;' id='ref'></div>")
+
+
+                jQuery("#gene_widget_exons").append("<div style='left:0px; width: 100%; position: relative; border: 2px solid black; top: 10px; box-shadow: 1px 1px 15px 15px #D3D3D3;' id='ref_wrapper'>" +
+                    "<div class=handle-genome style='background-image: url(/images/browser/utr.png); background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
+                    "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'> <b>" + stringTrim(name, 100) + "</b></span>" +
+                    "<div style='left:10%; width: auto; padding: 25px 0px; position: relative;' id='ref'></div>")
+
+
+                dispGenes("#gene_widget #ref", genes, max, ref_data.cigarline, undefined, undefined, name);
+                dispGenesExon("#gene_widget_exons #ref", genes, max, ref_data.cigarline, undefined, undefined, name);
+
+                ref_data.genes.gene.transcripts[0].Exons.sort(sort_by('start', true, parseInt));
+
+                var exon_nu = 0
+
+                ref_member = ref_data.genes.gene.member_id
+
+                var diff = parseInt(ref_data.genes.gene.transcripts[0].Exons[exon_nu].end - ref_data.genes.gene.transcripts[0].transcript_start) + parseInt(1)
+                while (diff < 0) {
+                    ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = 0
+                    exon_nu++;
+                    diff = parseInt(ref_data.genes.gene.transcripts[0].Exons[exon_nu].end - ref_data.genes.gene.transcripts[0].transcript_start) + parseInt(1)
+                }
+
+
+                ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = diff;
+                ref_data.genes.gene.transcripts[0].Exons[exon_nu]._start += ref_data.genes.gene.transcripts[0].transcript_start - ref_data.genes.gene.transcripts[0].Exons[exon_nu].start;
+
+
+                var exon_nu = ref_data.genes.gene.transcripts[0].Exons.length - 1
+                var diff = parseInt(ref_data.genes.gene.transcripts[0].transcript_end - ref_data.genes.gene.transcripts[0].Exons[exon_nu]._start) + parseInt(1)
+
+                for (var i = 0; i < core_data.length; i++) {
+
+                    var genes = core_data[i].genes
+                    var name = core_data[i].genome_name;
+
+                    if (document.getElementById("core" + core_data[i].genome) == null) {
+                        var colour = jQuery("#option" + name).css("background");
+
+                        jQuery("#gene_widget").append("<div style='left:0px; width: 100%; position: relative; border: 1px solid gray; top: 10px; ' id='core" + core_data[i].genome + "_wrapper'> " +
+                            "<div class = handle-genome style='background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
+                            "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'><b>" + stringTrim(name, 100) + "</b></span>" +
+                            "<div style='left:10%; width: auto; padding: 25px 0px;  position: relative; ' id='core" + core_data[i].genome + "'></div>" +
+                            "</div>")
+
+                        jQuery("#gene_widget_exons").append("<div style='left:0px; width: 100%; position: relative; border: 1px solid gray; top: 10px; ' id='core" + core_data[i].genome + "_wrapper'> " +
+                            "<div class = handle-genome style='background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
+                            "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'><b>" + stringTrim(name, 100) + "</b></span>" +
+                            "<div style='left:10%; width: auto; padding: 25px 0px;  position: relative; ' id='core" + core_data[i].genome + "'></div>" +
+                            "</div>")
+                    }
+
+                    if (core_data[i].cigarline) {
+                        dispGenes("#gene_widget  #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline, name);
+                    }
+
+                    else {
+                        dispGenes("#gene_widget  #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline, name);
+                    }
+                    if (core_data[i].cigarline) {
+                        dispGenesExon("#gene_widget_exons #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline, name);
+                    }
+
+                    else {
+                        dispGenesExon("#gene_widget_exons #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline, name);
+                    }
+                }
+            }
+
+            checkVisuals();
+
+            drawTree(json.tree)
+
+            jQuery("#gene_widget").sortable(
+                {
+                    axis: 'y',
+                    handle: '.handle-genome',
+                    cursor: 'move'
+                });
+
+            if (redrawn != undefined) {
+                if (ref_data.genome != jQuery("#genomes option:selected").val()) {
+                    jQuery("#genomes").val(ref_data.genome)
+                    var color = jQuery("option:selected", this).css("background");
+                    jQuery("#reference_maps").css("background", color);
+                    getChromosomes(ref_data.genome, ref_data.genes.gene.reference, ref_data.genes.gene.member_id);
+                } else {
+                    if (jQuery("#chr" + ref_data.genes.gene.reference).hasClass("selected")) {
+                        rearrange_selector(ref_data.genes.gene.member_id, ref_data.genes.gene.start, ref_data.genes.gene.reference)
+                    } else {
+                        getMember(ref_data.genes.gene.reference, ref_data.genome, ref_data.genes.gene.member_id);
+                    }
+                }
+            }
+        } else {
+            jQuery("#gene_widget").html("")
+            jQuery("#gene_widget").html("Selected Gene not found.")
+            jQuery("#gene_tree_nj").html("<span style='font-size: large; text-align: center'>Selected Gene not found.</span>")
+        }
+
 }
 
