@@ -209,7 +209,7 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
                 'style': "position:absolute; cursor:pointer; height: 10px; z-index: 999;  TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
             }).appendTo(div);
 
-            if (disp_exon) {
+            if (exon_len>0) {
                 jQuery("<span>").attr({
                     'class': spanclass,
                     'style': "cursor:pointer; position:absolute; z-index; 999; TOP:" + (top - 1) + "px; left:" + (startposition - 20) + "px "

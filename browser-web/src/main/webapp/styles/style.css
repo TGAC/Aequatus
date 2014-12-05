@@ -207,16 +207,22 @@ pre.wrap {
 }
 
 #footer {
+    background: none repeat scroll 0 0 activeborder;
     bottom: 0;
     clear: both;
+    color: white;
     font-size: 0.7em;
-    left: 40%;
+    height: 30px;
+    left: 0;
+    opacity: 0.7;
+    padding: 0;
     position: fixed;
     text-align: center;
+    width: 100%;
 }
 
-a {
-    /*color: #0066cc;*/
+#footer a {
+color: #ffffff
 }
 
 #navtabs {
@@ -2743,7 +2749,11 @@ span.deleteicon input {
     TOP: 0px;
     height: 20px;
     z-index: 999;
-    background: black;
+    background: green;
+}
+
+.selected{
+    background: red;
 }
 
 #gene_widget{
