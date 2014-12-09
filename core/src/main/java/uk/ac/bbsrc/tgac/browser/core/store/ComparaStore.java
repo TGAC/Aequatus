@@ -67,5 +67,5 @@ public interface ComparaStore extends Store<String> {
     public JSONObject getRefDetail(String query) throws IOException;
     public JSONArray getGeneTreeforMember(String query) throws IOException;
     public JSONArray searchMember(String query) throws IOException;
-    public JSONObject getGeneTree(String query) throws IOException;
+    public Map getGeneTree(String query) throws IOException;
 }

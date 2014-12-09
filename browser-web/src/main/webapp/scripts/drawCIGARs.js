@@ -6,7 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_div, ref_exons, transcript_start, transcript_end, strand, ref_cigar, ref_strand, id, div) {
-
     var member_id = jQuery(temp_div).attr('id');
 
 

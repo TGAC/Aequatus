@@ -140,12 +140,8 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             transcript.put("strand", map.get("seq_region_strand"));
             translation_start = new_Template.queryForList(GET_CDS_start_per_Gene, new Object[]{transcript_id});
             translation_end = new_Template.queryForList(GET_CDS_end_per_Gene, new Object[]{transcript_id});
-            log.info("\n\n\n\tno of translation " + translation_start.size());
 
             for (Map start_seq : translation_start) {
-                log.info("\n\n\n\tstart " + start_seq.toString());
-                log.info("\n\n\n\tstart next " + new_Template.queryForList(GET_EXON_BY_ID, new Object[]{start_seq.get("start_exon_id")}).toString());
-
                 int exon_start = Integer.parseInt(new_Template.queryForList(GET_EXON_BY_ID, new Object[]{start_seq.get("start_exon_id")}).get(0).get("seq_region_start").toString());
                 int exon_end = Integer.parseInt(new_Template.queryForList(GET_EXON_BY_ID, new Object[]{start_seq.get("start_exon_id")}).get(0).get("seq_region_end").toString());
 
@@ -157,8 +153,6 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             }
 
             for (Map end_seq : translation_end) {
-                log.info("\n\n\n\tend " + end_seq.toString());
-
                 int exon_start = Integer.parseInt(new_Template.queryForList(GET_EXON_BY_ID, new Object[]{end_seq.get("end_exon_id")}).get(0).get("seq_region_start").toString());
                 int exon_end = Integer.parseInt(new_Template.queryForList(GET_EXON_BY_ID, new Object[]{end_seq.get("end_exon_id")}).get(0).get("seq_region_end").toString());
 
@@ -179,8 +173,6 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             JSONArray exons_array = new JSONArray();
             List<Map<String, Object>> exons = new_Template.queryForList(GET_EXON_per_Gene, new Object[]{transcript_id});
             for (Map map_temp : exons) {
-                log.info("\n\nexons " + map_temp.toString() + "\n\n");
-
                 JSONObject exon = new JSONObject();
                 start = Integer.parseInt(map_temp.get("seq_region_start").toString());
                 end = Integer.parseInt(map_temp.get("seq_region_end").toString());

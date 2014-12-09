@@ -676,7 +676,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     }
 
-    public JSONObject getGeneTree(String query) throws IOException {
+    public Map getGeneTree(String query) throws IOException {
         JSONObject homology_members = new JSONObject();
 
         final String GET_GENE_MEMBER_ID_FOR_REFERENCE = "SELECT m3.member_id, gtr.root_id,  m3.gene_member_id " +
@@ -716,37 +716,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             }
         }
 
-
-//            for (int k = 1; k < trees.get(i).size(); k++) {
-//                int node = trees.get(i).get(k);
-//                for (int j = 0; j < trees.size(); j++) {
-//                    JSONObject child = new JSONObject();
-//                    if (k < trees.get(j).size()) {
-//                        child.put("child_id", node);
-//                        child.put("parent_id", trees.get(i).get(k - 1));
-//                        child.put("member_id", template.queryForObject(GET_MEMBER_ID_FROM_NODE, new Object[]{node}, String.class));
-//
-//                        if (child.containsKey("member_id")) {
-//                            child.put("genome", template.queryForObject(GET_GENOME_ID_FROM_MEMBER_ID, new Object[]{node}, String.class));
-//                        }
-//
-//                        if (template.queryForList(GET_NODE_TYPE, new Object[]{node}, String.class).size() > 0) {
-//                            child.put("type", template.queryForObject(GET_NODE_TYPE, new Object[]{node}, String.class));
-//                        }
-//                        child.put("children", new JSONArray());
-//                        if (!test_array.contains(child)) {
-//                            test_array.add(child);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-
-
         List<JSONObject> tree_list = new ArrayList<JSONObject>();
 
         for (int i = test_array.size() - 1; i >= 0; i--) {
-            log.info(" i "+i + " "+test_array.get(i));
             JSONObject temp = test_array.getJSONObject(i);
 
             JSONObject temp2 = new JSONObject();
@@ -764,8 +736,10 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             }
         }
 
+        Map<String, Object> super_node = template.queryForMap(GET_NODE_INFORMATION, new Object[]{test_array.getJSONObject(0).get("parent_id")});
+        super_node.put("children", test_array);
 
-        return test_array.getJSONObject(0);
+        return super_node;
     }
 
     public JSONArray recursive_children_node(String node_id, String root_id, List<Map> homologouses) throws IOException {

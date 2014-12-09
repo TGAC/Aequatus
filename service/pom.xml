@@ -71,7 +71,7 @@
         <dependency>
             <groupId>uk.ac.bbsrc.tgac.tgac-browser</groupId>
             <artifactId>ensembl-store</artifactId>
-            <version>0.0.1</version>
+            <version>unus</version>
         </dependency>
 
         <dependency>

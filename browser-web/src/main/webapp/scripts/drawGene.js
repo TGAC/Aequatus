@@ -8,7 +8,6 @@
 
 function dispGenes(div, track, max, cigarline, ref, ref_cigar, genome) {
 
-
     var gene = track.gene;
 
     var trackClass;
