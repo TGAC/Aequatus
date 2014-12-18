@@ -276,8 +276,7 @@ function getcoreMember(query, redrawn) {
         {'query': query, 'url': ajaxurl},
         {'doOnSuccess': function (json) {
             syntenic_data = json
-
-            drawSynteny();
+                drawSynteny(redrawn);
         }
         });
 }
@@ -863,6 +862,8 @@ function drawSynteny(redrawn){
                     getChromosomes(ref_data.genome, ref_data.genes.gene.reference, ref_data.genes.gene.member_id);
                 } else {
                     console.log("else")
+
+
 
                     if (jQuery("#chr" + ref_data.genes.gene.reference).hasClass("selected")) {
                         rearrange_selector(ref_data.genes.gene.member_id, ref_data.genes.gene.start, ref_data.genes.gene.reference)

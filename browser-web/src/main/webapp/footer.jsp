@@ -26,7 +26,7 @@
 <div id="footer">
     <br/>
 
-    &copy; 2014 <a href="http://www.tgac.bbsrc.ac.uk/" target="_blank">The Genome Analysis Centre</a> | Version: unus-askdjfh (I)
+    &copy; 2014 <a href="http://www.tgac.bbsrc.ac.uk/" target="_blank">The Genome Analysis Centre</a> | Version: unus (I)
 </div>
 </body>
 </html>

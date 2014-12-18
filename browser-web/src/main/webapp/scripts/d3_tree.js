@@ -48,10 +48,32 @@ function drawTree(json_tree) {
                 d.children = null;
             }
         }
+
         update(root, ref_member);
     });
 
     d3.select(self.frameElement).style("height", "800px");
+
+
+//    var gradient = svg.append("svg:defs")
+//        .append("svg:linearGradient")
+//        .attr("id", "gradient")
+//        .attr("x1", "0%")
+//        .attr("y1", "0%")
+//        .attr("x2", "100%")
+//        .attr("y2", "100%")
+//        .attr("spreadMethod", "pad");
+//
+//// Define the gradient colors
+//    gradient.append("svg:stop")
+//        .attr("offset", "0%")
+//        .attr("stop-color", "#a00000")
+//        .attr("stop-opacity", 1);
+//
+//    gradient.append("svg:stop")
+//        .attr("offset", "100%")
+//        .attr("stop-color", "#aaaa00")
+//        .attr("stop-opacity", 1);
 
 
     function update(source, ref_member) {
@@ -59,7 +81,7 @@ function drawTree(json_tree) {
         if (jQuery('input[name=view_type]:checked').val() == "with") {
             view_type = true;
         }
-        else{
+        else {
             view_type = false;
         }
 
@@ -113,10 +135,20 @@ function drawTree(json_tree) {
 
         nodeEnter.append("circle")
             .attr("r", function (d) {
-                return 4;
+                if (d.close && d.close == true) {
+                    return 6;
+                } else if (d.member_id == ref_member)// && d.children != null) {
+                {
+                    return 6;
+                }
+                else {
+                    return 4;
+                }
             })
             .style("fill", function (d, i) {
-                if (d.node_type == "duplication") {
+                if (d.close && d.close == true) {
+                    return 'url(#gradient)';
+                } else if (d.node_type == "duplication") {
                     return colours[0];
                 } else if (d.node_type == "dubious") {
                     return colours[1];
@@ -141,28 +173,6 @@ function drawTree(json_tree) {
                 }
             });
 
-
-//        nodeEnter.append("text")
-//            .attr("x", function (d) {
-//                if (d.children && d.children != null) {
-//                    if (d.children.size() == 0) {
-//                        return 1200;
-//                    }
-//                }
-//            })
-//            .attr("dy", ".35em")
-//            .attr("text-anchor", function (d) {
-//                return d.children || d._children ? "end" : "start";
-//            })
-//            .text(function (d) {
-//                if (d.children && d.children != null) {
-//                    if (d.children.size() == 0) {
-//                        return d.data;
-//                    }
-//                }
-//            })
-//            .style("fill-opacity", 1e-6);
-
         // Transition nodes to their new position.
         var nodeUpdate = node.transition()
             .duration(duration)
@@ -172,7 +182,9 @@ function drawTree(json_tree) {
 
         nodeUpdate.select("circle")
             .attr("r", function (d) {
-                if (d.member_id == ref_member)// && d.children != null) {
+                if (d.close && d.close == true) {
+                    return 6;
+                } else if (d.member_id == ref_member)// && d.children != null) {
                 {
                     return 6;
                 }
@@ -181,7 +193,156 @@ function drawTree(json_tree) {
                 }
             })
             .style("fill", function (d, i) {
-                if (d.node_type == "duplication") {
+                if (d.close && d.close == true) {
+                    console.log(d.type)
+                    d.type = unique(d.type)
+                    console.log(d.type)
+
+                    if (d.type.size() == 1) {
+                        console.log("1")
+
+                        if (d.type == "duplication") {
+                            return colours[0];
+                        } else if (d.type == "dubious") {
+                            return colours[1];
+                        } else if (d.type == "speciation") {
+                            return colours[2];
+                        } else if (d.type == "gene_split") {
+                            return colours[3];
+                        } else {
+                            return "white";
+                        }
+                    } else if (d.type.size() == 2) {
+                        console.log("2")
+
+                        var col1, col2;
+
+                        col1 = function () {
+                            if (d.type[0] == "duplication") {
+                                return colours[0];
+                            } else if (d.type[0] == "dubious") {
+                                return colours[1];
+                            } else if (d.type[0] == "speciation") {
+                                return colours[2];
+                            } else if (d.type[0] == "gene_split") {
+                                return colours[3];
+                            } else {
+                                return "white";
+                            }
+                        }
+
+                        col2 = function () {
+                            if (d.type[1] == "duplication") {
+                                return colours[0];
+                            } else if (d.type[1] == "dubious") {
+                                return colours[1];
+                            } else if (d.type[1] == "speciation") {
+                                return colours[2];
+                            } else if (d.type[1] == "gene_split") {
+                                return colours[3];
+                            } else {
+                                return "white";
+                            }
+                        }
+
+                        var gradient = svg.append("svg:defs")
+                            .append("svg:linearGradient")
+                            .attr("id", "gradient1")
+                            .attr("x1", "0%")
+                            .attr("y1", "0%")
+                            .attr("x2", "0%")
+                            .attr("y2", "100%")
+                            .attr("spreadMethod", "pad");
+
+// Define the gradient colors
+                        gradient.append("svg:stop")
+                            .attr("offset", "25%")
+                            .attr("stop-color", col1)
+                            .attr("stop-opacity", 1);
+
+                        gradient.append("svg:stop")
+                            .attr("offset", "75%")
+                            .attr("stop-color", col2)
+                            .attr("stop-opacity", 1);
+
+                        return 'url(#gradient1)';
+
+                    } else if (d.type.size() == 3) {
+                        var col1, col2, col3;
+
+                        col1 = function () {
+                            if (d.type[0] == "duplication") {
+                                return colours[0];
+                            } else if (d.type[0] == "dubious") {
+                                return colours[1];
+                            } else if (d.type[0] == "speciation") {
+                                return colours[2];
+                            } else if (d.type[0] == "gene_split") {
+                                return colours[3];
+                            } else {
+                                return "white";
+                            }
+                        }
+
+                        col2 = function () {
+                            if (d.type[1] == "duplication") {
+                                return colours[0];
+                            } else if (d.type[1] == "dubious") {
+                                return colours[1];
+                            } else if (d.type[1] == "speciation") {
+                                return colours[2];
+                            } else if (d.type[1] == "gene_split") {
+                                return colours[3];
+                            } else {
+                                return "white";
+                            }
+                        }
+
+
+                        col3 = function () {
+                            if (d.type[2] == "duplication") {
+                                return colours[0];
+                            } else if (d.type[2] == "dubious") {
+                                return colours[1];
+                            } else if (d.type[2] == "speciation") {
+                                return colours[2];
+                            } else if (d.type[2] == "gene_split") {
+                                return colours[3];
+                            } else {
+                                return "white";
+                            }
+                        }
+
+                        var gradient = svg.append("svg:defs")
+                            .append("svg:linearGradient")
+                            .attr("id", "gradient2")
+                            .attr("x1", "0%")
+                            .attr("y1", "0%")
+                            .attr("x2", "0%")
+                            .attr("y2", "100%")
+                            .attr("spreadMethod", "pad");
+
+// Define the gradient colors
+                        gradient.append("svg:stop")
+                            .attr("offset", "15%")
+                            .attr("stop-color", col1)
+                            .attr("stop-opacity", 1);
+
+                        gradient.append("svg:stop")
+                            .attr("offset", "50%")
+                            .attr("stop-color", col2)
+                            .attr("stop-opacity", 1);
+
+                        gradient.append("svg:stop")
+                            .attr("offset", "85%")
+                            .attr("stop-color", col3)
+                            .attr("stop-opacity", 1);
+
+                        return 'url(#gradient2)';
+
+                    }
+                }
+                else if (d.node_type == "duplication") {
                     return colours[0];
                 } else if (d.node_type == "dubious") {
                     return colours[1];
@@ -218,7 +379,7 @@ function drawTree(json_tree) {
 //        nodeExit.select("text")
 //            .style("fill-opacity", 1e-6);
 
-        nodeEnter.filter(function(d) {
+        nodeEnter.filter(function (d) {
             if (d.member_id) {
                 return true; //This item will be included in the selection
             } else {
@@ -297,16 +458,20 @@ function drawTree(json_tree) {
 
 // Toggle children on click.
     function click(d) {
+        console.log("click")
         if (d.close && d.close == true) {
             d.children = d._children;
+            d.type = [];
             d._children = null;
             d.close = false
         } else {
             if (d.children && d.children != null) {
                 if (d.children.size() == 1) {
                     d._children = d.children;
-                    d.children = pack(d)
+                    var new_children = pack(d)
+                    d.children = new_children.child;
                     d.close = true
+                    d.type = new_children.type;
                 } else {
                     d._children = d.children;
                     d.children = null;
@@ -317,6 +482,7 @@ function drawTree(json_tree) {
             }
         }
         update(d, ref_member);
+
     }
 
 
@@ -331,13 +497,23 @@ function drawTree(json_tree) {
 
     function pack(d) {
 
+        console.log("pack")
+
+
         var cont = true;
         var child = d;
+        var new_children = {}
+        new_children.type = []
         var children = null;
 
         while (cont) {
             if (child.children && child.children.size() == 1) {
                 child = (child.children[0])
+                if (child.type) {
+                    new_children.type = new_children.type.concat(child.type)
+                } else {
+                    new_children.type.push(child.node_type)
+                }
             } else {
                 if (child.children) {
                     children = child.children
@@ -349,7 +525,9 @@ function drawTree(json_tree) {
                 break;
             }
         }
-        return children;
+
+        new_children.child = children;
+        return new_children;
     }
 }
 
@@ -375,4 +553,12 @@ function changeToStable() {
 function changeToGeneInfo() {
     jQuery(".label").hide();
     jQuery(".geneinfo").show();
+}
+
+function unique(list) {
+    var result = [];
+    jQuery.each(list, function(i, e) {
+        if (jQuery.inArray(e, result) == -1) result.push(e);
+    });
+    return result;
 }

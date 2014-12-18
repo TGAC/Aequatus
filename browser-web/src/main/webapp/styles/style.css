@@ -27,7 +27,7 @@ body {
     border-bottom: 1px solid #4682b4;
     -moz-user-select: -moz-none;
     -webkit-user-select: none;
-    z-index: 999;
+    z-index: 2999;
     left: 0px;
     position: fixed;
     width: 100%;
