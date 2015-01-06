@@ -115,7 +115,7 @@ function drawTree(json_tree) {
                 return "translate(" + source.y0 + "," + source.x0 + ")";
             })
             .on("click", function (d) {
-                if (d.member_id) {
+                if (d.seq_member_id) {
 //                    console.log("here")
 ////                    callPopup(d)
 //
@@ -137,7 +137,7 @@ function drawTree(json_tree) {
             .attr("r", function (d) {
                 if (d.close && d.close == true) {
                     return 6;
-                } else if (d.member_id == ref_member)// && d.children != null) {
+                } else if (d.seq_member_id == ref_member)// && d.children != null) {
                 {
                     return 6;
                 }
@@ -161,14 +161,14 @@ function drawTree(json_tree) {
                 }
             })
             .style("stroke-width", function (d, i) {
-                if (d.member_id == ref_member) {
+                if (d.seq_member_id == ref_member) {
                     return "2px";
                 } else {
                     return "1px";
                 }
             })
             .style("stroke", function (d, i) {
-                if (d.member_id == ref_member) {
+                if (d.seq_member_id == ref_member) {
                     return "black";
                 }
             });
@@ -184,7 +184,7 @@ function drawTree(json_tree) {
             .attr("r", function (d) {
                 if (d.close && d.close == true) {
                     return 6;
-                } else if (d.member_id == ref_member)// && d.children != null) {
+                } else if (d.seq_member_id == ref_member)// && d.children != null) {
                 {
                     return 6;
                 }
@@ -355,7 +355,7 @@ function drawTree(json_tree) {
                 }
             })
             .style("stroke-width", function (d, i) {
-                if (d.member_id == ref_member) {
+                if (d.seq_member_id == ref_member) {
                     return "2px";
                 } else {
                     return "1px";
@@ -380,7 +380,7 @@ function drawTree(json_tree) {
 //            .style("fill-opacity", 1e-6);
 
         nodeEnter.filter(function (d) {
-            if (d.member_id) {
+            if (d.seq_member_id) {
                 return true; //This item will be included in the selection
             } else {
                 return false; //This item will be excluded, e.g. "cheese"
@@ -388,7 +388,7 @@ function drawTree(json_tree) {
         }).append("foreignObject")
             .attr("class", "node_gene_holder")
             .attr("id", function (d) {
-                return "node_gene_holder" + d.member_id
+                return "node_gene_holder" + d.seq_member_id
             })
             .attr('width', width)
             .attr('height', '40px')
@@ -397,7 +397,7 @@ function drawTree(json_tree) {
             .style("fill", "red")
             .append('xhtml:div')
             .style("width", function (d) {
-                return parseInt(jQuery("#gene_widget #id" + d.member_id).css('width')) + 200
+                return parseInt(jQuery("#gene_widget #id" + d.seq_member_id).css('width')) + 200
 
             })
             .style("height", "50px")
@@ -407,15 +407,15 @@ function drawTree(json_tree) {
             .style("top", "10px")
             .html(function (d) {
                 if (view_type == true) {
-                    return jQuery("#gene_widget #id" + d.member_id).parent().html();
+                    return jQuery("#gene_widget #id" + d.seq_member_id).parent().html();
                 } else {
-                    return jQuery("#gene_widget_exons #id" + d.member_id).parent().html();
+                    return jQuery("#gene_widget_exons #id" + d.seq_member_id).parent().html();
                 }
             });
 
         nodeUpdate.select("foreignObject")
             .attr('width', function (d) {
-                return parseInt(jQuery("#gene_widget #id" + d.member_id).css('width')) + 200
+                return parseInt(jQuery("#gene_widget #id" + d.seq_member_id).css('width')) + 200
             })
             .attr('height', '40px')
             .attr('x', 10)
