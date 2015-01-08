@@ -86,7 +86,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_CHR_DNAFRAG_BY_NAME = "select * from dnafrag where dnafrag_id = ? and genome_db_id = ? and coord_system_name like \"%chr%\"";
 
-    public static final String COUNT_CHR_DNAFRAG_BY_NAME = "select count(*) from dnafrag where name = ? and genome_db_id = ? and coord_system_name like \"%chr%\"";
+    public static final String COUNT_CHR_DNAFRAG_BY_NAME = "select count(*) from dnafrag where dnafrag_id = ? and genome_db_id = ? and coord_system_name like \"%chr%\"";
 
     public static final String GET_GENOME_ID_FROM_DNAFRAG = "select genome_db_id from dnafrag where dnafrag_id = ?";
 
@@ -606,13 +606,13 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
             for (Map map : maps) {
 
-//                if (template.queryForObject(COUNT_CHR_DNAFRAG_BY_NAME, new Object[]{map.get("name").toString(), query}, Integer.class) > 0) {
+                if (template.queryForObject(COUNT_CHR_DNAFRAG_BY_NAME, new Object[]{map.get("name").toString(), query}, Integer.class) > 0) {
                     Map<String, Object> maps_2 = template.queryForMap(GET_CHR_DNAFRAG_BY_NAME, new Object[]{map.get("name").toString(), query});
                     map.put("length", maps_2.get("length"));
                     map.put("id", maps_2.get("dnafrag_id"));
-
+                    map.put("chr_name", maps_2.get("name"));
                     members.add(map);
-//                }
+                }
 
             }
             return members;
@@ -672,8 +672,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                 "JOIN gene_align_member gam USING (gene_align_id) " +
                 "JOIN seq_member m3 ON (gam.seq_member_id = m3.seq_member_id) " +
                 "JOIN gene_member m4 on (m4.canonical_member_id = m3.seq_member_id) " +
-                "WHERE m3.genome_db_id in " + genome_ids + " and gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" " +
-                "AND  m1.gene_member_id = ? " +
+                "WHERE m1.gene_member_id = ? AND m3.genome_db_id in " + genome_ids + " and gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" " +
                 "AND m2.stable_id <> m3.stable_id";
 
         List<Map<String, Object>> homology_member_id = template.queryForList(GET_GENE_TREE_FOR_REFERENCE, new Object[]{query});
@@ -698,6 +697,38 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     }
 
+    public int countGeneTreeforMember(String query) throws IOException {
+
+
+
+//        final String GET_GENE_TREE_FOR_REFERENCE = "SELECT m1.stable_id AS Ref, m1.canonical_member_id AS peptide_id, m2.stable_id AS Ref_stable_id, m3.*, gam.cigar_line, gtr.method_link_species_set_id " +
+//                "FROM member m1 " +
+//                "JOIN member m2 ON (m1.canonical_member_id = m2.member_id) " +
+//                "JOIN gene_tree_node gtn1 ON (m2.member_id = gtn1.member_id) " +
+//                "JOIN gene_tree_root gtr ON (gtr.root_id = gtn1.root_id) " +
+//                "JOIN gene_align_member gam USING (gene_align_id) " +
+//                "JOIN member m3 ON (gam.member_id = m3.member_id) " +
+//                "WHERE m3.genome_db_id in " + genome_ids + " and gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" AND  m1.member_id = ?  AND m2.stable_id <> m3.stable_id;";
+
+        final String GET_GENE_TREE_FOR_REFERENCE = "select count(m3.seq_member_id) " +
+                "from gene_member m1 " +
+                "JOIN seq_member m2 ON (m1.canonical_member_id = m2.seq_member_id) " +
+                "JOIN gene_tree_node gtn1 ON (m2.seq_member_id = gtn1.seq_member_id) " +
+                "JOIN gene_tree_root gtr ON (gtr.root_id = gtn1.root_id) " +
+                "JOIN gene_align_member gam USING (gene_align_id) " +
+                "JOIN seq_member m3 ON (gam.seq_member_id = m3.seq_member_id) " +
+                "JOIN gene_member m4 on (m4.canonical_member_id = m3.seq_member_id) " +
+                "WHERE m1.gene_member_id = ? AND m3.genome_db_id in " + genome_ids + " and gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" " +
+                "AND m2.stable_id <> m3.stable_id";
+
+        int homology_member_id = template.queryForInt(GET_GENE_TREE_FOR_REFERENCE, new Object[]{query});
+
+
+
+        return homology_member_id;
+
+    }
+
     public Map getGeneTree(String query) throws IOException {
         JSONObject homology_members = new JSONObject();
 
@@ -718,8 +749,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                 "JOIN gene_align_member gam USING (gene_align_id) " +
                 "JOIN seq_member m3 ON (gam.seq_member_id = m3.seq_member_id) " +
                 "JOIN gene_member m4 on (m4.canonical_member_id = m3.seq_member_id) " +
-                "WHERE m3.genome_db_id in " + genome_ids + " and gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" " +
-                "AND  m1.gene_member_id = ? ";
+                "WHERE m1.gene_member_id = ? AND m3.genome_db_id in " + genome_ids + " and gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" ";
 //        +
 //                "AND m2.stable_id <> m3.stable_id";
 
