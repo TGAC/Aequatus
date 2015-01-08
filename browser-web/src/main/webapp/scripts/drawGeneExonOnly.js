@@ -62,8 +62,8 @@ function dispGenesExon(div, track, max, cigarline, ref, ref_cigar, genome) {
                 'style': "position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;"
             }).html(
                     "<div class='handle-gene' style='position: absolute; margin-left: 10px; left: "+stopposition+"px; word-wrap: break-word; width: 200px; height: 20px;'>" +
-                        "<span class='handle-gene label geneinfo' style='position: relative; margin-left: 10px;   word-wrap: break-word;'>" + genome + ":" + stringTrim(gene.desc, 100) + " </span>" +
-                        "<span class='handle-gene label stable' style='position: relative; margin-left: 10px;  word-wrap: break-word;'>" + gene.stable_id + " </span>" +
+                        "<span class='handle-gene genelabel geneinfo' style='position: relative; margin-left: 10px;   word-wrap: break-word;'>" + genome + ":" + stringTrim(gene.desc, 100) + " </span>" +
+                        "<span class='handle-gene genelabel stable' style='position: relative; margin-left: 10px;  word-wrap: break-word;'>" + gene.stable_id + " </span>" +
                         "</div>"
 //                    "<span class='handle-gene' style='position: absolute; margin-left: 10px; left:"+stopposition+"px;  word-wrap: break-word;'>" + genome +":"+stringTrim(gene.desc, 100) + " </span> <span class='handle-gene' style='position: absolute; margin-left: 10px; left:"+stopposition+"px;  word-wrap: break-word;'>" + gene.stable_id + " </span> "
                 ).appendTo(div);
@@ -111,8 +111,8 @@ function dispGenesExon(div, track, max, cigarline, ref, ref_cigar, genome) {
                 'style': "position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;"
             }).html(
                     "<div class='handle-gene' style='position: absolute; margin-left: 10px; left: "+stopposition+"px; word-wrap: break-word; width: 200px; height: 20px;'>" +
-                        "<span class='handle-gene label geneinfo' style='position: relative; margin-left: 10px;  word-wrap: break-word;'>" + genome + ":" + stringTrim(gene.desc, 100) + " </span>" +
-                        "<span class='handle-gene label stable' style='position: relative; margin-left: 10px; word-wrap: break-word;'>" + gene.stable_id + " </span>" +
+                        "<span class='handle-gene genelabel geneinfo' style='position: relative; margin-left: 10px;  word-wrap: break-word;'>" + genome + ":" + stringTrim(gene.desc, 100) + " </span>" +
+                        "<span class='handle-gene genelabel stable' style='position: relative; margin-left: 10px; word-wrap: break-word;'>" + gene.stable_id + " </span>" +
                         "</div>"
                 ).appendTo(div);
 

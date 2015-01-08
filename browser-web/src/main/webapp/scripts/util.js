@@ -53,10 +53,10 @@ else
         jQuery(".utr").hide();  // unchecked jQuery('.utr').toggle()
 
     if(jQuery('input[name=label_type]:radio:checked').val() == "stable"){
-        jQuery(".label").hide();
+        jQuery(".genelabel").hide();
         jQuery(".stable").show();
     }else{
-        jQuery(".label").hide();
+        jQuery(".genelabel").hide();
         jQuery(".geneinfo").show();
     }
 

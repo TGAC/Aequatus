@@ -546,12 +546,12 @@ function changeToExon() {
 }
 
 function changeToStable() {
-    jQuery(".label").hide();
+    jQuery(".genelabel").hide();
     jQuery(".stable").show();
 }
 
 function changeToGeneInfo() {
-    jQuery(".label").hide();
+    jQuery(".genelabel").hide();
     jQuery(".geneinfo").show();
 }
 
