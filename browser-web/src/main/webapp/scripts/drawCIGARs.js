@@ -177,7 +177,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                                 bool = false;
                             }
                             else {
-                                trackClass += " elselse"
+                                //trackClass += " elselse"
                             }
 
                         }
@@ -249,7 +249,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                                 bool = false;
                             }
                             else {
-                                trackClass += " elselse"
+                                //trackClass += " elselse"
                             }
                         }
                     }
@@ -278,8 +278,8 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
         var track_html_local;
 //        stopposition = parseInt(stopposition)
 
-        track_html_local = "<div onmouseover=onMouseOver('" + colour + "') onmouseout=onMouseOut('" + colour + "')  class='" + trackClass + " exon_" + i + "'" +
-            "STYLE=\"height: 10px; z-index: 1999; TOP:0px; LEFT:" + startposition + "px; opacity:0.7; background-color:" + colour + "; " +
+        track_html_local = "<div color='"+colour+"' onmouseover=onMouseOver('" + colour + "') onmouseout=onMouseOut('" + colour + "')  class='" + trackClass + " exon_" + i + "'" +
+            "STYLE=\"height: 10px; z-index: 1999; TOP:0px; LEFT:" + startposition + "px;  background-color:" + colour + "; " +
             "width:" + (stopposition) + "px \" title=" + title + "> </div>";
         jQuery(temp_div).append(track_html_local);
     }
@@ -453,28 +453,20 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
         var track_html_local;
 
 //        stopposition = parseInt(stopposition)
-        track_html_local = "<div onmouseover=onMouseOver('" + colour + "') onmouseout=onMouseOut('" + colour + "') class='" + trackClass + " exon_" + i + "' " +
-            "STYLE=\"height: 10px; z-index: 1999; TOP:0px; LEFT:" + startposition + "px; opacity:0.7; background-color:" + colour + "; " +
+        track_html_local = "<div color='"+colour+"' onmouseover=onMouseOver('" + colour + "') onmouseout=onMouseOut('" + colour + "') class='" + trackClass + " exon_" + i + "' " +
+            "STYLE=\"height: 10px; z-index: 1999; TOP:0px; LEFT:" + startposition + "px;  background-color:" + colour + "; " +
             "width:" + (stopposition) + "px \" title=" + title + "> </div>";
         jQuery(temp_div).append(track_html_local);
     }
 }
 
 function onMouseOver(i) {
-    jQuery(".insert").css({ opacity: 0.2 })
-    jQuery(".match").css({ opacity: 0.2})
-//    jQuery(".exon_"+i).css({ opacity: 1 })
-    jQuery('.match').filter(function () {
-        var colour = jQuery(this).css('backgroundColor').replace(/\s+/g, "");
-
-        if (colour == i) {
-            return 1;
-        }
-    }).css('opacity', 0.7);
-
+    jQuery(".insert").addClass('cigarover')
+    jQuery(".match").addClass('cigarover')
+    jQuery(".match[color='"+i+"']").removeClass('cigarover')
 }
 
 function onMouseOut(i) {
-    jQuery(".match").css({ opacity: 0.7 })
-    jQuery(".insert").css({ opacity: 0.7 })
+    jQuery(".match").removeClass('cigarover')
+    jQuery(".insert").removeClass('cigarover')
 }
