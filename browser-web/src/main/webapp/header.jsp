@@ -15,12 +15,15 @@
     <link REL="SHORTCUT ICON" href="<c:url value='/images/browser/tgac_logo.png'/>">
 
     <link rel="stylesheet" href="<c:url value='/styles/style.css'/>" type="text/css">
+    <link rel="stylesheet" href="<c:url value='/styles/bootstrap-css/bootstrap.css'/>" type="text/css">
+    <link rel="stylesheet" href="<c:url value='/styles/bootstrap-css/bootstrap-theme.min.css'/>" type="text/css">
 
-    <%--<script src="http://d3js.org/d3.v3.js"></script>--%>
+
+<%--<script src="http://d3js.org/d3.v3.js"></script>--%>
 
     <script type="text/javascript" src="<c:url value='/scripts/scriptaculous/prototype.js'/>"></script>
 
-    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-1.4.2.min.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-1.11.2.min.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-ui-1.8.custom.min.js'/>"></script>
     <%--<script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.tablesorter.min.js'/>"></script>--%>
     <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.cookie.js'/>"></script>
@@ -34,6 +37,7 @@
     <link rel="stylesheet" href="<c:url value='/scripts/jquery/css/smoothness/jquery-ui-1.8.custom.css'/>"
           type="text/css">
     <link rel="stylesheet" href="<c:url value='/styles/font-awesome-4.2.0/css/font-awesome.css'/>" type="text/css">
+    <script type="text/javascript" src="<c:url value='/styles/bootstrap-css/bootstrap.js'/>"></script>
 
 
     <script type="text/javascript">jQuery.noConflict();</script>
