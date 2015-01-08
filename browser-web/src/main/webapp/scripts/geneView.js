@@ -9,6 +9,7 @@
 var data = "";
 
 var colours = ['rgb(166,206,227)', 'rgb(31,120,180)', 'rgb(178,223,138)', 'rgb(51,160,44)', 'rgb(251,154,153)', 'rgb(227,26,28)', 'rgb(253,191,111)', 'rgb(255,127,0)', 'rgb(202,178,214)', 'rgb(106,61,154)', 'rgb(255,255,153)', 'rgb(177,89,40)', 'rgb(141,211,199)', 'rgb(255,255,179)', 'rgb(190,186,218)', 'rgb(251,128,114)', 'rgb(128,177,211)', 'rgb(253,180,98)', 'rgb(179,222,105)', 'rgb(252,205,229)', 'rgb(217,217,217)', 'rgb(188,128,189)', 'rgb(204,235,197)', 'rgb(255,237,111)']
+//var colours = ['#A6CEE3', '#1F78B4', '#B2DF8A', '#33A02C', '#FB9A99', '#E31A1C', '#FDBF6F', '#FF7F00', '#CAB2D6', '#6A3D9A', '#FFFF99', '#B15928', '#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3', '#FDB462', '#B3DE69', '#FCCDE5', '#D9D9D9', '#BC80BD', '#CCEBC5', '#FFED6F']
 
 
 var gapped_seq_list = [];
@@ -67,7 +68,7 @@ function getChromosomes(genome_db_id, chr, member_id) {
                 }).appendTo("#chr_maps");
                 jQuery("<div>").attr({
                     'style': "position: absolute; bottom: 0px; left: " + left + "px; width:" + width + "px; "
-                }).html(json.member[referenceLength].name).appendTo("#chr_maps");
+                }).html(json.member[referenceLength].chr_name).appendTo("#chr_maps");
 
 
             }
@@ -202,6 +203,12 @@ function kickOff() {
         jQuery("#bar_image_selector").animate({"left": left});
         drawSelected()
     }
+
+    jQuery(document).mousemove(function(e){
+        var cpos = { top: e.pageY + 10, left: e.pageX + 10 };
+        jQuery('#besideMouse').offset(cpos);
+    });
+
 }
 
 function drawSelected(member) {
@@ -246,6 +253,8 @@ function drawSelected(member) {
             'id': id,
             'class': "refMarkerShow",
             'style': "LEFT:" + startposition + "px; width :" + stopposition + "px;",
+            'onMouseOver':"countcoreMember(\"" + new_data[data_length].id + "\")",
+            'onMouseOut':"jQuery('#besideMouse').html('')",
             'onClick': "getcoreMember(\"" + new_data[data_length].id + "\")"
         }).appendTo("#selected_region");
 
@@ -280,6 +289,21 @@ function getcoreMember(query, redrawn) {
         }
         });
 }
+
+
+function countcoreMember(query) {
+
+    Fluxion.doAjax(
+        'comparaService',
+        'countForCoreMember',
+        {'query': query, 'url': ajaxurl},
+        {'doOnSuccess': function (json) {
+            jQuery("#besideMouse").html(json.member)
+        }
+        });
+}
+
+
 
 
 var sort_by = function (field, reverse, primer) {

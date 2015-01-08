@@ -17,14 +17,15 @@
                     <input id="matchCheck" type="checkbox" checked="" onclick="jQuery('.match').toggle()"
                            style="width: 25px; height: 25px; background: none repeat scroll 0% 0% white; color: white;">
                     Match <br>
-                    <input id="utrCheck"  type="checkbox" checked="" onclick="jQuery('.utr').toggle()"
+                    <input id="utrCheck" type="checkbox" checked="" onclick="jQuery('.utr').toggle()"
                            style="width: 25px; height: 25px; background: none repeat scroll 0% 0% white; color: white;">
                     UTRs <br>
 
                     <br>
                     Label
                     <br>
-                    <input type="radio" onchange=" changeToStable()" value="stable" checked="" name="label_type" checked>
+                    <input type="radio" onchange=" changeToStable()" value="stable" checked="" name="label_type"
+                           checked>
                     Stable Id
 
                     <input type="radio" onchange=" changeToGeneInfo()" value="gene_info" name="label_type"> Gene Info
@@ -47,9 +48,12 @@
                         Search
                     </button>
 
-                   <br>
-                    <div style="position: absolute; top: 200px; text-align: center; width: 300px; color: white; font-weight: lighter; font-size: small;">Search History:
-                        <span id="search_history" style="font-size: medium; font-weight: lighter;" onclick="jQuery('#search').val(jQuery('#search_history').html()); jQuery('#search_history').html(jQuery('#control_search').val());jQuery('#control_search').val(jQuery('#search').val()); search_member(jQuery('#control_search').val());">
+                    <br>
+
+                    <div style="position: absolute; top: 200px; text-align: center; width: 300px; color: white; font-weight: lighter; font-size: small;">
+                        Search History:
+                        <span id="search_history" style="font-size: medium; font-weight: lighter;"
+                              onclick="jQuery('#search').val(jQuery('#search_history').html()); jQuery('#search_history').html(jQuery('#control_search').val());jQuery('#control_search').val(jQuery('#search').val()); search_member(jQuery('#control_search').val());">
 
                         </span>
                     </div>
@@ -128,7 +132,7 @@
                         class="fa fa-exchange fa-3x"> </i>
                 </div>
             </td>
-            </tr>
+        </tr>
         <tr>
             <td>
                 <div id="search_result"
@@ -143,18 +147,29 @@
     <table cellspacing="0" cellpadding="0" border="0">
         <tbody>
         <tr>
-            <td>
-                <input type="text"
-                       style="border-width: 0px 0px 1px; border-style: none none solid; border-color: -moz-use-text-color -moz-use-text-color gray; -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; height: 26px; font-size: large; color: gray; max-width: 200px; float: left;"
-                       id="search">
 
-                <div style="text-align: center; background: none repeat scroll 0% 0% green; top: 0px; float: left; position: relative; padding: 2px 5px;"
-                     onclick="openPanel('#search_div')"><i style="color: white;" class="fa fa-search fa-2x"></i>
+            <td>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for..." id="search" style="box-sizing: border-box; height: 35px;">
+                    <span class="input-group-btn">
+                            <button style="background: none repeat scroll 0% 0% green; height: 35px; top: 0px; border: 0px solid transparent;" class="btn btn-default" type="button"><i class="fa fa-search fa-1x" style="color: white;"></i></button>
+                        </span>
                 </div>
-
+            </td>
             <td>
-
-                <div style="width: auto; right: 0px;" id="reference_maps">
+               <div>
+                   <div style="width: auto; right: 0px;" id="reference_maps">
+                       <div role="group" class="btn-group">
+                           <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button" id="btnGroupDrop1">
+                               Dropdown
+                               <span class="caret"></span>
+                           </button>
+                           <ul aria-labelledby="btnGroupDrop1" role="menu" class="dropdown-menu">
+                               <li><a href="#">Dropdown link</a></li>
+                               <li><a href="#">Dropdown link</a></li>
+                           </ul>
+                           </div>
+                   </div>
                 </div>
             </td>
         </tr>
@@ -167,7 +182,6 @@
 <div id="canvas">
 
 
-
     <div id=chr_maps style="background: #eee9e9; height: 120px; position: relative;   width: 100%; ">
 
     </div>
@@ -178,9 +192,17 @@
 
 
     </div>
-    <div class="ui-draggable" id="bar_image_selector" style="left: 0px; position: relative; vertical-align: middle; z-index: 1999; color: green; -moz-user-select: none; font-size: 30pt; font-weight: lighter; width: 100px;">
+    <div class="ui-draggable" id="bar_image_selector"
+         style="left: 0px; position: relative; vertical-align: middle; z-index: 1999; color: green; -moz-user-select: none; font-size: 30pt; font-weight: lighter; width: 100px;">
 
-        <table cellspacing="0" cellpadding="0" width="100%" border="0"><tbody><tr><td align="left">[</td><td align="right">]</td></tr></tbody></table>
+        <table cellspacing="0" cellpadding="0" width="100%" border="0">
+            <tbody>
+            <tr>
+                <td align="left">[</td>
+                <td align="right">]</td>
+            </tr>
+            </tbody>
+        </table>
 
     </div>
 
@@ -226,7 +248,7 @@
 <div id="popup" class="bubbleleft" style="width:auto; padding: 10px">
     <span style="right:0; position:absolute;" class="ui-button ui-icon ui-icon-close" onclick=removePopup();></span>
 
-   <br>
+    <br>
 
     <table>
         <tr>
@@ -243,8 +265,7 @@
                 </div>
 
 
-
-                <div style="float: right"  id=ensemblLink>
+                <div style="float: right" id=ensemblLink>
 
                 </div>
             </td>
@@ -253,6 +274,8 @@
 
 
 </div>
+
+<p style="z-index:10; position:fixed;font-size: small;" id="besideMouse"></p>
 
 
 <span id="ruler"></span>

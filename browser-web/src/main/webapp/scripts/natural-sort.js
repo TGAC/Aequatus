@@ -13,8 +13,8 @@ function naturalSort (a, b) {
         ore = /^0/,
         i = function(s) { return naturalSort.insensitive && (''+s).toLowerCase() || ''+s },
     // convert all to strings strip whitespace
-        x = i(a.name).replace(sre, '') || '',
-        y = i(b.name).replace(sre, '') || '',
+        x = i(a.chr_name).replace(sre, '') || '',
+        y = i(b.chr_name).replace(sre, '') || '',
     // chunk/tokenize
         xN = x.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
         yN = y.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),

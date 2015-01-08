@@ -10,38 +10,45 @@
 function getReferences() {
 
 
-
-    var colours = ['rgb(166,206,227)','rgb(31,120,180)','rgb(178,223,138)','rgb(51,160,44)','rgb(251,154,153)','rgb(227,26,28)','rgb(253,191,111)','rgb(255,127,0)','rgb(202,178,214)'];
+    var colours = ['rgb(166,206,227)', 'rgb(31,120,180)', 'rgb(178,223,138)', 'rgb(51,160,44)', 'rgb(251,154,153)', 'rgb(227,26,28)', 'rgb(253,191,111)', 'rgb(255,127,0)', 'rgb(202,178,214)'];
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
     Fluxion.doAjax(
         'comparaService',
         'getGenomes',
-        { 'url': ajaxurl},
-        {'doOnSuccess': function (json) {
-            var content = "" +
-                "<select style='' name='genomes' id='genomes'  style=\"float:left; position: relative; background: none repeat scroll 0% 0% white; color: gray; font-size: larger; height: 30px; padding: 2px; margin: 2px;\"  onchange='getChromosomes(jQuery(\"#genomes\").val())'> "
+        {'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+                var content = "" +
+                    "<div class='btn-group' role=\"group\">" +
+                    "<button id=\"btnGroupDrop1\" type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" aria-expanded=\"false\">" +
+                    "Action <span class=\"caret\"></span>" +
+                    "</button>" +
+                    "<ul area-labelledby=\"btnGroupDrop1\" class=\"dropdown-menu\" role=\"menu\">"
 
-            json.genomes.sort(naturalSort)
 
-            for (var i = 0; i < json.genomes.length; i++) {
-                var left = (100 * i) + 50
-                content += "<td>" +
+                        //"<select style='' name='genomes' id='genomes'  style=\"float:left; position: relative; background: none repeat scroll 0% 0% white; color: gray; font-size: larger; height: 30px; padding: 2px; margin: 2px;\"  onchange='getChromosomes(jQuery(\"#genomes\").val())'> "
+
+                    json.genomes.sort(naturalSort)
+
+                for (var i = 0; i < json.genomes.length; i++) {
+                    var left = (100 * i) + 50
 //                    "<option id='option"+json.genomes[i].name+"'  value ="+ json.genomes[i].genome_db_id+" background= "+colours[i]+">" + json.genomes[i].name + "</option> "
-                "<option style=\"padding: 5px;\" id='option"+json.genomes[i].name+"'  value ="+ json.genomes[i].genome_db_id+" background= "+colours[i]+">" + json.genomes[i].name + "</option> "
+                    content += "<li><a href=\"#\">" + json.genomes[i].name + "</a></li>"
+                    //"<option style=\"padding: 5px;\" id='option"+json.genomes[i].name+"'  value ="+ json.genomes[i].genome_db_id+" background= "+colours[i]+">" + json.genomes[i].name + "</option> "
 
+                }
+                content += "</ul></div>"
+
+                jQuery("#genomes").change(function () {
+                    var color = jQuery("option:selected", this).css("background");
+                    jQuery(".headerbar").css("background", color);
+                });
+
+
+                //jQuery("#reference_maps").append(content);
+                jQuery("#canvas").show();
+                getChromosomes(json.genomes[0].genome_db_id, true);
             }
-            content += "</select>"
-
-            jQuery("#genomes").change(function(){
-                var color = jQuery("option:selected", this).css("background");
-                jQuery(".headerbar").css("background", color);
-            });
-
-
-            jQuery("#reference_maps").append(content);
-            jQuery("#canvas").show();
-            getChromosomes(json.genomes[0].genome_db_id, true);
-        }
         });
 }
 function search(query) {
@@ -61,23 +68,24 @@ function search(query) {
         'comparaService',
         'searchDnafrags',
         {'query': query, 'reference': reference, 'url': ajaxurl},
-        {'doOnSuccess': function (json) {
-            var content = "";
-            for (var i = 0; i < json.genomes.length; i++) {
-                if (i == 0) {
-                    content += "<table class='list' id='search_hit' ><thead><tr><th>Genome_db_id</th><th>Genome</th><th>Assembly</th><th>Link</th></tr></thead>";
-                }
+        {
+            'doOnSuccess': function (json) {
+                var content = "";
+                for (var i = 0; i < json.genomes.length; i++) {
+                    if (i == 0) {
+                        content += "<table class='list' id='search_hit' ><thead><tr><th>Genome_db_id</th><th>Genome</th><th>Assembly</th><th>Link</th></tr></thead>";
+                    }
 
-                content += "<tr><td> " + json.genomes[i].genome_db_name + "<td>" + json.genomes[i].name + "<td>" + json.genomes[i].assembly + " <td><a target='_blank' href='index.jsp?query=" + json.genomes[i].name + "&&genome="+json.genomes[i].genome_db_id+"' > <span title=\"Link\" class=\"ui-button ui-icon ui-icon-link\" </span><a/></td>";
-                if (i == json.genomes.length - 1) {
-                    content += "</table>";
-                    jQuery("#searchresult").html(content);
-                    jQuery("#searchresult").fadeIn();
-                }
+                    content += "<tr><td> " + json.genomes[i].genome_db_name + "<td>" + json.genomes[i].name + "<td>" + json.genomes[i].assembly + " <td><a target='_blank' href='index.jsp?query=" + json.genomes[i].name + "&&genome=" + json.genomes[i].genome_db_id + "' > <span title=\"Link\" class=\"ui-button ui-icon ui-icon-link\" </span><a/></td>";
+                    if (i == json.genomes.length - 1) {
+                        content += "</table>";
+                        jQuery("#searchresult").html(content);
+                        jQuery("#searchresult").fadeIn();
+                    }
 
-                jQuery("#search_hit").tablesorter();
+                    jQuery("#search_hit").tablesorter();
+                }
             }
-        }
         });
 }
 
@@ -102,26 +110,27 @@ function search_member(query) {
         'comparaService',
         'searchMember',
         {'query': query, 'reference': reference, 'url': ajaxurl},
-        {'doOnSuccess': function (json) {
-            var content = "";
-            for (var i = 0; i < json.html.length; i++) {
-                if (i == 0) {
-                    content += "<table class='list' id='search_hit' ><thead><tr><th>Genome :  Chromosome</th><th>Description</th><th>Stable ID</th><th>Link</th></tr></thead>";
+        {
+            'doOnSuccess': function (json) {
+                var content = "";
+                for (var i = 0; i < json.html.length; i++) {
+                    if (i == 0) {
+                        content += "<table class='list' id='search_hit' ><thead><tr><th>Genome :  Chromosome</th><th>Description</th><th>Stable ID</th><th>Link</th></tr></thead>";
+                    }
+
+                    var link = "<i onclick='jQuery(\"#canvas\").show(); getChromosomes(" + json.html[i].genome_db_id + "," + json.html[i].chr_name + "," + json.html[i].member_id + "); getcoreMember(" + json.html[i].member_id + ",\"true\");' class=\"fa fa-external-link\"></i>"
+
+                    content += "<tr><td> " + json.html[i].genome + " : " + json.html[i].chr_name + "<td> " + json.html[i].description + "</td> <td> " + json.html[i].stable_id + "</td> <td>" + link + "</td>";
+
+                    if (i == json.html.length - 1) {
+                        content += "</table>";
+                        jQuery("#search_result").html(content);
+                        jQuery("#search_result").fadeIn();
+                        jQuery("#search_hit").tablesorter();
+                    }
+
                 }
-
-                var link = "<i onclick='jQuery(\"#canvas\").show(); getChromosomes("+json.html[i].genome_db_id+","+ json.html[i].chr_name+","+  json.html[i].member_id+"); getcoreMember("+json.html[i].member_id+",\"true\");' class=\"fa fa-external-link\"></i>"
-
-                content += "<tr><td> " + json.html[i].genome + " : " + json.html[i].chr_name + "<td> "+json.html[i].description+"</td> <td> "+json.html[i].stable_id+"</td> <td>"+ link +"</td>";
-
-                if (i == json.html.length - 1) {
-                    content += "</table>";
-                    jQuery("#search_result").html(content);
-                    jQuery("#search_result").fadeIn();
-                    jQuery("#search_hit").tablesorter();
-                }
-
             }
-        }
         });
 }
 
