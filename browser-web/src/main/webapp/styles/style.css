@@ -2582,7 +2582,7 @@ span.deleteicon input {
     background: none repeat scroll 0 0 darkgray;
     /*border: 1px solid gray;*/
     border-radius: 7px 7px 7px 7px;
-    bottom: 20px;
+    bottom: 30px;
     cursor: pointer;
     opacity: 1;
     overflow: hidden;

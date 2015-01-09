@@ -182,7 +182,7 @@
 <div id="canvas">
 
 
-    <div id=chr_maps style="background: #eee9e9; height: 120px; position: relative;   width: 100%; ">
+    <div id=chr_maps style="border-bottom: 1px solid gray; height: 120px; position: relative;   width: 100%; ">
 
     </div>
 
@@ -193,7 +193,7 @@
 
     </div>
     <div class="ui-draggable" id="bar_image_selector"
-         style="left: 0px; position: relative; vertical-align: middle; z-index: 1999; color: green; -moz-user-select: none; font-size: 30pt; font-weight: lighter; width: 100px;">
+         style="left: 0px; position: relative; font-family: Lucida Console; vertical-align: middle; z-index: 1999; color: green; -moz-user-select: none; font-size: 30pt; font-weight: lighter; width: 100px;">
 
         <table cellspacing="0" cellpadding="0" width="100%" border="0">
             <tbody>
@@ -211,7 +211,7 @@
 
     </div>
 
-    <div id="gene_tree_nj" style=" overflow: visible;   position: relative; left: 100px; top: 50px; width: 100%;">
+    <div id="gene_tree_nj" style=" overflow: visible;   position: relative; top: 50px; width: 100%;">
 
     </div>
     <div style="height: auto; margin-left: auto; margin-right: auto; z-index: 1999; position: fixed;">

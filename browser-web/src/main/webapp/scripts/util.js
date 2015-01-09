@@ -30,36 +30,35 @@ function stringTrim(string, width, newClass) {
 
 }
 
-function checkVisuals(){
+function checkVisuals() {
 
-    if(jQuery("#deleteCheck").is(':checked'))
-    jQuery(".delete").show();  // checked
-else
-    jQuery(".delete").hide();  // unchecked
+    if (jQuery("#deleteCheck").is(':checked'))
+        jQuery(".delete").show();  // checked
+    else
+        jQuery(".delete").hide();  // unchecked
 
-    if(jQuery("#matchCheck").is(':checked'))
+    if (jQuery("#matchCheck").is(':checked'))
         jQuery(".match").show();  // checked
     else
         jQuery(".match").hide();  // unchecked
 
-    if(jQuery("#insertCheck").is(':checked'))
+    if (jQuery("#insertCheck").is(':checked'))
         jQuery(".insert").show();  // checked
     else
         jQuery(".insert").hide();  // unchecked
 
-    if(jQuery("#utrCheck").is(':checked'))
+    if (jQuery("#utrCheck").is(':checked'))
         jQuery(".utr").show();  // checked
     else
         jQuery(".utr").hide();  // unchecked jQuery('.utr').toggle()
 
-    if(jQuery('input[name=label_type]:radio:checked').val() == "stable"){
+    if (jQuery('input[name=label_type]:radio:checked').val() == "stable") {
         jQuery(".genelabel").hide();
         jQuery(".stable").show();
-    }else{
+    } else {
         jQuery(".genelabel").hide();
         jQuery(".geneinfo").show();
     }
-
 
 
 }
@@ -77,3 +76,21 @@ else
 //
 //
 //}
+
+
+function resize() {
+    drawChromosome();
+    drawMember();
+    if (member_id == undefined) {
+        drawSelected();
+    } else {
+        var start = 0;
+        for (var i = 0; i < members.length; i++) {
+            if (members[i].id == member_id) {
+                start = members[i].start;
+            }
+        }
+        rearrange_selector(member_id, start, chr);
+        drawSynteny();
+    }
+}

@@ -47,7 +47,9 @@ function getReferences() {
 
                 //jQuery("#reference_maps").append(content);
                 jQuery("#canvas").show();
-                getChromosomes(json.genomes[0].genome_db_id, true);
+                genome_db_id = json.genomes[0].genome_db_id
+getChromosomes(genome_db_id);
+
             }
         });
 }
