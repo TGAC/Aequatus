@@ -12,37 +12,32 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-    <link REL="SHORTCUT ICON" href="<c:url value='/images/browser/tgac_logo.png'/>">
+    <%--jquery--%>
+    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-1.11.2.min.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-ui-1.11.2.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.cookie.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-migrate-1.2.1.min.js'/>"></script>
 
-    <link rel="stylesheet" href="<c:url value='/styles/style.css'/>" type="text/css">
+
+    <%--bootstrap--%>
+    <script type="text/javascript" src="<c:url value='/styles/bootstrap-css/bootstrap.js'/>"></script>
     <link rel="stylesheet" href="<c:url value='/styles/bootstrap-css/bootstrap.css'/>" type="text/css">
     <link rel="stylesheet" href="<c:url value='/styles/bootstrap-css/bootstrap-theme.min.css'/>" type="text/css">
 
+    <%--font awesome--%>
+    <link rel="stylesheet" href="<c:url value='/styles/font-awesome-4.2.0/css/font-awesome.css'/>" type="text/css">
 
-<%--<script src="http://d3js.org/d3.v3.js"></script>--%>
-
+    <%--Fluxion--%>
     <script type="text/javascript" src="<c:url value='/scripts/scriptaculous/prototype.js'/>"></script>
-
-    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-1.11.2.min.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-ui-1.11.2.js'/>"></script>
-    <%--<script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.tablesorter.min.js'/>"></script>--%>
-    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.cookie.js'/>"></script>
-    <%--<script type="text/javascript" src="<c:url value='/scripts/jquery/js/jcanvas.min.js'/>"></script>--%>
-
     <script type="text/javascript" src="<c:url value='/scripts/fluxion-ajax/fluxion-ajax-compiled.js'/>"></script>
 
+    <%--D3--%>
     <script src="<c:url value='/scripts/d3.js/d3.v3.min.js'/>"></script>
 
+    <%--jquery UI--%>
+    <link rel="stylesheet" href="<c:url value='/scripts/jquery/css/smoothness/jquery-ui-1.11.2.css'/>" type="text/css">
 
-    <link rel="stylesheet" href="<c:url value='/scripts/jquery/css/smoothness/jquery-ui-1.11.2.css'/>"
-          type="text/css">
-    <link rel="stylesheet" href="<c:url value='/styles/font-awesome-4.2.0/css/font-awesome.css'/>" type="text/css">
-    <script type="text/javascript" src="<c:url value='/styles/bootstrap-css/bootstrap.js'/>"></script>
-
-
-    <script type="text/javascript">jQuery.noConflict();</script>
-
-    <!--Browser Functions-->
+    <%--Aequatus Scripts--%>
     <script type="text/javascript" src="<c:url value='/scripts/init.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/search_compara.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/geneView.js'/>"></script>
@@ -57,25 +52,14 @@
     <script type="text/javascript" src="<c:url value='/scripts/controls.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/util.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/popup.js'/>"></script>
-
-<%--dependecies for phylo tree--%>
-
     <script type="text/javascript" src="<c:url value='/scripts/d3_tree.js'/>"></script>
 
-    <%--dependecies for phylo tree--%>
 
-    <%--&lt;%&ndash;Bootstrap&ndash;%&gt;--%>
-    <%--<script type="text/javascript" src="<c:url value='/scripts/bootstrap-3.1.1-dist/js/bootstrap.js'/>" ></script>--%>
-    <%--<script type="text/javascript" src="<c:url value='/scripts/bootstrap-3.1.1-dist/js/bootstrap.min.js'/>" ></script>--%>
+    <%--Aequatus CSS--%>
+    <link REL="SHORTCUT ICON" href="<c:url value='/images/browser/tgac_logo.png'/>">
+    <link rel="stylesheet" href="<c:url value='/styles/style.css'/>" type="text/css">
 
-    <%--<!-- Latest compiled and minified CSS -->--%>
-    <%--<link rel="stylesheet" href="<c:url value='/scripts/bootstrap-3.1.1-dist/css/bootstrap-theme.css'/>" type="text/css">--%>
-    <%--<link rel="stylesheet" href="<c:url value='/scripts/bootstrap-3.1.1-dist/css/bootstrap.css'/>" type="text/css">--%>
-
-    <%--<!-- Optional theme -->--%>
-    <%--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">--%>
-
-    <%--&lt;%&ndash;Bootstrap&ndash;%&gt;--%>
+    <script type="text/javascript">jQuery.noConflict();</script>
 
     <title>${initParam.pageTitle}</title>
 
@@ -106,7 +90,6 @@
             </tr>
         </table>
     </center>
-
 
 
 </div>
