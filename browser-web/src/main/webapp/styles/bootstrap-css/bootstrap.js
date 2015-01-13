@@ -831,21 +831,29 @@ if (typeof jQuery === 'undefined') {
   function clearMenus(e) {
     if (e && e.which === 3) return
     $(backdrop).remove()
-    $(toggle).each(function () {
-      var $this         = $(this)
-      var $parent       = getParent($this)
-      var relatedTarget = { relatedTarget: this }
-
+    $(toggle).each(function (e) {
+      var $parent = getParent($(this))
       if (!$parent.hasClass('open')) return
-
-      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
-
+      $parent.trigger(e = $.Event('bs.dropdown'))
       if (e.isDefaultPrevented()) return
-
-      $this.attr('aria-expanded', 'false')
-      $parent.removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
+      $parent.removeClass('open')
     })
   }
+   //  $(toggle).each(function () {
+  //    var $this         = $(this)
+  //    var $parent       = getParent($this)
+  //    var relatedTarget = { relatedTarget: this }
+  //
+  //    if (!$parent.hasClass('open')) return
+  //
+  //    $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
+  //
+  //    if (e.isDefaultPrevented()) return
+  //
+  //    $this.attr('aria-expanded', 'false')
+  //    $parent.removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
+  //  })
+  //}
 
   function getParent($this) {
     var selector = $this.attr('data-target')
