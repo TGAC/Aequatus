@@ -9,11 +9,27 @@
 var mouseX, mouseY;
 
 function newpopup(desc,stable_id,member_id) {
-    jQuery('#makemetop_button').html("<button onclick=' changeReference(\"" + stable_id + "\") '>Make Me Root</button>")
+    Fluxion.doAjax(
+        'comparaService',
+        'getInfoForCoreMember',
+        {'query': member_id, 'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+                jQuery('#makemetop_button').html("<button onclick=' changeReference(\"" + stable_id + "\") '>Make Me Root</button>")
 
-    jQuery('#gene_desc').html(desc)
+                jQuery('#ref_name').html("Chr "+json.info.name)
 
-    jQuery('#ensemblLink').html("<a href='http://www.ensembl.org/Multi/Search/Results?q=" + stable_id + "'>Link to Ensembl</a>")
+                jQuery('#position').html(json.info.dnafrag_start+" - "+json.info.dnafrag_end)
+
+                jQuery('#disp_label').html(json.info.display_label)
+
+                jQuery('#gene_desc').html(stringTrim(desc, 200))
+
+                jQuery('#ensemblLink').html("<button><a href='http://www.ensembl.org/Multi/Search/Results?q=" + stable_id + "'>Link to Ensembl</a></button>")
+            }
+        });
+
+
 
     if (mouseX + jQuery("#popup").width() > jQuery("#main1").width()) {
         jQuery("#popup").css({"left": mouseX - jQuery("#popup").width() - 5});

@@ -2792,12 +2792,14 @@ border-radius: 5px 0 0 5px;
     background-color: #ff4500;
 }
 
-#genomes{
+#genomes {
     background: white;
     color: gray;
     font-size: larger;
     margin: 0;
     padding: 0;
+    -moz-appearance: -moz-window-titlebar;
+    -webkit-appearance: none;
 }
 
 #genomes li:hover{

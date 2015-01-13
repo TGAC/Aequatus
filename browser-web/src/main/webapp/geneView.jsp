@@ -1,4 +1,4 @@
-<%@ include file="header.jsp" %>
+<%--<%@ include file="header.jsp" %>--%>
 
 <div id="control_panel"
      style="top: 100px;position: fixed; height: auto; left: -300px; z-index: 2999">
@@ -6,8 +6,27 @@
         <tbody>
         <tr valign=top>
             <td width="300px" id=control_divs>
+
+
                 <div style="display: none; padding: 10px; height: 248px; background: none repeat scroll 0% 0% cyan; font-size: large;"
                      id="settings_div">
+
+                    <%--<div class="checkbox">--%>
+                    <%--<label>--%>
+                    <%--<input id="deleteCheck" type="checkbox" checked="" onclick="jQuery('.delete').toggle()">--%>
+                    <%--Deletion--%>
+                    <%--</label>--%>
+                    <%--<label>--%>
+                    <%--<input id="insertCheck" type="checkbox" checked="" onclick="jQuery('.insert').toggle()">--%>
+                    <%--Insertion--%>
+                    <%--</label>--%>
+                    <%--<label>    <input id="matchCheck" type="checkbox" checked="" onclick="jQuery('.match').toggle()">--%>
+                    <%--Match--%>
+                    <%--</label>--%>
+
+                    <%--</div>--%>
+
+
                     <input id="deleteCheck" type="checkbox" checked="" onclick="jQuery('.delete').toggle()"
                            style="width: 25px; height: 25px; color: white; background: none repeat scroll 0% 0% red; border: 0px none;">
                     Deletion <br>
@@ -52,7 +71,7 @@
 
                     <div style="position: absolute; top: 200px; text-align: center; width: 300px; color: white; font-weight: lighter; font-size: small;">
                         Search History:
-                        <span id="search_history" style="font-size: medium; font-weight: lighter;"
+                        <span id="search_history" style="font-size: medium; font-weight: lighter;cursor: pointer;"
                               onclick="jQuery('#search').val(jQuery('#search_history').html()); jQuery('#search_history').html(jQuery('#control_search').val());jQuery('#control_search').val(jQuery('#search').val()); search_member(jQuery('#control_search').val());">
 
                         </span>
@@ -63,7 +82,7 @@
                     <table width="50%" cellpadding=5px>
                         <tbody>
                         <tr>
-                            <td align="left" colspan="2"><b> Legends </b></td>
+                            <td align="left" colspan="2"><b> Tree Legends </b></td>
                         </tr>
                         <tr>
                             <td>
@@ -150,26 +169,19 @@
 
             <td>
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for..." id="search" style="box-sizing: border-box; height: 35px;">
+                    <input type="text" class="form-control" placeholder="Search for..." id="search"
+                           style="box-sizing: border-box; height: 35px;">
                     <span class="input-group-btn">
-                            <button style="background: none repeat scroll 0% 0% green; height: 35px; top: 0px; border: 0px solid transparent;" class="btn btn-default" type="button"><i class="fa fa-search fa-1x" style="color: white;"></i></button>
+                            <button style="background: none repeat scroll 0% 0% green; height: 35px; top: 0px; border: 0px solid transparent;"
+                                    class="btn btn-default" type="button"><i class="fa fa-search fa-1x"
+                                                                             style="color: white;"></i></button>
                         </span>
                 </div>
             </td>
             <td>
-               <div>
-                   <div style="width: auto; right: 0px;" id="reference_maps">
-                       <div role="group" class="btn-group">
-                           <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button" id="btnGroupDrop1">
-                               Dropdown
-                               <span class="caret"></span>
-                           </button>
-                           <ul aria-labelledby="btnGroupDrop1" role="menu" class="dropdown-menu">
-                               <li><a href="#">Dropdown link</a></li>
-                               <li><a href="#">Dropdown link</a></li>
-                           </ul>
-                           </div>
-                   </div>
+                <div>
+                    <div style="width: auto; right: 0px;" id="reference_maps">
+                    </div>
                 </div>
             </td>
         </tr>
@@ -181,6 +193,7 @@
 
 <div id="canvas">
 
+    <div id="genome_name" style="position: absolute; font-size: large; font-weight: bolder; padding: 10px; color: darkgray;"></div>
 
     <div id=chr_maps style="border-bottom: 1px solid gray; height: 120px; position: relative;   width: 100%; ">
 
@@ -188,9 +201,7 @@
 
 
     <div id="bar_image_ref"
-         style="border-left: 1px solid #000000; border-right: 1px solid #000000; height: 10px; left: 0; position: relative; top: 30px; vertical-align: middle; width: 100%; z-index: 999;">
-
-
+         style="border-left: 1px solid #000000; border-right: 1px solid #000000; height: 10px; left: 0; position: relative; top: 25px; vertical-align: middle; width: 100%; z-index: 999;">
     </div>
     <div class="ui-draggable" id="bar_image_selector"
          style="left: 0px; position: relative; font-family: Lucida Console; vertical-align: middle; z-index: 1999; color: green; -moz-user-select: none; font-size: 30pt; font-weight: lighter; width: 100px;">
@@ -245,31 +256,54 @@
 
 </div>
 
-<div id="popup" class="bubbleleft" style="width:auto; padding: 10px">
+<div id="popup" class="bubbleleft" style="width:200px; padding: 10px; height:auto; max-height:150px;">
     <span style="right:0; position:absolute;" class="ui-button ui-icon ui-icon-close" onclick=removePopup();></span>
 
     <br>
 
-    <table>
+    <table cellspacing="0" border="0">
+        <thead>
         <tr>
             <td>
-                <div id=gene_desc>
-
-                </div>
+                <div id="disp_label"></div>
+            </td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <div id="ref_name"></div>
             </td>
         </tr>
         <tr>
-            <td align=right>
-                <div style="float: right" id=makemetop_button>
-
-                </div>
-
-
-                <div style="float: right" id=ensemblLink>
-
-                </div>
+            <td>
+                <div id="position"></div>
             </td>
         </tr>
+
+        <tr>
+            <td>
+                <div id="gene_desc"></div>
+            </td>
+        </tr>
+        <tr align="right">
+            <td align="">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div id="makemetop_button" style="float: right"></div>
+
+                        </td>
+                        <td>
+                            <div id="ensemblLink" style="float: right"></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
     </table>
 
 

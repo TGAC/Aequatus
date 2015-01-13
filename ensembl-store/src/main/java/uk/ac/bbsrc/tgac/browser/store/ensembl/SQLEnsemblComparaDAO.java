@@ -82,7 +82,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_DNAFRAGS_ID_SEARCH = "select dnafrag_id from dnafrag where name like ? and genome_db_id = ?";
 
-    public static final String GET_DNAFRAG_BY_NAME = "select * from dnafrag where dnafrag_id = ? and genome_db_id = ?";
+    public static final String GET_DNAFRAG_BY_NAME = "select * from dnafrag where name = ? and genome_db_id = ?";
+
+    public static final String GET_DNAFRAG_BY_ID = "select * from dnafrag where dnafrag_id = ? and genome_db_id = ?";
 
     public static final String GET_CHR_DNAFRAG_BY_NAME = "select * from dnafrag where dnafrag_id = ? and genome_db_id = ? and coord_system_name like \"%chr%\"";
 
@@ -625,7 +627,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public int getChromosomeLength(String chr_name, String genome_id) throws IOException {
         try {
             int length = 0;
-            Map<String, Object> maps_2 = template.queryForMap(GET_DNAFRAG_BY_NAME, new Object[]{chr_name, genome_id});
+            Map<String, Object> maps_2 = template.queryForMap(GET_DNAFRAG_BY_ID, new Object[]{chr_name, genome_id});
             length = Integer.parseInt(maps_2.get("length").toString());
 
             return length;
@@ -726,6 +728,20 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
 
         return homology_member_id;
+
+    }
+
+    public JSONObject getInfoforMember(String query) throws IOException {
+
+        JSONObject gene_info = new JSONObject();
+        final String GET_GENE_INFO = "select m1.*, df.* " +
+                "from seq_member m1, dnafrag df " +
+                "WHERE m1.seq_member_id = ? AND m1.genome_db_id in " + genome_ids + " and m1.dnafrag_id = df.dnafrag_id;";
+
+log.info("\n\n\n\n query "+query);
+        Map<String, Object> geneinfo = template.queryForMap(GET_GENE_INFO, new Object[]{query});
+        gene_info.put("info", geneinfo);
+        return gene_info;
 
     }
 
@@ -838,9 +854,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public JSONArray searchMember(String query) throws IOException {
 
-        final String SEARCH_MEMBER = "SELECT * " +
-                "FROM gene_member m1 " +
-                "where (description like ? OR display_label like ? OR stable_id like ?) and m1.genome_db_id in " + genome_ids + " limit 100";
+        final String SEARCH_MEMBER = "SELECT m1.*, df.* " +
+                "FROM gene_member m1, dnafrag df " +
+                "where (description like ? OR display_label like ? OR stable_id like ?) and m1.genome_db_id in " + genome_ids + " and df.dnafrag_id = m1.dnafrag_id limit 100";
 
 
         JSONArray homologouses = new JSONArray();

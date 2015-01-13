@@ -81,9 +81,12 @@ function checkVisuals() {
 function resize() {
     drawChromosome();
     drawMember();
+    select_chr();
     if (member_id == undefined) {
+        select_member();
         drawSelected();
     } else {
+
         var start = 0;
         for (var i = 0; i < members.length; i++) {
             if (members[i].id == member_id) {
@@ -91,6 +94,6 @@ function resize() {
             }
         }
         rearrange_selector(member_id, start, chr);
-        drawSynteny();
+        drawSelected();
     }
 }
