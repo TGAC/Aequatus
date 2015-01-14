@@ -94,6 +94,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_GENOME_NAME_FROM_ID = "select name from genome_db where genome_db_id = ?";
 
+    public static final String GET_GENOME_ID_FROM_NAME = "select genome_db_id from genome_db where name = ?";
+
     public static final String GET_GENOMIC_ALIGN_BLOCK_BY_GENOMIC_ALIGN_BLOCK_ID = "select genomic_align_id as id, genomic_align_block_id, dnafrag_id as ref_id, dnafrag_start as start, dnafrag_end as end, dnafrag_strand as strand, cigar_line  from genomic_align where genomic_align_block_id = ? AND dnafrag_id <> ?";
 
     public static final String GET_HOMOLOGY_MEMBER_BY_HOMOLOGY_MEMBER_ID = "select gene_member_id from homology_member where homology_id = ? AND gene_member_id <> ?";
@@ -131,6 +133,11 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_MLSSID_FOR_HOMOLOGY = "select method_link_species_set_id from homology where homology_id = ?";
 
+
+    public static final String GET_MEMBER_ID_FROM_STABLE_ID = "select gene_member_id from seq_member where stable_id = ?";
+    public static final String  GET_Referece_ID_FROM_STABLE_ID = "select genome_db_id from seq_member where stable_id = ?";
+    public static final String  GET_dnafrag_ID_FROM_STABLE_ID = "select dnafrag_id from seq_member where stable_id = ?";
+    public static final String  GET_dnafrag_Name_FROM_ID = "select name from dnafrag where dnafrag_id = ?";
 
 //    public static final String GET_GENE_TREE_REFERENCE = "SELECT m1.stable_id AS Ref, m1.canonical_member_id AS peptide_id, m2.stable_id AS Ref_stable_id, m3.*, gam.cigar_line, gtr.method_link_species_set_id " +
 //            "FROM member m1 " +
@@ -745,6 +752,73 @@ log.info("\n\n\n\n query "+query);
 
     }
 
+    public JSONObject getGenomeId(String query) throws IOException {
+
+
+
+        JSONObject genome_info = new JSONObject();
+
+        log.info("\n\n\n\n get genome id query "+query);
+        String genome_db_id = template.queryForObject(GET_GENOME_ID_FROM_NAME, new Object[]{query}, String.class);
+        genome_info.put("ref", genome_db_id);
+        return genome_info;
+
+    }
+
+
+    public JSONObject getChrId(String query, String ref) throws IOException {
+
+        JSONObject chr_info = new JSONObject();
+
+
+        log.info("\n\n\n\n get chr id query "+query);
+        String chr_id = template.queryForObject(GET_DNAFRAG_ID_SEARCH, new Object[]{query, ref}, String.class);
+        chr_info.put("ref", ref);
+
+        chr_info.put("chr", chr_id);
+        return chr_info;
+
+    }
+
+
+    public String getMemberId(String query) throws IOException {
+
+        log.info("\n\n\n\n get chr id query "+query);
+
+
+        String member_id = template.queryForObject(GET_MEMBER_ID_FROM_STABLE_ID, new Object[]{query}, String.class);
+        return member_id;
+
+    }
+
+    public String getReferencefromStableId(String query) throws IOException {
+
+        log.info("\n\n\n\n get chr id query "+query);
+
+
+        String ref_id = template.queryForObject(GET_Referece_ID_FROM_STABLE_ID, new Object[]{query}, String.class);
+        return ref_id;
+
+    }
+
+    public String getDnafragIdfromStableId(String query) throws IOException {
+
+        log.info("\n\n\n\n get chr id query "+query);
+
+
+        String dnafrag_id = template.queryForObject(GET_dnafrag_ID_FROM_STABLE_ID, new Object[]{query}, String.class);
+        return dnafrag_id;
+
+    }
+    public String getDnafragnamefromId(String query) throws IOException {
+
+        log.info("\n\n\n\n get chr id query "+query);
+
+
+        String dnafrag_id = template.queryForObject(GET_dnafrag_Name_FROM_ID, new Object[]{query}, String.class);
+        return dnafrag_id;
+
+    }
     public Map getGeneTree(String query) throws IOException {
         JSONObject homology_members = new JSONObject();
 

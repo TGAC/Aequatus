@@ -3,6 +3,8 @@
  */
 
 function kickOff() {
+    ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
+
 
     var matched, browser;
 
@@ -129,3 +131,101 @@ function kickOff() {
 
 }
 
+function getUrlVariables(chr) {
+
+    jQuery.urlParam = function (name) {
+        var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if (results == null) {
+            return null;
+        }
+        else {
+            return results[1] || 0;
+        }
+    }
+
+    processURL(jQuery.urlParam)
+
+}
+
+function processURL(urlParam) {
+
+    if (jQuery.urlParam("search") != null) {
+        console.log("search")
+        if (parseInt(jQuery("#control_panel").css("left")) < 0) {
+            openPanel('#search_div')
+        }
+        jQuery('#search').val(urlParam("search"));
+        jQuery('#control_search').val(urlParam("search"))
+        search_member(urlParam("search"))
+    }
+    else if (jQuery.urlParam("ref") != null && jQuery.urlParam("chr") != null) {
+        getChrId(urlParam("chr"), urlParam("ref"))
+
+    }
+    else if (jQuery.urlParam("ref") != null) {
+        getGenomeId(urlParam("ref"))
+    }
+    else if (jQuery.urlParam("query") != null){//} && jQuery.urlParam("ref") != null && jQuery.urlParam("chr") != null) {
+        console.log("link query")
+        getMemberfromURL(urlParam("query"));
+    }
+    else {
+        console.log("no url parameters")
+        getReferences();
+
+    }
+}
+
+function getGenomeId(ref){
+    Fluxion.doAjax(
+        'comparaService',
+        'getGenomeId',
+        {'query': ref, 'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+                genome_db_id = json.ref;
+                getReferences();
+                changeGenome(json.ref, ref)
+            }
+        });
+}
+
+function getChrId(chr, ref){
+    Fluxion.doAjax(
+        'comparaService',
+        'getChrId',
+        {'query': chr, 'ref': ref, 'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+                chr = json.dnafrag;
+                genome_db_id = json.ref;
+                getReferences();
+                setCredentials(json.chr, json.ref);
+                getChromosomes();
+                getMember();
+                select_chr()
+            }
+        });
+}
+
+
+function getMemberfromURL(query){
+    Fluxion.doAjax(
+        'comparaService',
+        'getMemberfromURL',
+        {'query': query, 'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+                member_id = json.member_id;
+                chr = json.dnafrag;
+                genome_db_id = json.ref;
+                getReferences();
+                getChromosomes();
+                getMember();
+                select_chr();
+                select_member();
+                select_genome();
+                getcoreMember(json.member_id, true);
+            }
+        });
+}

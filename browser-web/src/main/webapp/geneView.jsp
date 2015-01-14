@@ -317,6 +317,6 @@
 <script>
     jQuery(document).ready(function () {
         kickOff();
-        getReferences();
+        getUrlVariables()
     });
 </script>

@@ -26,9 +26,7 @@ var members_overview = null;
 var chr_len = null;
 
 
-function getChromosomes(genome_db_id, chr, member_id) {
-
-
+function getChromosomes() {
     var color = jQuery("option:selected", jQuery("#genomes")).attr("background");
     jQuery(".headerbar").css("background", color);
     jQuery("#chr_maps").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
@@ -47,12 +45,20 @@ function getChromosomes(genome_db_id, chr, member_id) {
         {
             'doOnSuccess': function (json) {
                 chromosomes = json.member;
+
                 drawChromosome()
-                if (member_id == undefined) {
+                if (chr == undefined) {
                     setCredentials(chromosomes[0].name, genome_db_id);
-                } else {
-                    setCredentials(chr, genome_db_id, member_id);
                 }
+                Fluxion.doAjax(
+                    'comparaService',
+                    'getGenomeAndChrName',
+                    {'query': genome_db_id, 'chr':chr, 'url': ajaxurl},
+                    {
+                        'doOnSuccess': function (json) {
+                            window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?ref=" + json.genome_name+"&chr="+json.chr_name);
+                        }
+                    });
                 getMember();
             }
         })
@@ -97,13 +103,14 @@ function drawChromosome() {
 
 function setCredentials(chr_name, genome_id) {
     chr = chr_name;
-    //member_id = mem_id;
     genome_db_id = genome_id;
 }
 
 function getMember() {
     jQuery(".selected").removeClass("selected")
     jQuery("#chr" + chr).addClass("selected")
+
+
 
     if (member_id == undefined) {
         jQuery("#selected_region").html("")
@@ -155,15 +162,11 @@ function drawMember() {
 
 
 function drawSelected(member) {
-
-
-
     jQuery("#selected_region").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
     if (member == undefined) {
         jQuery("#gene_widget").html("")
         jQuery("#gene_info").html("")
     }
-
     var left = parseInt(jQuery("#bar_image_selector").position().left)
     var width = parseInt(jQuery("#bar_image_selector").css("width"));
     var maxLentemp = parseInt(jQuery("#canvas").css("width"));
@@ -177,7 +180,6 @@ function drawSelected(member) {
     var new_data = jQuery.grep(members, function (element, index) {
         return element.start >= start && element.start <= end; // retain appropriate elements
     });
-
 
     var data_length = new_data.length;
 
@@ -231,6 +233,8 @@ function getcoreMember(query, redrawn) {
         {
             'doOnSuccess': function (json) {
                 syntenic_data = json
+                window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);
+
                 drawSynteny(redrawn);
             }
         });
@@ -829,22 +833,9 @@ function drawSynteny(redrawn) {
 
         if (redrawn != undefined) {
             console.log("redrawn")
-            if (ref_data.genome != jQuery("#genomes option:selected").val()) {
-                console.log("if")
-                jQuery("#genomes").val(ref_data.genome)
-                var color = jQuery("option:selected", this).css("background");
-                jQuery("#reference_maps").css("background", color);
-                getChromosomes(ref_data.genome, ref_data.genes.gene.reference, ref_data.genes.gene.member_id);
-            } else {
-                console.log("else")
-
-
-                if (jQuery("#chr" + ref_data.genes.gene.reference).hasClass("selected")) {
-                    rearrange_selector(ref_data.genes.gene.member_id, ref_data.genes.gene.start, ref_data.genes.gene.reference)
-                } else {
-                    getMember(ref_data.genes.gene.reference, ref_data.genome, ref_data.genes.gene.member_id);
-                }
-            }
+            jQuery("#genomes").val(ref_data.genome)
+            select_chr();
+            select_member();
         } else {
             console.log("else")
         }
@@ -856,3 +847,23 @@ function drawSynteny(redrawn) {
 
 }
 
+function select_member() {
+    jQuery(".refMarkerShow").removeClass("selected")
+    jQuery("#ref" + member_id).addClass("selected")
+}
+
+function select_chr() {
+    jQuery("#chr" + chr).addClass("selected")
+}
+
+function select_genome(){
+    Fluxion.doAjax(
+        'comparaService',
+        'getGenomeName',
+        {'query': genome_db_id, 'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+                jQuery("#genome_name").html(json.genome_name);
+            }
+        });
+}
