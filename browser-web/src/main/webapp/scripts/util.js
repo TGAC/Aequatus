@@ -95,5 +95,6 @@ function resize() {
         }
         rearrange_selector(member_id, start, chr);
         drawSelected();
+        drawSynteny(true);
     }
 }
