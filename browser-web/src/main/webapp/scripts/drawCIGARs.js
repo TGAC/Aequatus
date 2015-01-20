@@ -22,7 +22,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
     var ref_exon_number = 0;
 
     max = exons[exon_number].length
-    maxLentemp = parseInt(jQuery(div + " #exon" + id + "" + exons[exon_number].id).css('width'));
+    maxLentemp = parseInt(jQuery("#exon" + id + "" + exons[exon_number].id+""+div).css('width'));
 
 
     var cigar_pos = (transcript_start - gene_start) + 1;
@@ -35,7 +35,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
             temp_start = (exons[e].start - gene_start) + 1;
             exon_number = e
             max = exons[exon_number].length
-            maxLentemp = parseInt(jQuery(div + " #exon" + id + "" + exons[exon_number].id).css('width'));
+            maxLentemp = parseInt(jQuery("#exon" + id + "" + exons[exon_number].id+""+div).css('width'));
             break;
         }
     }
@@ -48,7 +48,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
             exon_number++;
 
             max = exons[exon_number].length
-            maxLentemp = jQuery(div + " #exon" + id + "" + exons[exon_number].id).css('width');
+            maxLentemp = jQuery("#exon" + id + "" + exons[exon_number].id+""+div).css('width');
 
             temp_end = (exons[exon_number].end - gene_start) + 1;
         }
@@ -129,7 +129,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
                     trackClass = "match";
                     if ((parseInt(cigar_pos) + parseInt(length)) <= max) {
-                        temp_div = div + " #exon" + id + "" + exons[exon_number].id
+                        temp_div = "#exon" + id + "" + exons[exon_number].id+""+div
 
                         trackHTML(startposition, stopposition, top, trackClass, temp_div, temp_colours[i], length, i);
                         cigar_pos = parseInt(cigar_pos) + parseInt(length)
@@ -142,7 +142,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
 
                             stopposition = parseFloat(((max) - cigar_pos) * parseFloat(maxLentemp) / (max));
-                            temp_div = div + " #exon" + id + "" + exons[exon_number].id
+                            temp_div = "#exon" + id + "" + exons[exon_number].id+""+div
 
                             trackHTML(startposition, stopposition, top, trackClass, temp_div, temp_colours[i], (temp_end - cigar_pos), i);
 
@@ -157,7 +157,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                             }
 
                             max = exons[exon_number].length
-                            maxLentemp = jQuery(div + " #exon" + id + "" + exons[exon_number].id).css('width');
+                            maxLentemp = jQuery("#exon" + id + "" + exons[exon_number].id+""+div).css('width');
 
                             temp_start = exons[exon_number].start - gene_start;
                             temp_end = (exons[exon_number].end - gene_start) + 1;
@@ -170,7 +170,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                             ;
 
                             if ((parseInt(cigar_pos) + parseInt(length)) <= max) {
-                                temp_div = div + " #exon" + id + "" + exons[exon_number].id
+                                temp_div = "#exon" + id + "" + exons[exon_number].id+""+div
 
                                 trackHTML(startposition, stopposition, top, trackClass, temp_div, temp_colours[i], length, i);
                                 cigar_pos = parseInt(cigar_pos) + parseInt(length)
@@ -188,7 +188,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                     trackClass = "delete ui-icon ui-icon-carat-1-s";
                     startposition = parseInt((cigar_pos) * parseFloat(maxLentemp) / (max));
                     stopposition = 15;
-                    temp_div = div + " #exon" + id + "" + exons[exon_number].id
+                    temp_div = "#exon" + id + "" + exons[exon_number].id+""+div
 
                     trackHTMLDelete(startposition, stopposition, top, trackClass, temp_div, temp_colours[i], length);
 
@@ -201,7 +201,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
                     if (parseInt(cigar_pos) + parseInt(length) <= (temp_end - temp_start)) {
 
-                        temp_div = div + " #exon" + id + "" + exons[exon_number].id
+                        temp_div = "#exon" + id + "" + exons[exon_number].id+""+div
                         trackHTML(startposition, stopposition, top, trackClass, temp_div, "black", length);
                         cigar_pos = parseInt(cigar_pos) + parseInt(length)
 
@@ -213,7 +213,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                         third: while (bool) {
 
                             stopposition = parseFloat(((temp_end - temp_start) - cigar_pos) * parseFloat(maxLentemp) / (max));
-                            temp_div = div + " #exon" + id + "" + exons[exon_number].id
+                            temp_div = "#exon" + id + "" + exons[exon_number].id+""+div
 
                             trackHTML(startposition, stopposition, top, trackClass, temp_div, "black", (temp_end - cigar_pos));
 
@@ -229,7 +229,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                             }
 
                             max = exons[exon_number].length
-                            maxLentemp = jQuery(div + " #exon" + id + "" + exons[exon_number].id).css('width');
+                            maxLentemp = jQuery("#exon" + id + "" + exons[exon_number].id+""+div).css('width');
 
 
                             temp_start = exons[exon_number].start - gene_start;
@@ -242,7 +242,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
                             if (parseInt(cigar_pos) + parseInt(length) < (temp_end - temp_start)) {
 
-                                temp_div = div + " #exon" + id + "" + exons[exon_number].id
+                                temp_div = "#exon" + id + "" + exons[exon_number].id+""+div
 
                                 trackHTML(startposition, stopposition, top, trackClass, temp_div, "black", length);
                                 cigar_pos = parseInt(cigar_pos) + parseInt(length)
@@ -286,6 +286,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 }
 
 function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp_div, ref_exons, transcript_start, transcript_end, id, div) {
+    console.log("dispcigarref")
     exons = jQuery.parseJSON(exons);
     ref_exons = jQuery.parseJSON(ref_exons)
     exons.sort(sort_by('start', true, parseInt));
@@ -317,7 +318,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
             temp_start = (exons[e].start - gene_start) + 1;
             exon_number = e
             max = exons[exon_number].length
-            maxLentemp = parseInt(jQuery(div + " #exon" + id + "" + exons[exon_number].id).css('width'));
+            maxLentemp = parseInt(jQuery("#exon" + id + "" + exons[exon_number].id+""+div).css('width'));
             break;
         }
     }
@@ -330,7 +331,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
             exon_number++;
 
             max = exons[exon_number].length
-            maxLentemp = jQuery(div + " #exon" + id + "" + exons[exon_number].id).css('width');
+            maxLentemp = jQuery("#exon" + id + "" + exons[exon_number].id+""+div).css('width');
 
             temp_end = (exons[exon_number].end - gene_start) + 1;
         }
@@ -376,7 +377,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
 
 
                 if (parseInt(cigar_pos) + parseInt(length) <= (temp_end - temp_start)) {
-                    temp_div = div + " #exon" + id + "" + exons[exon_number].id
+                    temp_div = "#exon" + id + "" + exons[exon_number].id+""+div
                     trackHTML(startposition, stopposition, top, trackClass, temp_div, colours[exon_number], length, exon_number);
                     cigar_pos = parseInt(cigar_pos) + parseInt(length)
                 } else {
@@ -387,7 +388,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
 
                         stopposition = parseFloat(((temp_end - temp_start) - cigar_pos) * parseFloat(maxLentemp) / (max));
 
-                        temp_div = div + " #exon" + id + "" + exons[exon_number].id
+                        temp_div = "#exon" + id + "" + exons[exon_number].id+""+div
                         trackHTML(startposition, stopposition, top, trackClass, temp_div, colours[exon_number], temp_end - cigar_pos, exon_number);
 
                         length = length - ((temp_end - temp_start) - cigar_pos);
@@ -400,7 +401,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
                         }
 
                         max = exons[exon_number].length
-                        maxLentemp = parseInt(jQuery(div + " #exon" + id + "" + exons[exon_number].id).css('width'));
+                        maxLentemp = parseInt(jQuery("#exon" + id + "" + exons[exon_number].id+""+div).css('width'));
 
                         temp_start = exons[exon_number].start - gene_start;
                         temp_end = (exons[exon_number].end - gene_start) + 1;
@@ -411,7 +412,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
                         stopposition = parseFloat((length) * parseFloat(maxLentemp) / (max));
 
                         if (parseInt(cigar_pos) + parseInt(length) <= (temp_end - temp_start)) {
-                            temp_div = div + " #exon" + id + "" + exons[exon_number].id
+                            temp_div = "#exon" + id + "" + exons[exon_number].id+""+div
 
                             trackHTML(startposition, stopposition, top, trackClass, temp_div, colours[exon_number], length, exon_number);
                             cigar_pos = parseInt(cigar_pos) + parseInt(length)
@@ -434,7 +435,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
 
                 stopposition = 15;
 
-                temp_div = div + " #exon" + id + "" + exons[exon_number].id
+                temp_div = "#exon" + id + "" + exons[exon_number].id+""+div
                 trackHTMLDelete(startposition, stopposition, top, trackClass, temp_div, colours[exon_number], length);
             }
         }

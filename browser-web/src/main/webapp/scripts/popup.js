@@ -8,18 +8,34 @@
 
 var mouseX, mouseY;
 
-function newpopup(desc,stable_id,member_id) {
+function newpopup(member_id) {
+
+    var gene;
+    var stable_id;
+
+    if (syntenic_data.member[member_id]) {
+        gene = syntenic_data.member[member_id].genes.gene;
+        stable_id = syntenic_data.member[member_id].stable_id
+    } else if (syntenic_data.ref.genes.gene.member_id) {
+        gene = syntenic_data.ref.genes.gene;
+        stable_id = syntenic_data.ref.stable_id
+    } else {
+        console.log(member_id + " not matched.")
+        return;
+    }
+    var desc = gene.desc
+
     Fluxion.doAjax(
         'comparaService',
         'getInfoForCoreMember',
         {'query': member_id, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                jQuery('#makemetop_button').html("<button onclick=' changeReference(\"" + stable_id + "\") '>Make Me Root</button>")
+                jQuery('#makemetop_button').html("<button onclick=' changeReference(\"" + member_id + "\") '>Make Me Root</button>")
 
-                jQuery('#ref_name').html("Chr "+json.info.name)
+                jQuery('#ref_name').html("Chr " + json.info.name)
 
-                jQuery('#position').html(json.info.dnafrag_start+" - "+json.info.dnafrag_end)
+                jQuery('#position').html(json.info.dnafrag_start + " - " + json.info.dnafrag_end)
 
                 jQuery('#disp_label').html(json.info.display_label)
 
@@ -28,7 +44,6 @@ function newpopup(desc,stable_id,member_id) {
                 jQuery('#ensemblLink').html("<button><a href='http://www.ensembl.org/Multi/Search/Results?q=" + stable_id + "'>Link to Ensembl</a></button>")
             }
         });
-
 
 
     if (mouseX + jQuery("#popup").width() > jQuery("#main1").width()) {
@@ -45,6 +60,6 @@ function newpopup(desc,stable_id,member_id) {
     jQuery("#popup").fadeIn();
 }
 
-function removePopup(){
+function removePopup() {
     jQuery("#popup").fadeOut()
 }

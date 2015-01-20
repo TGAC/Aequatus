@@ -49,7 +49,7 @@ function drawTree(json_tree) {
             }
         }
 
-        update(root, ref_member);
+        update(root, member_id);
     });
 
     d3.select(self.frameElement).style("height", "800px");
@@ -117,7 +117,7 @@ function drawTree(json_tree) {
             .on("click", function (d) {
                 if (d.seq_member_id) {
 //                    console.log("here")
-////                    callPopup(d)
+                    newpopup(d.seq_member_id)
 //
                 } else {
                     if (d.children && d.children != null) {
@@ -182,6 +182,7 @@ function drawTree(json_tree) {
 
         nodeUpdate.select("circle")
             .attr("r", function (d) {
+                console.log(d.seq_member_id+" "+ref_member)
                 if (d.close && d.close == true) {
                     return 6;
                 } else if (d.seq_member_id == ref_member)// && d.children != null) {
@@ -190,6 +191,11 @@ function drawTree(json_tree) {
                 }
                 else {
                     return 4;
+                }
+            })
+            .attr("id", function (d) {
+                if (d.seq_member_id) {
+                    return "circle" + d.seq_member_id
                 }
             })
             .style("fill", function (d, i) {
@@ -395,9 +401,10 @@ function drawTree(json_tree) {
             .attr('x', 20)
             .attr('y', -20)
             .style("fill", "red")
+
             .append('xhtml:div')
             .style("width", function (d) {
-                return parseInt(jQuery("#gene_widget #id" + d.seq_member_id).css('width')) + 200
+                return jQuery(document).width() * 0.8;
 
             })
             .style("height", "50px")
@@ -407,15 +414,26 @@ function drawTree(json_tree) {
             .style("top", "10px")
             .html(function (d) {
                 if (view_type == true) {
-                    return jQuery("#gene_widget #id" + d.seq_member_id).parent().html();
+                    return "<div id = 'id" + d.seq_member_id + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;'></div>";//jQuery("#gene_widget #id" + d.seq_member_id).html();
                 } else {
-                    return jQuery("#gene_widget_exons #id" + d.seq_member_id).parent().html();
+                    return "<div id = 'id" + d.seq_member_id + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;'></div>";//jQuery("#gene_widget #id" + d.seq_member_id).html();
+
                 }
             });
 
+        nodeEnter.filter(function (d) {
+            if (d.seq_member_id && d.seq_member_id == ref_member) {
+                dispGenesForMember_id(d.seq_member_id)
+                dispGenesExonForMember_id(d.seq_member_id)
+            } else if (d.seq_member_id && syntenic_data.member[d.seq_member_id]) {
+                dispGenesForMember_id(d.seq_member_id, true)
+                dispGenesExonForMember_id(d.seq_member_id, true)
+            }
+        });
+
         nodeUpdate.select("foreignObject")
             .attr('width', function (d) {
-                return parseInt(jQuery("#gene_widget #id" + d.seq_member_id).css('width')) + 200
+                return jQuery(document).width() * 0.8;
             })
             .attr('height', '40px')
             .attr('x', 10)
@@ -532,17 +550,13 @@ function drawTree(json_tree) {
 }
 
 function changeToNormal() {
-    jQuery(".node_gene_holder").each(function () {
-        var id = jQuery(this).attr('id').replace("node_gene_holder", "");
-        jQuery(this).html("<div style=\"position: fixed; height: 40px;  top:10px; z-index: 999; left: 10px;\">" + jQuery("#gene_widget #id" + id).parent().html() + "</div>")
-    })
-}
+    jQuery(".style1").show()
+    jQuery(".style2").hide()
 
+}
 function changeToExon() {
-    jQuery(".node_gene_holder").each(function () {
-        var id = jQuery(this).attr('id').replace("node_gene_holder", "");
-        jQuery(this).html("<div style=\"position: fixed; height: 40px; top:10px; z-index: 999; left: 10px;\">" + jQuery("#gene_widget_exons #id" + id).parent().html() + "</div>")
-    })
+    jQuery(".style2").show()
+    jQuery(".style1").hide()
 }
 
 function changeToStable() {
@@ -557,7 +571,7 @@ function changeToGeneInfo() {
 
 function unique(list) {
     var result = [];
-    jQuery.each(list, function(i, e) {
+    jQuery.each(list, function (i, e) {
         if (jQuery.inArray(e, result) == -1) result.push(e);
     });
     return result;
