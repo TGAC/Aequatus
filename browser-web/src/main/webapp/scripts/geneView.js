@@ -139,7 +139,7 @@ function getMember() {
 
 function drawMember() {
     console.log("drawmember")
-    console.log("member_id "+member_id)
+    console.log("member_id " + member_id)
 
     jQuery("#bar_image_ref").html("")
     var width = parseInt(jQuery("#bar_image_selector").css("width"));
@@ -167,7 +167,7 @@ function drawMember() {
 function drawSelected(member) {
 
     console.log("drawselected")
-    console.log("member_id "+member_id)
+    console.log("member_id " + member_id)
     jQuery("#selected_region").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
     if (member == undefined) {
         jQuery("#gene_widget").html("")
@@ -425,19 +425,19 @@ function onClicked(desc, stable_id, member_id) {
 
 function changeReference(new_member_id) {
     console.log("changeReference")
-    if(new_member_id != member_id) {
+    if (new_member_id != member_id) {
         removePopup();
-        console.log("member_id "+member_id)
-        console.log("new member id "+new_member_id)
-        jQuery("#circle" + member_id).attr("r",4)
-        jQuery("#circle" + new_member_id).attr("r",6)
+        console.log("member_id " + member_id)
+        console.log("new member id " + new_member_id)
+        jQuery("#circle" + member_id).attr("r", 4)
+        jQuery("#circle" + new_member_id).attr("r", 6)
 
 
-        jQuery("#circle" + member_id).css("stroke-width","1px")
-        jQuery("#circle" + new_member_id).css("stroke-width","2px")
+        jQuery("#circle" + member_id).css("stroke-width", "1px")
+        jQuery("#circle" + new_member_id).css("stroke-width", "2px")
 
-        jQuery("#circle" + member_id).css("stroke","steelblue")
-        jQuery("#circle" + new_member_id).css("stroke","black")
+        jQuery("#circle" + member_id).css("stroke", "steelblue")
+        jQuery("#circle" + new_member_id).css("stroke", "black")
 
         console.log("changereference " + new_member_id)
 
@@ -447,9 +447,7 @@ function changeReference(new_member_id) {
         var new_member = [];
         new_member.push(temp_ref)
         new_ref = syntenic_data.member[new_member_id]
-        console.log(new_ref)
         syntenic_data.ref = new_ref;
-        console.log(temp_ref.genes.gene.member_id)
         syntenic_data.member[temp_ref.genes.gene.member_id] = temp_ref;
 
         delete syntenic_data.member[new_member_id]
@@ -459,7 +457,6 @@ function changeReference(new_member_id) {
         jQuery(".delete").remove()
 
         member_id = new_member_id;
-        console.log(chr + " ==== " + syntenic_data.ref.dnafrag)
         if (genome_db_id != syntenic_data.ref.genome) {
             genome_db_id = syntenic_data.ref.genome;
             chr = syntenic_data.ref.dnafrag
@@ -468,10 +465,7 @@ function changeReference(new_member_id) {
             select_chr();
             select_genome();
         } else if (chr != syntenic_data.ref.dnafrag) {
-            console.log("else if")
-            console.log(chr)
             chr = syntenic_data.ref.dnafrag
-            console.log(chr)
             getMember();
             select_chr();
         }
@@ -761,140 +755,7 @@ function drawSynteny(redrawn) {
 
         drawTree(json.tree)
 
-        //
-        //gene_list_array = []
-        //
-        //var core_data = json.member;
-        //var max = 0;
-        //
-        //
-        //for (var i = 0; i < core_data.length; i++) {
-        //    var genes = core_data[i].genes;
-        //    var new_max = genes.gene.length;
-        //    if (new_max > max) {
-        //        max = new_max;
-        //    }
-        //
-        //
-        //    var core_data = json.member;
-        //    var max = 0;
-        //    for (var i = 0; i < core_data.length; i++) {
-        //        var genes = core_data[i].genes;
-        //        var new_max = genes.gene.length;
-        //        if (new_max > max) {
-        //            max = new_max;
-        //        }
-        //    }
-        //
-        //
-        //
-        //    var genes = ref_data.genes
-        //    if (max < genes.gene.length) {
-        //        max = genes.gene.length;
-        //    }
-        //    var name = ref_data.genome_name;
-        //
-        //
-        //    browser_coordinates(max)
-        //
-        //    var colour = jQuery("#option" + name).css("background");
-        //                     console.log(1)
-        //
-        //    jQuery("#gene_widget").append("<div style='left:0px; width: 100%; position: relative; border: 2px solid black; top: 10px; box-shadow: 1px 1px 15px 15px #D3D3D3;' id='ref_wrapper'>" +
-        //    "<div class=handle-genome style='background-image: url(/images/browser/utr.png); background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
-        //    "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'> <b>" + stringTrim(name, 100) + "</b></span>" +
-        //    "<div style='left:10%; width: auto; padding: 25px 0px; position: relative;' id='ref'></div>")
-        //    //
-        //    //
-        //    //jQuery("#gene_widget_exons").append("<div style='left:0px; width: 100%; position: relative; border: 2px solid black; top: 10px; box-shadow: 1px 1px 15px 15px #D3D3D3;' id='ref_wrapper'>" +
-        //    //"<div class=handle-genome style='background-image: url(/images/browser/utr.png); background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
-        //    //"<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'> <b>" + stringTrim(name, 100) + "</b></span>" +
-        //    //"<div style='left:10%; width: auto; padding: 25px 0px; position: relative;' id='ref'></div>")
-        //
-        //    console.log(2)
-        //
-        //    dispGenes("#gene_widget #ref", genes, max, ref_data.cigarline, undefined, undefined, name);
-        //    dispGenesExon("#gene_widget #ref", genes, max, ref_data.cigarline, undefined, undefined, name);
-        //
-        //    ref_data.genes.gene.transcripts[0].Exons.sort(sort_by('start', true, parseInt));
-        //
-        //    var exon_nu = 0
-        //
-        //    console.log(3)
-        //
-        //
-        //    var diff = parseInt(ref_data.genes.gene.transcripts[0].Exons[exon_nu].end - ref_data.genes.gene.transcripts[0].transcript_start) + parseInt(1)
-        //    while (diff < 0) {
-        //        ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = 0
-        //        exon_nu++;
-        //        diff = parseInt(ref_data.genes.gene.transcripts[0].Exons[exon_nu].end - ref_data.genes.gene.transcripts[0].transcript_start) + parseInt(1)
-        //    }
-        //
-        //    console.log(4)
-        //
-        //
-        //    ref_data.genes.gene.transcripts[0].Exons[exon_nu].length = diff;
-        //    ref_data.genes.gene.transcripts[0].Exons[exon_nu]._start += ref_data.genes.gene.transcripts[0].transcript_start - ref_data.genes.gene.transcripts[0].Exons[exon_nu].start;
-        //
-        //
-        //    console.log(5)
-        //
-        //    var exon_nu = ref_data.genes.gene.transcripts[0].Exons.length - 1
-        //    var diff = parseInt(ref_data.genes.gene.transcripts[0].transcript_end - ref_data.genes.gene.transcripts[0].Exons[exon_nu]._start) + parseInt(1)
-        //
-        //    console.log(6)
-        //
-        //    for (var i = 0; i < core_data.length; i++) {
-        //        console.log("i "+i)
-        //
-        //        var genes = core_data[i].genes
-        //        var name = core_data[i].genome_name;
-        //
-        //        if (document.getElementById("core" + core_data[i].genome) == null) {
-        //            console.log("if")
-        //
-        //            var colour = jQuery("#option" + name).css("background");
-        //
-        //            jQuery("#gene_widget").append("<div style='left:0px; width: 100%; position: relative; border: 1px solid gray; top: 10px; ' id='core" + core_data[i].genome + "_wrapper'> " +
-        //            "<div class = handle-genome style='background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
-        //            "<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'><b>" + stringTrim(name, 100) + "</b></span>" +
-        //            "<div style='left:10%; width: auto; padding: 25px 0px;  position: relative; ' id='core" + core_data[i].genome + "'></div>" +
-        //            "</div>")
-        //
-        //            //jQuery("#gene_widget_exons").append("<div style='left:0px; width: 100%; position: relative; border: 1px solid gray; top: 10px; ' id='core" + core_data[i].genome + "_wrapper'> " +
-        //            //"<div class = handle-genome style='background: " + colour + "; padding: 5px; position: absolute; top: 0px; height: 100%; left: 40px; width: 20px;'></div>" +
-        //            //"<span style='left: 0px; width: 100px; top: 50px; position: absolute; transform: rotate(90deg); word-wrap: break-word;'><b>" + stringTrim(name, 100) + "</b></span>" +
-        //            //"<div style='left:10%; width: auto; padding: 25px 0px;  position: relative; ' id='core" + core_data[i].genome + "'></div>" +
-        //            //"</div>")
-        //        }
-        //
-        //        if (core_data[i].cigarline) {
-        //            console.log("if 2")
-        //
-        //            dispGenes("#gene_widget  #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline, name);
-        //        }
-        //
-        //        else {
-        //            console.log("else")
-        //
-        //            dispGenes("#gene_widget  #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline, name);
-        //        }
-        //        if (core_data[i].cigarline) {
-        //            console.log("if 3")
-        //
-        //            dispGenesExon("#gene_widget #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline, name);
-        //        }
-        //
-        //        else {
-        //            console.log("else")
-        //
-        //            dispGenesExon("#gene_widget #core" + core_data[i].genome, genes, max, core_data[i].cigarline, ref_data.genes.gene.transcripts[0], ref_data.cigarline, name);
-        //        }
-        //    }
-        //}
-
         checkVisuals();
-
 
         jQuery("#gene_widget").sortable(
             {
@@ -993,7 +854,6 @@ function redrawCIGAR() {
             dispCigarLineRef(ref_data.cigarline, 1, top, gene_length, gene_start, stopposition, genes.gene.transcripts[transcript_len].Exons.toJSON(), temp_div, genes.gene.transcripts[transcript_len].Exons.toJSON(), transcript_start, transcript_end, genes.gene.transcripts[transcript_len].id, "style2");
 
 
-
         }
 
 
@@ -1010,7 +870,7 @@ function redrawCIGAR() {
                 var transcript_end = gene.transcripts[transcript_len].transcript_end;
 
                 if (gene.transcripts[transcript_len].start < gene.transcripts[transcript_len].end) {
-                    gene_start =gene.transcripts[transcript_len].start;
+                    gene_start = gene.transcripts[transcript_len].start;
                     gene_stop = gene.transcripts[transcript_len].end;
                 }
                 else {
@@ -1023,18 +883,24 @@ function redrawCIGAR() {
                 var stopposition = ((gene_stop - gene_start) + 1) * parseFloat(maxLentemp) / (newEnd_temp);
 
 
-                var strand = 1;
-                if(ref_data.genes.gene.strand != gene.transcripts[transcript_len].strand){
-                    strand = -1
+                var ref_strand = 1;
+                if (ref_data.genes.gene.strand != gene.transcripts[transcript_len].strand) {
+                    ref_strand = -1
                 }
 
 
+                var strand = 0;
+                if (ref_data.genes.gene.strand == gene.transcripts[transcript_len].strand) {
+                    strand = 1;
+                } else {
+                    strand = -1;
+                }
 
                 var temp_div = jQuery("#id" + gene.member_id).find('.style1');
 
-                dispCigarLine(syntenic_data.member[gene.member_id].cigarline, 1, top, gene_length, gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, ref_data.genes.gene.transcripts[0].Exons.toJSON(), transcript_start, transcript_end, gene.transcripts[transcript_len].strand, ref_data.cigarline, strand, gene.transcripts[transcript_len].id, "style1");
+                dispCigarLine(syntenic_data.member[gene.member_id].cigarline, 1, top, gene_length, gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, ref_data.genes.gene.transcripts[0].Exons.toJSON(), transcript_start, transcript_end, strand, ref_data.cigarline, ref_data.genes.gene.strand, gene.transcripts[transcript_len].id, "style1");
                 var temp_div = jQuery("#id" + gene.member_id).find('.style2');
-                dispCigarLine(syntenic_data.member[gene.member_id].cigarline, 1, top,  gene_length, gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, ref_data.genes.gene.transcripts[0].Exons.toJSON(), transcript_start, transcript_end, gene.transcripts[transcript_len].strand, ref_data.cigarline, strand, gene.transcripts[transcript_len].id, "style2");
+                dispCigarLine(syntenic_data.member[gene.member_id].cigarline, 1, top, gene_length, gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, ref_data.genes.gene.transcripts[0].Exons.toJSON(), transcript_start, transcript_end, strand, ref_data.cigarline, ref_data.genes.gene.strand, gene.transcripts[transcript_len].id, "style2");
 
             }
 

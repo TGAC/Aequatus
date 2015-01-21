@@ -256,56 +256,67 @@
 
 </div>
 
-<div id="popup" class="bubbleleft" style="width:200px; padding: 10px; height:auto; max-height:150px;">
-    <span style="right:0; position:absolute;" class="ui-button ui-icon ui-icon-close" onclick=removePopup();></span>
+<div id="popup" class="bubbleleft" style="width:200px; height:150px;">
+   <div style="overflow: hidden; left: 0px; top: 0px; position: relative;">
+       <table width="100%" cellspacing="0" border="0">
+           <thead>
+           <tr>
+               <td bgcolor="darkcyan">
+                   <div style="color: white; padding: 2px; width: 100%;" id="stable_id_header">   <span id="stable_label"></span>
+                       <i onclick="removePopup();" class="fa fa-close " style="color: white; position: absolute; right: 5px; cursor: pointer; "></i>
+                   </div>
+           </td>
+           </tr>
+           </thead>
+           </table>
 
-    <br>
+   </div>
+    <div style="position: relative; padding: 5px;">
+        <table cellspacing="0" border="0">
+            <thead>
+            <tr>
+                <td>
+                    <div id="disp_label"></div>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <div id="ref_name"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="position"></div>
+                </td>
+            </tr>
 
-    <table cellspacing="0" border="0">
-        <thead>
-        <tr>
-            <td>
-                <div id="disp_label"></div>
-            </td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>
-                <div id="ref_name"></div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div id="position"></div>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    <div id="gene_desc"></div>
+                </td>
+            </tr>
+            <tr align="right">
+                <td align="">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div id="makemetop_button" style="float: right"></div>
 
-        <tr>
-            <td>
-                <div id="gene_desc"></div>
-            </td>
-        </tr>
-        <tr align="right">
-            <td align="">
-                <table>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <div id="makemetop_button" style="float: right"></div>
-
-                        </td>
-                        <td>
-                            <div id="ensemblLink" style="float: right"></div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
+                            </td>
+                            <td>
+                                <div id="ensemblLink" style="float: right"></div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
 </div>
 

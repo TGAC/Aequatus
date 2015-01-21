@@ -13,14 +13,43 @@ function newpopup(member_id) {
     var gene;
     var stable_id;
 
+    jQuery('#stable_label').html("")
+
+
+    jQuery('#makemetop_button').html("")
+
+    jQuery('#ref_name').html("")
+
+    jQuery('#position').html("")
+
+    jQuery('#disp_label').html("")
+
+    jQuery('#gene_desc').html("")
+
+    jQuery('#ensemblLink').html("")
+
+
+    if (mouseX + jQuery("#popup").width() > jQuery("#main1").width()) {
+        jQuery("#popup").css({"left": mouseX - jQuery("#popup").width() - 5});
+        jQuery("#popup").css({"top": (mouseY - jQuery("#popup").height() - 30)});
+        jQuery("#popup").attr('class', 'bubbleright')
+    }
+    else {
+        jQuery("#popup").css({"left": (mouseX - 26)});
+        jQuery("#popup").css({"top": (mouseY - jQuery("#popup").height() - 30)});
+        jQuery("#popup").attr('class', 'bubbleleft')
+    }
+
+    jQuery("#popup").fadeIn();
+
+
     if (syntenic_data.member[member_id]) {
         gene = syntenic_data.member[member_id].genes.gene;
         stable_id = syntenic_data.member[member_id].stable_id
     } else if (syntenic_data.ref.genes.gene.member_id) {
         gene = syntenic_data.ref.genes.gene;
-        stable_id = syntenic_data.ref.stable_id
+        stable_id = syntenic_data.ref.genes.gene.stable_id
     } else {
-        console.log(member_id + " not matched.")
         return;
     }
     var desc = gene.desc
@@ -31,6 +60,8 @@ function newpopup(member_id) {
         {'query': member_id, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
+                jQuery('#stable_label').html(stable_id)
+
                 jQuery('#makemetop_button').html("<button onclick=' changeReference(\"" + member_id + "\") '>Make Me Root</button>")
 
                 jQuery('#ref_name').html("Chr " + json.info.name)
@@ -46,18 +77,7 @@ function newpopup(member_id) {
         });
 
 
-    if (mouseX + jQuery("#popup").width() > jQuery("#main1").width()) {
-        jQuery("#popup").css({"left": mouseX - jQuery("#popup").width() - 5});
-        jQuery("#popup").css({"top": (mouseY - jQuery("#popup").height() - 46)});
-        jQuery("#popup").attr('class', 'bubbleright')
-    }
-    else {
-        jQuery("#popup").css({"left": (mouseX - 26)});
-        jQuery("#popup").css({"top": (mouseY - jQuery("#popup").height() - 46)});
-        jQuery("#popup").attr('class', 'bubbleleft')
-    }
 
-    jQuery("#popup").fadeIn();
 }
 
 function removePopup() {

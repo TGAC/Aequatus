@@ -286,7 +286,6 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 }
 
 function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp_div, ref_exons, transcript_start, transcript_end, id, div) {
-    console.log("dispcigarref")
     exons = jQuery.parseJSON(exons);
     ref_exons = jQuery.parseJSON(ref_exons)
     exons.sort(sort_by('start', true, parseInt));

@@ -55,27 +55,6 @@ function drawTree(json_tree) {
     d3.select(self.frameElement).style("height", "800px");
 
 
-//    var gradient = svg.append("svg:defs")
-//        .append("svg:linearGradient")
-//        .attr("id", "gradient")
-//        .attr("x1", "0%")
-//        .attr("y1", "0%")
-//        .attr("x2", "100%")
-//        .attr("y2", "100%")
-//        .attr("spreadMethod", "pad");
-//
-//// Define the gradient colors
-//    gradient.append("svg:stop")
-//        .attr("offset", "0%")
-//        .attr("stop-color", "#a00000")
-//        .attr("stop-opacity", 1);
-//
-//    gradient.append("svg:stop")
-//        .attr("offset", "100%")
-//        .attr("stop-color", "#aaaa00")
-//        .attr("stop-opacity", 1);
-
-
     function update(source, ref_member) {
         var view_type = null
         if (jQuery('input[name=view_type]:checked').val() == "with") {
@@ -116,7 +95,6 @@ function drawTree(json_tree) {
             })
             .on("click", function (d) {
                 if (d.seq_member_id) {
-//                    console.log("here")
                     newpopup(d.seq_member_id)
 //
                 } else {
@@ -182,7 +160,6 @@ function drawTree(json_tree) {
 
         nodeUpdate.select("circle")
             .attr("r", function (d) {
-                console.log(d.seq_member_id+" "+ref_member)
                 if (d.close && d.close == true) {
                     return 6;
                 } else if (d.seq_member_id == ref_member)// && d.children != null) {
@@ -200,13 +177,8 @@ function drawTree(json_tree) {
             })
             .style("fill", function (d, i) {
                 if (d.close && d.close == true) {
-                    console.log(d.type)
                     d.type = unique(d.type)
-                    console.log(d.type)
-
                     if (d.type.size() == 1) {
-                        console.log("1")
-
                         if (d.type == "duplication") {
                             return colours[0];
                         } else if (d.type == "dubious") {
@@ -219,8 +191,6 @@ function drawTree(json_tree) {
                             return "white";
                         }
                     } else if (d.type.size() == 2) {
-                        console.log("2")
-
                         var col1, col2;
 
                         col1 = function () {
@@ -413,12 +383,7 @@ function drawTree(json_tree) {
             .style("left", "10px")
             .style("top", "10px")
             .html(function (d) {
-                if (view_type == true) {
                     return "<div id = 'id" + d.seq_member_id + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;'></div>";//jQuery("#gene_widget #id" + d.seq_member_id).html();
-                } else {
-                    return "<div id = 'id" + d.seq_member_id + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;'></div>";//jQuery("#gene_widget #id" + d.seq_member_id).html();
-
-                }
             });
 
         nodeEnter.filter(function (d) {
@@ -476,7 +441,6 @@ function drawTree(json_tree) {
 
 // Toggle children on click.
     function click(d) {
-        console.log("click")
         if (d.close && d.close == true) {
             d.children = d._children;
             d.type = [];
@@ -514,9 +478,6 @@ function drawTree(json_tree) {
     }
 
     function pack(d) {
-
-        console.log("pack")
-
 
         var cont = true;
         var child = d;
