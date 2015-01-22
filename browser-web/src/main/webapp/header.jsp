@@ -68,27 +68,11 @@
 
 
 <div class="headerbar">
-    <div id="dbinfo"></div>
-
     <center>
-
-        <table width="100%">
-            <tr>
-                <td>
-                    <a class="headerlink" href="<c:url value="/"/>"> <font color=white> Aequatus Browser
-                        - ${initParam.header} </font></a>
-                </td>
-                <td>
-                    <font color=white>
-                        <span id="seqnameh1"></span>
-                    </font>
-                </td>
-                <td>
-
-
-                </td>
-            </tr>
-        </table>
+        <div style="position: absolute; top: 50%; -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%);  transform: translateY(-50%);">
+            <a class="headerlink" href="<c:url value="/"/>"> <font color=white> Aequatus Browser
+                - ${initParam.header} </font></a>
+        </div>
     </center>
 
 

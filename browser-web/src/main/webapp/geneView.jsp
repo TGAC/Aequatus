@@ -7,57 +7,89 @@
         <tr valign=top>
             <td width="300px" id=control_divs>
 
+                <div id="settings_div"
+                     style="padding: 10px; height: 248px; background: none repeat scroll 0% 0% cyan; font-size: large;">
 
-                <div style="display: none; padding: 10px; height: 248px; background: none repeat scroll 0% 0% cyan; font-size: large;"
-                     id="settings_div">
-
-                    <%--<div class="checkbox">--%>
-                    <%--<label>--%>
-                    <%--<input id="deleteCheck" type="checkbox" checked="" onclick="jQuery('.delete').toggle()">--%>
-                    <%--Deletion--%>
-                    <%--</label>--%>
-                    <%--<label>--%>
-                    <%--<input id="insertCheck" type="checkbox" checked="" onclick="jQuery('.insert').toggle()">--%>
-                    <%--Insertion--%>
-                    <%--</label>--%>
-                    <%--<label>    <input id="matchCheck" type="checkbox" checked="" onclick="jQuery('.match').toggle()">--%>
-                    <%--Match--%>
-                    <%--</label>--%>
-
-                    <%--</div>--%>
+                    <div class="checkbox">
 
 
-                    <input id="deleteCheck" type="checkbox" checked="" onclick="jQuery('.delete').toggle()"
-                           style="width: 25px; height: 25px; color: white; background: none repeat scroll 0% 0% red; border: 0px none;">
-                    Deletion <br>
-                    <input id="insertCheck" type="checkbox" checked="" onclick="jQuery('.insert').toggle()"
-                           style="width: 25px; height: 25px; background: none repeat scroll 0% 0% white; color: white;">
-                    Insertion <br>
-                    <input id="matchCheck" type="checkbox" checked="" onclick="jQuery('.match').toggle()"
-                           style="width: 25px; height: 25px; background: none repeat scroll 0% 0% white; color: white;">
-                    Match <br>
-                    <input id="utrCheck" type="checkbox" checked="" onclick="jQuery('.utr').toggle()"
-                           style="width: 25px; height: 25px; background: none repeat scroll 0% 0% white; color: white;">
-                    UTRs <br>
+                        <table width="75%" cellpadding="2px">
+                            <tbody>
+                            <tr>
+                                <td align="left" colspan="2"><b> Visual Controls </b></td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    <label>
+                                        <input type="checkbox" onclick="jQuery('.delete').toggle()" checked=""
+                                               id="deleteCheck">
+                                    </label>
 
-                    <br>
-                    Label
-                    <br>
-                    <input type="radio" onchange=" changeToStable()" value="stable" checked="" name="label_type"
-                           checked>
-                    Stable Id
+                                    Deletion
 
-                    <input type="radio" onchange=" changeToGeneInfo()" value="gene_info" name="label_type"> Gene Info
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input type="checkbox" onclick="jQuery('.insert').toggle()" checked=""
+                                               id="insertCheck">
+                                    </label>
 
-                    <br>
-                    Introns
-                    <br>
-                    <input type="radio" onchange="changeToNormal()" value="with" checked="" name="view_type" checked>
-                    With
+                                    Insertion
 
-                    <input type="radio" onchange="changeToExon()" value="without" name="view_type"> Without
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label> <input type="checkbox" onclick="jQuery('.match').toggle()" checked=""
+                                                   id="matchCheck">
+                                    </label>
 
+                                    Match
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                            <tr></tr>
+
+                            <td align="left" colspan="2"><b> Label </b></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="radio" name="label_type" checked="" value="stable"
+                                           onchange=" changeToStable()">
+                                    Stable Id
+                                </td>
+                                <td align="left">
+                                    <input type="radio" name="label_type" value="gene_info"
+                                           onchange=" changeToGeneInfo()"> Gene Info
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td align="left" colspan="2"><b> Introns </b></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="radio" name="view_type" checked="" value="with"
+                                           onchange="changeToNormal()">
+                                    With
+                                </td>
+                                <td align="left">
+                                    <input type="radio" name="view_type" value="without" onchange="changeToExon()">
+                                    Without
+
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
                 <div id="search_div"
                      style="display: block; height: 248px; background: none repeat scroll 0% 0% green; padding: 10px;">
                     <input id="control_search" type="text"
@@ -155,7 +187,7 @@
         <tr>
             <td>
                 <div id="search_result"
-                     style="position: absolute; overflow-y: scroll; height: 500px; overflow: hidden; width:0px; height: 500px; overflow: scroll;"></div>
+                     style="position: absolute; overflow-y: scroll; height: 500px; overflow: hidden; width:0px; height: 500px; overflow: auto;"></div>
             </td>
         </tr>
         </tbody>
@@ -193,7 +225,8 @@
 
 <div id="canvas">
 
-    <div id="genome_name" style="position: absolute; font-size: large; font-weight: bolder; padding: 10px; color: darkgray;"></div>
+    <div id="genome_name"
+         style="position: absolute; font-size: large; font-weight: bolder; padding: 10px; color: darkgray;"></div>
 
     <div id=chr_maps style="border-bottom: 1px solid gray; height: 120px; position: relative;   width: 100%; ">
 
@@ -257,20 +290,22 @@
 </div>
 
 <div id="popup" class="bubbleleft" style="width:200px; height:150px;">
-   <div style="overflow: hidden; left: 0px; top: 0px; position: relative;">
-       <table width="100%" cellspacing="0" border="0">
-           <thead>
-           <tr>
-               <td bgcolor="darkcyan">
-                   <div style="color: white; padding: 2px; width: 100%;" id="stable_id_header">   <span id="stable_label"></span>
-                       <i onclick="removePopup();" class="fa fa-close " style="color: white; position: absolute; right: 5px; cursor: pointer; "></i>
-                   </div>
-           </td>
-           </tr>
-           </thead>
-           </table>
+    <div style="overflow: hidden; left: 0px; top: 0px; position: relative;">
+        <table width="100%" cellspacing="0" border="0">
+            <thead>
+            <tr>
+                <td bgcolor="darkcyan">
+                    <div style="color: white; padding: 2px; width: 100%;" id="stable_id_header"><span
+                            id="stable_label"></span>
+                        <i onclick="removePopup();" class="fa fa-close "
+                           style="color: white; position: absolute; right: 5px; cursor: pointer; "></i>
+                    </div>
+                </td>
+            </tr>
+            </thead>
+        </table>
 
-   </div>
+    </div>
     <div style="position: relative; padding: 5px;">
         <table cellspacing="0" border="0">
             <thead>
