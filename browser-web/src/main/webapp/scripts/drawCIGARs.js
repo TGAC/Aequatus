@@ -54,7 +54,6 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
         }
     }
 
-    console.log(temp_start+" "+temp_end)
     var startposition;
     var stopposition;
     var no_of_exons = exons.length;
@@ -337,7 +336,6 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
         }
     }
 
-    console.log(temp_start+" "+temp_end)
     if (cigars != '*') {
 
 
@@ -351,9 +349,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
             if (!length) {
                 length = 3
             }
-            if(key == "M"){
-                console.log(length+"+")
-            }
+
             while (length--) {
                 cigar_string += key;
             }

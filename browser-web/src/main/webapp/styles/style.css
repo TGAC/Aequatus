@@ -207,7 +207,7 @@ pre.wrap {
 }
 
 #footer {
-    background: none repeat scroll 0 0 activeborder;
+    background: none repeat scroll 0 0 black;
     bottom: 0;
     clear: both;
     color: white;
