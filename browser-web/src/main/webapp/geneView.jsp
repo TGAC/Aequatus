@@ -170,7 +170,7 @@
                 <div onclick="openPanel('#settings_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% cyan;"><i
                         style="color: white;"
-                        class="fa fa-gear fa-3x"></i>
+                        class="fa fa-cogs fa-3x"></i>
                 </div>
                 <div onclick="openPanel('#info_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% peru;"><i
@@ -289,7 +289,7 @@
 
 </div>
 
-<div id="popup" class="bubbleleft" style="width:200px; height:150px;">
+<div id="popup" class="bubbleleft" style="width:200px; height:130px;">
     <div style="overflow: hidden; left: 0px; top: 0px; position: relative;">
         <table width="100%" cellspacing="0" border="0">
             <thead>
@@ -307,14 +307,7 @@
 
     </div>
     <div style="position: relative; padding: 5px;">
-        <table cellspacing="0" border="0">
-            <thead>
-            <tr>
-                <td>
-                    <div id="disp_label"></div>
-                </td>
-            </tr>
-            </thead>
+        <table width=100% cellspacing="0" border="0">
             <tbody>
             <tr>
                 <td>
@@ -334,7 +327,7 @@
             </tr>
             <tr align="right">
                 <td align="">
-                    <table>
+                    <table >
                         <tbody>
                         <tr>
                             <td>

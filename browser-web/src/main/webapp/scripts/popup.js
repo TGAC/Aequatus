@@ -60,22 +60,23 @@ function newpopup(member_id) {
         {'query': member_id, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                jQuery('#stable_label').html(stable_id)
+                if (json.info.display_label) {
+                    jQuery('#stable_label').html(json.info.display_label)
+                } else {
+                    jQuery('#stable_label').html(stable_id)
+                }
 
-                jQuery('#makemetop_button').html("<button onclick=' changeReference(\"" + member_id + "\") '>Make Me Root</button>")
+                jQuery('#makemetop_button').html("<button onclick='changeReference(\"" + member_id + "\")' class='btn btn-default' type='button'> <i class='fa fa-random fa-1x'></i></button>");
 
                 jQuery('#ref_name').html("Chr " + json.info.name)
 
                 jQuery('#position').html(json.info.dnafrag_start + " - " + json.info.dnafrag_end)
 
-                jQuery('#disp_label').html(json.info.display_label)
-
                 jQuery('#gene_desc').html(stringTrim(desc, 200))
 
-                jQuery('#ensemblLink').html("<a target='_blank' href='http://www.ensembl.org/Multi/Search/Results?q=" + stable_id + "'><button>Link to Ensembl</button></a>")
+                jQuery('#ensemblLink').html("<a target='_blank' href='http://www.ensembl.org/Multi/Search/Results?q=" + stable_id + "'><button type='button' class='btn btn-default'> <i class='fa fa-1x'>e!</i></button></a>")
             }
         });
-
 
 
 }
