@@ -241,7 +241,7 @@ function getcoreMember(query, redrawn) {
                 syntenic_data = json
                 window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);
                 member_id = json.ref.genes.gene.member_id;
-
+                resize_ref();
                 drawSynteny(redrawn);
             }
         });
@@ -429,6 +429,9 @@ function changeReference(new_member_id) {
         removePopup();
         console.log("member_id " + member_id)
         console.log("new member id " + new_member_id)
+
+        resize_ref_to_def()
+
         jQuery("#circle" + member_id).attr("r", 4)
         jQuery("#circle" + new_member_id).attr("r", 6)
 
@@ -469,6 +472,8 @@ function changeReference(new_member_id) {
             getMember();
             select_chr();
         }
+
+        resize_ref();
 
         redrawCIGAR()
     }
@@ -751,6 +756,7 @@ function drawSynteny(redrawn) {
     if (json.ref) {
         var ref_data = json.ref;
 
+
         ref_member = ref_data.genes.gene.member_id
 
         drawTree(json.tree)
@@ -918,3 +924,39 @@ function redrawCIGAR() {
 
 }
 
+function resize_ref(){
+    console.log(syntenic_data.ref.genes.gene.transcripts[0].Exons.toJSON())
+
+    var exon_nu = 0
+
+    var diff = parseInt(syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu].end - syntenic_data.ref.genes.gene.transcripts[0].transcript_start) + parseInt(1)
+    while (diff < 0) {
+        syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu].length = 0
+        exon_nu++;
+        diff = parseInt(syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu].end - syntenic_data.ref.genes.gene.transcripts[0].transcript_start) + parseInt(1)
+    }
+
+
+    syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu].length = diff;
+    syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu]._start += syntenic_data.ref.genes.gene.transcripts[0].transcript_start - syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu].start;
+
+
+    var exon_nu = syntenic_data.ref.genes.gene.transcripts[0].Exons.length - 1
+    var diff = parseInt(syntenic_data.ref.genes.gene.transcripts[0].transcript_end - syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu]._start) + parseInt(1)
+
+    console.log(syntenic_data.ref.genes.gene.transcripts[0].Exons.toJSON())
+
+}
+
+function resize_ref_to_def(){
+    console.log(syntenic_data.ref.genes.gene.transcripts[0].Exons.toJSON())
+    var exon_nu = syntenic_data.ref.genes.gene.transcripts[0].Exons.length;
+
+
+    while(exon_nu--) {
+        syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu].length =  (syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu].end - syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu].start)+1
+    }
+
+    console.log(syntenic_data.ref.genes.gene.transcripts[0].Exons.toJSON())
+
+}

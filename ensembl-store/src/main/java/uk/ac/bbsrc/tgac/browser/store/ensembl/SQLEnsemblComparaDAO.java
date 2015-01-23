@@ -518,7 +518,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     }
 
 
-    public JSONObject getRefDetail(String query) throws IOException {
+    public JSONObject getRefDetail(String query) throws Exception {
 
 
         JSONObject homology_members = new JSONObject();
@@ -535,6 +535,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("seq_member_id").toString(), homologous.get("genome_db_id").toString()));
         String sequence_id = template.queryForObject(GET_SEQUENCE_ID, new Object[]{homologous.get("peptide_id")}, String.class);
 //        homology_members.put("seq", template.queryForObject(SEQUENCE_FROM_ID, new Object[]{sequence_id}, String.class));
+        EnsemblRest.getGene();
+
         return homology_members;
 
     }
