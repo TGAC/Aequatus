@@ -57,6 +57,8 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar, genome) {
         label += gene.reference;
 
         if (ref) {
+
+            console.log("not ref")
             var wrapper_div = jQuery("#id" + gene.member_id)
 
 //            var wrapper_div = jQuery("<div>").attr({
@@ -107,6 +109,9 @@ function dispGenes(div, track, max, cigarline, ref, ref_cigar, genome) {
 
         }
         else {
+
+            console.log("ref")
+
             var wrapper_div = jQuery("<div>").attr({
                 'id': "id" + gene.member_id,
                 'style': "position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;"
@@ -241,6 +246,8 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
             var top = 0;
 
             if (exon_start < transcript_start && exon_stop < transcript_start) {
+
+                console.log("if 1")
                 startposition = 0;// ((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
                 stopposition = (exon_stop - exon_start) * parseFloat(maxLentemp) / (max_len);
 
@@ -255,6 +262,9 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
 
             }
             else if (exon_start < transcript_start && exon_stop > transcript_end) {
+
+                console.log("if 2")
+
                 startposition = 0;//((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
                 stopposition = (transcript_start - exon_start) * parseFloat(maxLentemp) / (max_len);
 
@@ -270,7 +280,7 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
 //                startposition += 1;
 //                stopposition -= 2;
 
-                startposition = 0;//((transcript_end - exon_start) - 1) * parseFloat(maxLentemp) / (max_len);
+                startposition = ((transcript_end - exon_start) - 1) * parseFloat(maxLentemp) / (max_len);
                 stopposition = (exon_stop - transcript_end + 1) * parseFloat(maxLentemp) / (max_len);
 
 
@@ -283,6 +293,9 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
                 last = current;
             }
             else if (exon_stop > transcript_start && exon_start < transcript_start) {
+
+                console.log("if 3")
+
                 startposition = 0;//((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
                 stopposition = (transcript_start - exon_start) * parseFloat(maxLentemp) / (max_len);
 
@@ -299,6 +312,9 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
 
             }
             else if (exon_stop > transcript_end && exon_start < transcript_end) {
+
+                console.log("if 4")
+
                 startposition = ((transcript_end - exon_start)) * parseFloat(maxLentemp) / (max_len);
                 stopposition = (exon_stop - transcript_end) * parseFloat(maxLentemp) / (max_len);
 
@@ -317,6 +333,8 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
             }
 
             else if (exon_start > transcript_start && exon_stop > transcript_end) {
+                console.log("if 5")
+
                 startposition = 1;
                 stopposition = (exon_stop - exon_start) * parseFloat(maxLentemp) / (max_len);
 

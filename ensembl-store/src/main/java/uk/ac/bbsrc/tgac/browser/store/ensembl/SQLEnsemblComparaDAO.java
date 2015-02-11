@@ -111,7 +111,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public static final String GET_MEMBER_BY_MEMBER_ID = "select gene_member_id as id, dnafrag_start as start, dnafrag_end as end, dnafrag_strand as strand, dnafrag_id, genome_db_id, display_label as 'desc', stable_id from gene_member where gene_member_id = ?";
 
 
-    public static final String GET_CHROMOSOME_BY_GENOME_ID = "select distinct dnafrag_id as name from gene_member where genome_db_id = ?";
+    public static final String GET_CHROMOSOME_BY_GENOME_ID = "select *  from dnafrag where genome_db_id = ? and coord_system_name like '%chr%'";
 
 
     public static final String GET_HOMOLOGY_MEMBER_CIGAR_BY_MEMBER_ID = "select cigar_line from homology_member where member_id = ? and homology_id = ?";
@@ -536,7 +536,6 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("seq_member_id").toString(), homologous.get("genome_db_id").toString()));
         String sequence_id = template.queryForObject(GET_SEQUENCE_ID, new Object[]{homologous.get("peptide_id")}, String.class);
 //        homology_members.put("seq", template.queryForObject(SEQUENCE_FROM_ID, new Object[]{sequence_id}, String.class));
-        EnsemblRest.getGene();
 
         return homology_members;
     }
@@ -619,15 +618,20 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             JSONArray members = new JSONArray();
             List<Map<String, Object>> maps = template.queryForList(GET_CHROMOSOME_BY_GENOME_ID, new Object[]{query});
 
-            for (Map map : maps) {
 
-                if (template.queryForObject(COUNT_CHR_DNAFRAG_BY_NAME, new Object[]{map.get("name").toString(), query}, Integer.class) > 0) {
-                    Map<String, Object> maps_2 = template.queryForMap(GET_CHR_DNAFRAG_BY_NAME, new Object[]{map.get("name").toString(), query});
-                    map.put("length", maps_2.get("length"));
-                    map.put("id", maps_2.get("dnafrag_id"));
-                    map.put("chr_name", maps_2.get("name"));
-                    members.add(map);
-                }
+            for (Map map : maps) {
+                map.put("length", map.get("length"));
+                map.put("id", map.get("dnafrag_id"));
+                map.put("chr_name", map.get("name"));
+                members.add(map);
+
+//                if (template.queryForObject(COUNT_CHR_DNAFRAG_BY_NAME, new Object[]{map.get("name").toString(), query}, Integer.class) > 0) {
+//                    Map<String, Object> maps_2 = template.queryForMap(GET_CHR_DNAFRAG_BY_NAME, new Object[]{map.get("name").toString(), query});
+//                    map.put("length", maps_2.get("length"));
+//                    map.put("id", maps_2.get("dnafrag_id"));
+//                    map.put("chr_name", maps_2.get("name"));
+//                    members.add(map);
+//                }
 
             }
             return members;

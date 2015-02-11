@@ -49,7 +49,7 @@ function getChromosomes() {
 
                 drawChromosome()
                 if (chr == undefined) {
-                    setCredentials(chromosomes[0].name, genome_db_id);
+                    setCredentials(chromosomes[0].id, genome_db_id);
                 }
                 Fluxion.doAjax(
                     'comparaService',
@@ -87,11 +87,11 @@ function drawChromosome() {
         var length = chromosomes[referenceLength].length;
         var top = parseInt(jQuery("#map").css('top')) + parseInt(jQuery("#map").css('height')) - (height + 20);
         jQuery("<div>").attr({
-            'id': 'chr' + chromosomes[referenceLength].name,
+            'id': 'chr' + chromosomes[referenceLength].id,
             'class': 'refmap',
             'chr_length': chromosomes[referenceLength].length,
             'style': "left: " + left + "px; width:" + width + "px; height:" + height + "px; background: " + jQuery("#genome" + genome_db_id).css("background"),
-            'onClick': 'setCredentials("' + chromosomes[referenceLength].name + '",' + genome_db_id + ');'
+            'onClick': 'setCredentials("' + chromosomes[referenceLength].id + '",' + genome_db_id + ');'
         }).appendTo("#chr_maps");
         jQuery("<div>").attr({
             'style': "position: absolute; bottom: 10px; left: " + left + "px; width:" + width + "px; "
