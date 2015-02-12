@@ -25,14 +25,14 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
     maxLentemp = parseInt(jQuery("#exon" + id + "" + exons[exon_number].id+""+div).css('width'));
 
 
-    var cigar_pos = (transcript_start - gene_start) + 1;
+    var cigar_pos = (transcript_start - gene_start) ;
 
     var temp_start = 1;
 
     for (var e = 0; e < exons.length; e++) {
         if (exons[e].end > transcript_start) {
-            cigar_pos = (transcript_start - exons[e].start) + 1;
-            temp_start = (exons[e].start - gene_start) + 1;
+            cigar_pos = (transcript_start - exons[e].start);
+            temp_start = (exons[e].start - gene_start) ;
             exon_number = e
             max = exons[exon_number].length
             maxLentemp = parseInt(jQuery("#exon" + id + "" + exons[exon_number].id+""+div).css('width'));
@@ -41,7 +41,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
     }
 
 
-    var temp_end = (exons[exon_number].end - gene_start) + 1;
+    var temp_end = (exons[exon_number].end - gene_start);
 
     if (temp_end < cigar_pos) {
         while (temp_end < cigar_pos) {
@@ -50,7 +50,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
             max = exons[exon_number].length
             maxLentemp = jQuery("#exon" + id + "" + exons[exon_number].id+""+div).css('width');
 
-            temp_end = (exons[exon_number].end - gene_start) + 1;
+            temp_end = (exons[exon_number].end - gene_start) ;
         }
     }
 
@@ -60,6 +60,8 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
     var cigar_string = "";
 
     if (cigars != '*') {
+        cigars += 'M'
+        ref_cigar += 'M';
         cigars = cigars.replace(/([SIXMND])/g, ":$1,");
         var cigars_array = cigars.split(',');
         for (var i = 0; i < cigars_array.length - 1; i++) {
@@ -313,8 +315,8 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
 
     for (var e = 0; e < exons.length; e++) {
         if (exons[e].end > transcript_start) {
-            cigar_pos = (transcript_start - exons[e].start) + 1;
-            temp_start = (exons[e].start - gene_start) + 1;
+            cigar_pos = (transcript_start - exons[e].start) ;
+            temp_start = (exons[e].start - gene_start) ;
             exon_number = e
             max = exons[exon_number].length
             maxLentemp = parseInt(jQuery("#exon" + id + "" + exons[exon_number].id+""+div).css('width'));
@@ -332,12 +334,13 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
             max = exons[exon_number].length
             maxLentemp = jQuery("#exon" + id + "" + exons[exon_number].id+""+div).css('width');
 
-            temp_end = (exons[exon_number].end - gene_start) + 1;
+            temp_end = (exons[exon_number].end - gene_start)  ;
         }
     }
 
     if (cigars != '*') {
 
+        cigars += 'M'
 
         cigars = cigars.replace(/([SIXMND])/g, ":$1,");
         var cigars_array = cigars.split(',');
@@ -385,6 +388,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
                     var bool = true;
 
                     second: while (bool) {
+
 
                         stopposition = parseFloat(((temp_end - temp_start) - cigar_pos) * parseFloat(maxLentemp) / (temp_end-temp_start));
 

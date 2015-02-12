@@ -146,9 +146,9 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                 int exon_end = Integer.parseInt(new_Template.queryForList(GET_EXON_BY_ID, new Object[]{start_seq.get("start_exon_id")}).get(0).get("seq_region_end").toString());
 
                 if (gene_info.get("seq_region_strand").toString().equals("-1")) {
-                    transcript.put("transcript_start", exon_end - Integer.parseInt(start_seq.get("seq_start").toString()));
+                    transcript.put("transcript_start", exon_end - (Integer.parseInt(start_seq.get("seq_start").toString())-1));
                 } else {
-                    transcript.put("transcript_start", exon_start + Integer.parseInt(start_seq.get("seq_start").toString()));
+                    transcript.put("transcript_start", exon_start + (Integer.parseInt(start_seq.get("seq_start").toString())-1));
                 }
             }
 
@@ -157,9 +157,9 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                 int exon_end = Integer.parseInt(new_Template.queryForList(GET_EXON_BY_ID, new Object[]{end_seq.get("end_exon_id")}).get(0).get("seq_region_end").toString());
 
                 if (gene_info.get("seq_region_strand").toString().equals("-1")) {
-                    transcript.put("transcript_end", exon_end - Integer.parseInt(end_seq.get("seq_end").toString()));
+                    transcript.put("transcript_end", exon_end - (Integer.parseInt(end_seq.get("seq_end").toString())-1));
                 } else {
-                    transcript.put("transcript_end", exon_start + Integer.parseInt(end_seq.get("seq_end").toString()));
+                    transcript.put("transcript_end", exon_start + (Integer.parseInt(end_seq.get("seq_end").toString())-1));
                 }
             }
 
@@ -169,7 +169,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                 transcript.put("transcript_end", temp);
             }
 
-            transcript.put("desc", "");//map.get("description") + ":" + query);
+            transcript.put("desc", map.get("description") + ":" + query);
             JSONArray exons_array = new JSONArray();
             List<Map<String, Object>> exons = new_Template.queryForList(GET_EXON_per_Gene, new Object[]{transcript_id});
             for (Map map_temp : exons) {

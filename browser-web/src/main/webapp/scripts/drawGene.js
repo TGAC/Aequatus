@@ -203,7 +203,7 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
 
 
             startposition = (exon_start - newStart_temp) * parseFloat(maxLentemp) / (max_len);
-            stopposition = ((exon_stop - exon_start) + 1) * parseFloat(maxLentemp) / (max_len);
+            stopposition = (geneexons[exon_len].length) * parseFloat(maxLentemp) / (max_len);
 
 //            to make up for border added
 //            stopposition = stopposition - 4;
@@ -212,7 +212,7 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
             jQuery("<div>").attr({
                 'class': trackClass,
                 'id': "exon" + track.id + "" + geneexons[exon_len].id+ "style1",
-                'style': "position:absolute; cursor:pointer; height: 10px; z-index: 999;  TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
+                'style': "box-sizing: border-box; position:absolute; cursor:pointer; height: 14px; z-index: 999;  TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
             }).appendTo(div);
 
             if (exon_len > 0) {
@@ -249,7 +249,7 @@ function dispGeneExon(track, genestrand, div, gene_start, width, max_len, id) {
 
                 console.log("if 1")
                 startposition = 0;// ((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
-                stopposition = (exon_stop - exon_start) * parseFloat(maxLentemp) / (max_len);
+                stopposition = ((exon_stop - exon_start) + 1) * parseFloat(maxLentemp) / (max_len);
 
 //                startposition += 1;
 //                stopposition -= 2;
