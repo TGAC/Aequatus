@@ -25,6 +25,7 @@ var member_id = null;
 var members = null;
 var members_overview = null;
 var chr_len = null;
+var chr_name= null;
 
 
 function getChromosomes() {
@@ -58,6 +59,8 @@ function getChromosomes() {
                     {
                         'doOnSuccess': function (json) {
                             window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?ref=" + json.genome_name + "&chr=" + json.chr_name);
+                            genome_name = json.genome_name;
+                            chr_name=json.chr_name
                         }
                     });
                 getMember();
@@ -105,6 +108,7 @@ function drawChromosome() {
 function setCredentials(chr_name, genome_id) {
     chr = chr_name;
     genome_db_id = genome_id;
+    select_chr();
 }
 
 function getMember() {
@@ -792,7 +796,20 @@ function select_member() {
 }
 
 function select_chr() {
+    jQuery('div[id^="chr"]').removeClass("selected")
     jQuery("#chr" + chr).addClass("selected")
+    Fluxion.doAjax(
+        'comparaService',
+        'getGenomeAndChrName',
+        {'query': genome_db_id, 'chr': chr, 'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+                chr_name =  json.chr_name
+                window.history.pushState("ref=" + genome_name, "Title", "index.jsp?ref=" + genome_name + "&chr=" + chr_name);
+            }
+        });
+    getMember()
+
 }
 
 function select_genome() {
@@ -803,6 +820,7 @@ function select_genome() {
         {
             'doOnSuccess': function (json) {
                 jQuery("#genome_name").html(json.genome_name);
+                genome_name =  json.genome_name
             }
         });
 }
