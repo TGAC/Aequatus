@@ -4,8 +4,10 @@ Aequatus Browser
 ================
 * [Description](#description)
 * [Project Contacts](#contacts)
+* [License] (#License)
 * [Demo](#demo)
-* [Funding](#funding)
+* [Documentation](#Documentation)
+* [Funding](#funding) 
 
 
 # <a name="description"></a>
@@ -18,13 +20,18 @@ Aequatus Browser: Visualising complex similarity relationships among species
 * Sarah Ayling <Sarah.Ayling@tgac.ac.uk>
 * Robert Davey <Robert.Davey@tgac.ac.uk>
  
+# <a name="Licence"></a> License: 
+Aequatus is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, at version 3 of the License.
 
 # <a name="demo"></a> Demo:
 
-http://tgac-browser.tgac.ac.uk/aequatus-browser
+http://browser.tgac.ac.uk/aequatus-browser
 
 Full Aequatus Browser code will be available by end of August - 2014
 
+# <a name="Documentation"></a> Documentation:
+
+Documentation related to Aequatus is available at: https://documentation.tgac.ac.uk/display/AEQ/Aequatus 
 
 # <a name="funding"></a>Funding:
 
