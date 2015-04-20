@@ -1,6 +1,6 @@
  ![Logo](http://tgac-browser.tgac.ac.uk/aequatus-browser/aequatus_logo2_trans.png)
  
-Aequatus Browser
+Aequatus 
 ================
 * [Description](#description)
 * [Project Contacts](#contacts)
