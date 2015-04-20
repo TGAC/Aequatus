@@ -44,4 +44,3 @@ Aequatus Browser funded by BBSRC, UK and transPLANT, EU
 
 ![BBSRC, UK](http://upload.wikimedia.org/wikipedia/en/d/dd/BBSRClogonew.png) ![alt EU transPLANT](http://www.transplantdb.eu/sites/transplantdb.eu/files/tplogo_transparent.png)
 
-&copy; 2014. The Genome Analysis Centre, Norwich, UK
