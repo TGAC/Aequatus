@@ -1,10 +1,9 @@
  ![Logo](http://tgac-browser.tgac.ac.uk/aequatus-browser/aequatus_logo2_trans.png)
  
-Aequatus Browser
+Aequatus 
 ================
 * [Description](#description)
 * [Project Contacts](#contacts)
-* [License] (#License)
 * [Demo](#demo)
 * [Documentation](#Documentation)
 * [Funding](#funding) 
@@ -15,17 +14,23 @@ Description:
 =================
 Aequatus Browser: Visualising complex similarity relationships among species
 
+© 2015. The Genome Analysis Centre, Norwich, UK
+
+Aequatus is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+Aequatus is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with MISO. If not, see http://www.gnu.org/licenses/.
+
 # <a name="contacts"></a> Project contacts: 
 * Anil Thanki <Anil.Thanki@tgac.ac.uk>
 * Sarah Ayling <Sarah.Ayling@tgac.ac.uk>
 * Robert Davey <Robert.Davey@tgac.ac.uk>
  
-# <a name="Licence"></a> License: 
-Aequatus is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, at version 3 of the License.
 
 # <a name="demo"></a> Demo:
 
-http://browser.tgac.ac.uk/aequatus-browser
+http://browser.tgac.ac.uk/aequatus/
 
 Full Aequatus Browser code will be available by end of August - 2014
 
