@@ -122,7 +122,7 @@ function getMember() {
         jQuery("#gene_widget").html("")
         jQuery("#gene_info").html("")
     }
-    jQuery("#bar_image_ref").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
+    jQuery("#bar_image_ref").html("<i style=\"text-align: center;\" class=\"fa fa-spinner fa-spin\"></i>")
 
     Fluxion.doAjax(
         'comparaService',

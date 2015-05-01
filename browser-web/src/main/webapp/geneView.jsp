@@ -8,7 +8,7 @@
             <td width="300px" id=control_divs>
 
                 <div id="settings_div"
-                     style="padding: 10px; height: 248px; background: none repeat scroll 0% 0% cyan; font-size: large;">
+                     style="padding: 10px; height: 248px; background: none repeat scroll 0% 0% darkcyan; font-size: large;">
 
                     <div class="checkbox">
 
@@ -168,7 +168,7 @@
                         class="fa fa-search fa-3x"></i>
                 </div>
                 <div onclick="openPanel('#settings_div')"
-                     style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% cyan;"><i
+                     style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% darkcyan;"><i
                         style="color: white;"
                         class="fa fa-cogs fa-3x"></i>
                 </div>
@@ -234,7 +234,7 @@
 
 
     <div id="bar_image_ref"
-         style="border-left: 1px solid #000000; border-right: 1px solid #000000; height: 10px; left: 0; position: relative; top: 25px; vertical-align: middle; width: 100%; z-index: 999;">
+         style="border-left: 1px solid #000000; border-right: 1px solid #000000; height: 10px; left: 0; position: relative; top: 25px; vertical-align: middle; width: 100%; z-index: 999; text-align:center">
     </div>
     <div class="ui-draggable" id="bar_image_selector"
          style="left: 0px; position: relative; font-family: Lucida Console; vertical-align: middle; z-index: 1999; color: green; -moz-user-select: none; font-size: 30pt; font-weight: lighter; width: 100px;">

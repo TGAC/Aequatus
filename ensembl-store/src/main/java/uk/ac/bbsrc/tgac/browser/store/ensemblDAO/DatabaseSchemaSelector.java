@@ -1,4 +1,4 @@
-package uk.ac.bbsrc.tgac.browser.store.ensembl;
+package uk.ac.bbsrc.tgac.browser.store.ensemblDAO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

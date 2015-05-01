@@ -1,11 +1,11 @@
-package uk.ac.bbsrc.tgac.browser.store.ensembl;
+package uk.ac.bbsrc.tgac.browser.store.EnsemblRestAPI;
 
-import net.sf.ehcache.config.PinningConfiguration;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import uk.ac.bbsrc.tgac.browser.core.store.*;
+import uk.ac.bbsrc.tgac.browser.store.ensemblDAO.SQLEnsemblComparaDAO;
 
 import java.net.URL;
 import java.net.URLConnection;
@@ -23,7 +23,7 @@ public class EnsemblRest implements EnsemblRestStore{
     public void getGene() throws Exception {
 
         log.info("\n\n\n\t getGene");
-        String server = "http://rest.ensembl.org";
+        String server = "http://rest.ensemblDAO.org";
         String ext = "/lookup/symbol/homo_sapiens/BRCA2?expand=1";
         URL url = new URL(server + ext);
 
@@ -68,7 +68,7 @@ public class EnsemblRest implements EnsemblRestStore{
         log.info("\n\n\n\t getSpecies");
 
         JSONObject species = new JSONObject();
-        String server = "http://rest.ensembl.org";
+        String server = "http://rest.ensemblDAO.org";
         String ext = "/info/species.json";
         URL url = new URL(server + ext);
 

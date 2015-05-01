@@ -23,10 +23,9 @@
 #
  */
 
-package uk.ac.bbsrc.tgac.browser.store.ensembl;
+package uk.ac.bbsrc.tgac.browser.store.ensemblDAO;
 
 
-import com.mysql.jdbc.StringUtils;
 import net.sf.ehcache.CacheManager;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -37,10 +36,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import uk.ac.bbsrc.tgac.browser.core.store.ComparaStore;
 
-import java.sql.Timestamp;
-
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.*;
 
 /**

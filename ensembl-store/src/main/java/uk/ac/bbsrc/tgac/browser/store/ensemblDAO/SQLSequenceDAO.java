@@ -23,26 +23,18 @@
 #
  */
 
-package uk.ac.bbsrc.tgac.browser.store.ensembl;
+package uk.ac.bbsrc.tgac.browser.store.ensemblDAO;
 
 
-import com.googlecode.ehcache.annotations.Cacheable;
-import com.googlecode.ehcache.annotations.KeyGenerator;
-import com.googlecode.ehcache.annotations.Property;
 import net.sf.ehcache.CacheManager;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import uk.ac.bbsrc.tgac.browser.core.store.*;
-import uk.ac.bbsrc.tgac.browser.store.ensembl.DatabaseSchemaSelector;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.*;
 
 /**
