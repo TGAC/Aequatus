@@ -39,7 +39,7 @@
     <ehcache:annotation-driven cache-manager="cacheManager" proxy-target-class="true"/>
     <bean id="cacheManager" name="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"/>
 
-    <bean id="sequenceDAO" class="uk.ac.bbsrc.tgac.browser.store.ensembl.SQLSequenceDAO">
+    <bean id="sequenceDAO" class="uk.ac.bbsrc.tgac.browser.store.ensemblDAO.SQLSequenceDAO">
         <property name="jdbcTemplate" ref="interfaceTemplate"/>
     </bean>
 
@@ -56,7 +56,7 @@
         </property>
     </bean>
 
-    <bean id="EnsemblComparaDAO" class="uk.ac.bbsrc.tgac.browser.store.ensembl.SQLEnsemblComparaDAO">
+    <bean id="EnsemblComparaDAO" class="uk.ac.bbsrc.tgac.browser.store.ensemblDAO.SQLEnsemblComparaDAO">
         <property name="jdbcTemplate" ref="interfaceTemplate"/>
     </bean>
 
@@ -71,7 +71,7 @@
         </property>
     </bean>
 
-    <bean id="EnsemblRestStore" class="uk.ac.bbsrc.tgac.browser.store.ensembl.EnsemblRest">
+    <bean id="EnsemblRestStore" class="uk.ac.bbsrc.tgac.browser.store.EnsemblRestAPI.EnsemblRest">
         <!--<property name="jdbcTemplate" ref="interfaceTemplate"/>-->
     </bean>
 
@@ -86,7 +86,7 @@
         </property>
     </bean>
 
-    <bean id="property" class="uk.ac.bbsrc.tgac.browser.store.ensembl.DatabaseSchemaSelector">
+    <bean id="property" class="uk.ac.bbsrc.tgac.browser.store.ensemblDAO.DatabaseSchemaSelector">
         <constructor-arg index="0" value="#{dbPropertyConfigurer.getPropertiesAsProperties()}" />
     </bean>
 
