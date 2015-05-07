@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.ac.bbsrc.tgac.browser.core.store.ComparaStore;
-import uk.ac.bbsrc.tgac.browser.core.store.EnsemblRestStore;
+//import uk.ac.bbsrc.tgac.browser.core.store.EnsemblRestStore;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -29,15 +29,15 @@ public class ComparaService {
     private ComparaStore comparaStore;
 
     @Autowired
-    private EnsemblRestStore ensemblRestStore;
+//    private EnsemblRestStore ensemblRestStore;
 
     public void setComparaStore(ComparaStore comparaStore) {
         this.comparaStore = comparaStore;
     }
 
-    public void setEnsemblRestStore(EnsemblRestStore ensemblRestStore) {
-        this.ensemblRestStore = ensemblRestStore;
-    }
+//    public void setEnsemblRestStore(EnsemblRestStore ensemblRestStore) {
+//        this.ensemblRestStore = ensemblRestStore;
+//    }
     /**
      * @param session an HTTPSession comes from ajax call
      * @param json    json object with key parameters sent from ajax call
@@ -207,7 +207,7 @@ public class ComparaService {
             genomes = comparaStore.getAllGenomeId("");
 
             response.put("genomes", genomes);
-            response.put("test", ensemblRestStore.listSpecies());
+//            response.put("test", ensemblRestStore.listSpecies());
 
             return response;
         } catch (Exception e) {

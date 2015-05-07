@@ -79,6 +79,8 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
             cigar_string += "";
         }
 
+        console.log(id+" "+cigar_string.length)
+
         var temp_colours = colours.slice(0);
         if (strand == -1) {
 //            cigar_string = cigar_string.split("").reverse().join("")
@@ -105,6 +107,15 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
         cigar_string = cigar_string.replace(/(M_)/g, "M,_");
         cigar_string = cigar_string.replace(/(_D)/g, "_,D");
 
+        cigar_string = cigar_string.replace(/(MI)/g, "M,I");
+        cigar_string = cigar_string.replace(/(IM)/g, "I,M");
+        cigar_string = cigar_string.replace(/(DI)/g, "D,I");
+        cigar_string = cigar_string.replace(/(IM)/g, "I,M");
+        cigar_string = cigar_string.replace(/(MI)/g, "M,I");
+        cigar_string = cigar_string.replace(/(ID)/g, "I,D");
+        cigar_string = cigar_string.replace(/(I_)/g, "I,_");
+        cigar_string = cigar_string.replace(/(_I)/g, "_,I");
+
         var k = 0;
         var l = 0;
 
@@ -121,6 +132,7 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
 
                 var key = cigars_second_array[j].charAt(0);
                 var length = cigars_second_array[j].length;
+
 
                 if (key == "M" && length > 0) {
 
@@ -257,6 +269,8 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                     }
 
                 }
+                else if (key == "I" && length > 0){
+                }
                 else {
                 }
             }
@@ -360,8 +374,18 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
             cigar_string += "";
         }
 
+        cigar_string = checkCigar(cigar_string);
+
+
         cigar_string = cigar_string.replace(/(MD)/g, "M,D");
         cigar_string = cigar_string.replace(/(DM)/g, "D,M");
+        cigar_string = cigar_string.replace(/(MI)/g, "M,I");
+        cigar_string = cigar_string.replace(/(IM)/g, "I,M");
+        cigar_string = cigar_string.replace(/(DI)/g, "D,I");
+        cigar_string = cigar_string.replace(/(IM)/g, "I,M");
+        cigar_string = cigar_string.replace(/(MI)/g, "M,I");
+        cigar_string = cigar_string.replace(/(ID)/g, "I,D");
+
 
         var k = 0;
         var cigars_array = cigar_string.split(',');

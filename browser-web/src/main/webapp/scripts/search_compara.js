@@ -117,7 +117,7 @@ function search_member(query) {
                     if (i == 0) {
                         content += "<table class='list' id='search_hit' ><thead><tr><th>Genome :  Chromosome</th><th>Description</th><th>Stable ID</th><th>Link</th></tr></thead>";
                     }
-                    var link = "<i onclick='jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getReferences(); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");' class=\"fa fa-external-link\"></i>"
+                    var link = "<i onclick='jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");' class=\"fa fa-external-link\"></i>"
 
                     content += "<tr><td> " + json.html[i].genome + " : " + json.html[i].name + "<td> " + json.html[i].description + "</td> <td> " + json.html[i].stable_id + "</td> <td>" + link + "</td>";
 

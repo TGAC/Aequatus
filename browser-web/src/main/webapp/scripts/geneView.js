@@ -25,7 +25,7 @@ var member_id = null;
 var members = null;
 var members_overview = null;
 var chr_len = null;
-var chr_name= null;
+var chr_name = null;
 
 
 function getChromosomes() {
@@ -60,7 +60,7 @@ function getChromosomes() {
                         'doOnSuccess': function (json) {
                             window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?ref=" + json.genome_name + "&chr=" + json.chr_name);
                             genome_name = json.genome_name;
-                            chr_name=json.chr_name
+                            chr_name = json.chr_name
                         }
                     });
                 getMember();
@@ -370,6 +370,9 @@ function formatCigar(ref_exons, hit_cigar, colours, ref_cigar, reverse, ref_stra
         if (cigar_string.charAt(j) == 'D') {
             if (hit_cigar.charAt(j) == 'M') {
                 hit_cigar = replaceAt(hit_cigar, j, "_");
+            }
+            else if (hit_cigar.charAt(j) == 'D') {
+                hit_cigar = replaceAt(hit_cigar, j, "I");
             }
         }
         j++;
@@ -804,7 +807,7 @@ function select_chr() {
         {'query': genome_db_id, 'chr': chr, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                chr_name =  json.chr_name
+                chr_name = json.chr_name
                 window.history.pushState("ref=" + genome_name, "Title", "index.jsp?ref=" + genome_name + "&chr=" + chr_name);
             }
         });
@@ -820,7 +823,7 @@ function select_genome() {
         {
             'doOnSuccess': function (json) {
                 jQuery("#genome_name").html(json.genome_name);
-                genome_name =  json.genome_name
+                genome_name = json.genome_name
             }
         });
 }
@@ -942,7 +945,7 @@ function redrawCIGAR() {
 
 }
 
-function resize_ref(){
+function resize_ref() {
     console.log(syntenic_data.ref.genes.gene.transcripts[0].Exons.toJSON())
 
     var exon_nu = 0
@@ -966,15 +969,72 @@ function resize_ref(){
 
 }
 
-function resize_ref_to_def(){
+function resize_ref_to_def() {
     console.log(syntenic_data.ref.genes.gene.transcripts[0].Exons.toJSON())
     var exon_nu = syntenic_data.ref.genes.gene.transcripts[0].Exons.length;
 
 
-    while(exon_nu--) {
-        syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu].length =  (syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu].end - syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu].start)+1
+    while (exon_nu--) {
+        syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu].length = (syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu].end - syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu].start) + 1
     }
 
     console.log(syntenic_data.ref.genes.gene.transcripts[0].Exons.toJSON())
 
 }
+
+function checkCigar(ref_cigar_string) {
+
+    var cigar_list = [];
+    cigar_list.push(ref_cigar_string);
+
+    var member = syntenic_data.member
+
+    for (var id in member) {
+        if (member.hasOwnProperty(id)) {
+
+
+            var cigar_string = "";
+            var cigars = member[id].cigarline.replace(/([SIXMND])/g, ":$1,");
+            var cigars_array = cigars.split(',');
+
+            for (var j = 0; j < cigars_array.length - 1; j++) {
+                var cigar = cigars_array[j].split(":");
+                var key = cigar[1];
+                var length = cigar[0] * 3;
+                if (!length) {
+                    length = 3
+                }
+                while (length--) {
+                    cigar_string += key;
+                }
+
+                cigar_string += "";
+            }
+
+            if(member[id].genes.gene.strand != syntenic_data.ref.genes.gene.strand){
+                cigar_string.split("").reverse().join()
+            }
+            cigar_list.push(cigar_string);
+
+            //The current property is not a direct property of p
+            continue;
+        }
+
+    }
+    //syntenic_data.ref.cigarline = cigar_list[0];
+    for (var i = 0; i < i < cigar_list[0].length; i++) {
+        if (cigar_list[0][i] == 'D') {
+            for (var j = 1; j < cigar_list.length; j++) {
+                if (cigar_list[j][i] == 'M') {
+                    break;
+                }
+                if(j == cigar_list.length-1){
+                    cigar_list[0] = replaceAt(cigar_list[0], i, "I")
+                }
+            }
+        }
+    }
+
+    return cigar_list[0];
+}
+
