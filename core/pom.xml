@@ -28,7 +28,7 @@
     <parent>
         <artifactId>tgac-browser</artifactId>
               <groupId>uk.ac.bbsrc.tgac.tgac-browser</groupId>
-        <version>unus</version>
+        <version>duo</version>
     </parent>
     <groupId>${parent.groupId}</groupId>
     <version>${parent.version}</version>

@@ -44,9 +44,6 @@
     <script type="text/javascript" src="<c:url value='/scripts/drawGene.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/drawGeneExonOnly.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/drawCIGARs.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/matrix.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/upgma.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/neighbour-joining.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/DNA_matrix.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/natural-sort.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/controls.js'/>"></script>

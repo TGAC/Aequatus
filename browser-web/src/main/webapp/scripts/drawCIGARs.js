@@ -8,7 +8,6 @@
 function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_div, ref_exons, transcript_start, transcript_end, strand, ref_cigar, ref_strand, id, div) {
     var member_id = jQuery(temp_div).attr('id');
 
-
     exons = jQuery.parseJSON(exons);
 
     exons.sort(sort_by('start', true, parseInt));
@@ -79,7 +78,6 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
             cigar_string += "";
         }
 
-        console.log(id+" "+cigar_string.length)
 
         var temp_colours = colours.slice(0);
         if (strand == -1) {
@@ -99,7 +97,6 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
                 cigar_string = formatCigar(ref_exons, cigar_string, colours, ref_cigar)
             }
         }
-
         cigar_string = cigar_string.replace(/(MD)/g, "M,D");
         cigar_string = cigar_string.replace(/(DM)/g, "D,M");
         cigar_string = cigar_string.replace(/(D_)/g, "D,_");
@@ -110,9 +107,8 @@ function dispCigarLine(cigars, start, top, max, gene_start, stop, exons, temp_di
         cigar_string = cigar_string.replace(/(MI)/g, "M,I");
         cigar_string = cigar_string.replace(/(IM)/g, "I,M");
         cigar_string = cigar_string.replace(/(DI)/g, "D,I");
-        cigar_string = cigar_string.replace(/(IM)/g, "I,M");
-        cigar_string = cigar_string.replace(/(MI)/g, "M,I");
         cigar_string = cigar_string.replace(/(ID)/g, "I,D");
+
         cigar_string = cigar_string.replace(/(I_)/g, "I,_");
         cigar_string = cigar_string.replace(/(_I)/g, "_,I");
 

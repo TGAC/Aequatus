@@ -530,7 +530,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         homology_members.put("stable_id", homologous.get("stable_id").toString());
 
         homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("seq_member_id").toString(), homologous.get("genome_db_id").toString()));
-        String sequence_id = template.queryForObject(GET_SEQUENCE_ID, new Object[]{homologous.get("peptide_id")}, String.class);
+//        String sequence_id = template.queryForObject(GET_SEQUENCE_ID, new Object[]{homologous.get("peptide_id")}, String.class);
 //        homology_members.put("seq", template.queryForObject(SEQUENCE_FROM_ID, new Object[]{sequence_id}, String.class));
 
         return homology_members;
@@ -755,6 +755,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                 "WHERE m1.seq_member_id = ? AND m1.genome_db_id in " + genome_ids + " and m1.dnafrag_id = df.dnafrag_id;";
 
 log.info("\n\n\n\n query "+query);
+
+        log.info("\n\n\n\n query "+query);
+
         Map<String, Object> geneinfo = template.queryForMap(GET_GENE_INFO, new Object[]{query});
         gene_info.put("info", geneinfo);
         return gene_info;
