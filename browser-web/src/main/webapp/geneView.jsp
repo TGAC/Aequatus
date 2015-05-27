@@ -204,7 +204,7 @@
                     <input type="text" class="form-control" placeholder="Search for..." id="search"
                            style="box-sizing: border-box; height: 35px;">
                     <span class="input-group-btn">
-                            <button style="background: none repeat scroll 0% 0% green; height: 35px; top: 0px; border: 0px solid transparent;"
+                            <button onclick="search_from_box()" style="background: none repeat scroll 0% 0% green; height: 35px; top: 0px; border: 0px solid transparent;"
                                     class="btn btn-default" type="button"><i class="fa fa-search fa-1x"
                                                                              style="color: white;"></i></button>
                         </span>

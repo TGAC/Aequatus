@@ -229,3 +229,12 @@ function getMemberfromURL(query){
             }
         });
 }
+
+function search_from_box(){
+    if (parseInt(jQuery("#control_panel").css("left")) < 0) {
+        openPanel('#search_div')
+    }
+    jQuery("#search_history").html(jQuery("#control_search").val());
+    jQuery("#control_search").val(jQuery('#search').val());
+    search_member(jQuery('#search').val());
+}
