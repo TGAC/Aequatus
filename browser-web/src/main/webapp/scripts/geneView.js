@@ -29,6 +29,7 @@ var chr_name = null;
 
 
 function getChromosomes() {
+    console.log("getchromosome")
     var color = jQuery("option:selected", jQuery("#genomes")).attr("background");
     jQuery(".headerbar").css("background", color);
     jQuery("#chr_maps").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
@@ -69,6 +70,8 @@ function getChromosomes() {
 }
 
 function drawChromosome() {
+    console.log("drawchromosome")
+
     var max = Math.max.apply(Math, chromosomes.map(function (o) {
         return o.length;
     }));
@@ -106,13 +109,16 @@ function drawChromosome() {
 }
 
 function setCredentials(chr_name, genome_id) {
+    console.log("set credential")
+
     chr = chr_name;
     genome_db_id = genome_id;
     select_chr();
 }
 
 function getMember() {
-    console.log("getmember")
+    console.log("get member")
+
     jQuery(".selected").removeClass("selected")
     jQuery("#chr" + chr).addClass("selected")
 
@@ -142,8 +148,7 @@ function getMember() {
 }
 
 function drawMember() {
-    console.log("drawmember")
-    console.log("member_id " + member_id)
+    console.log("draw member")
 
     jQuery("#bar_image_ref").html("")
     var width = parseInt(jQuery("#bar_image_selector").css("width"));
@@ -169,9 +174,8 @@ function drawMember() {
 
 
 function drawSelected(member) {
+    console.log("draw selected")
 
-    console.log("drawselected")
-    console.log("member_id " + member_id)
     jQuery("#selected_region").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
     if (member == undefined) {
         jQuery("#gene_widget").html("")
@@ -226,6 +230,8 @@ function drawSelected(member) {
 }
 
 function getcoreMember(query, redrawn) {
+    console.log("get core member")
+
     console.log("getcoremember")
     jQuery(".refMarkerShow").removeClass("selected")
     jQuery("#ref" + query).addClass("selected")
@@ -245,6 +251,12 @@ function getcoreMember(query, redrawn) {
                 syntenic_data = json
                 window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);
                 member_id = json.ref.genes.gene.member_id;
+
+
+
+
+
+
                 resize_ref();
                 drawSynteny(redrawn);
             }
@@ -253,6 +265,7 @@ function getcoreMember(query, redrawn) {
 
 
 function countcoreMember(query) {
+    console.log("count core member")
 
     Fluxion.doAjax(
         'comparaService',
@@ -290,6 +303,7 @@ function hitClicked(cigarline1, start, top, length, gene_start, stopposition, Ex
 }
 
 function formatCigar(ref_exons, hit_cigar, colours, ref_cigar, reverse, ref_strand) {
+    //console.log("format cigar")
 
     var no_of_exons = ref_exons.length
     var hit_cigar_arr = [];
@@ -405,6 +419,8 @@ function formatCigar(ref_exons, hit_cigar, colours, ref_cigar, reverse, ref_stra
 }
 
 function reverse_exons(transcript) {
+    console.log("reverse exon")
+
     var exons = [];
     var length = transcript.end - transcript.start;
 
@@ -431,11 +447,11 @@ function onClicked(desc, stable_id, member_id) {
 }
 
 function changeReference(new_member_id) {
-    console.log("changeReference")
+    console.log("change reference")
+
+
     if (new_member_id != member_id) {
         removePopup();
-        console.log("member_id " + member_id)
-        console.log("new member id " + new_member_id)
 
         resize_ref_to_def()
 
@@ -750,8 +766,8 @@ function convertPeptide(cdnaseq) {
 }
 
 function drawSynteny(redrawn) {
+    console.log("draw synteny")
 
-    console.log("drawsysnteny")
 
     jQuery("#gene_widget").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
     jQuery("#gene_tree_nj").html("")
@@ -770,6 +786,8 @@ function drawSynteny(redrawn) {
 
         checkVisuals();
 
+        //redrawCIGAR()
+        
         jQuery("#gene_widget").sortable(
             {
                 axis: 'y',
@@ -778,7 +796,6 @@ function drawSynteny(redrawn) {
             });
 
         if (redrawn != undefined) {
-            console.log("redrawn")
             jQuery("#genomes").val(ref_data.genome)
             select_chr();
             select_member();
@@ -831,7 +848,7 @@ function select_genome() {
 
 function redrawCIGAR() {
 
-    console.log("redraw CIGAR")
+    console.log("redraw cigar")
 
     var json = syntenic_data;
     if (json.ref) {
@@ -946,9 +963,13 @@ function redrawCIGAR() {
 }
 
 function resize_ref() {
+    console.log("resize ref")
+
     console.log(syntenic_data.ref.genes.gene.transcripts[0].Exons.toJSON())
 
     var exon_nu = 0
+    syntenic_data.ref.genes.gene.transcripts[0].Exons = syntenic_data.ref.genes.gene.transcripts[0].Exons.sort(sort_by('start', true, parseInt));
+
 
     var diff = parseInt(syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu].end - syntenic_data.ref.genes.gene.transcripts[0].transcript_start) + parseInt(1)
     while (diff < 0) {
@@ -964,13 +985,13 @@ function resize_ref() {
 
     var exon_nu = syntenic_data.ref.genes.gene.transcripts[0].Exons.length - 1
     var diff = parseInt(syntenic_data.ref.genes.gene.transcripts[0].transcript_end - syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu]._start) + parseInt(1)
-
     console.log(syntenic_data.ref.genes.gene.transcripts[0].Exons.toJSON())
+
 
 }
 
 function resize_ref_to_def() {
-    console.log(syntenic_data.ref.genes.gene.transcripts[0].Exons.toJSON())
+    //console.log(syntenic_data.ref.genes.gene.transcripts[0].Exons.toJSON())
     var exon_nu = syntenic_data.ref.genes.gene.transcripts[0].Exons.length;
 
 
@@ -978,11 +999,11 @@ function resize_ref_to_def() {
         syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu].length = (syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu].end - syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu].start) + 1
     }
 
-    console.log(syntenic_data.ref.genes.gene.transcripts[0].Exons.toJSON())
 
 }
 
 function checkCigar(ref_cigar_string) {
+    console.log("check cigar")
 
     var cigar_list = [];
     cigar_list.push(ref_cigar_string);
@@ -1022,7 +1043,7 @@ function checkCigar(ref_cigar_string) {
 
     }
     //syntenic_data.ref.cigarline = cigar_list[0];
-    for (var i = 0; i < i < cigar_list[0].length; i++) {
+    for (var i = 0;  i < cigar_list[0].length; i++) {
         if (cigar_list[0][i] == 'D') {
             for (var j = 1; j < cigar_list.length; j++) {
                 if (cigar_list[j][i] == 'M') {

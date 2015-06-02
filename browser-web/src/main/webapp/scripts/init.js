@@ -150,7 +150,6 @@ function getUrlVariables(chr) {
 function processURL(urlParam) {
 
     if (jQuery.urlParam("search") != null) {
-        console.log("search")
         if (parseInt(jQuery("#control_panel").css("left")) < 0) {
             openPanel('#search_div')
         }
@@ -170,7 +169,6 @@ function processURL(urlParam) {
         getMemberfromURL(urlParam("query"));
     }
     else {
-        console.log("no url parameters")
         getReferences();
 
     }
