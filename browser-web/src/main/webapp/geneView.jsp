@@ -111,14 +111,17 @@
                 </div>
                 <div style="display: none; background: none repeat scroll 0% 0% peru; padding: 10px; height: 248px; text-align: center; font-size: 20px;"
                      id="info_div">
-                    <table width="50%" cellpadding=5px>
+                    <table width="100%" cellpadding="5px" >
                         <tbody>
                         <tr>
+                            <td colspan="2" align="left" > <b>Help</b> <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp; <a href = "http://browser.tgac.ac.uk/Aequatus-user-guide">  User-guide </a> </td>
+                        </tr>  <tr>
                             <td align="left" colspan="2"><b> Tree Legends </b></td>
                         </tr>
                         <tr>
                             <td>
-                                <div class="circleBase type2" style="background: rgb(166,206,227);"></div>
+                                <div style="background: rgb(166,206,227);" class="circleBase type2"></div>
                             </td>
                             <td align="left">
                                 Duplication
@@ -126,7 +129,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <div class="circleBase type2" style="background: rgb(31,120,180);"></div>
+                                <div style="background: rgb(31,120,180);" class="circleBase type2"></div>
                             </td>
                             <td align="left">
                                 Dubious
@@ -134,7 +137,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <div class="circleBase type2" style="background: rgb(178,223,138)"></div>
+                                <div style="background: rgb(178,223,138)" class="circleBase type2"></div>
                             </td>
                             <td align="left">
                                 Speciation
@@ -142,7 +145,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <div class="circleBase type2" style="background: rgb(51,160,44)"></div>
+                                <div style="background: rgb(51,160,44)" class="circleBase type2"></div>
                             </td>
                             <td align="left">
                                 Gene Split
@@ -160,27 +163,27 @@
                 <div onclick="toggleLeftInfo(jQuery('#Chrdiv_arrowclick'), 'chr_maps');"
                      style="text-align: center; padding: 5px; background: none repeat scroll 0% 0% steelblue;"><i
                         style="color: white;"
-                        class="fa fa-bar-chart fa-3x"></i>
+                        class="fa fa-bar-chart fa-3x control-buttons"></i>
                 </div>
                 <div onclick="openPanel('#search_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% green;"><i
                         style="color: white;"
-                        class="fa fa-search fa-3x"></i>
+                        class="fa fa-search fa-3x control-buttons"></i>
                 </div>
                 <div onclick="openPanel('#settings_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% darkcyan;"><i
                         style="color: white;"
-                        class="fa fa-cogs fa-3x"></i>
+                        class="fa fa-cogs fa-3x control-buttons"></i>
                 </div>
                 <div onclick="openPanel('#info_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% peru;"><i
                         style="color: white;"
-                        class="fa fa-info fa-3x"></i>
+                        class="fa fa-question fa-3x control-buttons"></i>
                 </div>
                 <div onclick="openClosePanel('#settings_div')"
                      style="padding: 5px; text-align: center;  background: none repeat scroll 0% 0% gray;"><i
                         style="color: white;"
-                        class="fa fa-exchange fa-3x"> </i>
+                        class="fa fa-exchange fa-3x control-buttons"> </i>
                 </div>
             </td>
         </tr>

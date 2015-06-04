@@ -2910,3 +2910,27 @@ div.tooltip {
     background: #ccc;
     border: 1px solid #4682b4;
 }
+
+.search_header{
+    padding: 10px;
+    font-size: large;
+}
+
+.search_info{
+    padding: 10px;
+    font-size: larger;
+}
+
+.search_div {
+    background: none repeat scroll 0 0 lightgreen;
+    border: 1px solid lightgray;
+    cursor: pointer;
+    margin: 10px;
+}
+.search_div:hover {
+    border: 1px solid black;
+}
+
+.control-buttons {
+    cursor: pointer;
+}
