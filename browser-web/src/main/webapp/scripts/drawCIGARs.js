@@ -370,9 +370,7 @@ function dispCigarLineRef(cigars, start, top, max, gene_start, stop, exons, temp
 
             cigar_string += "";
         }
-        console.log(cigar_string)
         cigar_string = checkCigar(cigar_string);
-        console.log(cigar_string)
 
 
         cigar_string = cigar_string.replace(/(MD)/g, "M,D");

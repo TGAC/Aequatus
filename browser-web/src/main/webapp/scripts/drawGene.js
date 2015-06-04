@@ -316,7 +316,7 @@ function dispGenesForMember_id(member_id, ref) {
 
           wrapper_div.html(
             "<div class='handle-gene' style='position: absolute; margin-left: 10px; left: " + stopposition + "px; word-wrap: break-word; width: 200px; height: 20px;'>" +
-            "<span class='handle-gene genelabel geneinfo' style='position: relative; "+info_display+" margin-left: 10px;  word-wrap: break-word;'>" + syntenic_data.member[member_id].genome_name + ":" + stringTrim(gene.desc, 100) + " </span>" +
+            "<span class='handle-gene genelabel geneinfo' style='position: relative; "+info_display+" margin-left: 10px;  word-wrap: break-word;'>" + syntenic_data.member[member_id].genome_name + ":" + stringTrim(gene.transcripts[transcript_len].desc, 100) + " </span>" +
             "<span class='handle-gene genelabel stable' style='position: relative; "+stable_display+" margin-left: 10px; word-wrap: break-word;'>" + gene.stable_id + " </span>" +
             "</div>"
         );
@@ -335,7 +335,7 @@ function dispGenesForMember_id(member_id, ref) {
                 strand = 1;
             } else {
                 strand = -1;
-                jQuery(wrapper_div).append("<span class=\"ui-button ui-icon ui-icon-refresh\" style=\"position: absolute; margin-left: 5px; top:0px; word-wrap: break-word; left: " + stopposition + "px;\" onclick='flip_gene(\"hit" + gene.member_id + "_" + transcript_len + "\")'>/span>")
+                //jQuery(wrapper_div).append("<span class=\"ui-button ui-icon ui-icon-refresh\" style=\"position: absolute; margin-left: 5px; top:0px; word-wrap: break-word; left: " + stopposition + "px;\" onclick='flip_gene(\"hit" + gene.member_id + "_" + transcript_len + "\")'>/span>")
             }
             gene.transcripts[transcript_len].Exons.sort(sort_by('start', true, parseInt));
             var temp_int;
@@ -357,7 +357,7 @@ function dispGenesForMember_id(member_id, ref) {
 
             wrapper_div.html(
                 "<div class='handle-gene' style='position: absolute; margin-left: 10px; left: " + stopposition + "px; word-wrap: break-word; width: 200px; height: 20px;'>" +
-                "<span class='handle-gene genelabel geneinfo' style='position: relative; "+info_display+" margin-left: 10px;  word-wrap: break-word;'>" + syntenic_data.ref.genome_name + ":" + stringTrim(gene.desc, 100) + " </span>" +
+                "<span class='handle-gene genelabel geneinfo' style='position: relative; "+info_display+" margin-left: 10px;  word-wrap: break-word;'>" + syntenic_data.ref.genome_name + ":" + stringTrim(gene.transcripts[transcript_len].desc, 100) + " </span>" +
                 "<span class='handle-gene genelabel stable' style='position: relative;  "+stable_display+"  margin-left: 10px; word-wrap: break-word;'>" + gene.stable_id + " </span>" +
                 "</div>"
             );

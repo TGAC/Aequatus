@@ -159,15 +159,24 @@ function drawMember() {
     var max = Math.max.apply(Math, overview.map(function (o) {
         return o.graph;
     }));
-
+if(overview_len > 1){
     while (overview_len--) {
-        var startposition = (overview_len) * parseFloat(maxLentemp) / 200;
-        var stopposition = parseFloat(maxLentemp) / 200;
+        var startposition = (overview[overview_len].start) * parseFloat(maxLentemp) / sequencelength;
+        var stopposition = (overview[overview_len].end - overview[overview_len].start) * parseFloat(maxLentemp) / sequencelength;
         jQuery("<div>").attr({
             'class': "refMarkerShow",
             'style': "LEFT:" + startposition + "px; width :" + stopposition + "px; opacity: " + (overview[overview_len].graph / max) + "; height: 10px;"
         }).appendTo("#bar_image_ref");
     }
+}else{
+    var startposition = (overview[0].start) * parseFloat(maxLentemp) / sequencelength;
+    var stopposition = (overview[0].end - overview[0].start) * parseFloat(maxLentemp) / sequencelength;
+    jQuery("<div>").attr({
+        'class': "refMarkerShow",
+        'style': "LEFT:" + startposition + "px; width :" + stopposition + "px; opacity: " + (overview[0].graph) + "; height: 10px;"
+    }).appendTo("#bar_image_ref");
+}
+
 
 
 }
@@ -192,7 +201,8 @@ function drawSelected(member) {
 
 
     var new_data = jQuery.grep(members, function (element, index) {
-        return element.start >= start && element.start <= end; // retain appropriate elements
+        //return (element.start >= start && element.end <= end) or (element.start <= start && element.end >= end) ; // retain appropriate elements
+        return  (element.start >= start && element.end <= end) || (element.start <= start && element.end >= end) || (element.end >= end  &&  element.start <= end) || (element.start <= start && element.end >= start);
     });
 
     var data_length = new_data.length;
@@ -833,6 +843,8 @@ function select_chr() {
 }
 
 function select_genome() {
+    console.log("select genome")
+
     Fluxion.doAjax(
         'comparaService',
         'getGenomeName',
@@ -965,7 +977,6 @@ function redrawCIGAR() {
 function resize_ref() {
     console.log("resize ref")
 
-    console.log(syntenic_data.ref.genes.gene.transcripts[0].Exons.toJSON())
 
     var exon_nu = 0
     syntenic_data.ref.genes.gene.transcripts[0].Exons = syntenic_data.ref.genes.gene.transcripts[0].Exons.sort(sort_by('start', true, parseInt));
@@ -985,7 +996,6 @@ function resize_ref() {
 
     var exon_nu = syntenic_data.ref.genes.gene.transcripts[0].Exons.length - 1
     var diff = parseInt(syntenic_data.ref.genes.gene.transcripts[0].transcript_end - syntenic_data.ref.genes.gene.transcripts[0].Exons[exon_nu]._start) + parseInt(1)
-    console.log(syntenic_data.ref.genes.gene.transcripts[0].Exons.toJSON())
 
 
 }

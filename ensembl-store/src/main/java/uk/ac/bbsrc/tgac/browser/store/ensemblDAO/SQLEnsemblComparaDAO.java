@@ -37,6 +37,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import uk.ac.bbsrc.tgac.browser.core.store.ComparaStore;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -85,6 +86,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public static final String GET_CHR_DNAFRAG_BY_NAME = "select * from dnafrag where dnafrag_id = ? and genome_db_id = ? and coord_system_name like \"%chr%\"";
 
     public static final String COUNT_CHR_DNAFRAG_BY_NAME = "select count(*) from dnafrag where dnafrag_id = ? and genome_db_id = ? and coord_system_name like \"%chr%\"";
+
+    public static final String COUNT_GENE_MEMBER_FOR_DNAFRAG = "select count(*) from gene_member where dnafrag_id = ?;";
 
     public static final String GET_GENOME_ID_FROM_DNAFRAG = "select genome_db_id from dnafrag where dnafrag_id = ?";
 
@@ -582,13 +585,24 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public JSONArray getOverviewAllMember(String query, String genome_db) throws IOException {
         try {
             JSONArray members = new JSONArray();
-            Map<String, Object> maps_2 = template.queryForMap(GET_CHR_DNAFRAG_BY_NAME, new Object[]{query, genome_db});
+            Map<String, Object> maps_2 = null;
+            int count = template.queryForInt(COUNT_CHR_DNAFRAG_BY_NAME, new Object[]{query, genome_db});
+            if(count > 0){
+                maps_2 = template.queryForMap(GET_CHR_DNAFRAG_BY_NAME, new Object[]{query, genome_db});
+            }else{
+                maps_2 = template.queryForMap(GET_DNAFRAG_BY_ID, new Object[]{query, genome_db});
+
+            }
             int length = Integer.parseInt(maps_2.get("length").toString());
             int start = 0;
             int end = length;
             int from = start;
             int to = 0;
-            if (length > 0) {
+
+            int count_member =  template.queryForInt(COUNT_GENE_MEMBER_FOR_DNAFRAG, new Object[]{query});
+
+
+            if (length > 0 && count_member > 1000) {
                 for (int i = 1; i <= 200; i++) {
                     JSONObject eachTrack = new JSONObject();
                     to = (i * Math.round(length / 200));
@@ -600,10 +614,19 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                     members.add(eachTrack);
                     from = to;
                 }
+            }else{
+                JSONObject eachTrack = new JSONObject();
+
+                int no_of_tracks = template.queryForObject(GET_ALL_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE, new Object[]{genome_db, query, from, length}, Integer.class);
+                eachTrack.put("start", from);
+                eachTrack.put("end", length);
+                eachTrack.put("graph", no_of_tracks);
+                members.add(eachTrack);
+
             }
             return members;
         } catch (EmptyResultDataAccessException e) {
-            throw new IOException(" getAllMember no result found");
+            throw new IOException(" getOverviewAllMember no result found");
 
         }
     }
@@ -790,14 +813,22 @@ log.info("\n\n\n\n query "+query);
     }
 
 
-    public String getMemberId(String query) throws IOException {
-
-        log.info("\n\n\n\n get chr id query "+query);
+    public String getMemberId(String query) throws Exception {
 
 
-        String member_id = template.queryForObject(GET_MEMBER_ID_FROM_STABLE_ID, new Object[]{query}, String.class);
-        return member_id;
 
+        try{
+            String member_id = template.queryForObject(GET_MEMBER_ID_FROM_STABLE_ID, new Object[]{query}, String.class);
+            return member_id;
+        }
+        catch (EmptyResultDataAccessException s){
+            getAllGenomeId("");
+            return "";
+        }
+    catch (Exception e) {
+        throw new Exception("Search result not found");
+
+    }
     }
 
     public String getReferencefromStableId(String query) throws IOException {

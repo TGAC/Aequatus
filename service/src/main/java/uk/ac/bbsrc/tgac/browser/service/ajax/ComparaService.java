@@ -439,11 +439,16 @@ public class ComparaService {
         response.put("ref", "member");
         try {
             String member_id = comparaStore.getMemberId(query);
-            String ref = comparaStore.getReferencefromStableId(query);
-            String dnafrag = comparaStore.getDnafragIdfromStableId(query);
-            response.put("member_id", member_id);
-            response.put("ref", ref);
-            response.put("dnafrag", dnafrag);
+            if(member_id == ""){
+                response.put("html", comparaStore.searchMember(query));
+            }else{
+                String ref = comparaStore.getReferencefromStableId(query);
+                String dnafrag = comparaStore.getDnafragIdfromStableId(query);
+                response.put("member_id", member_id);
+                response.put("ref", ref);
+                response.put("dnafrag", dnafrag);
+            }
+
 
 
         } catch (IOException e) {

@@ -214,16 +214,51 @@ function getMemberfromURL(query){
         {'query': query, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                member_id = json.member_id;
-                chr = json.dnafrag;
-                genome_db_id = json.ref;
-                getReferences();
-                getChromosomes();
-                getMember();
-                select_chr();
-                select_member();
-                select_genome();
-                getcoreMember(json.member_id, true);
+                if(json.member_id){
+                    member_id = json.member_id;
+                    chr = json.dnafrag;
+                    genome_db_id = json.ref;
+                    getReferences();
+                    getChromosomes();
+                    getMember();
+                    select_chr();
+                    select_member();
+                    select_genome();
+                    getcoreMember(json.member_id, true);
+                }else{
+                    if (parseInt(jQuery("#control_panel").css("left")) < 0) {
+                        openPanel('#search_div')
+                    }
+                    jQuery("#search_history").html(jQuery("#control_search").val());
+                    jQuery("#control_search").val(query);
+                    jQuery("#search").val(query);
+                    window.history.pushState("search=" + query, "Title", "index.jsp?search=" + query);
+                    var content = "";
+                    if(json.html.length > 0){
+                        for (var i = 0; i < json.html.length; i++) {
+                            if (i == 0) {
+                                content += "<p id='search_hit' >";
+                            }
+                            var link = "<i style='cursor:pointer' onclick='jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");' class=\"fa fa-external-link\"></i>"
+
+                            content += "<div class='search_div' onclick='jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");'> <div class='search_header'> " + json.html[i].genome + " : " + json.html[i].name + " </div> <div class='search_info'> " + json.html[i].description + "<br> " + json.html[i].stable_id + "</div></div>";
+
+                            if (i == json.html.length - 1) {
+                                content += "</p>";
+                                jQuery("#search_result").html(content);
+                                jQuery("#search_result").fadeIn();
+                                jQuery("#search_hit").tablesorter();
+                            }
+
+                        }
+                    }
+                    else{
+                        jQuery("#search_result").html("<div style='width: 100%; text-align: center; padding-top: 15px; font-size: 15px;'>No Result found</div>");
+
+                    }
+
+                }
+
             }
         });
 }

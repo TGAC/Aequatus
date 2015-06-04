@@ -71,12 +71,13 @@ function search(query) {
                 var content = "";
                 for (var i = 0; i < json.genomes.length; i++) {
                     if (i == 0) {
-                        content += "<table class='list' id='search_hit' ><thead><tr><th>Genome_db_id</th><th>Genome</th><th>Assembly</th><th>Link</th></tr></thead>";
+                        content += "<p id='search_hit' >";
                     }
 
-                    content += "<tr><td> " + json.genomes[i].genome_db_name + "<td>" + json.genomes[i].name + "<td>" + json.genomes[i].assembly + " <td><a target='_blank' href='index.jsp?query=" + json.genomes[i].name + "&&genome=" + json.genomes[i].genome_db_id + "' > <span title=\"Link\" class=\"ui-button ui-icon ui-icon-link\" </span><a/></td>";
+                    content += "<div class='search_header'> " + json.genomes[i].genome_db_name + "<td>" + json.genomes[i].name + "<td>" + json.genomes[i].assembly + " <td><a target='_blank' href='index.jsp?query=" + json.genomes[i].name + "&&genome=" + json.genomes[i].genome_db_id + "' > <span title=\"Link\" class=\"ui-button ui-icon ui-icon-link\" </span><a/></td>";
+
                     if (i == json.genomes.length - 1) {
-                        content += "</table>";
+                        content += "</p>";
                         jQuery("#searchresult").html(content);
                         jQuery("#searchresult").fadeIn();
                     }
@@ -106,6 +107,10 @@ function search_member(query) {
 
     jQuery("#searchresultHead").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>");
     var reference = jQuery('#genomes').val();
+    jQuery("#search_result").fadeIn();
+    jQuery("#search_result").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>");
+
+
     Fluxion.doAjax(
         'comparaService',
         'searchMember',
@@ -113,27 +118,35 @@ function search_member(query) {
         {
             'doOnSuccess': function (json) {
                 var content = "";
-                for (var i = 0; i < json.html.length; i++) {
-                    if (i == 0) {
-                        content += "<table class='list' id='search_hit' ><thead><tr><th>Genome :  Chromosome</th><th>Description</th><th>Stable ID</th><th>Link</th></tr></thead>";
-                    }
-                    var link = "<i style='cursor:pointer' onclick='jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");' class=\"fa fa-external-link\"></i>"
+                if(json.html.length > 0){
+                    for (var i = 0; i < json.html.length; i++) {
+                        if (i == 0) {
+                            content += "<p id='search_hit' >";
+                        }
+                        var link = "<i style='cursor:pointer' onclick='jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");' class=\"fa fa-external-link\"></i>"
 
-                    content += "<tr><td> " + json.html[i].genome + " : " + json.html[i].name + "<td> " + json.html[i].description + "</td> <td> " + json.html[i].stable_id + "</td> <td>" + link + "</td>";
+                        content += "<div class='search_div' onclick='jQuery(\"#canvas\").show(); jQuery('#genome_name').html("+json.html[i].genome+") setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");'> <div class='search_header'> " + json.html[i].genome + " : " + json.html[i].name + " </div> <div class='search_info'> " + json.html[i].description + "<br> " + json.html[i].stable_id + "</div></div>";
 
-                    if (i == json.html.length - 1) {
-                        content += "</table>";
-                        jQuery("#search_result").html(content);
-                        jQuery("#search_result").fadeIn();
-                        jQuery("#search_hit").tablesorter();
+                        if (i == json.html.length - 1) {
+                            content += "</p>";
+                            jQuery("#search_result").html(content);
+                            jQuery("#search_result").fadeIn();
+                            jQuery("#search_hit").tablesorter();
+                        }
+
                     }
+                }
+                else{
+                    jQuery("#search_result").html("<div style='width: 100%; text-align: center; padding-top: 15px; font-size: 15px;'>No Result found</div>");
 
                 }
+
             }
         });
 }
 
 function changeGenome(genome, name){
+    console.log("change genome")
     genome_db_id = genome;
     chr = undefined;
     member_id = undefined;
