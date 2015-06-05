@@ -90,7 +90,7 @@ function search(query) {
 
 function search_member(query) {
 
-    window.history.pushState("search=" + query, "Title", "index.jsp?search=" + query);
+    //window.history.pushState("search=" + query, "Title", "index.jsp?search=" + query);
 
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
     jQuery('#sessioninput').fadeOut();
@@ -110,6 +110,7 @@ function search_member(query) {
     jQuery("#search_result").fadeIn();
     jQuery("#search_result").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>");
 
+    URLSearch(query)
 
     Fluxion.doAjax(
         'comparaService',
@@ -123,9 +124,9 @@ function search_member(query) {
                         if (i == 0) {
                             content += "<p id='search_hit' >";
                         }
-                        var link = "<i style='cursor:pointer' onclick='jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");' class=\"fa fa-external-link\"></i>"
+                        var link = "<i style='cursor:pointer' onclick='URLMemberID("+json.html[i].stable_id+"); jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");' class=\"fa fa-external-link\"></i>"
 
-                        content += "<div class='search_div' onclick='jQuery(\"#canvas\").show(); jQuery('#genome_name').html("+json.html[i].genome+") setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");'> <div class='search_header'> " + json.html[i].genome + " : " + json.html[i].name + " </div> <div class='search_info'> " + json.html[i].description + "<br> " + json.html[i].stable_id + "</div></div>";
+                        content += "<div class='search_div' onclick='URLMemberID(\""+json.html[i].stable_id+"\"); jQuery(\"#canvas\").show(); jQuery(\"#genome_name\").html(\""+json.html[i].genome+"\"); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",true);'> <div class='search_header'> " + json.html[i].genome + " : " + json.html[i].name + " </div> <div class='search_info'> " + json.html[i].description + "<br> " + json.html[i].stable_id + "</div></div>";
 
                         if (i == json.html.length - 1) {
                             content += "</p>";
@@ -152,4 +153,21 @@ function changeGenome(genome, name){
     member_id = undefined;
     getChromosomes();
     jQuery("#genome_name").html(name)
+}
+
+function URLgenomeName(genome_name, chr_name){
+    console.log("URLgenomeName "+genome_name+" "+chr_name)
+    window.history.pushState("ref=" + genome_name, "Title", "index.jsp?ref=" + genome_name + "&chr=" + chr_name);
+}
+
+function URLMemberID(stable_id){
+    console.log("URLMemberID "+stable_id)
+    window.history.pushState("ref=" + genome_name, "Title", "index.jsp?query=" + stable_id);
+
+}
+
+function URLSearch(search){
+    console.log("URLSearch "+search)
+    window.history.pushState("ref=" + genome_name, "Title", "index.jsp?search=" + search);
+
 }

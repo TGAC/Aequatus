@@ -232,7 +232,7 @@ function getMemberfromURL(query){
                     jQuery("#search_history").html(jQuery("#control_search").val());
                     jQuery("#control_search").val(query);
                     jQuery("#search").val(query);
-                    window.history.pushState("search=" + query, "Title", "index.jsp?search=" + query);
+                    //window.history.pushState("search=" + query, "Title", "index.jsp?search=" + query);
                     var content = "";
                     if(json.html.length > 0){
                         for (var i = 0; i < json.html.length; i++) {

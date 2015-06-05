@@ -59,7 +59,7 @@ function getChromosomes() {
                     {'query': genome_db_id, 'chr': chr, 'url': ajaxurl},
                     {
                         'doOnSuccess': function (json) {
-                            window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?ref=" + json.genome_name + "&chr=" + json.chr_name);
+                            //window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?ref=" + json.genome_name + "&chr=" + json.chr_name);
                             genome_name = json.genome_name;
                             chr_name = json.chr_name
                         }
@@ -97,7 +97,7 @@ function drawChromosome() {
             'class': 'refmap',
             'chr_length': chromosomes[referenceLength].length,
             'style': "left: " + left + "px; width:" + width + "px; height:" + height + "px; background: " + jQuery("#genome" + genome_db_id).css("background"),
-            'onClick': 'setCredentials("' + chromosomes[referenceLength].id + '",' + genome_db_id + ');'
+            'onClick': 'URLgenomeName(genome_name, "' + chromosomes[referenceLength].chr_name + '"), setCredentials("' + chromosomes[referenceLength].id + '",' + genome_db_id + ');'
         }).appendTo("#chr_maps");
         jQuery("<div>").attr({
             'style': "position: absolute; bottom: 10px; left: " + left + "px; width:" + width + "px; "
@@ -259,7 +259,7 @@ function getcoreMember(query, redrawn) {
         {
             'doOnSuccess': function (json) {
                 syntenic_data = json
-                window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);
+                //window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);
                 member_id = json.ref.genes.gene.member_id;
 
 
@@ -505,6 +505,7 @@ function changeReference(new_member_id) {
             getMember();
             select_chr();
         }
+        URLMemberID(syntenic_data.ref.stable_id)
 
         resize_ref();
 
@@ -788,6 +789,7 @@ function drawSynteny(redrawn) {
     var json = syntenic_data;
     if (json.ref) {
         var ref_data = json.ref;
+        URLMemberID(ref_data.stable_id)
 
 
         ref_member = ref_data.genes.gene.member_id
@@ -835,7 +837,7 @@ function select_chr() {
         {
             'doOnSuccess': function (json) {
                 chr_name = json.chr_name
-                window.history.pushState("ref=" + genome_name, "Title", "index.jsp?ref=" + genome_name + "&chr=" + chr_name);
+                //window.history.pushState("ref=" + genome_name, "Title", "index.jsp?ref=" + genome_name + "&chr=" + chr_name);
             }
         });
     getMember()
@@ -967,7 +969,7 @@ function redrawCIGAR() {
         jQuery("#gene_tree_nj").html("<span style='font-size: large; text-align: center'>Selected Gene not found.</span>")
     }
 
-    window.history.pushState("ref=" + syntenic_data.ref.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);
+    //window.history.pushState("ref=" + syntenic_data.ref.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);
 
     select_member();
 
