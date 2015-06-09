@@ -115,7 +115,7 @@
                         <tbody>
                         <tr>
                             <td colspan="2" align="left" > <b>Help</b> <br>
-                                &nbsp;&nbsp;&nbsp;&nbsp; <a href = "http://browser.tgac.ac.uk/Aequatus-user-guide">  User-guide </a> </td>
+                                &nbsp;&nbsp;&nbsp;&nbsp; <a target="_blank" href = "http://browser.tgac.ac.uk/aequatus-user-guide">  User-guide </a> </td>
                         </tr>  <tr>
                             <td align="left" colspan="2"><b> Tree Legends </b></td>
                         </tr>
@@ -190,7 +190,7 @@
         <tr>
             <td>
                 <div id="search_result"
-                     style="position: absolute; overflow-y: scroll; height: 500px; overflow: hidden; width:0px; height: 500px; overflow: auto;"></div>
+                     style="position: absolute; overflow-y: scroll; height: 500px; overflow: hidden; width:0px; height: 500px; overflow: auto; background: white;"></div>
             </td>
         </tr>
         </tbody>
@@ -334,11 +334,11 @@
                         <tbody>
                         <tr>
                             <td>
-                                <div id="makemetop_button" style="float: right"></div>
+                                <div id="makemetop_button" style="float: right" title="Change Reference to"></div>
 
                             </td>
                             <td>
-                                <div id="ensemblLink" style="float: right"></div>
+                                <div id="ensemblLink" style="float: right" title="Link to Ensembl"></div>
                             </td>
                         </tr>
                         </tbody>

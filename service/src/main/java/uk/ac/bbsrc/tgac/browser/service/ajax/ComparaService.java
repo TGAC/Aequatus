@@ -266,8 +266,8 @@ public class ComparaService {
 //                response.put(trackName, comparaStore.getGenomicAlignGraph(queryid, start, end));
                 }
             } else {
-                response.put("count", "babaji ka thulu");
-                response.put("babaji ka thulu", "babaji ka thulu");
+                response.put("count", " ");
+                response.put(" ", " ");
             }
 
         } catch (IOException e) {
