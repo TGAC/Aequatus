@@ -219,10 +219,9 @@ function getMemberfromURL(query){
                     chr = json.dnafrag;
                     genome_db_id = json.ref;
                     getReferences();
-                    getChromosomes();
-                    getMember();
+                    getChromosomes(json.member_id);
+                    getMember(json.member_id);
                     select_chr();
-                    select_member();
                     select_genome();
                     getcoreMember(json.member_id, true);
                 }else{

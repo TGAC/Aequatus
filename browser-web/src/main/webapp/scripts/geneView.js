@@ -28,7 +28,7 @@ var chr_len = null;
 var chr_name = null;
 
 
-function getChromosomes() {
+function getChromosomes(member_id) {
     console.log("getchromosome")
     var color = jQuery("option:selected", jQuery("#genomes")).attr("background");
     jQuery(".headerbar").css("background", color);
@@ -64,7 +64,11 @@ function getChromosomes() {
                             chr_name = json.chr_name
                         }
                     });
-                getMember();
+                if (member_id == undefined) {
+                    getMember();
+                }else{
+select_chr()
+                }
             }
         })
 }
@@ -97,15 +101,13 @@ function drawChromosome() {
             'class': 'refmap',
             'chr_length': chromosomes[referenceLength].length,
             'style': "left: " + left + "px; width:" + width + "px; height:" + height + "px; background: " + jQuery("#genome" + genome_db_id).css("background"),
-            'onClick': 'URLgenomeName(genome_name, "' + chromosomes[referenceLength].chr_name + '"), setCredentials("' + chromosomes[referenceLength].id + '",' + genome_db_id + ');'
+            'onClick': 'URLgenomeName(genome_name, "' + chromosomes[referenceLength].chr_name + '"), setCredentials("' + chromosomes[referenceLength].id + '",' + genome_db_id + '), getMember();'
         }).appendTo("#chr_maps");
         jQuery("<div>").attr({
             'style': "position: absolute; bottom: 10px; left: " + left + "px; width:" + width + "px; "
         }).html(chromosomes[referenceLength].chr_name).appendTo("#chr_maps");
 
     }
-
-
 }
 
 function setCredentials(chr_name, genome_id) {
@@ -116,7 +118,7 @@ function setCredentials(chr_name, genome_id) {
     select_chr();
 }
 
-function getMember() {
+function getMember(member) {
     console.log("get member")
 
     jQuery(".selected").removeClass("selected")
@@ -142,7 +144,13 @@ function getMember() {
                 sequencelength = json.chr_length;
                 members_overview = json.overview;
                 drawMember()
-                drawSelected();
+                if (member == undefined) {
+                    drawSelected();
+                } else {
+                    setSelector()
+                }
+                console.log("get member 2")
+
             }
         });
 }
@@ -159,24 +167,23 @@ function drawMember() {
     var max = Math.max.apply(Math, overview.map(function (o) {
         return o.graph;
     }));
-if(overview_len > 1){
-    while (overview_len--) {
-        var startposition = (overview[overview_len].start) * parseFloat(maxLentemp) / sequencelength;
-        var stopposition = (overview[overview_len].end - overview[overview_len].start) * parseFloat(maxLentemp) / sequencelength;
+    if (overview_len > 1) {
+        while (overview_len--) {
+            var startposition = (overview[overview_len].start) * parseFloat(maxLentemp) / sequencelength;
+            var stopposition = (overview[overview_len].end - overview[overview_len].start) * parseFloat(maxLentemp) / sequencelength;
+            jQuery("<div>").attr({
+                'class': "refMarkerShow",
+                'style': "LEFT:" + startposition + "px; width :" + stopposition + "px; opacity: " + (overview[overview_len].graph / max) + "; height: 10px;"
+            }).appendTo("#bar_image_ref");
+        }
+    } else {
+        var startposition = (overview[0].start) * parseFloat(maxLentemp) / sequencelength;
+        var stopposition = (overview[0].end - overview[0].start) * parseFloat(maxLentemp) / sequencelength;
         jQuery("<div>").attr({
             'class': "refMarkerShow",
-            'style': "LEFT:" + startposition + "px; width :" + stopposition + "px; opacity: " + (overview[overview_len].graph / max) + "; height: 10px;"
+            'style': "LEFT:" + startposition + "px; width :" + stopposition + "px; opacity: " + (overview[0].graph) + "; height: 10px;"
         }).appendTo("#bar_image_ref");
     }
-}else{
-    var startposition = (overview[0].start) * parseFloat(maxLentemp) / sequencelength;
-    var stopposition = (overview[0].end - overview[0].start) * parseFloat(maxLentemp) / sequencelength;
-    jQuery("<div>").attr({
-        'class': "refMarkerShow",
-        'style': "LEFT:" + startposition + "px; width :" + stopposition + "px; opacity: " + (overview[0].graph) + "; height: 10px;"
-    }).appendTo("#bar_image_ref");
-}
-
 
 
 }
@@ -202,7 +209,7 @@ function drawSelected(member) {
 
     var new_data = jQuery.grep(members, function (element, index) {
         //return (element.start >= start && element.end <= end) or (element.start <= start && element.end >= end) ; // retain appropriate elements
-        return  (element.start >= start && element.end <= end) || (element.start <= start && element.end >= end) || (element.end >= end  &&  element.start <= end) || (element.start <= start && element.end >= start);
+        return (element.start >= start && element.end <= end) || (element.start <= start && element.end >= end) || (element.end >= end && element.start <= end) || (element.start <= start && element.end >= start);
     });
 
     var data_length = new_data.length;
@@ -221,6 +228,9 @@ function drawSelected(member) {
         }
         jQuery("<div>").attr({
             'id': id,
+            'seq_id':new_data[data_length].seq_member_id,
+            'start':new_data[data_length].start,
+            'end':new_data[data_length].end,
             'class': "refMarkerShow",
             'style': "LEFT:" + startposition + "px; width :" + stopposition + "px;",
             'onMouseOver': "countcoreMember(\"" + new_data[data_length].id + "\")",
@@ -230,13 +240,9 @@ function drawSelected(member) {
 
 
     }
+    console.log("draw selected 2")
 
-    if (member == undefined) {
 
-    } else {
-        jQuery(".refMarkerShow").removeClass("selected")
-        jQuery("#ref" + member).addClass("selected")
-    }
 }
 
 function getcoreMember(query, redrawn) {
@@ -262,12 +268,9 @@ function getcoreMember(query, redrawn) {
                 //window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);
                 member_id = json.ref.genes.gene.member_id;
 
-
-
-
-
-
                 resize_ref();
+                setSelector()
+
                 drawSynteny(redrawn);
             }
         });
@@ -496,19 +499,18 @@ function changeReference(new_member_id) {
         if (genome_db_id != syntenic_data.ref.genome) {
             genome_db_id = syntenic_data.ref.genome;
             chr = syntenic_data.ref.dnafrag
-            getChromosomes();
-            getMember();
-            select_chr();
+            getChromosomes(new_member_id);
+            members = undefined
+            getMember(new_member_id);
             select_genome();
         } else if (chr != syntenic_data.ref.dnafrag) {
             chr = syntenic_data.ref.dnafrag
-            getMember();
+            members = undefined
+            getMember(new_member_id);
             select_chr();
         }
         URLMemberID(syntenic_data.ref.stable_id)
-
         resize_ref();
-
         redrawCIGAR()
     }
 
@@ -799,7 +801,7 @@ function drawSynteny(redrawn) {
         checkVisuals();
 
         //redrawCIGAR()
-        
+
         jQuery("#gene_widget").sortable(
             {
                 axis: 'y',
@@ -840,8 +842,6 @@ function select_chr() {
                 //window.history.pushState("ref=" + genome_name, "Title", "index.jsp?ref=" + genome_name + "&chr=" + chr_name);
             }
         });
-    getMember()
-
 }
 
 function select_genome() {
@@ -1044,7 +1044,7 @@ function checkCigar(ref_cigar_string) {
                 cigar_string += "";
             }
 
-            if(member[id].genes.gene.strand != syntenic_data.ref.genes.gene.strand){
+            if (member[id].genes.gene.strand != syntenic_data.ref.genes.gene.strand) {
                 cigar_string.split("").reverse().join()
             }
             cigar_list.push(cigar_string);
@@ -1055,13 +1055,13 @@ function checkCigar(ref_cigar_string) {
 
     }
     //syntenic_data.ref.cigarline = cigar_list[0];
-    for (var i = 0;  i < cigar_list[0].length; i++) {
+    for (var i = 0; i < cigar_list[0].length; i++) {
         if (cigar_list[0][i] == 'D') {
             for (var j = 1; j < cigar_list.length; j++) {
                 if (cigar_list[j][i] == 'M') {
                     break;
                 }
-                if(j == cigar_list.length-1){
+                if (j == cigar_list.length - 1) {
                     cigar_list[0] = replaceAt(cigar_list[0], i, "I")
                 }
             }
@@ -1071,3 +1071,32 @@ function checkCigar(ref_cigar_string) {
     return cigar_list[0];
 }
 
+function setSelector(){
+    console.log("setSelector")
+
+     var maxLentemp = parseInt(jQuery("#canvas").css("width"));
+
+    //var sequencelength = chr_length="63644993"
+
+    var start = syntenic_data.ref.genes.gene.transcripts[0].start
+
+
+    console.log(start)
+    var left = start * maxLentemp / sequencelength;
+
+    console.log("chr length "+sequencelength)
+
+    var width = parseInt(jQuery("#bar_image_selector").css("width"));
+
+    left = left - width/2
+
+    jQuery("#bar_image_selector").animate({left: left+'px'} , function() {
+        drawSelected();
+        jQuery(".refMarkerShow").removeClass("selected")
+        console.log("setSelector "+syntenic_data.ref.genes.gene.member_id)
+
+        jQuery("[seq_id="+syntenic_data.ref.genes.gene.member_id+"]").addClass("selected")
+        jQuery("#chr"+syntenic_data.ref.genes.gene.reference).addClass("selected")
+        console.log("setSelector 2 "+syntenic_data.ref.genes.gene.member_id)
+    });
+}

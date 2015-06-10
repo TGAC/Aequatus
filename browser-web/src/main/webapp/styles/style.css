@@ -2771,6 +2771,7 @@ span.deleteicon input {
 .selected{
     background: red;
     box-shadow: 0 0 2px 2px blue;
+    z-index: 1999;
 }
 
 #gene_widget{
@@ -2791,9 +2792,9 @@ border-radius: 5px 0 0 5px;
     border-radius:0 5px 5px 0;
 }
 
-.selected{
-    background-color: #ff4500;
-}
+/*.selected{*/
+    /*background-color: #ff4500;*/
+/*}*/
 
 #genomes {
     background: white;
