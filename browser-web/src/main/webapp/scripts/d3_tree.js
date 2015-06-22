@@ -22,7 +22,7 @@ function drawTree(json_tree) {
         });
 
     var svg = d3.select("#gene_tree_nj").append("svg")
-        .attr("width", width + margin.right + margin.left)
+        .attr("width", jQuery(document).width())
         .attr("height", height + margin.top + margin.bottom)
         .style("overflow", "visible")
         .append("g")
@@ -383,16 +383,20 @@ function drawTree(json_tree) {
             .style("left", "10px")
             .style("top", "10px")
             .html(function (d) {
-                    return "<div id = 'id" + d.seq_member_id + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;'></div>";//jQuery("#gene_widget #id" + d.seq_member_id).html();
+                    return "<div id = 'id" + d.seq_member_id + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :"+jQuery(document).width() * 0.8+";'></div>";//jQuery("#gene_widget #id" + d.seq_member_id).html();
             });
 
         nodeEnter.filter(function (d) {
             if (d.seq_member_id && d.seq_member_id == ref_member) {
+                jQuery("#id" + d.seq_member_id).svg()
+                //drawIntro(d.seq_member_id);
                 dispGenesForMember_id(d.seq_member_id)
-                dispGenesExonForMember_id(d.seq_member_id)
+                //dispGenesExonForMember_id(d.seq_member_id)
             } else if (d.seq_member_id && syntenic_data.member[d.seq_member_id]) {
+                jQuery("#id" + d.seq_member_id).svg()
+                //drawIntro(d.seq_member_id);
                 dispGenesForMember_id(d.seq_member_id, true)
-                dispGenesExonForMember_id(d.seq_member_id, true)
+                //dispGenesExonForMember_id(d.seq_member_id, true)
             }
         });
 
