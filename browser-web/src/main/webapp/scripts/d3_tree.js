@@ -96,7 +96,6 @@ function drawTree(json_tree) {
             .on("click", function (d) {
                 if (d.seq_member_id) {
                     newpopup(d.seq_member_id)
-//
                 } else {
                     if (d.children && d.children != null) {
                         if (d.children.size() > 0) {
@@ -297,8 +296,7 @@ function drawTree(json_tree) {
                             .attr("x2", "0%")
                             .attr("y2", "100%")
                             .attr("spreadMethod", "pad");
-
-// Define the gradient colors
+                    // Define the gradient colors
                         gradient.append("svg:stop")
                             .attr("offset", "15%")
                             .attr("stop-color", col1)
@@ -338,8 +336,6 @@ function drawTree(json_tree) {
                 }
             });
 
-//        nodeUpdate.select("text")
-//            .style("fill-opacity", 1);
 
         // Transition exiting nodes to the parent's new position.
         var nodeExit = node.exit().transition()
@@ -351,9 +347,6 @@ function drawTree(json_tree) {
 
         nodeExit.select("circle")
             .attr("r", 1e-6);
-
-//        nodeExit.select("text")
-//            .style("fill-opacity", 1e-6);
 
         nodeEnter.filter(function (d) {
             if (d.seq_member_id) {
@@ -383,7 +376,7 @@ function drawTree(json_tree) {
             .style("left", "10px")
             .style("top", "10px")
             .html(function (d) {
-                    return "<div id = 'id" + d.seq_member_id + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :"+jQuery(document).width() * 0.8+";'></div>";//jQuery("#gene_widget #id" + d.seq_member_id).html();
+                    return "<div id = 'id" + d.seq_member_id + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :"+jQuery(document).width() * 0.8+"px;'></div>";//jQuery("#gene_widget #id" + d.seq_member_id).html();
             });
 
         nodeEnter.filter(function (d) {
@@ -391,12 +384,67 @@ function drawTree(json_tree) {
                 jQuery("#id" + d.seq_member_id).svg()
                 //drawIntro(d.seq_member_id);
                 dispGenesForMember_id(d.seq_member_id)
-                //dispGenesExonForMember_id(d.seq_member_id)
+                dispGenesExonForMember_id(d.seq_member_id)
+                var view_type = null
+                if (jQuery('input[name=view_type]:checked').val() == "with") {
+                    view_type = true;
+                }
+                else {
+                    view_type = false;
+                }
+
+                if (view_type == true) {
+                    jQuery(".style1").show()
+                    jQuery(".style2").hide()
+                    //display = "display: block;"
+                } else {
+                    jQuery(".style1").hide()
+                    jQuery(".style2").show()
+                    //display = "display: none;"
+                }
             } else if (d.seq_member_id && syntenic_data.member[d.seq_member_id]) {
                 jQuery("#id" + d.seq_member_id).svg()
                 //drawIntro(d.seq_member_id);
                 dispGenesForMember_id(d.seq_member_id, true)
-                //dispGenesExonForMember_id(d.seq_member_id, true)
+                dispGenesExonForMember_id(d.seq_member_id, true)
+                var view_type = null
+                if (jQuery('input[name=view_type]:checked').val() == "with") {
+                    view_type = true;
+                }
+                else {
+                    view_type = false;
+                }
+
+                if (view_type == true) {
+                    jQuery(".style1").show()
+                    jQuery(".style2").hide()
+                    //display = "display: block;"
+                } else {
+                    jQuery(".style1").hide()
+                    jQuery(".style2").show()
+                    //display = "display: none;"
+                }
+
+                var view_type = null
+                if (jQuery('input[name=label_type]:radio:checked').val() == "stable") {
+                    view_type = true;
+                }
+                else {
+                    view_type = false;
+                }
+
+                var stable_display = "";
+                var info_display = "";
+
+                if (view_type == true) {
+                    jQuery(".genelabel").hide();
+                    jQuery(".stable").show();
+
+                } else {
+                    jQuery(".genelabel").hide();
+                    jQuery(".geneinfo").show();
+                }
+
             }
         });
 

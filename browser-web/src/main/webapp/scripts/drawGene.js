@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-function dispGeneExon(svg, track, genestrand, div, gene_start, width, max_len, id) {
+function dispGeneExon(g, svg, track, genestrand, div, gene_start, width, max_len, id) {
     var trackClass = "exon";
     var utrtrackClass = "utr";
 
@@ -16,17 +16,12 @@ function dispGeneExon(svg, track, genestrand, div, gene_start, width, max_len, i
     if (geneexons.length > 0) {
         var strand = genestrand;
 
-        var spanclass = "ui-icon ui-icon-carat-1-e";
+        var spanclass = ">";
 
         if (strand == -1 || strand == "-1") {
-            spanclass = "ui-icon ui-icon-carat-1-w";
+            spanclass = "<";
         }
 
-//        var spanclass = "forward";
-//
-//        if (strand == -1 || strand == "-1") {
-//            spanclass = "reverse";
-//        }
         var newStart_temp = gene_start;
         var maxLentemp = width;
 
@@ -69,164 +64,126 @@ function dispGeneExon(svg, track, genestrand, div, gene_start, width, max_len, i
             startposition = (exon_start - newStart_temp) * parseFloat(maxLentemp) / (max_len);
             stopposition = ((exon_stop - exon_start) + 1) * parseFloat(maxLentemp) / (max_len);
 
-//            to make up for border added
-            stopposition = stopposition - 4;
-
-if(startposition < 1) startposition = 1
-            svg.rect(startposition, 1, stopposition, 10, 2,2, {fill: 'white', stroke: 'green', strokeWidth: 2});
-
-            //jQuery("<div>").attr({
-            //    'class': trackClass,
-            //    'id': "exon" + track.id + "" + geneexons[exon_len].id+ "style1",
-            //    'style': "position:absolute; cursor:pointer; height: 10px; z-index: 999;  TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
-            //}).appendTo(div);
+            if (startposition < 1) startposition = 1
+            svg.rect(g, startposition, 1, stopposition, 10, 2, 2, {
+                id: "exon" + track.id + "" + geneexons[exon_len].id + "style1",
+                fill: 'white',
+                stroke: 'green',
+                strokeWidth: 2
+            });
 
             if (exon_len > 0) {
-                jQuery("<span>").attr({
-                    'class': spanclass,
-                    'style': "cursor:pointer; position:absolute; z-index; 999; TOP:" + (top - 1) + "px; left:" + (startposition - 20) + "px "
-                }).appendTo(div);
+                svg.text(g, startposition-20, 9,  spanclass, {stroke: 'green'});
             }
             disp_exon = true;
         }
 
         var exon_len = geneexons.length;
 
-//        while (exon_len--) {
+        while (exon_len--) {
 //
-//            var exon_start;
-//            var exon_stop;
-//            if (geneexons[exon_len].start < geneexons[exon_len].end) {
-//                exon_start = geneexons[exon_len].start;
-//                exon_stop = geneexons[exon_len].end;
-//            }
-//            else {
-//                exon_start = geneexons[exon_len].end;
-//                exon_stop = geneexons[exon_len].start;
-//            }
-//
-//            current = exon_start;
-//
-//            var temp_div = ("#exon" + track.id + "" + geneexons[exon_len].id+ "style1")
-//
-//            var top = 0;
-//
-//            if (exon_start < transcript_start && exon_stop < transcript_start) {
-//
-//                startposition = 0;// ((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
-//                stopposition = ((exon_stop - exon_start) + 1) * parseFloat(maxLentemp) / (max_len);
-//
-////                startposition += 1;
-////                stopposition -= 2;
-//                jQuery("<div>").attr({
-//                    'class': utrtrackClass,
-//                    'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
-//                }).appendTo(temp_div)
-//
-//                last = current;
-//
-//            }
-//            else if (exon_start < transcript_start && exon_stop > transcript_end) {
-//
-//                //console.log("if 2")
-//
-//                startposition = 0;//((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
-//                stopposition = (transcript_start - exon_start) * parseFloat(maxLentemp) / (max_len);
-//
-////                startposition += 1;
-////                stopposition -= 2;
-//
-//                jQuery("<div>").attr({
-//                    'class': utrtrackClass,
-//                    'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
-//                }).appendTo(temp_div)
-//
-//
-////                startposition += 1;
-////                stopposition -= 2;
-//
-//                startposition = ((transcript_end - exon_start) - 1) * parseFloat(maxLentemp) / (max_len);
-//                stopposition = (exon_stop - transcript_end + 1) * parseFloat(maxLentemp) / (max_len);
-//
-//
-//                jQuery("<div>").attr({
-//                    'class': utrtrackClass,
-//                    'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
-//                }).appendTo(temp_div)
-//
-//
-//                last = current;
-//            }
-//            else if (exon_stop > transcript_start && exon_start < transcript_start) {
-//
-//
-//                startposition = 0;//((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
-//                stopposition = (transcript_start - exon_start) * parseFloat(maxLentemp) / (max_len);
-//
-////                startposition += 1;
-////                stopposition -= 2;
-//
-//                jQuery("<div>").attr({
-//                    'class': utrtrackClass,
-//                    'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
-//                }).appendTo(temp_div)
-//
-//
-//                last = current;
-//
-//            }
-//            else if (exon_stop > transcript_end && exon_start < transcript_end) {
-//
-//                //console.log("if 4")
-//
-//                startposition = ((transcript_end - exon_start)) * parseFloat(maxLentemp) / (max_len);
-//                stopposition = (exon_stop - transcript_end) * parseFloat(maxLentemp) / (max_len);
-//
-////                startposition += 1;
-////                stopposition -= 2;
-//
-//                jQuery("<div>").attr({
-//                    'class': utrtrackClass,
-//                    'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
-//                }).appendTo(temp_div)
-//
-//
-//                last = current;
-//
-//
-//            }
-//
-//            else if (exon_start > transcript_start && exon_stop > transcript_end) {
-//
-//                startposition = 1;
-//                stopposition = (exon_stop - exon_start) * parseFloat(maxLentemp) / (max_len);
-//
-////                startposition += 1;
-////                stopposition -= 2;
-//
-//                jQuery("<div>").attr({
-//                    'class': utrtrackClass,
-//                    'style': "TOP:" + top + "px; LEFT:" + startposition + "px; width:" + (stopposition) + "px"
-//                }).appendTo(temp_div)
-//
-//                last = current;
-//            }
-//        }
+            var exon_start;
+            var exon_stop;
+            if (geneexons[exon_len].start < geneexons[exon_len].end) {
+                exon_start = geneexons[exon_len].start;
+                exon_stop = geneexons[exon_len].end;
+            }
+            else {
+                exon_start = geneexons[exon_len].end;
+                exon_stop = geneexons[exon_len].start;
+            }
+
+            current = exon_start;
+
+            var temp_div = ("#exon" + track.id + "" + geneexons[exon_len].id + "style1")
+
+            var top = 0;
+
+            if (exon_start < transcript_start && exon_stop < transcript_start) {
+
+                startposition = 0;// ((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
+                stopposition = ((exon_stop - exon_start) + 1) * parseFloat(maxLentemp) / (max_len);
+
+                startposition = parseFloat(startposition) + parseFloat(jQuery("#exon" + track.id + "" + geneexons[exon_len].id + "style1").attr("x"))
+
+                svg.rect(g, startposition, 1, stopposition, 10, {class: 'utr1', fill: 'gray'});
+
+                last = current;
+
+            }
+            else if (exon_start < transcript_start && exon_stop > transcript_end) {
+
+                startposition = 0;//((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
+                stopposition = (transcript_start - exon_start) * parseFloat(maxLentemp) / (max_len);
+
+                startposition = parseFloat(startposition) + parseFloat(jQuery("#exon" + track.id + "" + geneexons[exon_len].id + "style1").attr("x"))
+
+                svg.rect(g, startposition, 1, stopposition, 10, {class: 'utr2', fill: 'gray'});
+
+                startposition = ((transcript_end - exon_start) - 1) * parseFloat(maxLentemp) / (max_len);
+                stopposition = (exon_stop - transcript_end + 1) * parseFloat(maxLentemp) / (max_len);
+
+                startposition = parseFloat(startposition) + parseFloat(jQuery("#exon" + track.id + "" + geneexons[exon_len].id + "style1").attr("x"))
+
+                svg.rect(g, startposition, 1, stopposition, 10, {class: 'utr2', fill: 'gray'});
+
+                last = current;
+            }
+            else if (exon_stop > transcript_start && exon_start < transcript_start) {
+
+
+                startposition = 0;//((exon_start - newStart_temp)) * parseFloat(maxLentemp) / (max_len);
+                stopposition = (transcript_start - exon_start) * parseFloat(maxLentemp) / (max_len);
+
+                startposition = parseFloat(startposition) + parseFloat(jQuery("#exon" + track.id + "" + geneexons[exon_len].id + "style1").attr("x"))
+
+                svg.rect(g, startposition, 1, stopposition, 10, {class: 'utr', fill: 'gray'});
+
+                last = current;
+
+            }
+            else if (exon_stop > transcript_end && exon_start < transcript_end) {
+
+                startposition = ((transcript_end - exon_start)) * parseFloat(maxLentemp) / (max_len);
+                stopposition = (exon_stop - transcript_end) * parseFloat(maxLentemp) / (max_len);
+
+                startposition = parseFloat(startposition) + parseFloat(jQuery("#exon" + track.id + "" + geneexons[exon_len].id + "style1").attr("x"))
+
+                svg.rect(g, startposition, 1, stopposition, 10, {class: 'utr3', fill: 'gray'});
+
+                last = current;
+
+
+            }
+
+            else if (exon_start > transcript_start && exon_stop > transcript_end) {
+
+                startposition = 1;
+                stopposition = (exon_stop - exon_start) * parseFloat(maxLentemp) / (max_len);
+
+                startposition = parseFloat(startposition) + parseFloat(jQuery("#exon" + track.id + "" + geneexons[exon_len].id + "style1").attr("x"))
+
+                svg.rect(g, startposition, 1, stopposition, 10, {class: 'utr4', fill: 'gray'});
+
+                last = current;
+            }
+        }
 
     }
 }
 
 function dispGenesForMember_id(member_id, ref) {
+
     var wrapper_div = jQuery("#id" + member_id)
     var gene;
-    if(ref){
+    if (ref) {
         gene = syntenic_data.member[member_id].genes.gene;
-    }else{
+    } else {
         gene = syntenic_data.ref.genes.gene;
 
     }
 
-    var svg = jQuery("#id"+member_id).svg("get")
+    var svg = jQuery("#id" + member_id).svg("get")
 //
     var trackClass;
     var newStart_temp = 1;
@@ -236,40 +193,6 @@ function dispGenesForMember_id(member_id, ref) {
     var j = 0;
 
     var transcript_len = gene.transcripts.length;
-    var display  = "";
-    var view_type = null
-    if (jQuery('input[name=view_type]:checked').val() == "with") {
-        view_type = true;
-    }
-    else {
-        view_type = false;
-    }
-
-    if (view_type == true) {
-        display = "display: block;"
-    } else {
-        display = "display: none;"
-    }
-
-    var view_type = null
-    if (jQuery('input[name=label_type]:radio:checked').val() == "stable") {
-        view_type = true;
-    }
-    else {
-        view_type = false;
-    }
-
-    var stable_display  = "";
-    var info_display= "";
-
-    if (view_type == true) {
-        stable_display = "display: block;"
-        info_display = "display: none; "
-    } else {
-        info_display = "display: block;"
-
-        stable_display = "display: none;"
-    }
 
     while (transcript_len--) {
 
@@ -310,40 +233,41 @@ function dispGenesForMember_id(member_id, ref) {
 
         label += gene.reference;
 
-
-
-
-
         if (ref) {
-            ref =  syntenic_data.ref.genes.gene
+            ref = syntenic_data.ref.genes.gene
             var wrapper_div = jQuery("#id" + member_id)
 
-          //wrapper_div.html(
-          //  "<div class='handle-gene' style='position: absolute; margin-left: 10px; left: " + stopposition + "px; word-wrap: break-word; width: 200px; height: 20px;'>" +
-          //  "<span class='handle-gene genelabel geneinfo' style='position: relative; "+info_display+" margin-left: 10px;  word-wrap: break-word;'>" + syntenic_data.member[member_id].genome_name + ":" + stringTrim(gene.transcripts[transcript_len].desc, 100) + " </span>" +
-          //  "<span class='handle-gene genelabel stable' style='position: relative; "+stable_display+" margin-left: 10px; word-wrap: break-word;'>" + gene.stable_id + " </span>" +
-          //  "</div>"
-        //);
+            var text = syntenic_data.member[member_id].genome_name + ":" + syntenic_data.member[member_id].desc
 
-            //
-            //
-            var temp_div = "";//jQuery("<div>").attr({
-            //    //'onClick': "onClicked('" + gene.desc + "','" + gene.stable_id + "','" + member_id + "')",
-            //    //'onClick': "jQuery('#gene_info').html('" + jQuery("#hit" + transcript_len).html() + "'); jQuery.colorbox({width: '90%',height: '90%', inline: true, href: '#gene_info'});",
-            //    'class': "gene style1",
-            //    'style': "position:relative;  "+display+"  cursor:pointer; height: 14px;  LEFT:" + startposition + "px; width :" + stopposition + "px;"
-            //}).appendTo(wrapper_div);
-            //
+            svg.text(parseInt(stopposition) + 10, 10, text, {
+                id: 'id' + member_id+'genetext',
+                fontFamily: 'Verdana',
+                fontSize: 10,
+                textAnchor: 'begin',
+                fill: "blue",
+                class: "geneinfo genelabel"
+            });
 
-            g = svg.group({stroke: 'green'});
-            svg.line(g, 0,4, stopposition, 6, {strokeWidth: 2});
+            var text = syntenic_data.member[member_id].genome_name + ":" + syntenic_data.member[member_id].stable_id
+
+            svg.text(parseInt(stopposition) + 10, 10, text, {
+                id: 'id' + member_id+'genetext',
+                fontFamily: 'Verdana',
+                fontSize: 10,
+                textAnchor: 'begin',
+                fill: "blue",
+                class: "stable genelabel"
+            });
+
+
+            var temp_div = svg;
+            svg.line(0, 6, stopposition, 6, {id: 'id' + member_id+'geneline', stroke: 'green', strokeWidth: 2});
 
             var strand = 0;
             if (ref.strand == gene.transcripts[transcript_len].strand) {
                 strand = 1;
             } else {
                 strand = -1;
-                //jQuery(wrapper_div).append("<span class=\"ui-button ui-icon ui-icon-refresh\" style=\"position: absolute; margin-left: 5px; top:0px; word-wrap: break-word; left: " + stopposition + "px;\" onclick='flip_gene(\"hit" + gene.member_id + "_" + transcript_len + "\")'>/span>")
             }
             gene.transcripts[transcript_len].Exons.sort(sort_by('start', true, parseInt));
             var temp_int;
@@ -354,34 +278,51 @@ function dispGenesForMember_id(member_id, ref) {
             }
             gene_list_array.push(member_id)
             cigar_list.push(syntenic_data.member[member_id].cigarline)
-            dispGeneExon(svg, gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length, transcript_len);
+            var g = svg.group({class: 'style1'});
+            dispGeneExon(g, svg, gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length, transcript_len);
+
+            var g = svg.group({id: 'id' + member_id+'style1CIGAR', class: 'style1'});
 
 
-            //dispCigarLine(syntenic_data.member[member_id].cigarline, 1, top, ((gene_stop - gene_start) + 1), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, ref.transcripts[0].Exons.toJSON(), transcript_start, transcript_end, strand, syntenic_data.ref.cigarline, ref.strand, gene.transcripts[transcript_len].id, "style1");
+            dispCigarLine(g, syntenic_data.member[member_id].cigarline, 1, top, ((gene_stop - gene_start) + 1), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, ref.transcripts[0].Exons.toJSON(), transcript_start, transcript_end, strand, syntenic_data.ref.cigarline, ref.strand, gene.transcripts[transcript_len].id, "style1");
 
         }
         else {
+            var text = syntenic_data.ref.genome_name + ":" + syntenic_data.ref.desc
+            svg.text(parseInt(stopposition) + 10, 10, text, {
+                id: 'id' + member_id+'genetext',
+                fontFamily: 'Verdana',
+                fontSize: 10,
+                textAnchor: 'begin',
+                fill: "red",
+                class: "geneinfo genelabel"
+            });
+
+            var text = syntenic_data.ref.genome_name + ":" + syntenic_data.ref.stable_id
+
+            svg.text(parseInt(stopposition) + 10, 10, text, {
+                id: 'id' + member_id+'genetext',
+                fontFamily: 'Verdana',
+                fontSize: 10,
+                textAnchor: 'begin',
+                fill: "blue",
+                class: "stable genelabel"
+            });
+
+
             var wrapper_div = jQuery("#id" + member_id)
-            g = svg.group({stroke: 'red'});
-            svg.line(g, 0,4, stopposition, 6, {strokeWidth: 2});
-            //wrapper_div.html(
-            //    "<div class='handle-gene' style='position: absolute; margin-left: 10px; left: " + stopposition + "px; word-wrap: break-word; width: 200px; height: 20px;'>" +
-            //    "<span class='handle-gene genelabel geneinfo' style='position: relative; "+info_display+" margin-left: 10px;  word-wrap: break-word;'>" + syntenic_data.ref.genome_name + ":" + stringTrim(gene.transcripts[transcript_len].desc, 100) + " </span>" +
-            //    "<span class='handle-gene genelabel stable' style='position: relative;  "+stable_display+"  margin-left: 10px; word-wrap: break-word;'>" + gene.stable_id + " </span>" +
-            //    "</div>"
-            //);
+            svg.line(0, 6, stopposition, 6, {id: 'id' + member_id+'geneline', stroke: 'red', strokeWidth: 2});
 
-            var temp_div = "";//jQuery("<div>").attr({
-            //    'class': "gene style1",
-            //    'style': "position:relative;  "+display+" cursor:pointer; height: 14px;  LEFT:" + startposition + "px; width :" + stopposition + "px;"
-            //}).appendTo(wrapper_div);
-
+            var temp_div = svg;
             gene_list_array.push(gene.member_id)
             cigar_list.push(syntenic_data.ref.cigarline)
 
-            dispGeneExon(svg, gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length);
-            //
-            //dispCigarLineRef(syntenic_data.ref.cigarline, 1, top, ((gene_stop - gene_start) + 1), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, gene.transcripts[transcript_len].Exons.toJSON(), transcript_start, transcript_end, gene.transcripts[transcript_len].id, "style1");
+            var g = svg.group({class: 'style1'});
+            dispGeneExon(g, svg, gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length);
+
+            var g = svg.group({id: 'id' + member_id+'style1CIGAR', class: 'style1'});
+
+            dispCigarLineRef(g, syntenic_data.ref.cigarline, 1, top, ((gene_stop - gene_start) + 1), gene_start, stopposition, gene.transcripts[transcript_len].Exons.toJSON(), temp_div, gene.transcripts[transcript_len].Exons.toJSON(), transcript_start, transcript_end, gene.transcripts[transcript_len].id, "style1");
 
         }
 
@@ -389,18 +330,3 @@ function dispGenesForMember_id(member_id, ref) {
     }
 }
 
-function drawIntro(test) {
-
-    console.log(svg)
-    console.log(test)
-   var svg = jQuery("#id"+test).svg("get");
-
-    g = svg.group({stroke: 'red'});
-    svg.line(g, 0,4, 550, 4, {strokeWidth: 2});
-
-    svg.rect(0,0, 100, 10, 10, 10, {fill: 'none', stroke: 'green', strokeWidth: 3});
-    svg.rect(110,0, 100, 10, 10, 10, {fill: 'none', stroke: 'green', strokeWidth: 3});
-    svg.rect(220,0, 100, 10, 10, 10, {fill: 'none', stroke: 'green', strokeWidth: 3});
-
-
-}

@@ -165,7 +165,6 @@ function processURL(urlParam) {
         getGenomeId(urlParam("ref"))
     }
     else if (jQuery.urlParam("query") != null){//} && jQuery.urlParam("ref") != null && jQuery.urlParam("chr") != null) {
-        console.log("link query")
         getMemberfromURL(urlParam("query"));
     }
     else {
