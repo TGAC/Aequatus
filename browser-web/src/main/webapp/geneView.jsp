@@ -8,7 +8,7 @@
             <td width="300px" id=control_divs>
 
                 <div id="settings_div"
-                     style="padding: 10px; height: 248px; background: none repeat scroll 0% 0% darkcyan; font-size: large;">
+                     style="padding: 10px; height: 296px; background: none repeat scroll 0% 0% darkcyan; font-size: large;">
 
                     <div class="checkbox">
 
@@ -91,7 +91,7 @@
                 </div>
 
                 <div id="search_div"
-                     style="display: block; height: 248px; background: none repeat scroll 0% 0% green; padding: 10px;">
+                     style="display: block; height: 296px; background: none repeat scroll 0% 0% green; padding: 10px;">
                     <input id="control_search" type="text"
                            style="border: 0px solid transparent; position: absolute; left: 0px; top: 75px; height: 45px; width: 298px; color: gray; font-size: 30px;">
                     <button onclick="jQuery('#search_history').html(jQuery('#search').val()); jQuery('#search').val(jQuery('#control_search').val()); search_member(jQuery('#control_search').val());"
@@ -109,7 +109,7 @@
                         </span>
                     </div>
                 </div>
-                <div style="display: none; background: none repeat scroll 0% 0% peru; padding: 10px; height: 248px; text-align: center; font-size: 20px;"
+                <div style="display: none; background: none repeat scroll 0% 0% peru; padding: 10px; height: 296px; text-align: center; font-size: 20px;"
                      id="info_div">
                     <table width="100%" cellpadding="5px" >
                         <tbody>
@@ -154,6 +154,11 @@
                         </tbody>
                     </table>
                 </div>
+                <div style="display: none; background: none repeat scroll 0% 0% orange; padding: 10px; height: 296px; text-align: center; font-size: 20px;"
+                     id="filter_div">
+                    <b>Species list:</b>
+                    <div id="filter"></div>
+                </div>
             </td>
             <td width="50px">
                 <div style="padding: 5px; text-align: center; cursor: move; background: none repeat scroll 0% 0% slategrey; color: white;"
@@ -179,6 +184,11 @@
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% peru;"><i
                         style="color: white;"
                         class="fa fa-question fa-3x control-buttons"></i>
+                </div>
+                <div onclick="openPanel('#filter_div')"
+                     style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% orange;"><i
+                        style="color: white;"
+                        class="fa fa-filter fa-3x control-buttons"></i>
                 </div>
                 <div onclick="openClosePanel('#settings_div')"
                      style="padding: 5px; text-align: center;  background: none repeat scroll 0% 0% gray;"><i

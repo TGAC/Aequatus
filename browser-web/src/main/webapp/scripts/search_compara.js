@@ -5,7 +5,7 @@
  * Time: 11:17
  * To change this template use File | Settings | File Templates.
  */
-
+var genomes =[]
 
 function getReferences() {
 
@@ -30,6 +30,15 @@ function getReferences() {
 
                 for (var i = 0; i < json.genomes.length; i++) {
                     content += "<li style=\"padding:10px\" onclick=\"changeGenome('"+json.genomes[i].genome_db_id+"','"+json.genomes[i].name+"')\">" + json.genomes[i].name + "</li>"
+
+                    var name = json.genomes[i].name;
+                    var id = json.genomes[i].genome_db_id;
+                    genomes.push(
+                    {
+                        "name" : name,
+                "id": id
+                    }
+    );
                 }
                 content += "</ul></div>"
 
