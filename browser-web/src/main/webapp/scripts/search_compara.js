@@ -5,7 +5,7 @@
  * Time: 11:17
  * To change this template use File | Settings | File Templates.
  */
-var genomes =[]
+var genomes = []
 
 function getReferences() {
 
@@ -25,20 +25,19 @@ function getReferences() {
                     "<ul area-labelledby=\"btnGroupDrop1\" class=\"dropdown-menu dropdown-menu-right\" role=\"menu\">"
 
 
-
                 json.genomes.sort(naturalSort)
 
                 for (var i = 0; i < json.genomes.length; i++) {
-                    content += "<li style=\"padding:10px\" onclick=\"changeGenome('"+json.genomes[i].genome_db_id+"','"+json.genomes[i].name+"')\">" + json.genomes[i].name + "</li>"
+                    content += "<li style=\"padding:10px\" onclick=\"changeGenome('" + json.genomes[i].genome_db_id + "','" + json.genomes[i].name + "')\">" + json.genomes[i].name + "</li>"
 
                     var name = json.genomes[i].name;
                     var id = json.genomes[i].genome_db_id;
                     genomes.push(
-                    {
-                        "name" : name,
-                "id": id
-                    }
-    );
+                        {
+                            "name": name,
+                            "id": id
+                        }
+                    );
                 }
                 content += "</ul></div>"
 
@@ -49,11 +48,11 @@ function getReferences() {
 
                 jQuery("#reference_maps").append(content);
                 jQuery("#canvas").show();
-               if(genome_db_id == undefined){
-                   changeGenome( json.genomes[0].genome_db_id,  json.genomes[0].name)
+                if (genome_db_id == undefined) {
+                    changeGenome(json.genomes[0].genome_db_id, json.genomes[0].name)
 
-                   getChromosomes();
-               }
+                    getChromosomes();
+                }
 
             }
         });
@@ -128,22 +127,22 @@ function search_member(query) {
         {
             'doOnSuccess': function (json) {
                 var content = "";
-                if(json.html.length > 0){
+                if (json.html.length > 0) {
                     for (var i = 0; i < json.html.length; i++) {
                         if (i == 0) {
                             content += "<p id='search_hit' ></p>";
                             jQuery("#search_result").html(content);
                             jQuery("#search_result").fadeIn();
                         }
-                        var link = "<i style='cursor:pointer' onclick='URLMemberID("+json.html[i].stable_id+"); jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");' class=\"fa fa-external-link\"></i>"
+                        var link = "<i style='cursor:pointer' onclick='URLMemberID(" + json.html[i].stable_id + "); jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");' class=\"fa fa-external-link\"></i>"
 
                         jQuery("<div>").attr({
                             'class': 'search_div',
-                            'onClick': 'search_redirect('+JSON.stringify(json.html[i])+')'
+                            'onClick': 'search_redirect(' + JSON.stringify(json.html[i]) + ')'
                         }).html("<div class='search_header'> " + json.html[i].genome + " : " + json.html[i].name + " </div> <div class='search_info'> " + json.html[i].description + "<br> " + json.html[i].stable_id + "</div>").appendTo("#search_hit");
                     }
                 }
-                else{
+                else {
                     jQuery("#search_result").html("<div style='width: 100%; text-align: center; padding-top: 15px; font-size: 15px;'>No Result found</div>");
 
                 }
@@ -152,7 +151,7 @@ function search_member(query) {
         });
 }
 
-function changeGenome(genome, name){
+function changeGenome(genome, name) {
     console.log("change genome")
     genome_db_id = genome;
     chr = undefined;
@@ -161,29 +160,29 @@ function changeGenome(genome, name){
     jQuery("#genome_name").html(name)
 }
 
-function URLgenomeName(genome_name, chr_name){
-    console.log("URLgenomeName "+genome_name+" "+chr_name)
+function URLgenomeName(genome_name, chr_name) {
+    console.log("URLgenomeName " + genome_name + " " + chr_name)
     window.history.pushState("ref=" + genome_name, "Title", "index.jsp?ref=" + genome_name + "&chr=" + chr_name);
 }
 
-function URLMemberID(stable_id){
-    console.log("URLMemberID "+stable_id)
+function URLMemberID(stable_id) {
+    console.log("URLMemberID " + stable_id)
     window.history.pushState("ref=" + genome_name, "Title", "index.jsp?query=" + stable_id);
 
 }
 
-function URLSearch(search){
-    console.log("URLSearch "+search)
+function URLSearch(search) {
+    console.log("URLSearch " + search)
     window.history.pushState("ref=" + genome_name, "Title", "index.jsp?search=" + search);
 
 }
 
-function search_redirect(json){
+function search_redirect(json) {
     URLMemberID(json.stable_id);
-    getcoreMember(json.gene_member_id,true);
+    getcoreMember(json.gene_member_id, true);
     jQuery("#canvas").show();
     jQuery("#genome_name").html(json.genome);
-    setCredentials(json.dnafrag_id ,json.genome_db_id);
+    setCredentials(json.dnafrag_id, json.genome_db_id);
     getChromosomes();
     getMember(json.gene_member_id);
 }

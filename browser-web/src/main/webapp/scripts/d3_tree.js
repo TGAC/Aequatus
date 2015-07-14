@@ -114,11 +114,13 @@ function drawTree(json_tree) {
                                     //d.parent._children.push(d)
                                     console.log(d.parent.children.indexOf(d))
                                     if (d.parent.children.size() > 1) {
+                                        console.log("remove style 1")
                                         d.parent._children.push(d)
                                         d.parent.children.splice(d.parent.children.indexOf(d), 1)
                                         update(d, member_id);
 
                                     } else {
+                                        console.log("remove style 2")
                                         var cont = true;
                                         var child = d.parent
                                         while (cont) {
@@ -137,6 +139,9 @@ function drawTree(json_tree) {
                                             child = child.parent;
 
                                         }
+                                        console.log(child)
+                                        alert("check")
+
                                         update(child, member_id);
 
                                     }
@@ -190,8 +195,9 @@ function drawTree(json_tree) {
                     //    }
                     //}
 
-                    if (d._children && d._children.size() > 0 ) {
+                    if (d._children && d._children.size() > 0) {
                         console.log(d)
+                        alert("check")
                         console.log(1)
                         var newObject = d;//jQuery.extend(true, {}, d);
 
@@ -205,151 +211,158 @@ function drawTree(json_tree) {
                             if (newObject._children && newObject._children.size() > 0) {
                                 var children = d._children.size()
                                 while (children--) {
-                                    if(!newObject.children){
+                                    if (!newObject.children) {
                                         newObject.children = []
                                     }
-                                    if(newObject._children[children].seq_member_id == member_id && selected == syntenic_data.ref.genome){
+                                    if (newObject._children[children].seq_member_id == member_id && selected == syntenic_data.ref.genome) {
                                         console.log(5)
-                                        console.log("size 1 "+newObject.children.size())
+                                        console.log("size 1 " + newObject.children.size())
 
                                         newObject.children.push(newObject._children[children])
                                         newObject._children.splice(children, 1)
-                                        console.log("size 2 "+newObject.children.size())
-                                        cont  = false;
+                                        console.log("size 2 " + newObject.children.size())
+                                        cont = false;
                                         unpack(newObject)
                                         //update(newObject, member_id);
-                                    }else if (newObject._children[children].seq_member_id && selected == syntenic_data.member[newObject._children[children].seq_member_id].genome) {
+                                    } else if (newObject._children[children].seq_member_id && selected == syntenic_data.member[newObject._children[children].seq_member_id].genome) {
                                         console.log(6)
-                                        console.log("size 1 "+newObject.children.size())
+                                        console.log("size 1 " + newObject.children.size())
                                         newObject.children.push(newObject._children[children])
                                         newObject._children.splice(children, 1)
-                                        console.log("size 2 "+newObject.children.size())
-                                        cont  = false;
+                                        console.log("size 2 " + newObject.children.size())
+                                        cont = false;
                                         unpack(newObject)
 
                                         //update(newObject, member_id);
-                                    } else if(newObject._children[children]._children && newObject._children[children]._children.size() > 0){
+                                    } else if (newObject._children[children]._children && newObject._children[children]._children.size() > 0) {
 
                                         console.log(7)
                                         newObject = newObject._children[children]
 
                                     } else {
-                                        cont  = false;
+                                        cont = false;
                                         console.log("else")
                                     }
                                 }
                             }
                         }
-                    //else if (d._children && d._children[children].seq_member_id && selected == syntenic_data.member[d._children[children].seq_member_id].genome) {
-                    //            d.children.push(d._children[children])
-                    //            d._children.splice(children, 1)
-                    //            update(d, member_id);
-                    //
-                    //        } else {
-                    //            while (cont) {
-                    //                var child = newObject
-                    //
-                    //                console.log(5)
-                    //                if (!child.children) {
-                    //                    child.children = [];
-                    //                }
-                    //
-                    //                console.log("children " + children)
-                    //                if (child._children && child._children.size() > 0 && child._children[children].seq_member_id != null && child._children[children].seq_member_id != member_id && selected == syntenic_data.member[child._children[children].seq_member_id].genome) {
-                    //                    console.log("cont if")
-                    //                    child.children.push(child._children[children])
-                    //
-                    //                    child._children.splice(children, 1)
-                    //                    cont = false
-                    //                    update(d, member_id);
-                    //
-                    //                } else {
-                    //                    console.log("cont else")
-                    //
-                    //                    cont = false;
-                    //                    //child.children.push(child._children[children])
-                    //                    child.children.push(child._children[children])
-                    //
-                    //                    child._children.splice(children, 1)
-                    //
-                    //                    child = child.children[children]
-                    //
-                    //                    //alert("here")
-                    //                }
-                    //                child = child._children[children]
-                    //            }
-                                //}
+                        //else if (d._children && d._children[children].seq_member_id && selected == syntenic_data.member[d._children[children].seq_member_id].genome) {
+                        //            d.children.push(d._children[children])
+                        //            d._children.splice(children, 1)
+                        //            update(d, member_id);
+                        //
+                        //        } else {
+                        //            while (cont) {
+                        //                var child = newObject
+                        //
+                        //                console.log(5)
+                        //                if (!child.children) {
+                        //                    child.children = [];
+                        //                }
+                        //
+                        //                console.log("children " + children)
+                        //                if (child._children && child._children.size() > 0 && child._children[children].seq_member_id != null && child._children[children].seq_member_id != member_id && selected == syntenic_data.member[child._children[children].seq_member_id].genome) {
+                        //                    console.log("cont if")
+                        //                    child.children.push(child._children[children])
+                        //
+                        //                    child._children.splice(children, 1)
+                        //                    cont = false
+                        //                    update(d, member_id);
+                        //
+                        //                } else {
+                        //                    console.log("cont else")
+                        //
+                        //                    cont = false;
+                        //                    //child.children.push(child._children[children])
+                        //                    child.children.push(child._children[children])
+                        //
+                        //                    child._children.splice(children, 1)
+                        //
+                        //                    child = child.children[children]
+                        //
+                        //                    //alert("here")
+                        //                }
+                        //                child = child._children[children]
+                        //            }
+                        //}
 
-                                //        if (child._children[children].seq_member_id && selected == syntenic_data.member[child._children[children].seq_member_id].genome) {
-                                //            if (display == true) {
-                                //                console.log("adding")
-                                //            }
-                                //            //console.log(d)
-                                //            if (child.close && child.close == true) {
-                                //
-                                //            } else {
-                                //                if (!child.children) {
-                                //                    child.children = [];
-                                //                }
-                                //
-                                //                child.children.push(child._children[children])
-                                //
-                                //                if (child._children.size() > 1) {
-                                //                    cont = false;
-                                //                }
-                                //
-                                //                child._children.splice(children, 1)
-                                //                child = child.children[children];
-                                //
-                                //            }
-                                //        }else{
-                                //
-                                //        }}
+                        //        if (child._children[children].seq_member_id && selected == syntenic_data.member[child._children[children].seq_member_id].genome) {
+                        //            if (display == true) {
+                        //                console.log("adding")
+                        //            }
+                        //            //console.log(d)
+                        //            if (child.close && child.close == true) {
+                        //
+                        //            } else {
+                        //                if (!child.children) {
+                        //                    child.children = [];
+                        //                }
+                        //
+                        //                child.children.push(child._children[children])
+                        //
+                        //                if (child._children.size() > 1) {
+                        //                    cont = false;
+                        //                }
+                        //
+                        //                child._children.splice(children, 1)
+                        //                child = child.children[children];
+                        //
+                        //            }
+                        //        }else{
+                        //
+                        //        }}
 
 
-                                //if (d._children[children].seq_member_id && selected == syntenic_data.member[d._children[children].seq_member_id].genome) {
-                                //    if (display == true) {
-                                //        console.log("adding")
-                                //    }
-                                //    //console.log(d)
-                                //    if (d.close && d.close == true) {
-                                //
-                                //    } else {
-                                //        if (!d.children) {
-                                //            d.children = [];
-                                //        }
-                                //
-                                //        d.children.push(d._children[children])
-                                //        d._children.splice(children, 1)
-                                //    }
-                                //    update(d, member_id);
-                                //}else{
-                                //
-                                //}
-                            //}
+                        //if (d._children[children].seq_member_id && selected == syntenic_data.member[d._children[children].seq_member_id].genome) {
+                        //    if (display == true) {
+                        //        console.log("adding")
+                        //    }
+                        //    //console.log(d)
+                        //    if (d.close && d.close == true) {
+                        //
+                        //    } else {
+                        //        if (!d.children) {
+                        //            d.children = [];
+                        //        }
+                        //
+                        //        d.children.push(d._children[children])
+                        //        d._children.splice(children, 1)
+                        //    }
+                        //    update(d, member_id);
+                        //}else{
+                        //
+                        //}
+                        //}
                         //}
                     }
                 }
             });
     }
 
-    function unpack(d){
+    function unpack(d) {
         console.log("unpack")
         var cont = true;
         var child = d
-        if(!d.parent._children || d.parent._children == []){
+        if (!d.parent._children || d.parent._children == []) {
             update(child, member_id)
-        }else{
-            while(cont){
-                console.log("unpach "+cont)
+        } else {
+            while (cont) {
+                console.log("unpach " + cont)
                 child.parent.children.push(child)
                 child.parent._children.splice(child.parent._children.indexOf(child), 1)
-
                 child = child.parent
-                if(!child._children || child._children.size() == 0){
-                    cont = false
-                    update(d, member_id)
+                if (child._children.size() == 0) {
+                    console.log("nulling")
+                    console.log(child.node_id)
+                    child._children = null;
                 }
+
+
+                if (!child.parent._children || child.parent._children.size() == 0) {
+                    cont = false
+                    update(child.parent, member_id)
+                }
+
             }
         }
 
@@ -359,7 +372,7 @@ function drawTree(json_tree) {
         console.log("update");
         console.log(source)
 
-         console.log(1)
+        console.log(1)
         var view_type = null
         if (jQuery('input[name=view_type]:checked').val() == "with") {
             view_type = true;
@@ -367,7 +380,7 @@ function drawTree(json_tree) {
         else {
             view_type = false;
         }
-         console.log(2)
+        console.log(2)
 
         // Compute the new tree layout.
 
@@ -381,7 +394,7 @@ function drawTree(json_tree) {
                 count++;
         });
 
-         console.log(3)
+        console.log(3)
 
 
         updateWindow(count)
@@ -397,11 +410,11 @@ function drawTree(json_tree) {
             });
 
 
-         console.log(5)
+        console.log(5)
         // Enter any new nodes at the parent's previous position.
         var nodeEnter = node.enter().append("g")
             .attr("class", function (d) {
-                if (d.seq_member_id  && d.seq_member_id != null) {
+                if (d.seq_member_id && d.seq_member_id != null) {
                     return "node species";
 
                 } else {
@@ -409,7 +422,7 @@ function drawTree(json_tree) {
                 }
             })
             .attr("species", function (d) {
-                if (d.seq_member_id  && d.seq_member_id != null) {
+                if (d.seq_member_id && d.seq_member_id != null) {
                     if (d.seq_member_id == ref_member) {
                         return syntenic_data.ref.genome;
                     } else {
@@ -426,7 +439,7 @@ function drawTree(json_tree) {
             })
             .on("click", click);
 
-         console.log(6)
+        console.log(6)
 
         nodeEnter.append("circle")
             .attr("r", function (d) {
@@ -471,7 +484,7 @@ function drawTree(json_tree) {
                 }
             });
 
-         console.log(7)
+        console.log(7)
 
         // Transition nodes to their new position.
         var nodeUpdate = node.transition()
@@ -494,10 +507,12 @@ function drawTree(json_tree) {
                 }
             })
             .attr("id", function (d) {
-                if (d.seq_member_id  && d.seq_member_id != null) {
+                if (d.seq_member_id && d.seq_member_id != null) {
                     // console.log(d.node_id)
                     // console.log(d.seq_member_id)
                     return "circle" + d.seq_member_id
+                } else {
+                    return "circle" + d.node_id
                 }
             })
             .style("fill", function (d, i) {
@@ -667,7 +682,7 @@ function drawTree(json_tree) {
 //        nodeUpdate.select("text")
 //            .style("fill-opacity", 1);
 
-         console.log(8)
+        console.log(8)
         // Transition exiting nodes to the parent's new position.
         var nodeExit = node.exit().transition()
             .duration(duration)
@@ -731,7 +746,7 @@ function drawTree(json_tree) {
             .attr('x', 10)
             .attr('y', -20);
 
-         console.log(9)
+        console.log(9)
         // Update the links…
         var link = svg.selectAll("path.link")
             .data(links, function (d) {
