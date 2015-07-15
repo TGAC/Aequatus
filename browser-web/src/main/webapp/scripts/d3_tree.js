@@ -8,7 +8,7 @@
 
 
 function drawTree(json_tree) {
-
+    var gene_width = jQuery(document).width() * 0.6
     var margin = {top: 0, right: 0, bottom: 0, left: 0},
         width = 400,//jQuery(document).width(),
         height = 1000 - margin.top - margin.bottom;
@@ -57,11 +57,12 @@ function drawTree(json_tree) {
         .data(genomes)
         .enter()
         .append('label')
+        .attr("class","filter")
         .attr('for', function (d, i) {
             return 'a' + i;
         })
         .text(function (d, i) {
-            return d.name + "<br>";
+            return d.name;
         })
         .append("input")
         .attr("checked", true)
@@ -96,7 +97,7 @@ function drawTree(json_tree) {
                             }
                         }
 
-                        if (selected == syntenic_data.member[d.seq_member_id].genome) {
+                        if (syntenic_data.member[d.seq_member_id] && selected == syntenic_data.member[d.seq_member_id].genome) {
                             if (display == true) {
 
 
@@ -132,10 +133,13 @@ function drawTree(json_tree) {
                                             console.log(child.children[0].node_id)
 
                                             child.children.splice(0, 1)
-
                                             if (child.parent.children.size() > 1) {
                                                 cont = false;
                                             }
+
+                                            //if (child.parent.children.size() > 1) {
+                                            //    cont = false;
+                                            //}
                                             else {
                                                 //child._children.push(child.children[0])
                                                 //child.children.splice(0, 1)
@@ -149,30 +153,6 @@ function drawTree(json_tree) {
 
                                     }
 
-                                    //var size = d.parent.children.size()
-                                    //console.log("size " + d.parent._children.size())
-
-                                    //while (size--) {
-                                    //    var cont = true;
-                                    //    var child = d.parent
-                                    //    while (cont) {
-                                    //        console.log(cont)
-                                    //        if (!child._children) {
-                                    //            child._children = [];
-                                    //        }
-                                    //        console.log(size)
-                                    //        console.log(child.children[size])
-                                    //        if (child.parent.children.size() > 1) {
-                                    //            cont = false;
-                                    //        }
-                                    //
-                                    //        if(syntenic_data.member[child.children[size].seq_member_id].genome){
-                                    //            child._children.push(child.children[size])
-                                    //            child.children.splice(size, 1)
-                                    //        }
-                                    //        child = child.parent;
-                                    //    }
-                                    //}
 
                                 }
                             }
@@ -181,22 +161,6 @@ function drawTree(json_tree) {
                 }
                 else {
                     console.log("eleeeeeee")
-
-                    //if (d.seq_member_id && display == true) {
-                    //    if(d.seq_member_id == member_id && selected == syntenic_data.ref.genome){
-                    //        console.log("hereo 1 " + d.seq_member_id)
-                    //
-                    //    }else if(d.seq_member_id != member_id && selected == syntenic_data.member[d.seq_member_id].genome){
-                    //        console.log("hereo 2 " + d.seq_member_id)
-                    //
-                    //    }else{
-                    //        console.log("else")
-                    //        console.log("ref "+member_id)
-                    //        console.log("seq reg "+d.seq_member_id)
-                    //        console.log("selected genome "+selected)
-                    //        console.log("seq genome "+syntenic_data.member[d.seq_member_id].genome)
-                    //    }
-                    //}
 
                     if (d._children && d._children.size() > 0) {
                         console.log(d)
@@ -247,94 +211,9 @@ function drawTree(json_tree) {
                                 }
                             }
                         }
-                        //else if (d._children && d._children[children].seq_member_id && selected == syntenic_data.member[d._children[children].seq_member_id].genome) {
-                        //            d.children.push(d._children[children])
-                        //            d._children.splice(children, 1)
-                        //            update(d, member_id);
-                        //
-                        //        } else {
-                        //            while (cont) {
-                        //                var child = newObject
-                        //
-                        //                console.log(5)
-                        //                if (!child.children) {
-                        //                    child.children = [];
-                        //                }
-                        //
-                        //                console.log("children " + children)
-                        //                if (child._children && child._children.size() > 0 && child._children[children].seq_member_id != null && child._children[children].seq_member_id != member_id && selected == syntenic_data.member[child._children[children].seq_member_id].genome) {
-                        //                    console.log("cont if")
-                        //                    child.children.push(child._children[children])
-                        //
-                        //                    child._children.splice(children, 1)
-                        //                    cont = false
-                        //                    update(d, member_id);
-                        //
-                        //                } else {
-                        //                    console.log("cont else")
-                        //
-                        //                    cont = false;
-                        //                    //child.children.push(child._children[children])
-                        //                    child.children.push(child._children[children])
-                        //
-                        //                    child._children.splice(children, 1)
-                        //
-                        //                    child = child.children[children]
-                        //
-                        //                    //alert("here")
-                        //                }
-                        //                child = child._children[children]
-                        //            }
-                        //}
-
-                        //        if (child._children[children].seq_member_id && selected == syntenic_data.member[child._children[children].seq_member_id].genome) {
-                        //            if (display == true) {
-                        //                console.log("adding")
-                        //            }
-                        //            //console.log(d)
-                        //            if (child.close && child.close == true) {
-                        //
-                        //            } else {
-                        //                if (!child.children) {
-                        //                    child.children = [];
-                        //                }
-                        //
-                        //                child.children.push(child._children[children])
-                        //
-                        //                if (child._children.size() > 1) {
-                        //                    cont = false;
-                        //                }
-                        //
-                        //                child._children.splice(children, 1)
-                        //                child = child.children[children];
-                        //
-                        //            }
-                        //        }else{
-                        //
-                        //        }}
 
 
-                        //if (d._children[children].seq_member_id && selected == syntenic_data.member[d._children[children].seq_member_id].genome) {
-                        //    if (display == true) {
-                        //        console.log("adding")
-                        //    }
-                        //    //console.log(d)
-                        //    if (d.close && d.close == true) {
-                        //
-                        //    } else {
-                        //        if (!d.children) {
-                        //            d.children = [];
-                        //        }
-                        //
-                        //        d.children.push(d._children[children])
-                        //        d._children.splice(children, 1)
-                        //    }
-                        //    update(d, member_id);
-                        //}else{
-                        //
-                        //}
-                        //}
-                        //}
+
                     }
                 }
             });
@@ -722,17 +601,14 @@ function drawTree(json_tree) {
             .style("fill", "red")
 
             .append('xhtml:div')
-            .style("width", function (d) {
-                return jQuery(document).width() * 0.8;
-
-            })
+            .style("width", gene_width)
             .style("height", "50px")
             .style("z-index", "999")
             .style("position", "fixed")
             .style("left", "10px")
             .style("top", "10px")
             .html(function (d) {
-                return "<div id = 'id" + d.seq_member_id + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :100%;'></div>";//jQuery("#gene_widget #id" + d.seq_member_id).html();
+                return "<div id = 'id" + d.seq_member_id + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width :"+gene_width+"px;'></div>";//jQuery("#gene_widget #id" + d.seq_member_id).html();
             });
 
         nodeEnter.filter(function (d) {

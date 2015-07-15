@@ -2936,3 +2936,17 @@ div.tooltip {
 .control-buttons {
     cursor: pointer;
 }
+
+.filter {
+    display: block;
+    font-size: smaller;
+    font-weight: normal;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: left;
+}
+
+.filter input {
+    left: 5px;
+    position: absolute;
+}

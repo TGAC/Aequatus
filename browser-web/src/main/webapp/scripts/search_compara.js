@@ -38,6 +38,7 @@ function getReferences() {
                             "id": id
                         }
                     );
+
                 }
                 content += "</ul></div>"
 
