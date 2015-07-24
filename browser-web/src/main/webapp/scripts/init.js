@@ -165,7 +165,6 @@ function processURL(urlParam) {
         getGenomeId(urlParam("ref"))
     }
     else if (jQuery.urlParam("query") != null){//} && jQuery.urlParam("ref") != null && jQuery.urlParam("chr") != null) {
-        console.log("link query")
         getMemberfromURL(urlParam("query"));
     }
     else {
@@ -236,7 +235,7 @@ function getMemberfromURL(query){
                     if(json.html.length > 0){
                         for (var i = 0; i < json.html.length; i++) {
                             if (i == 0) {
-                                content += "<p id='search_hit' >";
+                                content += "<p id='search_hit' style='background: white;'>";
                             }
                             var link = "<i style='cursor:pointer' onclick='jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");' class=\"fa fa-external-link\"></i>"
 

@@ -59,6 +59,13 @@
     <link REL="SHORTCUT ICON" href="<c:url value='/images/browser/tgac_logo.png'/>">
     <link rel="stylesheet" href="<c:url value='/styles/style.css'/>" type="text/css">
 
+
+    <%--jQuery SVG--%>
+
+    <link rel="stylesheet" type="text/css" href="<c:url value='scripts/jquery/jquery.svg.css' />">
+    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.svg.js'/>"></script>
+
+
     <script type="text/javascript">jQuery.noConflict();</script>
 
     <title>${initParam.pageTitle}</title>

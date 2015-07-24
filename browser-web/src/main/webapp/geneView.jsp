@@ -58,12 +58,12 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="radio" name="label_type" checked="" value="stable"
+                                    <input type="radio" name="label_type"  value="stable"
                                            onchange=" changeToStable()">
                                     Stable Id
                                 </td>
                                 <td align="left">
-                                    <input type="radio" name="label_type" value="gene_info"
+                                    <input type="radio" name="label_type" checked="" value="gene_info"
                                            onchange=" changeToGeneInfo()"> Gene Info
 
                                 </td>
@@ -200,7 +200,7 @@
         <tr>
             <td>
                 <div id="search_result"
-                     style="position: absolute; overflow-y: scroll; height: 500px; overflow: hidden; width:0px; height: 500px; overflow: auto; background: white;"></div>
+                     style="position: absolute; overflow-y: scroll; height: 500px; overflow: hidden; width:0px; height: 500px; overflow: auto; background: transparent;"></div>
             </td>
         </tr>
         </tbody>
