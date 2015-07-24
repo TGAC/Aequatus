@@ -118,7 +118,6 @@ function dispCigarLine(g, cigars, start, top, max, gene_start, stop, exons, temp
 
 
             var cigars_second_array = cigars_array[i].split(",");
-var repeat = false
             for (var j = 0; j < cigars_second_array.length; j++) {
 
                 var key = cigars_second_array[j].charAt(0);

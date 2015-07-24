@@ -204,7 +204,7 @@ function dispGenesExonForMember_id(member_id, ref) {
 
     var trackClass;
     var newStart_temp = 1;
-    var maxLentemp = jQuery(document).width() * 0.6;
+    var maxLentemp = jQuery("#id"+member_id).width()*0.8;
 
     var label = "";
     var j = 0;

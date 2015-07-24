@@ -187,7 +187,7 @@ function dispGenesForMember_id(member_id, ref) {
 //
     var trackClass;
     var newStart_temp = 1;
-    var maxLentemp = jQuery("#id"+member_id).width();
+    var maxLentemp = jQuery("#id"+member_id).width()*0.8;
 
     console.log("widthhhh "+maxLentemp)
 
