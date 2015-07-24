@@ -240,23 +240,23 @@ function dispGenesForMember_id(member_id, ref) {
             var text = syntenic_data.member[member_id].genome_name + ":" + syntenic_data.member[member_id].desc
 
             svg.text(parseInt(stopposition) + 10, 10, text, {
-                id: 'id' + member_id+'genetext',
+                //id: 'id' + member_id+'genetext',
                 fontFamily: 'Verdana',
                 fontSize: 10,
                 textAnchor: 'begin',
                 fill: "blue",
-                class: "geneinfo genelabel"
+                class: "geneinfo genelabel "+ member_id+"genetext"
             });
 
             var text = syntenic_data.member[member_id].genome_name + ":" + syntenic_data.member[member_id].stable_id
 
             svg.text(parseInt(stopposition) + 10, 10, text, {
-                id: 'id' + member_id+'genetext',
+                //id: 'id' + member_id+'genetext',
                 fontFamily: 'Verdana',
                 fontSize: 10,
                 textAnchor: 'begin',
                 fill: "blue",
-                class: "stable genelabel"
+                class: "stable genelabel "+ member_id+"genetext"
             });
 
 
@@ -290,23 +290,23 @@ function dispGenesForMember_id(member_id, ref) {
         else {
             var text = syntenic_data.ref.genome_name + ":" + syntenic_data.ref.desc
             svg.text(parseInt(stopposition) + 10, 10, text, {
-                id: 'id' + member_id+'genetext',
+                //id: 'id' + member_id+'genetext',
                 fontFamily: 'Verdana',
                 fontSize: 10,
                 textAnchor: 'begin',
                 fill: "red",
-                class: "geneinfo genelabel"
+                class: "geneinfo genelabel "+ member_id+"genetext"
             });
 
             var text = syntenic_data.ref.genome_name + ":" + syntenic_data.ref.stable_id
 
             svg.text(parseInt(stopposition) + 10, 10, text, {
-                id: 'id' + member_id+'genetext',
+                //id: 'id' + member_id+'genetext',
                 fontFamily: 'Verdana',
                 fontSize: 10,
                 textAnchor: 'begin',
-                fill: "blue",
-                class: "stable genelabel"
+                fill: "red",
+                class: "stable genelabel "+ member_id+"genetext"
             });
 
 

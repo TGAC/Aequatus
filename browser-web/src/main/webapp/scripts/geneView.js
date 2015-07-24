@@ -467,7 +467,7 @@ function changeReference(new_member_id) {
         removePopup();
 
         jQuery("#id" + member_id+"geneline").attr("stroke", "green")
-        jQuery("#id" + member_id+"genetext").attr("fill", "blue")
+        jQuery("." + member_id+"genetext").attr("fill", "blue")
 
         console.log("change reference 1")
 
@@ -945,7 +945,7 @@ function redrawCIGAR() {
 
             jQuery("#id" + genes.gene.member_id+"style2CIGAR").remove()
             jQuery("#id" + genes.gene.member_id+"geneline").attr("stroke", "red")
-            jQuery("#id" + genes.gene.member_id+"genetext").attr("fill", "red")
+            jQuery("." + genes.gene.member_id+"genetext").attr("fill", "red")
 
             dispCigarLineRef(g, ref_data.cigarline, 1, top, gene_length, gene_start, stopposition, genes.gene.transcripts[transcript_len].Exons.toJSON(), temp_div, genes.gene.transcripts[transcript_len].Exons.toJSON(), transcript_start, transcript_end, genes.gene.transcripts[transcript_len].id, "style2");
 
