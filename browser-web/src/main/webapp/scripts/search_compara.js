@@ -98,7 +98,7 @@ function search(query) {
 }
 
 function search_member(query) {
-
+    removePopup()
     //window.history.pushState("search=" + query, "Title", "index.jsp?search=" + query);
 
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';

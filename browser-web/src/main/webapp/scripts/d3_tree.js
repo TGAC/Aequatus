@@ -12,7 +12,7 @@ function drawTree(json_tree) {
     var margin = {top: 0, right: 0, bottom: 0, left: 0},
         width = 400,//jQuery(document).width(),
         height = 1000 - margin.top - margin.bottom;
-
+ var maxHeight = 1000;
     var cluster = d3.layout.cluster()
         .size([height, width - 160]);
 
@@ -21,7 +21,7 @@ function drawTree(json_tree) {
             return [d.y, d.x];
         });
 
-    var svg = d3.select("#gene_tree_nj").append("svg")
+    var container = d3.select("#gene_tree_nj").append("svg")
         .attr("width", jQuery(document).width())
         .attr("height", height + margin.top + margin.bottom)
         .style("overflow", "visible")
@@ -77,11 +77,8 @@ function drawTree(json_tree) {
         var selected = de.id;
         var display = this.checked;
 
-        console.log(selected)
-        console.log(this.checked)
 
-
-        svg.selectAll(".node")
+        container.selectAll(".node")
             .filter(function (d) {
                 if (d.seq_member_id && display == false) {
 
@@ -105,7 +102,6 @@ function drawTree(json_tree) {
                                 // console.log("removing")
 
                                 if (d.close && d.close == true) {
-                                    console.log("close")
 
                                 } else {
                                     if (!d.parent._children) {
@@ -113,16 +109,12 @@ function drawTree(json_tree) {
                                     }
 
                                     //d.parent._children.push(d)
-                                    console.log(d.parent.children.indexOf(d))
                                     if (d.parent.children.size() > 1) {
-                                        console.log("remove style 1")
                                         d.parent._children.push(d)
-                                        console.log(d.node_id)
                                         d.parent.children.splice(d.parent.children.indexOf(d), 1)
                                         update(d, member_id);
 
                                     } else {
-                                        console.log("remove style 2")
                                         var cont = true;
                                         var child = d.parent
                                         while (cont) {
@@ -130,7 +122,6 @@ function drawTree(json_tree) {
                                                 child._children = [];
                                             }
                                             child._children.push(child.children[0])
-                                            console.log(child.children[0].node_id)
 
                                             child.children.splice(0, 1)
                                             if (child.parent.children.size() > 1) {
@@ -147,7 +138,6 @@ function drawTree(json_tree) {
                                             child = child.parent;
 
                                         }
-                                        console.log(child)
 
                                         update(child, member_id);
 
@@ -160,20 +150,12 @@ function drawTree(json_tree) {
                     }
                 }
                 else {
-                    console.log("eleeeeeee")
-
                     if (d._children && d._children.size() > 0) {
-                        console.log(d)
-                        console.log(1)
                         var newObject = d;//jQuery.extend(true, {}, d);
 
                         var cont = true;
                         //
-                        console.log(2)
-
                         while (cont) {
-                            console.log(3)
-                            console.log(4)
                             if (newObject._children && newObject._children.size() > 0) {
                                 var children = d._children.size()
                                 while (children--) {
@@ -181,18 +163,12 @@ function drawTree(json_tree) {
                                         newObject.children = []
                                     }
                                     if (newObject._children[children].seq_member_id == member_id && selected == syntenic_data.ref.genome) {
-                                        console.log(5)
-                                        console.log("adding ")
-                                        console.log(newObject._children[children].node_id + " to "+newObject.children.node_id)
                                         newObject.children.push(newObject._children[children])
                                         newObject._children.splice(children, 1)
                                         cont = false;
                                         unpack(newObject)
                                         //update(newObject, member_id);
                                     } else if (newObject._children[children].seq_member_id && selected == syntenic_data.member[newObject._children[children].seq_member_id].genome) {
-                                        console.log(6)
-                                        console.log("adding ")
-                                        console.log(newObject._children[children].node_id + " to "+newObject.children.node_id)
                                         newObject.children.push(newObject._children[children])
                                         newObject._children.splice(children, 1)
                                         cont = false;
@@ -200,13 +176,10 @@ function drawTree(json_tree) {
 
                                         //update(newObject, member_id);
                                     } else if (newObject._children[children]._children && newObject._children[children]._children.size() > 0) {
-
-                                        console.log(7)
                                         newObject = newObject._children[children]
 
                                     } else {
                                         cont = false;
-                                        console.log("else")
                                     }
                                 }
                             }
@@ -220,26 +193,20 @@ function drawTree(json_tree) {
     }
 
     function unpack(d) {
-        console.log("unpack")
         var cont = true;
 
         var child = d
         if (child._children.size() == 0) {
-            console.log("nulling")
-            console.log(child.node_id)
             child._children = null;
         }
         if (!d.parent._children || d.parent._children == []) {
             update(child, member_id)
         } else {
             while (cont) {
-                console.log("unpach " + cont)
                 child.parent.children.push(child)
                 child.parent._children.splice(child.parent._children.indexOf(child), 1)
                 child = child.parent
                 if (child._children.size() == 0) {
-                    console.log("nulling")
-                    console.log(child.node_id)
                     child._children = null;
                 }
 
@@ -255,10 +222,6 @@ function drawTree(json_tree) {
     }
 
     function update(source, ref_member) {
-        console.log("update");
-        console.log(source)
-
-        console.log(1)
         var view_type = null
         if (jQuery('input[name=view_type]:checked').val() == "with") {
             view_type = true;
@@ -266,8 +229,6 @@ function drawTree(json_tree) {
         else {
             view_type = false;
         }
-        console.log(2)
-
         // Compute the new tree layout.
 
         var nodes = cluster.nodes(root)
@@ -280,8 +241,6 @@ function drawTree(json_tree) {
                 count++;
         });
 
-        console.log(3)
-
 
         updateWindow(count)
 
@@ -290,13 +249,12 @@ function drawTree(json_tree) {
         var links = cluster.links(nodes);
 
         // Update the nodes…
-        var node = svg.selectAll("g.node")
+        var node = container.selectAll("g.node")
             .data(nodes, function (d) {
                 return d.id || (d.id = ++i);
             });
 
 
-        console.log(5)
         // Enter any new nodes at the parent's previous position.
         var nodeEnter = node.enter().append("g")
             .attr("class", function (d) {
@@ -320,6 +278,12 @@ function drawTree(json_tree) {
                 }
             })
             .attr("transform", function (d) {
+                console.log((source.x0 +" > 11111 "+ maxHeight))
+
+                if(source.x0 > maxHeight){
+                    console.log("setting maxHeight 1")
+                    maxHeight = source.x0
+                }
                 return "translate(" + source.y0 + "," + source.x0 + ")";
             })
             .on("click", function (d) {
@@ -340,12 +304,12 @@ function drawTree(json_tree) {
 
 
 
-        console.log(6)
+
 
         nodeEnter.append("circle")
             .attr("r", function (d) {
                 if (d.close && d.close == true) {
-                    console.log("cloessese")
+
                     return 6;
                 } else if (d.seq_member_id == ref_member)// && d.children != null) {
                 {
@@ -391,13 +355,19 @@ function drawTree(json_tree) {
         var nodeUpdate = node.transition()
             .duration(duration)
             .attr("transform", function (d) {
+                console.log((d.x +" > 22222 "+ maxHeight))
+
+                if(d.x > maxHeight){
+                    console.log("setting maxHeight 1")
+
+                    maxHeight = d.x
+                }
                 return "translate(" + d.y + "," + d.x + ")";
             });
 
         nodeUpdate.select("circle")
             .attr("r", function (d) {
                 if (d.close && d.close == true) {
-                    console.log("clossesese")
                     return 6;
                 } else if (d.seq_member_id == ref_member)// && d.children != null) {
                 {
@@ -462,7 +432,7 @@ function drawTree(json_tree) {
                             }
                         }
 
-                        var gradient = svg.append("svg:defs")
+                        var gradient = container.append("svg:defs")
                             .append("svg:linearGradient")
                             .attr("id", "gradient1")
                             .attr("x1", "0%")
@@ -530,7 +500,7 @@ function drawTree(json_tree) {
                             }
                         }
 
-                        var gradient = svg.append("svg:defs")
+                        var gradient = container.append("svg:defs")
                             .append("svg:linearGradient")
                             .attr("id", "gradient2")
                             .attr("x1", "0%")
@@ -572,7 +542,6 @@ function drawTree(json_tree) {
             })
             .style("stroke-width", function (d, i) {
                 if (d.seq_member_id == ref_member) {
-                    console.log("Strokeeee")
                     return "2px";
                 } else {
                     return "1px";
@@ -580,7 +549,6 @@ function drawTree(json_tree) {
             });
 
 
-        console.log(8)
         // Transition exiting nodes to the parent's new position.
         var nodeExit = node.exit().transition()
             .duration(duration)
@@ -698,9 +666,8 @@ function drawTree(json_tree) {
             .attr('x', 10)
             .attr('y', -20);
 
-        console.log(9)
         // Update the links…
-        var link = svg.selectAll("path.link")
+        var link = container.selectAll("path.link")
             .data(links, function (d) {
                 return d.target.id;
             });
@@ -732,6 +699,14 @@ function drawTree(json_tree) {
             d.x0 = d.x;
             d.y0 = d.y;
         });
+
+        if(maxHeight > height){
+            console.log("adding maxHeight")
+            var body = d3.select("body");
+            var svg = body.select("svg")
+            svg.attr("height", parseInt(maxHeight)+100+"px")
+
+        }
     }
 
 // Toggle children on click.
@@ -767,7 +742,7 @@ function drawTree(json_tree) {
 
         var y = count * 40;
 
-        svg.attr("height", y);
+        container.attr("height", y);
         cluster = d3.layout.cluster()
             .size([y, width - 160]);
     }

@@ -8,6 +8,7 @@
 
 var last_opened = null;
 function openPanel(div_id) {
+    removePopup();
     if(div_id == last_opened){
         openClosePanel();
         last_opened = null;

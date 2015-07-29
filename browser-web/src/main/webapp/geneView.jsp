@@ -239,7 +239,7 @@
 <div id="canvas">
 
     <div id="genome_name"
-         style="position: absolute; font-size: large; font-weight: bolder; padding: 10px; color: darkgray;"></div>
+         style="position: absolute; font-size: large; font-weight: bolder; padding: 10px; color: red; z-index: 999;;"></div>
 
     <div id=chr_maps style="border-bottom: 1px solid gray; height: 120px; position: relative;   width: 100%; ">
 
