@@ -323,13 +323,13 @@ function drawTree(json_tree) {
                 if (d.close && d.close == true) {
                     return 'url(#gradient)';
                 } else if (d.node_type == "duplication") {
-                    return colours[0];
+                    return 'red';
                 } else if (d.node_type == "dubious") {
-                    return colours[1];
+                    return "cyan";
                 } else if (d.node_type == "speciation") {
-                    return colours[2];
+                    return 'blue';
                 } else if (d.node_type == "gene_split") {
-                    return colours[3];
+                    return 'pink';
                 } else {
                     return "white";
                 }
@@ -391,13 +391,13 @@ function drawTree(json_tree) {
                     d.type = unique(d.type)
                     if (d.type.size() == 1) {
                         if (d.type == "duplication") {
-                            return colours[0];
+                            return 'red';
                         } else if (d.type == "dubious") {
-                            return colours[1];
+                            return "cyan";
                         } else if (d.type == "speciation") {
-                            return colours[2];
+                            return 'blue';
                         } else if (d.type == "gene_split") {
-                            return colours[3];
+                            return 'pink';
                         } else {
                             return "white";
                         }
@@ -406,13 +406,13 @@ function drawTree(json_tree) {
 
                         col1 = function () {
                             if (d.type[0] == "duplication") {
-                                return colours[0];
+                                return 'red';
                             } else if (d.type[0] == "dubious") {
-                                return colours[1];
+                                return "cyan";
                             } else if (d.type[0] == "speciation") {
-                                return colours[2];
+                                return 'blue';
                             } else if (d.type[0] == "gene_split") {
-                                return colours[3];
+                                return 'pink';
                             } else {
                                 return "white";
                             }
@@ -420,13 +420,13 @@ function drawTree(json_tree) {
 
                         col2 = function () {
                             if (d.type[1] == "duplication") {
-                                return colours[0];
+                                return 'red';
                             } else if (d.type[1] == "dubious") {
-                                return colours[1];
+                                return "cyan";
                             } else if (d.type[1] == "speciation") {
-                                return colours[2];
+                                return 'blue';
                             } else if (d.type[1] == "gene_split") {
-                                return colours[3];
+                                return 'pink';
                             } else {
                                 return "white";
                             }
@@ -459,13 +459,13 @@ function drawTree(json_tree) {
 
                         col1 = function () {
                             if (d.type[0] == "duplication") {
-                                return colours[0];
+                                return 'red';
                             } else if (d.type[0] == "dubious") {
-                                return colours[1];
+                                return "cyan";
                             } else if (d.type[0] == "speciation") {
-                                return colours[2];
+                                return 'blue';
                             } else if (d.type[0] == "gene_split") {
-                                return colours[3];
+                                return 'pink';
                             } else {
                                 return "white";
                             }
@@ -473,13 +473,13 @@ function drawTree(json_tree) {
 
                         col2 = function () {
                             if (d.type[1] == "duplication") {
-                                return colours[0];
+                                return 'red';
                             } else if (d.type[1] == "dubious") {
-                                return colours[1];
+                                return "cyan";
                             } else if (d.type[1] == "speciation") {
-                                return colours[2];
+                                return 'blue';
                             } else if (d.type[1] == "gene_split") {
-                                return colours[3];
+                                return 'pink';
                             } else {
                                 return "white";
                             }
@@ -488,13 +488,13 @@ function drawTree(json_tree) {
 
                         col3 = function () {
                             if (d.type[2] == "duplication") {
-                                return colours[0];
+                                return 'red';
                             } else if (d.type[2] == "dubious") {
-                                return colours[1];
+                                return "cyan";
                             } else if (d.type[2] == "speciation") {
-                                return colours[2];
+                                return 'blue';
                             } else if (d.type[2] == "gene_split") {
-                                return colours[3];
+                                return 'pink';
                             } else {
                                 return "white";
                             }
@@ -529,13 +529,13 @@ function drawTree(json_tree) {
                     }
                 }
                 else if (d.node_type == "duplication") {
-                    return colours[0];
+                    return 'red';
                 } else if (d.node_type == "dubious") {
-                    return colours[1];
+                    return "cyan";
                 } else if (d.node_type == "speciation") {
-                    return colours[2];
+                    return 'blue';
                 } else if (d.node_type == "gene_split") {
-                    return colours[3];
+                    return 'pink';
                 } else {
                     return "white";
                 }

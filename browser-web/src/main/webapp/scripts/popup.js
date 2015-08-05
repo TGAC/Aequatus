@@ -28,6 +28,7 @@ function newpopup(member_id) {
 
     jQuery('#ensemblLink').html("")
 
+    jQuery('#ensemblLink').html("<a href='http://www.ensembl.org/id/" + stable_id + "'>Link to Ensembl</a>")
 
     if (mouseX + jQuery("#popup").width() > jQuery("#main1").width()) {
         jQuery("#popup").css({"left": mouseX - jQuery("#popup").width() - 5});
@@ -74,7 +75,7 @@ function newpopup(member_id) {
 
                 jQuery('#gene_desc').html(stringTrim(desc, 200))
 
-                jQuery('#ensemblLink').html("<a target='_blank' href='http://www.ensembl.org/Multi/Search/Results?q=" + stable_id + "'><button type='button' class='btn btn-default'> <i class='fa fa-1x'>e!</i></button></a>")
+                jQuery('#ensemblLink').html("<a target='_blank' href='http://www.ensembl.org/id/" + stable_id + "'><button type='button' class='btn btn-default'> <i class='fa fa-1x'>e!</i></button></a>")
             }
         });
 

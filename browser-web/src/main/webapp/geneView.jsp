@@ -121,7 +121,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <div style="background: rgb(166,206,227);" class="circleBase type2"></div>
+                                <div class="circleBase type2" style="background: red;"></div>
                             </td>
                             <td align="left">
                                 Duplication
@@ -129,7 +129,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <div style="background: rgb(31,120,180);" class="circleBase type2"></div>
+                                <div class="circleBase type2" style="background: cyan;"></div>
                             </td>
                             <td align="left">
                                 Dubious
@@ -137,7 +137,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <div style="background: rgb(178,223,138)" class="circleBase type2"></div>
+                                <div class="circleBase type2" style="background: blue"></div>
                             </td>
                             <td align="left">
                                 Speciation
@@ -145,7 +145,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <div style="background: rgb(51,160,44)" class="circleBase type2"></div>
+                                <div class="circleBase type2" style="background: pink"></div>
                             </td>
                             <td align="left">
                                 Gene Split
