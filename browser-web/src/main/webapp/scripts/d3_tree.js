@@ -77,7 +77,7 @@ function drawTree(json_tree) {
         var selected = de.id;
         var display = this.checked;
 
-
+console.log(1)
         container.selectAll(".node")
             .filter(function (d) {
                 if (d.seq_member_id && display == false) {
@@ -85,36 +85,47 @@ function drawTree(json_tree) {
                     if (d.seq_member_id == member_id) {
                         //return selected == syntenic_data.ref.genome;
                     } else {
+
                         if (d._children) {
+
                             var children = d._children.size()
                             while (children--) {
                                 console.log("children")
-
                                 console.log(d._children(children))
                             }
                         }
 
                         if (syntenic_data.member[d.seq_member_id] && selected == syntenic_data.member[d.seq_member_id].genome) {
+                            console.log(6)
+
                             if (display == true) {
 
 
                             } else {
                                 // console.log("removing")
 
+
                                 if (d.close && d.close == true) {
 
                                 } else {
+
                                     if (!d.parent._children) {
+                                        console.log(10)
+
                                         d.parent._children = [];
                                     }
 
                                     //d.parent._children.push(d)
-                                    if (d.parent.children.size() > 1) {
+                                    if (d.parent.children.size() > 0) {
+                                        console.log(11)
+
                                         d.parent._children.push(d)
                                         d.parent.children.splice(d.parent.children.indexOf(d), 1)
                                         update(d, member_id);
 
                                     } else {
+                                        console.log(12)
+
                                         var cont = true;
                                         var child = d.parent
                                         while (cont) {
@@ -136,7 +147,6 @@ function drawTree(json_tree) {
                                                 //child.children.splice(0, 1)
                                             }
                                             child = child.parent;
-
                                         }
 
                                         update(child, member_id);
@@ -150,25 +160,37 @@ function drawTree(json_tree) {
                     }
                 }
                 else {
+                    console.log(13)
+
                     if (d._children && d._children.size() > 0) {
+                        console.log(14)
+
                         var newObject = d;//jQuery.extend(true, {}, d);
 
                         var cont = true;
                         //
                         while (cont) {
                             if (newObject._children && newObject._children.size() > 0) {
+                                console.log(15)
+
                                 var children = d._children.size()
                                 while (children--) {
                                     if (!newObject.children) {
+                                        console.log(16)
+
                                         newObject.children = []
                                     }
                                     if (newObject._children[children].seq_member_id == member_id && selected == syntenic_data.ref.genome) {
+                                        console.log(17)
+
                                         newObject.children.push(newObject._children[children])
                                         newObject._children.splice(children, 1)
                                         cont = false;
                                         unpack(newObject)
                                         //update(newObject, member_id);
                                     } else if (newObject._children[children].seq_member_id && selected == syntenic_data.member[newObject._children[children].seq_member_id].genome) {
+                                        console.log(18)
+
                                         newObject.children.push(newObject._children[children])
                                         newObject._children.splice(children, 1)
                                         cont = false;
@@ -176,9 +198,13 @@ function drawTree(json_tree) {
 
                                         //update(newObject, member_id);
                                     } else if (newObject._children[children]._children && newObject._children[children]._children.size() > 0) {
+                                        console.log(19)
+
                                         newObject = newObject._children[children]
 
                                     } else {
+                                        console.log(20)
+
                                         cont = false;
                                     }
                                 }
@@ -281,7 +307,6 @@ function drawTree(json_tree) {
                 console.log((source.x0 +" > 11111 "+ maxHeight))
 
                 if(source.x0 > maxHeight){
-                    console.log("setting maxHeight 1")
                     maxHeight = source.x0
                 }
                 return "translate(" + source.y0 + "," + source.x0 + ")";
@@ -355,11 +380,7 @@ function drawTree(json_tree) {
         var nodeUpdate = node.transition()
             .duration(duration)
             .attr("transform", function (d) {
-                console.log((d.x +" > 22222 "+ maxHeight))
-
                 if(d.x > maxHeight){
-                    console.log("setting maxHeight 1")
-
                     maxHeight = d.x
                 }
                 return "translate(" + d.y + "," + d.x + ")";
