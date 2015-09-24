@@ -77,7 +77,6 @@ function drawTree(json_tree) {
         var selected = de.id;
         var display = this.checked;
 
-console.log(1)
         container.selectAll(".node")
             .filter(function (d) {
                 if (d.seq_member_id && display == false) {
@@ -90,42 +89,30 @@ console.log(1)
 
                             var children = d._children.size()
                             while (children--) {
-                                console.log("children")
-                                console.log(d._children(children))
                             }
                         }
 
                         if (syntenic_data.member[d.seq_member_id] && selected == syntenic_data.member[d.seq_member_id].genome) {
-                            console.log(6)
 
                             if (display == true) {
 
 
                             } else {
-                                // console.log("removing")
-
 
                                 if (d.close && d.close == true) {
 
                                 } else {
 
                                     if (!d.parent._children) {
-                                        console.log(10)
-
                                         d.parent._children = [];
                                     }
-
                                     //d.parent._children.push(d)
                                     if (d.parent.children.size() > 0) {
-                                        console.log(11)
-
                                         d.parent._children.push(d)
                                         d.parent.children.splice(d.parent.children.indexOf(d), 1)
                                         update(d, member_id);
 
                                     } else {
-                                        console.log(12)
-
                                         var cont = true;
                                         var child = d.parent
                                         while (cont) {
@@ -160,51 +147,33 @@ console.log(1)
                     }
                 }
                 else {
-                    console.log(13)
-
                     if (d._children && d._children.size() > 0) {
-                        console.log(14)
-
                         var newObject = d;//jQuery.extend(true, {}, d);
 
                         var cont = true;
                         //
                         while (cont) {
                             if (newObject._children && newObject._children.size() > 0) {
-                                console.log(15)
-
                                 var children = d._children.size()
                                 while (children--) {
                                     if (!newObject.children) {
-                                        console.log(16)
-
                                         newObject.children = []
                                     }
                                     if (newObject._children[children].seq_member_id == member_id && selected == syntenic_data.ref.genome) {
-                                        console.log(17)
-
                                         newObject.children.push(newObject._children[children])
                                         newObject._children.splice(children, 1)
                                         cont = false;
                                         unpack(newObject)
                                         //update(newObject, member_id);
                                     } else if (newObject._children[children].seq_member_id && selected == syntenic_data.member[newObject._children[children].seq_member_id].genome) {
-                                        console.log(18)
-
                                         newObject.children.push(newObject._children[children])
                                         newObject._children.splice(children, 1)
                                         cont = false;
                                         unpack(newObject)
-
                                         //update(newObject, member_id);
                                     } else if (newObject._children[children]._children && newObject._children[children]._children.size() > 0) {
-                                        console.log(19)
-
                                         newObject = newObject._children[children]
-
                                     } else {
-                                        console.log(20)
-
                                         cont = false;
                                     }
                                 }
@@ -270,7 +239,6 @@ console.log(1)
 
         updateWindow(count)
 
-        // console.log(4)
         nodes = cluster.nodes(root)
         var links = cluster.links(nodes);
 
@@ -304,8 +272,6 @@ console.log(1)
                 }
             })
             .attr("transform", function (d) {
-                console.log((source.x0 +" > 11111 "+ maxHeight))
-
                 if(source.x0 > maxHeight){
                     maxHeight = source.x0
                 }
@@ -361,8 +327,6 @@ console.log(1)
             })
             .style("stroke-width", function (d, i) {
                 if (d.seq_member_id == ref_member) {
-                    console.log("Strokeeee")
-
                     return "2px";
                 } else {
                     return "1px";
@@ -373,8 +337,6 @@ console.log(1)
                     return "black";
                 }
             });
-
-        console.log(7)
 
         // Transition nodes to their new position.
         var nodeUpdate = node.transition()
@@ -400,8 +362,6 @@ console.log(1)
             })
             .attr("id", function (d) {
                 if (d.seq_member_id && d.seq_member_id != null) {
-                    // console.log(d.node_id)
-                    // console.log(d.seq_member_id)
                     return "circle" + d.seq_member_id
                 } else {
                     return "circle" + d.node_id
@@ -722,7 +682,6 @@ console.log(1)
         });
 
         if(maxHeight > height){
-            console.log("adding maxHeight")
             var body = d3.select("body");
             var svg = body.select("svg")
             svg.attr("height", parseInt(maxHeight)+100+"px")

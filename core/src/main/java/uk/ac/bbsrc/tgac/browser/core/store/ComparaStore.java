@@ -76,5 +76,4 @@ public interface ComparaStore extends Store<String> {
     public String getReferencefromStableId(String query) throws IOException;
     public String getDnafragIdfromStableId(String query) throws IOException;
     public String getDnafragnamefromId(String query) throws IOException;
-
 }

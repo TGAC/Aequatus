@@ -287,9 +287,6 @@ function dispGenesExonForMember_id(member_id, ref) {
                 ref.transcript_start = ref.transcript_end;
                 ref.transcript_end = temp_int
             }
-            gene_list_array.push(member_id)
-
-            cigar_list.push(syntenic_data.member[member_id].cigarline)
             dispExon(g, svg, gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length, transcript_len);
             var g = svg.group({id: 'id' + member_id+'style2CIGAR' ,class: 'style2 CIGAR'});
 
@@ -299,9 +296,6 @@ function dispGenesExonForMember_id(member_id, ref) {
             var wrapper_div = jQuery("#id" + member_id)
 
             var temp_div = svg;
-
-            gene_list_array.push(gene.member_id)
-            cigar_list.push(syntenic_data.ref.cigarline)
 
             dispExon(g, svg, gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length);
 

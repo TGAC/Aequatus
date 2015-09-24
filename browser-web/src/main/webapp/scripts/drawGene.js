@@ -278,8 +278,6 @@ function dispGenesForMember_id(member_id, ref) {
                 ref.transcript_start = ref.transcript_end;
                 ref.transcript_end = temp_int
             }
-            gene_list_array.push(member_id)
-            cigar_list.push(syntenic_data.member[member_id].cigarline)
             var g = svg.group({class: 'style1'});
             dispGeneExon(g, svg, gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length, transcript_len);
 
@@ -316,8 +314,6 @@ function dispGenesForMember_id(member_id, ref) {
             svg.line(0, 6, stopposition, 6, {id: 'id' + member_id+'geneline', stroke: 'red', strokeWidth: 2});
 
             var temp_div = svg;
-            gene_list_array.push(gene.member_id)
-            cigar_list.push(syntenic_data.ref.cigarline)
 
             var g = svg.group({class: 'style1'});
             dispGeneExon(g, svg, gene.transcripts[transcript_len], gene.strand, temp_div, gene_start, stopposition, gene_length);

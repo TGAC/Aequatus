@@ -28,16 +28,10 @@ public class ComparaService {
     @Autowired
     private ComparaStore comparaStore;
 
-    @Autowired
-//    private EnsemblRestStore ensemblRestStore;
-
     public void setComparaStore(ComparaStore comparaStore) {
         this.comparaStore = comparaStore;
     }
 
-//    public void setEnsemblRestStore(EnsemblRestStore ensemblRestStore) {
-//        this.ensemblRestStore = ensemblRestStore;
-//    }
     /**
      * @param session an HTTPSession comes from ajax call
      * @param json    json object with key parameters sent from ajax call
@@ -146,7 +140,6 @@ public class ComparaService {
             int parent_id = comparaStore.getGenomeIdfromDnafragId(query_id);
             response.put("parent", comparaStore.getGenomeNamefromId(parent_id));
             response.put("tracklists", comparaStore.getAllGenomeIdforReference(parent_id));
-//                response.put("coord_sys", sequenceStore.getCoordSys(seqName));
             return response;
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -217,76 +210,12 @@ public class ComparaService {
 
     }
 
-    /**
-     * Returns JSONObject as first key track name and second key with tracks detail
-     * <p>
-     * It checks for the trackId
-     * if it contains keyword like .sam or .bam call method getSamBam
-     * if it contains keyword like .wig call method getWig
-     * if it contains keyword like cs then call method getAssembly
-     * if it contains keyword like repeat then call method getRepeat
-     * if it contains keyword like gene then call method getGene
-     * or last it call method getHit
-     * </p>
-     * <p>
-     * for genes if result is more than 1000 it will return result in form of graphs
-     * for repeats and hits if result is more than 5000 it will return result in form of graphs
-     * </p>
-     *
-     * @param session an HTTPSession comes from ajax call
-     * @param json    json object with key parameters sent from ajax call
-     * @return JSONObject as first key track name and second key with tracks detail
-     */
-
-    public JSONObject loadTrack(HttpSession session, JSONObject json) {
-        String seqName = json.getString("query");
-        JSONObject response = new JSONObject();
-        int reference = json.getInt("reference");
-        String trackId = json.getString("trackid");
-        String trackName = json.getString("trackname");
-
-        long start = json.getInt("start");
-        long end = json.getInt("end");
-//        int delta = json.getInt("delta");
-        response.put("trackname", trackName);
-        int count;
-        try {
-            Integer queryid = comparaStore.getDnafragId(seqName, reference);
-            if (trackId.indexOf("homology") >= 0) {
-                log.info("\n\n\n\ntest" + trackId + ":" + trackId.replaceAll("homology", ""));
-                response.put(trackName, comparaStore.getMember(seqName, start, end, trackId.replaceAll("homology", "")));
-            } else if (trackId.indexOf("genomic_align") >= 0) {
-                if (comparaStore.countGenomicAlign(queryid, start, end, trackId) < 1000) {
-                    log.info("\n\n\n\ntest" + trackId + ":" + trackId.replaceAll("genomic_align", ""));
-                    response.put("count", comparaStore.countGenomicAlign(queryid, start, end, trackId.replaceAll("genomic_align", "")));
-                    response.put(trackName, comparaStore.getGenomicAlign(queryid, start, end, trackId.replaceAll("genomic_align", "")));
-                } else {
-//                response.put("type", "graph");
-//                response.put("count", comparaStore.countGenomicAlign(queryid, start, end, trackId));
-//                response.put(trackName, comparaStore.getGenomicAlignGraph(queryid, start, end));
-                }
-            } else {
-                response.put("count", " ");
-                response.put(" ", " ");
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            return JSONUtils.SimpleJSONError(e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-
-        return response;
-    }
-
     public JSONObject getMember(HttpSession session, JSONObject json) {
         String chr_name = json.getString("chr_name");
         JSONObject response = new JSONObject();
         String genome_id = json.getString("reference");
 
 
-//        int delta = json.getInt("delta");
         response.put("trackname", "member");
         int count;
         try {
@@ -312,9 +241,7 @@ public class ComparaService {
         String reference = json.getString("reference");
 
 
-//        int delta = json.getInt("delta");
         response.put("trackname", "member");
-        int count;
         try {
 
             response.put("member", comparaStore.getAllChromosome(reference));
@@ -335,9 +262,7 @@ public class ComparaService {
         JSONObject response = new JSONObject();
 
 
-//        int delta = json.getInt("delta");
         response.put("trackname", "member");
-        int count;
         try {
             response.put("ref", comparaStore.getRefDetail(query));
 
@@ -381,9 +306,7 @@ public class ComparaService {
         JSONObject response = new JSONObject();
 
 
-//        int delta = json.getInt("delta");
         response.put("trackname", "member");
-        int count;
         try {
             return comparaStore.getInfoforMember(query);
         } catch (IOException e) {
@@ -448,8 +371,6 @@ public class ComparaService {
                 response.put("ref", ref);
                 response.put("dnafrag", dnafrag);
             }
-
-
 
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
