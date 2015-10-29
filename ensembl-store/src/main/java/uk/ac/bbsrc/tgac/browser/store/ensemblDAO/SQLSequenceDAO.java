@@ -107,7 +107,6 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             gene.put("length", end - start + 1);
             gene.put("reference", new_Template.queryForObject(GET_SEQ_REGION_NAME_FROM_ID, new Object[]{ref_id}, String.class));
 
-
             gene.put("strand", gene_info.get("seq_region_strand"));
             gene.put("desc", "");//gene_info.get("description"));
 

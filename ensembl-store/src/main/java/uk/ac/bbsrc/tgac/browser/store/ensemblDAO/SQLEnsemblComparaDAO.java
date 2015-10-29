@@ -17,7 +17,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with TGAC Browser.  If not, see <http://www.gnu.org/licenses/>.
+# along with Aequatus Browser.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ***********************************************************************
 #
@@ -134,7 +134,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public static final String GET_dnafrag_ID_FROM_STABLE_ID = "select dnafrag_id from seq_member where stable_id = ?";
     public static final String GET_dnafrag_Name_FROM_ID = "select name from dnafrag where dnafrag_id = ?";
 
-    public static final String GET_GENE_TREE_REFERENCE = "select m1.stable_id AS Ref, m1.canonical_member_id AS peptide_id, m2.stable_id AS Ref_stable_id, m3.*, gam.cigar_line, gtr.method_link_species_set_id, m4.gene_member_id,  m4.description as display_label   " +
+    public static final String GET_GENE_TREE_REFERENCE = "select m1.stable_id AS Ref, m1.canonical_member_id AS peptide_id, m2.stable_id AS Ref_stable_id, m3.*, gam.cigar_line, gtr.method_link_species_set_id, m4.gene_member_id,  m4.display_label as 'desc'   " +
             "from gene_member m1 " +
             "JOIN seq_member m2 ON (m1.canonical_member_id = m2.seq_member_id) " +
             "JOIN gene_tree_node gtn1 ON (m2.seq_member_id = gtn1.seq_member_id) " +
@@ -518,7 +518,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 //        homology_members.put("desc", homologous.get("description"));
         homology_members.put("desc", homologous.get("display_label"));
 
-        homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("seq_member_id").toString(), homologous.get("genome_db_id").toString()));
+        homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("seq_member_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("desc").toString()));
         return homology_members;
     }
 
@@ -538,7 +538,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             homology_members.put("genome_name", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{homologous.get("genome_db_id")}, String.class));
             homology_members.put("dnafrag", homologous.get("dnafrag_id"));
 
-            JSONObject gene = getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("seq_member_id").toString(), homologous.get("genome_db_id").toString());
+            JSONObject gene = getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("seq_member_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("desc").toString());
             homology_members.put("genes", gene);
             if (gene.getJSONObject("gene").containsKey("gene_id")) {
                 homologouses.add(homology_members);
@@ -647,13 +647,18 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     }
 
 
-    public JSONObject getGenefromCore(String query, String genome, String member_id, String genome_db_id) throws IOException {
+    public JSONObject getGenefromCore(String query, String genome, String member_id, String genome_db_id, String desc) throws IOException {
         try {
-            JSONObject gene = new JSONObject();
 
             genome = template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{genome}, String.class);
 
-            gene.put("gene", SQLSequenceDAO.getGenebyStableid(query, genome, member_id, template.queryForObject(GET_LOCATION_FOR_GENOME, new Object[]{genome_db_id}, String.class)));
+            JSONObject gene =  SQLSequenceDAO.getGenebyStableid(query, genome, member_id, template.queryForObject(GET_LOCATION_FOR_GENOME, new Object[]{genome_db_id}, String.class));
+
+            gene.put("display_name", desc);
+            gene.put("species", genome);
+
+
+            gene.put("gene", gene);
             return gene;
         } catch (Exception e) {
             e.printStackTrace();
@@ -667,7 +672,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         JSONObject homology_members = new JSONObject();
         JSONObject member = new JSONObject();
 
-        final String GET_GENE_TREE_FOR_REFERENCE = "select m1.stable_id AS Ref, m1.canonical_member_id AS peptide_id, m2.stable_id AS Ref_stable_id, m3.*, gam.cigar_line, gtr.method_link_species_set_id, m4.gene_member_id, m4.description as display_label  " +
+        final String GET_GENE_TREE_FOR_REFERENCE = "select m1.stable_id AS Ref, m1.canonical_member_id AS peptide_id, m2.stable_id AS Ref_stable_id, m3.*, gam.cigar_line, gtr.method_link_species_set_id, m4.gene_member_id, m4.display_label as 'desc'  " +
                 "from gene_member m1 " +
                 "JOIN seq_member m2 ON (m1.canonical_member_id = m2.seq_member_id) " +
                 "JOIN gene_tree_node gtn1 ON (m2.seq_member_id = gtn1.seq_member_id) " +
@@ -690,7 +695,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 //            homology_members.put("desc", map_two.get("description"));
             homology_members.put("desc", map_two.get("display_label"));
 
-            JSONObject gene = getGenefromCore(map_two.get("stable_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("seq_member_id").toString(), map_two.get("genome_db_id").toString());
+            JSONObject gene = getGenefromCore(map_two.get("stable_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("seq_member_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("desc").toString());
             homology_members.put("genes", gene);
             if (gene.getJSONObject("gene").containsKey("gene_id")) {
                 member.put(map_two.get("seq_member_id").toString(), homology_members);
