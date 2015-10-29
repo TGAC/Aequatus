@@ -264,11 +264,12 @@ public class ComparaService {
 
         response.put("trackname", "member");
         try {
-            response.put("ref", comparaStore.getRefDetail(query));
+            response.put("ref", comparaStore.getRefStableID(query));
 
             response.put("member", comparaStore.getGeneTreeforMember(query));
 
             response.put("tree", comparaStore.getGeneTree(query));
+            response.put("protein_id", comparaStore.getRefPtnStableID(query));
 
 
         } catch (IOException e) {
