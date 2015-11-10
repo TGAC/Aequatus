@@ -173,9 +173,9 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                 translation.put("start", translation.getInt("end"));
                         translation.put("end" , temp);
 
-                transcript.put("Translation", translation);
 
             }
+            transcript.put("Translation", translation);
 
             transcript.put("desc", map.get("description") + ":" + query);
             JSONArray exons_array = new JSONArray();

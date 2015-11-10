@@ -661,7 +661,6 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         gene.put("species", genome);
 
 
-        gene.put("gene", gene);
             return gene;
         } catch (Exception e) {
             e.printStackTrace();
