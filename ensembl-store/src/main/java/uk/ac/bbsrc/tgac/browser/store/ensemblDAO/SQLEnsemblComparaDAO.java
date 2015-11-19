@@ -553,7 +553,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     }
 
-    public JSONArray getAllMember(String query, String genome_db) throws IOException {
+    public JSONArray getAllMember(int query, int genome_db) throws IOException {
         try {
             JSONArray members = new JSONArray();
             List<Map<String, Object>> maps = template.queryForList(GET_ALL_MEMBER_BY_CHROMOSOME_NAME, new Object[]{genome_db, query});
@@ -569,7 +569,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         }
     }
 
-    public JSONArray getOverviewAllMember(String query, String genome_db) throws IOException {
+    public JSONArray getOverviewAllMember(int query, int genome_db) throws IOException {
         try {
             JSONArray members = new JSONArray();
             Map<String, Object> maps_2 = null;
@@ -618,7 +618,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     }
 
 
-    public JSONArray getAllChromosome(String query) throws IOException {
+    public JSONArray getAllChromosome(int query) throws IOException {
         try {
             JSONArray members = new JSONArray();
             List<Map<String, Object>> maps = template.queryForList(GET_CHROMOSOME_BY_GENOME_ID, new Object[]{query});
@@ -637,10 +637,10 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         }
     }
 
-    public int getChromosomeLength(String chr_name, String genome_id) throws IOException {
+    public int getChromosomeLength(int chr_id, int genome_id) throws IOException {
         try {
             int length = 0;
-            Map<String, Object> maps_2 = template.queryForMap(GET_DNAFRAG_BY_ID, new Object[]{chr_name, genome_id});
+            Map<String, Object> maps_2 = template.queryForMap(GET_DNAFRAG_BY_ID, new Object[]{chr_id, genome_id});
             length = Integer.parseInt(maps_2.get("length").toString());
 
             return length;
@@ -693,10 +693,14 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             homology_members.put("stable_id", map_two.get("stable_id").toString());
             homology_members.put("genome_name", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{map_two.get("genome_db_id")}, String.class));
             homology_members.put("dnafrag", map_two.get("dnafrag_id"));
+            if(map_two.get("desc") == null){
+                map_two.put("desc","");
+            }
 //            homology_members.put("desc", map_two.get("description"));
             homology_members.put("desc", map_two.get("display_label"));
             String gene_member_id = template.queryForObject(GET_GENE_MEMBER_ID_FROM_SEQ_MEMBER_ID, new Object[]{map_two.get("seq_member_id")}, String.class);
             String gene_stable_id = template.queryForObject(GET_STABLE_ID_FROM_GENE_MEMBER_ID, new Object[]{gene_member_id}, String.class);
+            log.info("\n\n\n\t" +map_two.toString());
             member.put(gene_stable_id, getGenefromCore(map_two.get("stable_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("seq_member_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("desc").toString()));
 
         }
@@ -752,7 +756,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     }
 
 
-    public JSONObject getChrId(String query, String ref) throws IOException {
+    public JSONObject getChrId(String query, int ref) throws IOException {
 
         JSONObject chr_info = new JSONObject();
 

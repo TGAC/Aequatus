@@ -211,18 +211,46 @@ public class ComparaService {
     }
 
     public JSONObject getMember(HttpSession session, JSONObject json) {
-        String chr_name = json.getString("chr_name");
+        int chr_id = json.getInt("chr_name");
         JSONObject response = new JSONObject();
-        String genome_id = json.getString("reference");
+        int genome_id = json.getInt("reference");
 
 
         response.put("trackname", "member");
         int count;
         try {
 
-            response.put("chr_length", comparaStore.getChromosomeLength(chr_name, genome_id));
-            response.put("member", comparaStore.getAllMember(chr_name, genome_id));
-            response.put("overview", comparaStore.getOverviewAllMember(chr_name, genome_id));
+            response.put("chr_length", comparaStore.getChromosomeLength(chr_id, genome_id));
+            response.put("member", comparaStore.getAllMember(chr_id, genome_id));
+            response.put("overview", comparaStore.getOverviewAllMember(chr_id, genome_id));
+
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return response;
+    }
+
+    public JSONObject getMemberbyChrName(HttpSession session, JSONObject json) {
+        String chr_name = json.getString("chr_name");
+        JSONObject response = new JSONObject();
+        String reference = json.getString("reference");
+
+        try {
+        int genome_id = comparaStore.getGenomeId(reference).getInt("ref");
+            int chr_id = comparaStore.getChrId(chr_name, genome_id).getInt("chr");
+            response.put("chr_id", chr_id);
+
+        response.put("trackname", "member");
+        int count;
+log.info(" \n\n\n "+ genome_id + "\t "+ chr_id);
+            response.put("chr_length", comparaStore.getChromosomeLength(chr_id, genome_id));
+            response.put("member", comparaStore.getAllMember(chr_id, genome_id));
+            response.put("overview", comparaStore.getOverviewAllMember(chr_id, genome_id));
 
 
         } catch (IOException e) {
@@ -238,7 +266,7 @@ public class ComparaService {
 
     public JSONObject getChromosome(HttpSession session, JSONObject json) {
         JSONObject response = new JSONObject();
-        String reference = json.getString("reference");
+        int reference = json.getInt("reference");
 
 
         response.put("trackname", "member");
@@ -257,6 +285,26 @@ public class ComparaService {
         return response;
     }
 
+    public JSONObject getChromosomebyGenomeName(HttpSession session, JSONObject json) {
+        JSONObject response = new JSONObject();
+        String reference = json.getString("reference");
+
+
+        response.put("trackname", "member");
+        try {
+int genome_db_id = comparaStore.getGenomeId(reference).getInt("ref");
+            response.put("member", comparaStore.getAllChromosome(genome_db_id));
+
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return response;
+    }
     public JSONObject getCoreMember(HttpSession session, JSONObject json) {
         String query = json.getString("query");
         JSONObject response = new JSONObject();
@@ -341,10 +389,10 @@ public class ComparaService {
         String ref = json.getString("ref");
         JSONObject response = new JSONObject();
 
-        ref = comparaStore.getGenomeId(ref).getString("ref");
+        int genome_id = comparaStore.getGenomeId(ref).getInt("ref");
         response.put("ref", "member");
         try {
-            return comparaStore.getChrId(query, ref);
+            return comparaStore.getChrId(query, genome_id);
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             return JSONUtils.SimpleJSONError(e.getMessage());
