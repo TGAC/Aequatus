@@ -29,7 +29,7 @@ var chr_name = null;
 
 
 function getChromosomes(member_id) {
-    console.log("getchromosome")
+    console.log("getchromosome "+genome_db_id)
     var color = jQuery("option:selected", jQuery("#genomes")).attr("background");
     jQuery(".headerbar").css("background", color);
     jQuery("#chr_maps").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
@@ -41,36 +41,62 @@ function getChromosomes(member_id) {
     }
 
 
-    Fluxion.doAjax(
-        'comparaService',
-        'getChromosome',
-        {'reference': genome_db_id, 'url': ajaxurl},
-        {
-            'doOnSuccess': function (json) {
-                chromosomes = json.member;
+    if(genome_db_id != null){
+        Fluxion.doAjax(
+            'comparaService',
+            'getChromosome',
+            {'reference': genome_db_id, 'url': ajaxurl},
+            {
+                'doOnSuccess': function (json) {
 
-                drawChromosome()
-                if (chr == undefined) {
-                    setCredentials(chromosomes[0].id, genome_db_id);
+                    console.log("getchromosome sucess")
+                    chromosomes = json.member;
+
+                    drawChromosome()
+                    if (chr == undefined) {
+                        setCredentials(chromosomes[0].id, genome_db_id);
+                    }
+                    Fluxion.doAjax(
+                        'comparaService',
+                        'getGenomeAndChrName',
+                        {'query': genome_db_id, 'chr': chr, 'url': ajaxurl},
+                        {
+                            'doOnSuccess': function (json) {
+                                //window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?ref=" + json.genome_name + "&chr=" + json.chr_name);
+                                genome_name = json.genome_name;
+                                chr_name = json.chr_name
+                            }
+                        });
+                    if (member_id == undefined) {
+                        getMember();
+                    }else if (chr_name ==  null){
+                        select_chr()
+                    }
                 }
-                Fluxion.doAjax(
-                    'comparaService',
-                    'getGenomeAndChrName',
-                    {'query': genome_db_id, 'chr': chr, 'url': ajaxurl},
-                    {
-                        'doOnSuccess': function (json) {
-                            //window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?ref=" + json.genome_name + "&chr=" + json.chr_name);
-                            genome_name = json.genome_name;
-                            chr_name = json.chr_name
-                        }
-                    });
-                if (member_id == undefined) {
-                    getMember();
-                }else{
-                    select_chr()
+            })
+    }else if(genome_name != null){
+        Fluxion.doAjax(
+            'comparaService',
+            'getChromosomebyGenomeName',
+            {'reference': genome_name, 'url': ajaxurl},
+            {
+                'doOnSuccess': function (json) {
+
+                    console.log("getchromosome sucess")
+                    chromosomes = json.member;
+                    drawChromosome()
+                    if (chr == undefined && chr_name == null) {
+                        setCredentials(chromosomes[0].id, genome_db_id);
+                    }else {
+                        select_chr()
+                    }
+
+                    if (member_id == undefined) {
+                        getMember();
+                    }
                 }
-            }
-        })
+            })
+    }
 }
 
 function drawChromosome() {
@@ -132,27 +158,55 @@ function getMember(member) {
     }
     jQuery("#bar_image_ref").html("<i style=\"text-align: center;\" class=\"fa fa-spinner fa-spin\"></i>")
 
-    Fluxion.doAjax(
-        'comparaService',
-        'getMember',
-        {'chr_name': chr, 'reference': genome_db_id, 'url': ajaxurl},
-        {
-            'doOnSuccess': function (json) {
-                members = json.member;
 
-                jQuery("#bar_image_ref").html("")
-                sequencelength = json.chr_length;
-                members_overview = json.overview;
-                drawMember()
-                if (member == undefined) {
-                    drawSelected();
-                } else {
-                    setSelector()
+
+    if(chr != null){
+        Fluxion.doAjax(
+            'comparaService',
+            'getMember',
+            {'chr_name': chr, 'reference': genome_db_id, 'url': ajaxurl},
+            {
+                'doOnSuccess': function (json) {
+                    members = json.member;
+
+                    jQuery("#bar_image_ref").html("")
+                    sequencelength = json.chr_length;
+                    members_overview = json.overview;
+                    drawMember()
+                    if (member == undefined) {
+                        drawSelected();
+                    } else {
+                        setSelector()
+                    }
+                    console.log("get member 2")
+
                 }
-                console.log("get member 2")
+            });
+    }else{
+        Fluxion.doAjax(
+            'comparaService',
+            'getMemberbyChrName',
+            {'chr_name': chr_name, 'reference': genome_name, 'url': ajaxurl},
+            {
+                'doOnSuccess': function (json) {
+                    members = json.member;
+                    chr = json.chr_id
 
-            }
-        });
+                    jQuery("#bar_image_ref").html("")
+                    sequencelength = json.chr_length;
+                    members_overview = json.overview;
+                    drawMember()
+                    if (member == undefined) {
+                        drawSelected();
+                    } else {
+                        setSelector()
+                    }
+                    console.log("get member 2")
+
+                }
+            });
+    }
+
 }
 
 function drawMember() {
@@ -314,121 +368,6 @@ function hitClicked(cigarline1, start, top, length, gene_start, stopposition, Ex
     dispCigarLine(cigarline1, start, top, length, gene_start, stopposition, Exons, "#cigar");
 }
 
-function formatCigar(ref_exons, hit_cigar, colours, ref_cigar, reverse, ref_strand) {
-    //console.log("format cigar")
-
-    var no_of_exons = ref_exons.length
-    var hit_cigar_arr = [];
-    var ref_exon_array = [];
-    var last_pos = 0;
-    var i = 0
-    var j = 0;
-    while (i < no_of_exons) {
-        var ref_exon = ref_exons[i].length;
-        if (parseInt(ref_exons[i].length) > 0) {
-            ref_exon_array.push(ref_exon)
-        }
-        i++;
-    }
-
-    var a = 0;
-    var p = 0;
-
-    var cigar_string = "";
-    ref_cigar = ref_cigar.replace(/([SIXMND])/g, ":$1,");
-    var cigars_array = ref_cigar.split(',');
-
-    for (var i = 0; i < cigars_array.length - 1; i++) {
-
-        var cigar = cigars_array[i].split(":");
-        var key = cigar[1];
-        var length = cigar[0] * 3;
-        if (!length) {
-            length = 3
-        }
-        while (length--) {
-            cigar_string += key;
-        }
-
-        cigar_string += "";
-    }
-
-    var i = 0
-    var total_len = 0;
-    var flag = false;
-    var cigar_string_match = cigar_string.replace(/D/g, '');
-    while (i < ref_exon_array.length) {
-        if (flag == false) {
-            if (parseInt(total_len) + parseInt(ref_exon_array[i]) < cigar_string_match.length) {
-                total_len += ref_exon_array[i];
-            }
-            else {
-                ref_exon_array[i] = cigar_string_match.length - total_len;
-                total_len = cigar_string_match.length;
-                flag = true;
-            }
-        } else {
-            ref_exon_array[i] = 0;
-        }
-        i++;
-    }
-
-
-    if (reverse) {
-        ref_exon_array = ref_exon_array.reverse();
-        var sum = 0;
-
-        for (i = 0; i < ref_exon_array.length; i++) {
-            sum += Number(ref_exon_array[i]);
-        }
-        var ref_cigar = cigar_string.replace(/D/g, "").length
-        if (sum > ref_cigar) {
-            ref_exon_array[0] = ref_exon_array[0] - (sum - ref_cigar)
-        }
-    }
-    if (reverse && ref_strand == 1) {
-        cigar_string = cigar_string.split("").reverse().join("");
-        hit_cigar = hit_cigar.split("").reverse().join("");
-    }
-
-
-    while (j < cigar_string.length) {
-        if (cigar_string.charAt(j) == 'D') {
-            if (hit_cigar.charAt(j) == 'M') {
-                hit_cigar = replaceAt(hit_cigar, j, "_");
-            }
-            else if (hit_cigar.charAt(j) == 'D') {
-                hit_cigar = replaceAt(hit_cigar, j, "I");
-            }
-        }
-        j++;
-    }
-
-    var j = 0;
-
-    var b = 0;
-
-    var temp_array = [];
-    while (j < cigar_string.length) {
-        if (cigar_string.charAt(j) == 'M') {
-            if (a == ref_exon_array[p]) {
-                p++;
-                hit_cigar_arr.push(hit_cigar.substr(last_pos, b));
-                temp_array.push(b + " : " + p)
-                a = 0;
-                last_pos += b;
-                b = 0;
-            }
-            a++;
-        }
-        b++;
-        j++;
-    }
-
-    hit_cigar_arr.push(hit_cigar.substr(last_pos, b));
-    return hit_cigar_arr.join("-");
-
-}
 
 function reverse_exons(transcript) {
     console.log("reverse exon")
@@ -472,22 +411,22 @@ function rearrange_selector(query, start, chr_name) {
     drawSelected(query)
 }
 
-function browser_coordinates(max) {
-    var temp = "<FONT style=\"BACKGROUND-COLOR: #d3d3d3\">";
-    jQuery("#vertical0").html(temp + Math.round(0));
-    jQuery("#vertical1").html(temp + Math.round(max * 0.1));
-    jQuery("#vertical2").html(temp + Math.round(max * 0.2));
-    jQuery("#vertical3").html(temp + Math.round(max * 0.3));
-    jQuery("#vertical4").html(temp + Math.round(max * 0.4));
-    jQuery("#vertical5").html(temp + Math.round(max * 0.5));
-    jQuery("#vertical6").html(temp + Math.round(max * 0.6));
-    jQuery("#vertical7").html(temp + Math.round(max * 0.7));
-    jQuery("#vertical8").html(temp + Math.round(max * 0.8));
-    jQuery("#vertical9").html(temp + Math.round(max * 0.9));
-    jQuery("#vertical10").html(temp + Math.round(max));
-
-
-}
+//function browser_coordinates(max) {
+//    var temp = "<FONT style=\"BACKGROUND-COLOR: #d3d3d3\">";
+//    jQuery("#vertical0").html(temp + Math.round(0));
+//    jQuery("#vertical1").html(temp + Math.round(max * 0.1));
+//    jQuery("#vertical2").html(temp + Math.round(max * 0.2));
+//    jQuery("#vertical3").html(temp + Math.round(max * 0.3));
+//    jQuery("#vertical4").html(temp + Math.round(max * 0.4));
+//    jQuery("#vertical5").html(temp + Math.round(max * 0.5));
+//    jQuery("#vertical6").html(temp + Math.round(max * 0.6));
+//    jQuery("#vertical7").html(temp + Math.round(max * 0.7));
+//    jQuery("#vertical8").html(temp + Math.round(max * 0.8));
+//    jQuery("#vertical9").html(temp + Math.round(max * 0.9));
+//    jQuery("#vertical10").html(temp + Math.round(max));
+//
+//
+//}
 
 
 function stringTrim(string, width) {
@@ -553,39 +492,12 @@ function drawSynteny(redrawn) {
     jQuery("#gene_tree_upgma").html("")
     jQuery("#gene_widget_exons").html("")
 
-    console.log("drawSynteny")
-    var json = syntenic_data;
-    //if (json.ref) {
-    //    var ref_data = json.ref;
-    //    URLMemberID(ref_data.stable_id)
 
-
-    // ref_member = ref_data.genes.gene.member_id
 
     drawTree(syntenic_data.tree, "#gene_tree_nj", newpopup)
     checkVisuals();
 
-    //    //redrawCIGAR()
-    //
-    //    jQuery("#gene_widget").sortable(
-    //        {
-    //            axis: 'y',
-    //            handle: '.handle-genome',
-    //            cursor: 'move'
-    //        });
-    //
-    //    if (redrawn != undefined) {
-    //        jQuery("#genomes").val(ref_data.genome)
-    //        select_chr();
-    //        select_member();
-    //    } else {
-    //        console.log("else")
-    //    }
-    //} else {
-    //    jQuery("#gene_widget").html("")
-    //    jQuery("#gene_widget").html("Selected Gene not found.")
-    //    jQuery("#gene_tree_nj").html("<span style='font-size: large; text-align: center'>Selected Gene not found.</span>")
-    //}
+
 
 }
 
@@ -597,16 +509,19 @@ function select_member() {
 function select_chr() {
     jQuery('div[id^="chr"]').removeClass("selected")
     jQuery("#chr" + chr).addClass("selected")
-    Fluxion.doAjax(
-        'comparaService',
-        'getGenomeAndChrName',
-        {'query': genome_db_id, 'chr': chr, 'url': ajaxurl},
-        {
-            'doOnSuccess': function (json) {
-                chr_name = json.chr_name
-                //window.history.pushState("ref=" + genome_name, "Title", "index.jsp?ref=" + genome_name + "&chr=" + chr_name);
-            }
-        });
+    if(chr_name == null){
+        Fluxion.doAjax(
+            'comparaService',
+            'getGenomeAndChrName',
+            {'query': genome_db_id, 'chr': chr, 'url': ajaxurl},
+            {
+                'doOnSuccess': function (json) {
+                    chr_name = json.chr_name
+                    //window.history.pushState("ref=" + genome_name, "Title", "index.jsp?ref=" + genome_name + "&chr=" + chr_name);
+                }
+            });
+    }
+
 }
 
 function select_genome() {
@@ -654,4 +569,42 @@ function setSelector(){
     //    jQuery("[seq_id="+syntenic_data.ref.genes.gene.member_id+"]").addClass("selected")
     //    jQuery("#chr"+syntenic_data.ref.genes.gene.reference).addClass("selected")
     //});
+}
+
+
+function makeMeTop(new_gene_id, new_protein_id) {
+    console.log("makeMeTop")
+    console.log(new_gene_id)
+    console.log(new_protein_id)
+
+
+    if (new_gene_id != member_id || new_protein_id != protein_member_id) {
+
+        changeReference(new_gene_id, new_protein_id)
+
+        removePopup();
+        console.log(genome_db_id)
+        if (genome_db_id != syntenic_data.member[syntenic_data.ref].species) {
+            console.log(syntenic_data.member[syntenic_data.ref])
+            genome_name = syntenic_data.member[syntenic_data.ref].species;
+            console.log(genome_name)
+
+            genome_db_id = null
+            chr_name = syntenic_data.member[syntenic_data.ref].reference
+            chr = null
+            console.log(chr_name)
+
+            getChromosomes(new_gene_id);
+            members = undefined
+            getMember(new_gene_id);
+            jQuery("#genome_name").html(genome_name);
+        } else if (chr != syntenic_data.member[syntenic_data.ref].reference) {
+            chr_name = syntenic_data.member[syntenic_data.ref].reference
+            chr = null
+            members = undefined
+            getMember(new_gene_id);
+            //select_chr();
+        }
+    }
+
 }
