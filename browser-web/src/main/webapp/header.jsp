@@ -45,6 +45,7 @@
     <script type="text/javascript" src="<c:url value='aequatus-vis/scripts/drawCIGARs.js'/>"></script>
     <script type="text/javascript" src="<c:url value='aequatus-vis/scripts/util.js'/>"></script>
     <script type="text/javascript" src="<c:url value='aequatus-vis/scripts/d3_tree.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='aequatus-vis/scripts/underscore/underscore-min.js'/>"></script>
 
     <%--Aequatus Scripts--%>
     <script type="text/javascript" src="<c:url value='/scripts/search_compara.js'/>"></script>
@@ -52,6 +53,7 @@
     <script type="text/javascript" src="<c:url value='/scripts/natural-sort.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/controls.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/popup.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/init.js'/>"></script>
 
 
     <%--Aequatus CSS--%>

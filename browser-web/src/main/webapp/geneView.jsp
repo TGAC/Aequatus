@@ -268,7 +268,7 @@
 
     </div>
 
-    <div id="gene_tree_nj" style=" overflow: visible;   position: relative; top: 50px; width: 100%;">
+    <div id="gene_tree_nj" style=" overflow: visible;   position: relative; top: 50px; width: 100%; left:100px;">
 
     </div>
     <div style="height: auto; margin-left: auto; margin-right: auto; z-index: 1999; position: fixed;">
@@ -369,6 +369,7 @@
 <script>
     jQuery(document).ready(function () {
         kickOff();
+        setOff()
         getUrlVariables()
     });
 </script>
