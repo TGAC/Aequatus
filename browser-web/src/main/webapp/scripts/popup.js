@@ -64,7 +64,7 @@ function newpopup(member_id, protein_id) {
                     jQuery('#stable_label').html(stable_id)
                 }
 
-                jQuery('#makemetop_button').html("<button onclick='changeReference(\"" + member_id + "\",\""+protein_id+"\")' class='btn btn-default' type='button'> <i class='fa fa-random fa-1x'></i></button>");
+                jQuery('#makemetop_button').html("<button onclick='makeMeTop(\"" + member_id + "\",\""+protein_id+"\")' class='btn btn-default' type='button'> <i class='fa fa-random fa-1x'></i></button>");
 
                 jQuery('#ref_name').html("Chr " + json.info.name)
 
