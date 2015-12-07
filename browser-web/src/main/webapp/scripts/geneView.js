@@ -324,6 +324,7 @@ function getcoreMember(query, redrawn) {
 
                 setSelector()
 
+                URLMemberID(json.ref)
                 drawSynteny(redrawn);
             }
         });
@@ -548,27 +549,32 @@ function select_genome() {
 function setSelector(){
     console.log("setSelector")
 
-    //var maxLentemp = parseInt(jQuery("#canvas").css("width"));
-    //
-    ////var sequencelength = chr_length="63644993"
-    //
-    //var start = syntenic_data.ref.genes.gene.transcripts[0].start
-    //
-    //
-    //var left = start * maxLentemp / sequencelength;
-    //
-    //var width = parseInt(jQuery("#bar_image_selector").css("width"));
-    //
-    //left = left - width/2
-    //
-    //jQuery("#bar_image_selector").animate({left: left+'px'} , function() {
-    //    drawSelected();
-    //    jQuery(".refMarkerShow").removeClass("selected")
-    //    console.log("setSelector "+syntenic_data.ref.genes.gene.member_id)
-    //
-    //    jQuery("[seq_id="+syntenic_data.ref.genes.gene.member_id+"]").addClass("selected")
-    //    jQuery("#chr"+syntenic_data.ref.genes.gene.reference).addClass("selected")
-    //});
+    var maxLentemp = parseInt(jQuery("#canvas").css("width"));
+
+    //var sequencelength = chr_length="63644993"
+
+    console.log("setSelector 1")
+
+
+    var start = syntenic_data.member[syntenic_data.ref].Transcript[0].start
+    console.log("setSelector 2")
+
+
+    var left = start * maxLentemp / sequencelength;
+
+    var width = parseInt(jQuery("#bar_image_selector").css("width"));
+    console.log("setSelector 3")
+
+    left = left - width/2
+
+    jQuery("#bar_image_selector").animate({left: left+'px'} , function() {
+        drawSelected();
+        jQuery(".refMarkerShow").removeClass("selected")
+        console.log("setSelector "+syntenic_data.member[syntenic_data.ref].member_id)
+
+        jQuery("[seq_id="+syntenic_data.member[syntenic_data.ref].member_id+"]").addClass("selected")
+        jQuery("#chr"+syntenic_data.member[syntenic_data.ref].reference).addClass("selected")
+    });
 }
 
 
@@ -579,6 +585,8 @@ function makeMeTop(new_gene_id, new_protein_id) {
 
 
     if (new_gene_id != member_id || new_protein_id != protein_member_id) {
+
+        URLMemberID(new_gene_id)
 
         changeReference(new_gene_id, new_protein_id)
 
@@ -608,3 +616,4 @@ function makeMeTop(new_gene_id, new_protein_id) {
     }
 
 }
+
