@@ -168,13 +168,13 @@ function URLgenomeName(genome_name, chr_name) {
 
 function URLMemberID(stable_id) {
     console.log("URLMemberID " + stable_id)
-    window.history.pushState("ref=" + genome_name, "Title", "index.jsp?query=" + stable_id);
+    window.history.pushState("query=" + stable_id, "Title", "index.jsp?query=" + stable_id);
 
 }
 
 function URLSearch(search) {
     console.log("URLSearch " + search)
-    window.history.pushState("ref=" + genome_name, "Title", "index.jsp?search=" + search);
+    window.history.pushState("search=" + search, "Title", "index.jsp?search=" + search);
 
 }
 
