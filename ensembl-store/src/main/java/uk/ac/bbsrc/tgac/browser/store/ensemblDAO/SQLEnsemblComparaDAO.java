@@ -145,6 +145,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_CIGAR_LINE = "select cigar_line from gene_align_member where seq_member_id = ? and gene_align_id = ?";
 
+    public static final String GET_GENOME_NAME_FROM_SEQ_MEMBER_ID = "select name from genome_db where genome_db_id in (select genome_db_id from seq_member where seq_member_id = ?)";
 
     public static final String GET_GENE_TREE_REFERENCE = "select m1.stable_id AS Ref, m1.canonical_member_id AS peptide_id, m2.stable_id AS Ref_stable_id, m3.*, gam.cigar_line, gtr.method_link_species_set_id, m4.gene_member_id,  m4.display_label as 'desc'   " +
             "from gene_member m1 " +
@@ -904,7 +905,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
                 JSONObject taxonomy = new JSONObject();
                 taxonomy.put("id", template.queryForObject(GET_TAXON_FROM_SEQ_MEMBER_ID, new Object[]{map_two.get("seq_member_id")}, String.class));
-                taxonomy.put("scientific_name", template.queryForObject(GET_GENOME_NAME_FROM_TAXON_ID, new Object[]{taxonomy.get("id")}, String.class));
+
+                taxonomy.put("scientific_name", template.queryForObject(GET_GENOME_NAME_FROM_SEQ_MEMBER_ID, new Object[]{map_two.get("seq_member_id")}, String.class));
 
                 map_two.put("taxonomy", taxonomy);
 
