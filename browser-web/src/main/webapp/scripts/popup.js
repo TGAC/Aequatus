@@ -8,7 +8,7 @@
 
 var mouseX, mouseY;
 
-function newpopup(member_id) {
+function newpopup(member_id, protein_id) {
 
     var gene;
     var stable_id;
@@ -45,11 +45,8 @@ function newpopup(member_id) {
 
 
     if (syntenic_data.member[member_id]) {
-        gene = syntenic_data.member[member_id].genes.gene;
+        gene = syntenic_data.member[member_id];
         stable_id = syntenic_data.member[member_id].stable_id
-    } else if (syntenic_data.ref.genes.gene.member_id) {
-        gene = syntenic_data.ref.genes.gene;
-        stable_id = syntenic_data.ref.genes.gene.stable_id
     } else {
         return;
     }
@@ -67,7 +64,7 @@ function newpopup(member_id) {
                     jQuery('#stable_label').html(stable_id)
                 }
 
-                jQuery('#makemetop_button').html("<button onclick='changeReference(\"" + member_id + "\")' class='btn btn-default' type='button'> <i class='fa fa-random fa-1x'></i></button>");
+                jQuery('#makemetop_button').html("<button onclick='makeMeTop(\"" + member_id + "\",\""+protein_id+"\")' class='btn btn-default' type='button'> <i class='fa fa-random fa-1x'></i></button>");
 
                 jQuery('#ref_name').html("Chr " + json.info.name)
 

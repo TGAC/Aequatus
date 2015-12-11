@@ -1,0 +1,3 @@
+[submodule "browser-web/src/main/webapp/aequatus-vis"]
+	path = browser-web/src/main/webapp/aequatus-vis
+	url = http://thankia@stash.tgac.ac.uk/scm/ab/aequatus-vis.git

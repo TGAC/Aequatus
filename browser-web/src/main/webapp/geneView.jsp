@@ -74,12 +74,11 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="radio" name="view_type" checked="" value="with"
-                                           onchange="changeToNormal()">
+                                    <input type="radio" name="view_type"  value="with"  onchange="changeToNormal()">
                                     With
                                 </td>
                                 <td align="left">
-                                    <input type="radio" name="view_type" value="without" onchange="changeToExon()">
+                                    <input type="radio" name="view_type" value="without" onchange="changeToExon()" checked="">
                                     Without
 
                                 </td>
@@ -149,6 +148,15 @@
                             </td>
                             <td align="left">
                                 Gene Split
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="circleBase type2" style="background: white; border: 2px solid blue;"></div>
+                            </td>
+                            <td align="left">
+                                Multiple events
                             </td>
                         </tr>
                         </tbody>
@@ -268,7 +276,7 @@
 
     </div>
 
-    <div id="gene_tree_nj" style=" overflow: visible;   position: relative; top: 50px; width: 100%;">
+    <div id="gene_tree_nj" style=" overflow: visible;   position: relative; top: 50px; width: 100%; left:100px;">
 
     </div>
     <div style="height: auto; margin-left: auto; margin-right: auto; z-index: 1999; position: fixed;">
@@ -369,6 +377,7 @@
 <script>
     jQuery(document).ready(function () {
         kickOff();
+        setOff()
         getUrlVariables()
     });
 </script>

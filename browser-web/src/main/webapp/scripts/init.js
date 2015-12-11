@@ -2,50 +2,11 @@
  * Created by thankia on 09/01/15.
  */
 
-function kickOff() {
+function setOff() {
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
 
 
-    var matched, browser;
 
-    jQuery.uaMatch = function( ua ) {
-        ua = ua.toLowerCase();
-
-        var match = /(chrome)[ \/]([\w.]+)/.exec( ua ) ||
-            /(webkit)[ \/]([\w.]+)/.exec( ua ) ||
-            /(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
-            /(msie) ([\w.]+)/.exec( ua ) ||
-            ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) ||
-            [];
-
-        return {
-            browser: match[ 1 ] || "",
-            version: match[ 2 ] || "0"
-        };
-    };
-
-    matched = jQuery.uaMatch( navigator.userAgent );
-    browser = {};
-
-    if ( matched.browser ) {
-        browser[ matched.browser ] = true;
-        browser.version = matched.version;
-    }
-
-// Chrome is Webkit, but Webkit is also Safari.
-    if ( browser.chrome ) {
-        browser.webkit = true;
-    } else if ( browser.webkit ) {
-        browser.safari = true;
-    }
-
-    jQuery.browser = browser;
-
-
-    jQuery(document).mousemove(function (e) {
-        mouseX = e.pageX;
-        mouseY = e.pageY;
-    });
 
     var name = arguments.callee.toString();
     var testTextBox = jQuery('#search');
@@ -150,21 +111,30 @@ function getUrlVariables(chr) {
 function processURL(urlParam) {
 
     if (jQuery.urlParam("search") != null) {
+        console.log("1")
         if (parseInt(jQuery("#control_panel").css("left")) < 0) {
             openPanel('#search_div')
         }
         jQuery('#search').val(urlParam("search"));
         jQuery('#control_search').val(urlParam("search"))
+        getReferences();
+
         search_member(urlParam("search"))
     }
     else if (jQuery.urlParam("ref") != null && jQuery.urlParam("chr") != null) {
+        console.log("2")
+
         getChrId(urlParam("chr"), urlParam("ref"))
 
     }
     else if (jQuery.urlParam("ref") != null) {
+        console.log("3")
+
         getGenomeId(urlParam("ref"))
     }
     else if (jQuery.urlParam("query") != null){//} && jQuery.urlParam("ref") != null && jQuery.urlParam("chr") != null) {
+        console.log("4")
+
         getMemberfromURL(urlParam("query"));
     }
     else {
@@ -207,6 +177,7 @@ function getChrId(chr, ref){
 
 
 function getMemberfromURL(query){
+    console.log("getMemberfromURL")
     Fluxion.doAjax(
         'comparaService',
         'getMemberfromURL',
@@ -214,6 +185,8 @@ function getMemberfromURL(query){
         {
             'doOnSuccess': function (json) {
                 if(json.member_id){
+                    console.log("getMemberfromURL if")
+
                     member_id = json.member_id;
                     chr = json.dnafrag;
                     genome_db_id = json.ref;
@@ -224,6 +197,9 @@ function getMemberfromURL(query){
                     select_genome();
                     getcoreMember(json.member_id, true);
                 }else{
+                    console.log("getMemberfromURL else")
+                    getReferences()
+
                     if (parseInt(jQuery("#control_panel").css("left")) < 0) {
                         openPanel('#search_div')
                     }

@@ -37,22 +37,23 @@
     <%--jquery UI--%>
     <link rel="stylesheet" href="<c:url value='/scripts/jquery/css/smoothness/jquery-ui-1.11.2.css'/>" type="text/css">
 
+    <%--Aequatus-vis Scripts--%>
+    <script type="text/javascript" src="<c:url value='aequatus-vis/scripts/init.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='aequatus-vis/scripts/geneView.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='aequatus-vis/scripts/drawGene.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='aequatus-vis/scripts/drawGeneExonOnly.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='aequatus-vis/scripts/drawCIGARs.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='aequatus-vis/scripts/util.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='aequatus-vis/scripts/d3_tree.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='aequatus-vis/scripts/underscore/underscore-min.js'/>"></script>
+
     <%--Aequatus Scripts--%>
-    <script type="text/javascript" src="<c:url value='/scripts/init.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/search_compara.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/geneView.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/drawGene.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/drawGeneExonOnly.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/drawCIGARs.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/matrix.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/upgma.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/neighbour-joining.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/DNA_matrix.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/natural-sort.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/controls.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/util.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/popup.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/d3_tree.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/init.js'/>"></script>
 
 
     <%--Aequatus CSS--%>

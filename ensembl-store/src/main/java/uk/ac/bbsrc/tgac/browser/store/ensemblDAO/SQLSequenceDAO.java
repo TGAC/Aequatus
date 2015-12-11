@@ -119,7 +119,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             end = Integer.parseInt(map.get("seq_region_end").toString());
 
 
-            transcript.put("id", transcript_id);
+            transcript.put("id", query);
             transcript.put("start", start);
             transcript.put("end", end);
             transcript.put("length", end - start + 1);
@@ -131,34 +131,50 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             transcript.put("strand", map.get("seq_region_strand"));
             translation_start = new_Template.queryForList(GET_CDS_start_per_Gene, new Object[]{transcript_id});
             translation_end = new_Template.queryForList(GET_CDS_end_per_Gene, new Object[]{transcript_id});
+            JSONObject translation = new JSONObject();
+            translation.put("id" ,query);
+
 
             for (Map start_seq : translation_start) {
                 int exon_start = Integer.parseInt(new_Template.queryForList(GET_EXON_BY_ID, new Object[]{start_seq.get("start_exon_id")}).get(0).get("seq_region_start").toString());
                 int exon_end = Integer.parseInt(new_Template.queryForList(GET_EXON_BY_ID, new Object[]{start_seq.get("start_exon_id")}).get(0).get("seq_region_end").toString());
 
                 if (gene_info.get("seq_region_strand").toString().equals("-1")) {
-                    transcript.put("transcript_start", exon_end - (Integer.parseInt(start_seq.get("seq_start").toString())-1));
+//                    transcript.put("transcript_start", exon_end - (Integer.parseInt(start_seq.get("seq_start").toString())-1));
+                    translation.put("start" , exon_end - (Integer.parseInt(start_seq.get("seq_start").toString())-1));
                 } else {
-                    transcript.put("transcript_start", exon_start + (Integer.parseInt(start_seq.get("seq_start").toString())-1));
+//                    transcript.put("transcript_start", exon_start + (Integer.parseInt(start_seq.get("seq_start").toString())-1));
+                    translation.put("start" , exon_start + (Integer.parseInt(start_seq.get("seq_start").toString())-1));
+
                 }
             }
+
 
             for (Map end_seq : translation_end) {
                 int exon_start = Integer.parseInt(new_Template.queryForList(GET_EXON_BY_ID, new Object[]{end_seq.get("end_exon_id")}).get(0).get("seq_region_start").toString());
                 int exon_end = Integer.parseInt(new_Template.queryForList(GET_EXON_BY_ID, new Object[]{end_seq.get("end_exon_id")}).get(0).get("seq_region_end").toString());
 
                 if (gene_info.get("seq_region_strand").toString().equals("-1")) {
-                    transcript.put("transcript_end", exon_end - (Integer.parseInt(end_seq.get("seq_end").toString())-1));
+//                    transcript.put("transcript_end", exon_end - (Integer.parseInt(end_seq.get("seq_end").toString())-1));
+                    translation.put("end" , exon_end - (Integer.parseInt(end_seq.get("seq_end").toString())-1));
+
                 } else {
-                    transcript.put("transcript_end", exon_start + (Integer.parseInt(end_seq.get("seq_end").toString())-1));
+//                    transcript.put("transcript_end", exon_start + (Integer.parseInt(end_seq.get("seq_end").toString())-1));
+                    translation.put("end" ,  exon_start + (Integer.parseInt(end_seq.get("seq_end").toString())-1));
+
                 }
             }
 
-            if (transcript.getInt("transcript_start") > transcript.getInt("transcript_end")) {
-                int temp = transcript.getInt("transcript_start");
-                transcript.put("transcript_start", transcript.getInt("transcript_end"));
-                transcript.put("transcript_end", temp);
+            if (translation.getInt("start") > translation.getInt("end")) {
+                int temp = translation.getInt("start");
+//                transcript.put("transcript_start", transcript.getInt("transcript_end"));
+//                transcript.put("transcript_end", temp);
+                translation.put("start", translation.getInt("end"));
+                        translation.put("end" , temp);
+
+
             }
+            transcript.put("Translation", translation);
 
             transcript.put("desc", map.get("description") + ":" + query);
             JSONArray exons_array = new JSONArray();
@@ -181,10 +197,10 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             }
 
             transcript.put("exon_length", length);
-            transcript.put("Exons", exons_array);
+            transcript.put("Exon", exons_array);
 
             transcripts_array.add(transcript);
-            gene.put("transcripts", transcripts_array);
+            gene.put("Transcript", transcripts_array);
 
 
             return gene;

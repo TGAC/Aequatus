@@ -58,22 +58,32 @@ public interface ComparaStore extends Store<String> {
     public JSONArray getGenomicAlignGraph(int query, long start, long end) throws IOException;
     public JSONArray getMember(String query, long start, long end, String trackId) throws IOException;
     public JSONArray getHomologybyMLSSI(String query, long start, long end, String trackId) throws IOException;
+<<<<<<< HEAD
     public JSONArray getAllMember(String query, String genome_db) throws IOException;
     public JSONArray getOverviewAllMember(String query, String genome_db) throws IOException;
     public JSONArray getAllChromosome(String query) throws IOException;
     public int getChromosomeLength(String chr_name, String genome_id) throws IOException;
+=======
+    public JSONArray getAllMember(int query, int genome_db) throws IOException;
+    public JSONArray getOverviewAllMember(int query, int genome_db) throws IOException;
+    public JSONArray getAllChromosome(int query) throws IOException;
+    public int getChromosomeLength(int chr_id, int genome_id) throws IOException;
+>>>>>>> vis-testing
 //    public JSONObject getGenefromCore(String query, String genome, String member_id, String genome_db_id) throws Exception;
     public JSONArray getHomologyforMember(String query) throws IOException;
-    public JSONObject getRefDetail(String query) throws Exception;
+//    public String getRefDetail(String query) throws Exception;
     public JSONObject getGeneTreeforMember(String query) throws IOException;
     public JSONArray searchMember(String query) throws IOException;
     public Map getGeneTree(String query) throws IOException;
     public int countGeneTreeforMember(String query) throws IOException;
     public JSONObject getInfoforMember(String query) throws IOException;
     public JSONObject getGenomeId(String query) throws IOException;
-    public JSONObject getChrId(String query, String ref) throws IOException;
+    public JSONObject getChrId(String query, int ref) throws IOException;
     public String getMemberId(String query) throws Exception;
     public String getReferencefromStableId(String query) throws IOException;
     public String getDnafragIdfromStableId(String query) throws IOException;
     public String getDnafragnamefromId(String query) throws IOException;
-}
+    public String getRefStableID(String query) throws Exception;
+    public String getRefPtnStableID(String query) throws Exception;
+
+    }
