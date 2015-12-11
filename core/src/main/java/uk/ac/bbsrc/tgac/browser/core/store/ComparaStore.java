@@ -41,49 +41,38 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public interface ComparaStore extends Store<String> {
-    public String getAllDnafragByGenomedbId(int query) throws IOException;
-    public JSONArray getAllGenomeId(String query) throws IOException;
-    public JSONArray getGenomicAlignbyDnafragId(String query) throws IOException;
-    public JSONArray getGenomicAlignblockbyId(String query) throws IOException;
-    public int getReferenceLength(int query) throws IOException;
-    public String getReferenceName(int query) throws IOException;
-    public JSONArray getAllGenomeIdforReference(int query) throws IOException;
-    public int getDnafragearchsize(String query, int reference) throws IOException;
-    public int getDnafragId(String query, int reference) throws IOException;
-    public int getGenomeIdfromDnafragId(int query) throws IOException;
-    public String getGenomeNamefromId(int query) throws IOException;
-    public JSONArray getAllDnafragByName(String query, int reference) throws IOException;
-    public JSONArray getGenomicAlign(int query, long start, long end, String mlssid) throws IOException;
-    public int countGenomicAlign(int query, long start, long end, String mlssid) throws IOException;
-    public JSONArray getGenomicAlignGraph(int query, long start, long end) throws IOException;
-    public JSONArray getMember(String query, long start, long end, String trackId) throws IOException;
-    public JSONArray getHomologybyMLSSI(String query, long start, long end, String trackId) throws IOException;
-<<<<<<< HEAD
-    public JSONArray getAllMember(String query, String genome_db) throws IOException;
-    public JSONArray getOverviewAllMember(String query, String genome_db) throws IOException;
-    public JSONArray getAllChromosome(String query) throws IOException;
-    public int getChromosomeLength(String chr_name, String genome_id) throws IOException;
-=======
-    public JSONArray getAllMember(int query, int genome_db) throws IOException;
-    public JSONArray getOverviewAllMember(int query, int genome_db) throws IOException;
-    public JSONArray getAllChromosome(int query) throws IOException;
-    public int getChromosomeLength(int chr_id, int genome_id) throws IOException;
->>>>>>> vis-testing
-//    public JSONObject getGenefromCore(String query, String genome, String member_id, String genome_db_id) throws Exception;
-    public JSONArray getHomologyforMember(String query) throws IOException;
-//    public String getRefDetail(String query) throws Exception;
-    public JSONObject getGeneTreeforMember(String query) throws IOException;
-    public JSONArray searchMember(String query) throws IOException;
-    public Map getGeneTree(String query) throws IOException;
-    public int countGeneTreeforMember(String query) throws IOException;
-    public JSONObject getInfoforMember(String query) throws IOException;
-    public JSONObject getGenomeId(String query) throws IOException;
-    public JSONObject getChrId(String query, int ref) throws IOException;
-    public String getMemberId(String query) throws Exception;
-    public String getReferencefromStableId(String query) throws IOException;
-    public String getDnafragIdfromStableId(String query) throws IOException;
-    public String getDnafragnamefromId(String query) throws IOException;
-    public String getRefStableID(String query) throws Exception;
-    public String getRefPtnStableID(String query) throws Exception;
-
+    String getAllDnafragByGenomedbId(int query) throws IOException;
+    JSONArray getAllGenomeId(String query) throws IOException;
+    JSONArray getGenomicAlignbyDnafragId(String query) throws IOException;
+    JSONArray getGenomicAlignblockbyId(String query) throws IOException;
+    int getReferenceLength(int query) throws IOException;
+    String getReferenceName(int query) throws IOException;
+    JSONArray getAllGenomeIdforReference(int query) throws IOException;
+    int getDnafragearchsize(String query, int reference) throws IOException;
+    int getDnafragId(String query, int reference) throws IOException;
+    int getGenomeIdfromDnafragId(int query) throws IOException;
+    String getGenomeNamefromId(int query) throws IOException;
+    JSONArray getAllDnafragByName(String query, int reference) throws IOException;
+    JSONArray getGenomicAlign(int query, long start, long end, String mlssid) throws IOException;
+    int countGenomicAlign(int query, long start, long end, String mlssid) throws IOException;
+    JSONArray getGenomicAlignGraph(int query, long start, long end) throws IOException;
+    JSONArray getMember(String query, long start, long end, String trackId) throws IOException;
+    JSONArray getHomologybyMLSSI(String query, long start, long end, String trackId) throws IOException;
+    JSONArray getAllMember(int query, int genome_db) throws IOException;
+    JSONArray getOverviewAllMember(int query, int genome_db) throws IOException;
+    JSONArray getAllChromosome(int query) throws IOException;
+    int getChromosomeLength(int chr_id, int genome_id) throws IOException;
+    JSONObject getGeneTreeforMember(String query) throws IOException;
+    JSONArray searchMember(String query) throws IOException;
+    Map getGeneTree(String query) throws IOException;
+    int countGeneTreeforMember(String query) throws IOException;
+    JSONObject getInfoforMember(String query) throws IOException;
+    JSONObject getGenomeId(String query) throws IOException;
+    JSONObject getChrId(String query, int ref) throws IOException;
+    String getMemberId(String query) throws Exception;
+    String getReferencefromStableId(String query) throws IOException;
+    String getDnafragIdfromStableId(String query) throws IOException;
+    String getDnafragnamefromId(String query) throws IOException;
+    String getRefStableID(String query) throws Exception;
+    String getRefPtnStableID(String query) throws Exception;
     }

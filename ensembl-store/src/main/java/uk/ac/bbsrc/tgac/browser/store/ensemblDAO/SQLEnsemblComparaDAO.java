@@ -145,11 +145,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_CIGAR_LINE = "select cigar_line from gene_align_member where seq_member_id = ? and gene_align_id = ?";
 
-<<<<<<< HEAD
-=======
     public static final String GET_GENOME_NAME_FROM_SEQ_MEMBER_ID = "select name from genome_db where genome_db_id in (select genome_db_id from seq_member where seq_member_id = ?)";
 
->>>>>>> vis-testing
     public static final String GET_GENE_TREE_REFERENCE = "select m1.stable_id AS Ref, m1.canonical_member_id AS peptide_id, m2.stable_id AS Ref_stable_id, m3.*, gam.cigar_line, gtr.method_link_species_set_id, m4.gene_member_id,  m4.display_label as 'desc'   " +
             "from gene_member m1 " +
             "JOIN seq_member m2 ON (m1.canonical_member_id = m2.seq_member_id) " +
@@ -527,12 +524,6 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public String getRefPtnStableID(String query) throws Exception {
         String seq_member_id = template.queryForObject(GET_SEQ_MEMBER_ID_FROM_GENE_MEMBER_ID, new Object[]{query}, String.class);
         return template.queryForObject(GET_STABLE_ID_FROM_SEQ_MEMBER_ID, new Object[]{seq_member_id}, String.class);
-
-<<<<<<< HEAD
-        homology_members.put("genes", getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("seq_member_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("desc").toString()));
-        return homology_members;
-=======
->>>>>>> vis-testing
     }
 
     public JSONArray getHomologyforMember(String query) throws IOException {
@@ -659,21 +650,6 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         }
     }
 
-
-<<<<<<< HEAD
-    public JSONObject getGenefromCore(String query, String genome, String member_id, String genome_db_id, String desc) throws IOException {
-        try {
-
-            genome = template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{genome}, String.class);
-
-            JSONObject gene =  SQLSequenceDAO.getGenebyStableid(query, genome, member_id, template.queryForObject(GET_LOCATION_FOR_GENOME, new Object[]{genome_db_id}, String.class));
-
-            gene.put("display_name", desc);
-            gene.put("species", genome);
-
-
-            gene.put("gene", gene);
-=======
     public JSONObject getGenefromCore(String query, String genome, String member_id, String genome_db_id, String desc) throws IOException {    try {
 
             genome = template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{genome}, String.class);
@@ -682,9 +658,6 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
         gene.put("display_name", desc);
         gene.put("species", genome);
-
-
->>>>>>> vis-testing
             return gene;
         } catch (Exception e) {
             e.printStackTrace();
@@ -720,22 +693,11 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             if(map_two.get("desc") == null){
                 map_two.put("desc","");
             }
-//            homology_members.put("desc", map_two.get("description"));
             homology_members.put("desc", map_two.get("display_label"));
-<<<<<<< HEAD
-
-            JSONObject gene = getGenefromCore(map_two.get("stable_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("seq_member_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("desc").toString());
-            homology_members.put("genes", gene);
-            if (gene.getJSONObject("gene").containsKey("gene_id")) {
-                member.put(map_two.get("seq_member_id").toString(), homology_members);
-                homologouses.add(member);
-            }
-=======
             String gene_member_id = template.queryForObject(GET_GENE_MEMBER_ID_FROM_SEQ_MEMBER_ID, new Object[]{map_two.get("seq_member_id")}, String.class);
             String gene_stable_id = template.queryForObject(GET_STABLE_ID_FROM_GENE_MEMBER_ID, new Object[]{gene_member_id}, String.class);
             log.info("\n\n\n\t" +map_two.toString());
             member.put(gene_stable_id, getGenefromCore(map_two.get("stable_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("seq_member_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("desc").toString()));
->>>>>>> vis-testing
 
         }
 
