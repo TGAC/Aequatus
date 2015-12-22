@@ -139,7 +139,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public static final String GET_GENE_LABEL_WITH_MEMBER = "select display_label from seq_member where seq_member_id = ?";
     public static final String GET_GENE_MEMBER_ID_FROM_SEQ_MEMBER_ID = "select gene_member_id from seq_member where seq_member_id = ?";
     public static final String GET_SEQ_MEMBER_ID_FROM_GENE_MEMBER_ID = "select seq_member_id from seq_member where gene_member_id = ?";
-
+    public static final String GET_CANONICAL_MEMBER_ID_FROM_GENE_MEMBER_ID  = "select canonical_member_id from gene_member where gene_member_id = ?";
     public static final String GET_STABLE_ID_FROM_GENE_MEMBER_ID = "select stable_id from gene_member where gene_member_id = ?";
     public static final String GET_SOURCE_FROM_GENE_MEMBER_ID = "select source_name from gene_member where gene_member_id = ?";
 
@@ -522,8 +522,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
 
     public String getRefPtnStableID(String query) throws Exception {
-        String seq_member_id = template.queryForObject(GET_SEQ_MEMBER_ID_FROM_GENE_MEMBER_ID, new Object[]{query}, String.class);
-        return template.queryForObject(GET_STABLE_ID_FROM_SEQ_MEMBER_ID, new Object[]{seq_member_id}, String.class);
+        String canonical_id =  template.queryForObject(GET_CANONICAL_MEMBER_ID_FROM_GENE_MEMBER_ID, new Object[]{query}, String.class);
+        return template.queryForObject(GET_STABLE_ID_FROM_SEQ_MEMBER_ID, new Object[]{canonical_id}, String.class);
     }
 
     public JSONArray getHomologyforMember(String query) throws IOException {
@@ -667,8 +667,6 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public JSONObject getGeneTreeforMember(String query) throws IOException {
 
-        JSONArray homologouses = new JSONArray();
-        JSONObject homology_members = new JSONObject();
         JSONObject member = new JSONObject();
 
         final String GET_GENE_TREE_FOR_REFERENCE = "select m1.stable_id AS Ref, m1.canonical_member_id AS peptide_id, m2.stable_id AS Ref_stable_id, m3.*, gam.cigar_line, gtr.method_link_species_set_id, m4.gene_member_id, m4.display_label as 'desc'  " +
@@ -684,16 +682,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         List<Map<String, Object>> homology_member_id = template.queryForList(GET_GENE_TREE_FOR_REFERENCE, new Object[]{query});
 
         for (Map map_two : homology_member_id) {
-            homology_members.put("cigarline", map_two.get("cigar_line"));
-            homology_members.put("genome", map_two.get("genome_db_id"));
-            homology_members.put("method", map_two.get("method_link_species_set_id"));
-            homology_members.put("stable_id", map_two.get("stable_id").toString());
-            homology_members.put("genome_name", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{map_two.get("genome_db_id")}, String.class));
-            homology_members.put("dnafrag", map_two.get("dnafrag_id"));
             if(map_two.get("desc") == null){
                 map_two.put("desc","");
             }
-            homology_members.put("desc", map_two.get("display_label"));
             String gene_member_id = template.queryForObject(GET_GENE_MEMBER_ID_FROM_SEQ_MEMBER_ID, new Object[]{map_two.get("seq_member_id")}, String.class);
             String gene_stable_id = template.queryForObject(GET_STABLE_ID_FROM_GENE_MEMBER_ID, new Object[]{gene_member_id}, String.class);
             log.info("\n\n\n\t" +map_two.toString());
