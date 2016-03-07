@@ -12,9 +12,6 @@ var colours = ['rgb(166,206,227)', 'rgb(31,120,180)', 'rgb(178,223,138)', 'rgb(5
 //var colours = ['#A6CEE3', '#1F78B4', '#B2DF8A', '#33A02C', '#FB9A99', '#E31A1C', '#FDBF6F', '#FF7F00', '#CAB2D6', '#6A3D9A', '#FFFF99', '#B15928', '#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3', '#FDB462', '#B3DE69', '#FCCDE5', '#D9D9D9', '#BC80BD', '#CCEBC5', '#FFED6F']
 
 
-var gapped_seq_list = [];
-var gene_list_array = [];
-var cigar_list = [];
 var ref_member = null
 var syntenic_data = null;
 var chromosomes = null;
@@ -320,7 +317,7 @@ function getcoreMember(query, redrawn) {
             'doOnSuccess': function (json) {
                 syntenic_data = json
                 //window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);
-                init(json)
+                init(json, "#settings_div", "#filter_div")
 
                 setSelector()
 
