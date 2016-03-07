@@ -86,14 +86,7 @@
 
 </div>
 
-
-<div id="filetrack" style="visibility: hidden; position: fixed;">${initParam.trackfiles}</div>
 <div id="title" style="visibility: hidden; position: fixed;">${initParam.urlpath}</div>
-<div id="linkLocation" style="visibility: hidden; position: fixed;">${initParam.linkLocation}</div>
-<div id="blastLocation" style="visibility: hidden; position: fixed;">${initParam.blastLocation}</div>
-<div id="blastType" style="visibility: hidden; position: fixed;">${initParam.blastType}</div>
-<div id="fasta" style="visibility: hidden; position: fixed;">${initParam.fasta}</div>
-
 
 <script type="text/javascript">
 
