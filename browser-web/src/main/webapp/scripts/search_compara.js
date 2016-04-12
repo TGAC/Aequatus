@@ -135,7 +135,7 @@ function search_member(query) {
                             jQuery("#search_result").html(content);
                             jQuery("#search_result").fadeIn();
                         }
-                        var link = "<i style='cursor:pointer' onclick='URLMemberID(" + json.html[i].stable_id + "); jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");' class=\"fa fa-external-link\"></i>"
+                        var link = "<i style='cursor:pointer' onclick='openClosePanel(); URLMemberID(" + json.html[i].stable_id + "); jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");' class=\"fa fa-external-link\"></i>"
 
                         jQuery("<div>").attr({
                             'class': 'search_div',
