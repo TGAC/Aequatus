@@ -30,7 +30,7 @@
                         </span>
                     </div>
                 </div>
-                <div style="display: none; background: none repeat scroll 0% 0% peru; padding: 10px; height: 296px; text-align: center; font-size: 20px;"
+                <div style="display: none; background: none repeat scroll 0% 0% peru; padding: 10px; height: 296px; text-align: center; font-size: 15px;"
                      id="info_div">
                     <table width="100%" cellpadding="5px" >
                         <tbody>
@@ -38,10 +38,10 @@
                             <td colspan="2" align="left" > <b>Help</b> <br>
                                 &nbsp;&nbsp;&nbsp;&nbsp; <a target="_blank" href = "http://browser.tgac.ac.uk/aequatus-user-guide">  User-guide </a> </td>
                         </tr>  <tr>
-                            <td align="left" colspan="2"><b> Tree Legends </b></td>
+                            <td align="left" colspan="2"><b> Tree and Gene Legends </b></td>
                         </tr>
                         <tr>
-                            <td>
+                            <td align=right>
                                 <div class="circleBase type2" style="background: red;"></div>
                             </td>
                             <td align="left">
@@ -49,7 +49,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td align=right>
                                 <div class="circleBase type2" style="background: cyan;"></div>
                             </td>
                             <td align="left">
@@ -57,7 +57,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td align=right>
                                 <div class="circleBase type2" style="background: blue"></div>
                             </td>
                             <td align="left">
@@ -65,7 +65,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td align=right>
                                 <div class="circleBase type2" style="background: pink"></div>
                             </td>
                             <td align="left">
@@ -74,13 +74,28 @@
                         </tr>
 
                         <tr>
-                            <td>
+                            <td align=right>
                                 <div class="circleBase type2" style="background: white; border: 2px solid blue;"></div>
                             </td>
                             <td align="left">
                                 Multiple events
                             </td>
                         </tr>
+                        <tr>
+                            <td align=right>
+                                <svg version="1.1" width="55" height="14">
+                                    <line x1="0" y1="6" x2="55" y2="6" id="Examplegeneline" stroke="green" stroke-width="1"/><g class="style2">
+                                    <rect x="2" y="1" width="51.087" height="10" rx="2" ry="2" id="exampleExonstyle2" fill="white" stroke="green" stroke-width="2"/>
+                                </g>
+
+                                    <g id="examplestyle2CIGAR" class="style2 CIGAR">
+                                        <rect x="2" y="1" width="33" height="10" rx="1" ry="1" fill="gray" class="utr1"/>
+                                        <rect x="34.005102040816325" y="1" width="18.994897959183675" height="10" rx="1" ry="1" fill="rgb(166,206,227)" class="match"/>
+                                    </g>
+                                </svg>
+                            </td>
+                            <td align="left">UTR
+                            </td></tr>
                         </tbody>
                     </table>
                 </div>
