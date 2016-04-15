@@ -111,7 +111,6 @@ function getUrlVariables(chr) {
 function processURL(urlParam) {
 
     if (jQuery.urlParam("search") != null) {
-        console.log("1")
         if (parseInt(jQuery("#control_panel").css("left")) < 0) {
             openPanel('#search_div')
         }
@@ -122,24 +121,16 @@ function processURL(urlParam) {
         search_member(urlParam("search"))
     }
     else if (jQuery.urlParam("ref") != null && jQuery.urlParam("chr") != null) {
-        console.log("2")
-
         getChrId(urlParam("chr"), urlParam("ref"))
-
     }
     else if (jQuery.urlParam("ref") != null) {
-        console.log("3")
-
         getGenomeId(urlParam("ref"))
     }
     else if (jQuery.urlParam("query") != null){//} && jQuery.urlParam("ref") != null && jQuery.urlParam("chr") != null) {
-        console.log("4")
-
         getMemberfromURL(urlParam("query"));
     }
     else {
         getReferences();
-
     }
 }
 
@@ -177,7 +168,6 @@ function getChrId(chr, ref){
 
 
 function getMemberfromURL(query){
-    console.log("getMemberfromURL")
     Fluxion.doAjax(
         'comparaService',
         'getMemberfromURL',
@@ -185,8 +175,6 @@ function getMemberfromURL(query){
         {
             'doOnSuccess': function (json) {
                 if(json.member_id){
-                    console.log("getMemberfromURL if")
-
                     member_id = json.member_id;
                     chr = json.dnafrag;
                     genome_db_id = json.ref;
@@ -197,7 +185,6 @@ function getMemberfromURL(query){
                     select_genome();
                     getcoreMember(json.member_id, true);
                 }else{
-                    console.log("getMemberfromURL else")
                     getReferences()
 
                     if (parseInt(jQuery("#control_panel").css("left")) < 0) {
@@ -206,16 +193,15 @@ function getMemberfromURL(query){
                     jQuery("#search_history").html(jQuery("#control_search").val());
                     jQuery("#control_search").val(query);
                     jQuery("#search").val(query);
-                    //window.history.pushState("search=" + query, "Title", "index.jsp?search=" + query);
                     var content = "";
                     if(json.html.length > 0){
                         for (var i = 0; i < json.html.length; i++) {
                             if (i == 0) {
                                 content += "<p id='search_hit' style='background: white;'>";
                             }
-                            var link = "<i style='cursor:pointer' onclick='jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");' class=\"fa fa-external-link\"></i>"
+                            var link = "<i style='cursor:pointer' onclick='openClosePanel(); jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");' class=\"fa fa-external-link\"></i>"
 
-                            content += "<div class='search_div' onclick='jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");'> <div class='search_header'> " + json.html[i].genome + " : " + json.html[i].name + " </div> <div class='search_info'> " + json.html[i].description + "<br> " + json.html[i].stable_id + "</div></div>";
+                            content += "<div class='search_div' onclick='openClosePanel(); jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");'> <div class='search_header'> " + json.html[i].genome + " : " + json.html[i].name + " </div> <div class='search_info'> " + json.html[i].description + "<br> " + json.html[i].stable_id + "</div></div>";
 
                             if (i == json.html.length - 1) {
                                 content += "</p>";
@@ -244,4 +230,25 @@ function search_from_box(){
     jQuery("#search_history").html(jQuery("#control_search").val());
     jQuery("#control_search").val(jQuery('#search').val());
     search_member(jQuery('#search').val());
+}
+
+function resize() {
+    drawChromosome();
+    drawMember();
+    select_chr();
+    if (member_id == undefined) {
+        select_member();
+        drawSelected();
+    } else {
+
+        var start = 0;
+        for (var i = 0; i < members.length; i++) {
+            if (members[i].id == member_id) {
+                start = members[i].start;
+            }
+        }
+        rearrange_selector(member_id, start, chr);
+        drawSelected();
+        drawSynteny(true);
+    }
 }
