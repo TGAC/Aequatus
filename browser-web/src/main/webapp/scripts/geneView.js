@@ -26,7 +26,6 @@ var chr_name = null;
 
 
 function getChromosomes(member_id) {
-    console.log("getchromosome "+genome_db_id)
     var color = jQuery("option:selected", jQuery("#genomes")).attr("background");
     jQuery(".headerbar").css("background", color);
     jQuery("#chr_maps").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
@@ -46,7 +45,6 @@ function getChromosomes(member_id) {
             {
                 'doOnSuccess': function (json) {
 
-                    console.log("getchromosome sucess")
                     chromosomes = json.member;
 
                     drawChromosome()
@@ -79,7 +77,6 @@ function getChromosomes(member_id) {
             {
                 'doOnSuccess': function (json) {
 
-                    console.log("getchromosome sucess")
                     chromosomes = json.member;
                     drawChromosome()
                     if (chr == undefined && chr_name == null) {
@@ -97,8 +94,6 @@ function getChromosomes(member_id) {
 }
 
 function drawChromosome() {
-    console.log("drawchromosome")
-
     var max = Math.max.apply(Math, chromosomes.map(function (o) {
         return o.length;
     }));
@@ -134,16 +129,12 @@ function drawChromosome() {
 }
 
 function setCredentials(chr_name, genome_id) {
-    console.log("set credential")
-
     chr = chr_name;
     genome_db_id = genome_id;
     select_chr();
 }
 
 function getMember(member) {
-    console.log("get member")
-
     jQuery(".selected").removeClass("selected")
     jQuery("#chr" + chr).addClass("selected")
 
@@ -175,7 +166,6 @@ function getMember(member) {
                     } else {
                         setSelector()
                     }
-                    console.log("get member 2")
 
                 }
             });
@@ -198,8 +188,6 @@ function getMember(member) {
                     } else {
                         setSelector()
                     }
-                    console.log("get member 2")
-
                 }
             });
     }
@@ -207,8 +195,6 @@ function getMember(member) {
 }
 
 function drawMember() {
-    console.log("draw member")
-
     jQuery("#bar_image_ref").html("")
     var width = parseInt(jQuery("#bar_image_selector").css("width"));
     var maxLentemp = parseInt(jQuery("#canvas").css("width"));
@@ -241,8 +227,6 @@ function drawMember() {
 
 
 function drawSelected(member) {
-    console.log("draw selected")
-
     jQuery("#selected_region").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
     if (member == undefined) {
         jQuery("#gene_widget").html("")
@@ -291,15 +275,9 @@ function drawSelected(member) {
 
 
     }
-    console.log("draw selected 2")
-
-
 }
 
 function getcoreMember(query, redrawn) {
-    console.log("get core member")
-
-    console.log("getcoremember")
     jQuery(".refMarkerShow").removeClass("selected")
     jQuery("#ref" + query).addClass("selected")
     jQuery("#gene_widget").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
@@ -329,8 +307,6 @@ function getcoreMember(query, redrawn) {
 
 
 function countcoreMember(query) {
-    console.log("count core member")
-
     Fluxion.doAjax(
         'comparaService',
         'countForCoreMember',
@@ -368,8 +344,6 @@ function hitClicked(cigarline1, start, top, length, gene_start, stopposition, Ex
 
 
 function reverse_exons(transcript) {
-    console.log("reverse exon")
-
     var exons = [];
     var length = transcript.end - transcript.start;
 
@@ -409,38 +383,36 @@ function rearrange_selector(query, start, chr_name) {
     drawSelected(query)
 }
 
-//function browser_coordinates(max) {
-//    var temp = "<FONT style=\"BACKGROUND-COLOR: #d3d3d3\">";
-//    jQuery("#vertical0").html(temp + Math.round(0));
-//    jQuery("#vertical1").html(temp + Math.round(max * 0.1));
-//    jQuery("#vertical2").html(temp + Math.round(max * 0.2));
-//    jQuery("#vertical3").html(temp + Math.round(max * 0.3));
-//    jQuery("#vertical4").html(temp + Math.round(max * 0.4));
-//    jQuery("#vertical5").html(temp + Math.round(max * 0.5));
-//    jQuery("#vertical6").html(temp + Math.round(max * 0.6));
-//    jQuery("#vertical7").html(temp + Math.round(max * 0.7));
-//    jQuery("#vertical8").html(temp + Math.round(max * 0.8));
-//    jQuery("#vertical9").html(temp + Math.round(max * 0.9));
-//    jQuery("#vertical10").html(temp + Math.round(max));
-//
-//
-//}
-
-
-function stringTrim(string, width) {
+function stringTrim(string, width, newClass) {
+    if (newClass) {
+        jQuery("#ruler").addClass(newClass.toString())
+    }
+    else {
+        jQuery("#ruler").addClass("ruler")
+    }
     var ruler = jQuery("#ruler");
     var inLength = 0;
     var tempStr = "";
 
     jQuery("#ruler").html(string);
     inLength = jQuery("#ruler").width();
+
+    if (newClass) {
+        jQuery("#ruler").removeClass(newClass.toString())
+    }
+    else {
+        jQuery("#ruler").removeClass("ruler")
+    }
+
     if (inLength < width) {
         return string;
     }
     else {
         width = parseInt(string.length * width / inLength);
-        return "<span title=" + string + ">" + string.substring(0, width) + "... </span>";
+        var string_title = string.replace(/\s+/g, '&nbsp;');
+        return "<span title=" + string_title + ">" + string.substring(0, width) + "... </span>";
     }
+
 }
 
 function flip_gene(temp_div) {
@@ -482,21 +454,12 @@ function reverse_compliment(sequence) {
 
 
 function drawSynteny(redrawn) {
-    console.log("draw synteny")
-
-
     jQuery("#gene_widget").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
     jQuery("#gene_tree_nj").html("")
     jQuery("#gene_tree_upgma").html("")
     jQuery("#gene_widget_exons").html("")
 
-
-
     drawTree(syntenic_data.tree, "#gene_tree_nj", newpopup)
-    checkVisuals();
-
-
-
 }
 
 function select_member() {
@@ -523,8 +486,6 @@ function select_chr() {
 }
 
 function select_genome() {
-    console.log("select genome")
-
     Fluxion.doAjax(
         'comparaService',
         'getGenomeName',
@@ -544,30 +505,19 @@ function select_genome() {
 
 
 function setSelector(){
-    console.log("setSelector")
-
     var maxLentemp = parseInt(jQuery("#canvas").css("width"));
 
-    //var sequencelength = chr_length="63644993"
-
-    console.log("setSelector 1")
-
-
     var start = syntenic_data.member[syntenic_data.ref].Transcript[0].start
-    console.log("setSelector 2")
-
 
     var left = start * maxLentemp / sequencelength;
 
     var width = parseInt(jQuery("#bar_image_selector").css("width"));
-    console.log("setSelector 3")
 
     left = left - width/2
 
     jQuery("#bar_image_selector").animate({left: left+'px'} , function() {
         drawSelected();
         jQuery(".refMarkerShow").removeClass("selected")
-        console.log("setSelector "+syntenic_data.member[syntenic_data.ref].member_id)
 
         jQuery("[seq_id="+syntenic_data.member[syntenic_data.ref].member_id+"]").addClass("selected")
         jQuery("#chr"+syntenic_data.member[syntenic_data.ref].reference).addClass("selected")
@@ -576,10 +526,6 @@ function setSelector(){
 
 
 function makeMeTop(new_gene_id, new_protein_id) {
-    console.log("makeMeTop")
-    console.log(new_gene_id)
-    console.log(new_protein_id)
-
 
     if (new_gene_id != member_id || new_protein_id != protein_member_id) {
 
@@ -588,16 +534,12 @@ function makeMeTop(new_gene_id, new_protein_id) {
         changeReference(new_gene_id, new_protein_id)
 
         removePopup();
-        console.log(genome_db_id)
         if (genome_db_id != syntenic_data.member[syntenic_data.ref].species) {
-            console.log(syntenic_data.member[syntenic_data.ref])
             genome_name = syntenic_data.member[syntenic_data.ref].species;
-            console.log(genome_name)
 
             genome_db_id = null
             chr_name = syntenic_data.member[syntenic_data.ref].reference
             chr = null
-            console.log(chr_name)
 
             getChromosomes(new_gene_id);
             members = undefined
@@ -608,7 +550,6 @@ function makeMeTop(new_gene_id, new_protein_id) {
             chr = null
             members = undefined
             getMember(new_gene_id);
-            //select_chr();
         }
     }
 
