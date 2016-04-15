@@ -153,7 +153,6 @@ function search_member(query) {
 }
 
 function changeGenome(genome, name) {
-    console.log("change genome")
     genome_db_id = genome;
     chr = undefined;
     member_id = undefined;
@@ -162,20 +161,15 @@ function changeGenome(genome, name) {
 }
 
 function URLgenomeName(genome_name, chr_name) {
-    console.log("URLgenomeName " + genome_name + " " + chr_name)
     window.history.pushState("ref=" + genome_name, "Title", "index.jsp?ref=" + genome_name + "&chr=" + chr_name);
 }
 
 function URLMemberID(stable_id) {
-    console.log("URLMemberID " + stable_id)
     window.history.pushState("query=" + stable_id, "Title", "index.jsp?query=" + stable_id);
-
 }
 
 function URLSearch(search) {
-    console.log("URLSearch " + search)
     window.history.pushState("search=" + search, "Title", "index.jsp?search=" + search);
-
 }
 
 function search_redirect(json) {
