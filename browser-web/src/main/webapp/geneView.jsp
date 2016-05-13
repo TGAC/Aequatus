@@ -32,12 +32,15 @@
                 </div>
                 <div style="display: none; background: none repeat scroll 0% 0% peru; padding: 10px; height: 296px; text-align: center; font-size: 15px;"
                      id="info_div">
-                    <table width="100%" cellpadding="5px" >
+                    <table width="100%" cellpadding="5px">
                         <tbody>
                         <tr>
-                            <td colspan="2" align="left" > <b>Help</b> <br>
-                                &nbsp;&nbsp;&nbsp;&nbsp; <a target="_blank" href = "http://browser.tgac.ac.uk/aequatus-user-guide">  User-guide </a> </td>
-                        </tr>  <tr>
+                            <td colspan="2" align="left"><b>Help</b> <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp; <a target="_blank"
+                                                            href="http://browser.tgac.ac.uk/aequatus-user-guide">
+                                    User-guide </a></td>
+                        </tr>
+                        <tr>
                             <td align="left" colspan="2"><b> Tree and Gene Legends </b></td>
                         </tr>
                         <tr>
@@ -84,18 +87,24 @@
                         <tr>
                             <td align=right>
                                 <svg version="1.1" width="55" height="14">
-                                    <line x1="0" y1="6" x2="55" y2="6" id="Examplegeneline" stroke="green" stroke-width="1"/><g class="style2">
-                                    <rect x="2" y="1" width="51.087" height="10" rx="2" ry="2" id="exampleExonstyle2" fill="white" stroke="green" stroke-width="2"/>
-                                </g>
+                                    <line x1="0" y1="6" x2="55" y2="6" id="Examplegeneline" stroke="green"
+                                          stroke-width="1"/>
+                                    <g class="style2">
+                                        <rect x="2" y="1" width="51.087" height="10" rx="2" ry="2"
+                                              id="exampleExonstyle2" fill="white" stroke="green" stroke-width="2"/>
+                                    </g>
 
                                     <g id="examplestyle2CIGAR" class="style2 CIGAR">
-                                        <rect x="2" y="1" width="33" height="10" rx="1" ry="1" fill="gray" class="utr1"/>
-                                        <rect x="34.005102040816325" y="1" width="18.994897959183675" height="10" rx="1" ry="1" fill="rgb(166,206,227)" class="match"/>
+                                        <rect x="2" y="1" width="33" height="10" rx="1" ry="1" fill="gray"
+                                              class="utr1"/>
+                                        <rect x="34.005102040816325" y="1" width="18.994897959183675" height="10" rx="1"
+                                              ry="1" fill="rgb(166,206,227)" class="match"/>
                                     </g>
                                 </svg>
                             </td>
                             <td align="left">UTR
-                            </td></tr>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -103,6 +112,85 @@
                      id="filter_div">
                     <b>Species list:</b>
                     <div id="filter"></div>
+                </div>
+                <div id="export_div"
+                     style="display: block; height: 296px; background: none repeat scroll 0% 0% rebeccapurple; padding: 10px; color: white">
+
+                    <table>
+                        <thead>
+                        <th colspan="3">
+                            <h4> Export </h4>
+                        </th>
+                        </thead>
+                        <tr class="border_bottom">
+                            <td colspan="3">
+                                Tree
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Newick <br>
+                                <a class="btn btn-small" href="#" disabled onclick="exportGeneTree('json')"> <i
+                                        style="color: white " class="fa fa-download"></i></a>
+                                </a>
+                            </td>
+                            <td>
+                                JSON Format <br>
+                                <a class="btn btn-small" href="#" onclick="exportGeneTree('json')"> <i
+                                        style="color: white" class="fa fa-download"></i></a>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="border_bottom">
+                            <td colspan="3">
+                                Genes:
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Gene IDs<br>
+                                <a class="btn btn-small" href="#" onclick="exportGeneLabel('.stable')"> <i
+                                        style="color: white" class="fa fa-download"></i></a>
+                                </a>
+                            </td>
+                            <td>
+                                Gene Name<br>
+                                <a class="btn btn-small" href="#" onclick="exportGeneLabel('.geneinfo')"> <i
+                                        style="color: white" class="fa fa-download"></i></a>
+                                </a>
+                            </td>
+                            <td>
+                                Protein IDs<br>
+                                <a class="btn btn-small" href="#" onclick="exportGeneLabel('.protein_id')"> <i
+                                        style="color: white" class="fa fa-download"></i></a>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="border_bottom">
+                            <td colspan="3">
+                                Alignment
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                CIGAR format<br>
+                                <a class="btn btn-small" href="#" onclick="exportAlignment()"> <i style="color: white "
+                                                                                                  class="fa fa-download"></i></a>
+                                </a>
+                            </td>
+                            <td>
+                                Sequence<br>
+                                <a class="btn btn-small" href="#" onclick="exportSequence()"> <i style="color: white"
+                                                                                                 class="fa fa-download"></i></a>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <%--<input type="radio" name="output_selection" value="all"> All Genes--%>
+                    <%--<input type="radio" name="output_selection" value="selected" checked> Visible Genes--%>
+                    <br>
+
                 </div>
             </td>
             <td width="50px">
@@ -135,11 +223,16 @@
                         style="color: white;"
                         class="fa fa-filter fa-3x control-buttons"></i>
                 </div>
-                <div onclick="openClosePanel('#settings_div')"
-                     style="padding: 5px; text-align: center;  background: none repeat scroll 0% 0% gray;"><i
+                <div onclick="openPanel('#export_div')"
+                     style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% rebeccapurple;"><i
                         style="color: white;"
-                        class="fa fa-exchange fa-3x control-buttons"> </i>
+                        class="fa fa-external-link fa-3x control-buttons"></i>
                 </div>
+                <%--<div onclick="openClosePanel('#settings_div')"--%>
+                <%--style="padding: 5px; text-align: center;  background: none repeat scroll 0% 0% gray;"><i--%>
+                <%--style="color: white;"--%>
+                <%--class="fa fa-exchange fa-3x control-buttons"> </i>--%>
+                <%--</div>--%>
             </td>
         </tr>
         <tr>
@@ -162,7 +255,8 @@
                     <input type="text" class="form-control" placeholder="Search for..." id="search"
                            style="box-sizing: border-box; height: 35px;">
                     <span class="input-group-btn">
-                            <button onclick="search_from_box()" style="background: none repeat scroll 0% 0% green; height: 35px; top: 0px; border: 0px solid transparent;"
+                            <button onclick="search_from_box()"
+                                    style="background: none repeat scroll 0% 0% green; height: 35px; top: 0px; border: 0px solid transparent;"
                                     class="btn btn-default" type="button"><i class="fa fa-search fa-1x"
                                                                              style="color: white;"></i></button>
                         </span>
@@ -285,7 +379,7 @@
             </tr>
             <tr align="right">
                 <td align="">
-                    <table >
+                    <table>
                         <tbody>
                         <tr>
                             <td>
@@ -306,6 +400,24 @@
 
 </div>
 
+
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="exportModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="gridSystemModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <div id="exportModal_content">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <p style="z-index:10; position:fixed;font-size: small;" id="besideMouse"></p>
 
 

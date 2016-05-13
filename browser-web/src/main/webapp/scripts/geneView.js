@@ -37,7 +37,7 @@ function getChromosomes(member_id) {
     }
 
 
-    if(genome_db_id != null){
+    if (genome_db_id != null) {
         Fluxion.doAjax(
             'comparaService',
             'getChromosome',
@@ -64,12 +64,12 @@ function getChromosomes(member_id) {
                         });
                     if (member_id == undefined) {
                         getMember();
-                    }else if (chr_name ==  null){
+                    } else if (chr_name == null) {
                         select_chr()
                     }
                 }
             })
-    }else if(genome_name != null){
+    } else if (genome_name != null) {
         Fluxion.doAjax(
             'comparaService',
             'getChromosomebyGenomeName',
@@ -81,7 +81,7 @@ function getChromosomes(member_id) {
                     drawChromosome()
                     if (chr == undefined && chr_name == null) {
                         setCredentials(chromosomes[0].id, genome_db_id);
-                    }else {
+                    } else {
                         select_chr()
                     }
 
@@ -147,8 +147,7 @@ function getMember(member) {
     jQuery("#bar_image_ref").html("<i style=\"text-align: center;\" class=\"fa fa-spinner fa-spin\"></i>")
 
 
-
-    if(chr != null){
+    if (chr != null) {
         Fluxion.doAjax(
             'comparaService',
             'getMember',
@@ -169,7 +168,7 @@ function getMember(member) {
 
                 }
             });
-    }else{
+    } else {
         Fluxion.doAjax(
             'comparaService',
             'getMemberbyChrName',
@@ -263,9 +262,9 @@ function drawSelected(member) {
         }
         jQuery("<div>").attr({
             'id': id,
-            'seq_id':new_data[data_length].seq_member_id,
-            'start':new_data[data_length].start,
-            'end':new_data[data_length].end,
+            'seq_id': new_data[data_length].seq_member_id,
+            'start': new_data[data_length].start,
+            'end': new_data[data_length].end,
             'class': "refMarkerShow",
             'style': "LEFT:" + startposition + "px; width :" + stopposition + "px;",
             'onMouseOver': "countcoreMember(\"" + new_data[data_length].id + "\")",
@@ -452,7 +451,6 @@ function reverse_compliment(sequence) {
 }
 
 
-
 function drawSynteny(redrawn) {
     jQuery("#gene_widget").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
     jQuery("#gene_tree_nj").html("")
@@ -470,7 +468,7 @@ function select_member() {
 function select_chr() {
     jQuery('div[id^="chr"]').removeClass("selected")
     jQuery("#chr" + chr).addClass("selected")
-    if(chr_name == null){
+    if (chr_name == null) {
         Fluxion.doAjax(
             'comparaService',
             'getGenomeAndChrName',
@@ -499,12 +497,7 @@ function select_genome() {
 }
 
 
-
-
-
-
-
-function setSelector(){
+function setSelector() {
     var maxLentemp = parseInt(jQuery("#canvas").css("width"));
 
     var start = syntenic_data.member[syntenic_data.ref].Transcript[0].start
@@ -513,14 +506,14 @@ function setSelector(){
 
     var width = parseInt(jQuery("#bar_image_selector").css("width"));
 
-    left = left - width/2
+    left = left - width / 2
 
-    jQuery("#bar_image_selector").animate({left: left+'px'} , function() {
+    jQuery("#bar_image_selector").animate({left: left + 'px'}, function () {
         drawSelected();
         jQuery(".refMarkerShow").removeClass("selected")
 
-        jQuery("[seq_id="+syntenic_data.member[syntenic_data.ref].member_id+"]").addClass("selected")
-        jQuery("#chr"+syntenic_data.member[syntenic_data.ref].reference).addClass("selected")
+        jQuery("[seq_id=" + syntenic_data.member[syntenic_data.ref].member_id + "]").addClass("selected")
+        jQuery("#chr" + syntenic_data.member[syntenic_data.ref].reference).addClass("selected")
     });
 }
 
@@ -554,4 +547,228 @@ function makeMeTop(new_gene_id, new_protein_id) {
     }
 
 }
+
+function exportGeneLabel(type) {
+    var download_data = ""
+
+    console.log("exportGeneLabel")
+    jQuery("#gridSystemModalLabel").html("Gene Labels")
+
+    // var subset = jQuery('input[name=output_selection]:checked').val()
+    // console.log(subset)
+
+    // if(subset == "selected"){
+    //  jQuery(type).each(function( index ) {
+    //      if(jQuery(this).css('display') != 'none'){
+    //         console.log( "1 "+index + ": " + jQuery( this ).text() );
+    //     }
+    //     });
+    // } else{
+    jQuery("#exportModal_content").html("")
+    var text_html = "<table>"
+
+    jQuery(type).each(function (index) {
+        text_html += "<tr><td>" + jQuery(this).text().split(":")[0] + "</td><td>" + jQuery(this).text().split(":")[1] + "</td></tr>";
+        download_data += jQuery(this).text()+"#"
+
+    });
+
+    text_html += "<button onclick=dlText('" + download_data + "','Genes')>Download</button>"
+
+    jQuery("#exportModal_content").append(text_html)
+
+    jQuery('#exportModal').modal()
+
+    // }
+}
+
+
+function exportGeneTree(type) {
+    console.log("exportGeneTree")
+    jQuery("#gridSystemModalLabel").html("Gene Tree")
+    var download_data = ""
+    var text_html = ""
+
+    if (type == "json") {
+        text_html += syntenic_data.tree.toSource()
+        download_data += syntenic_data.tree.toSource()
+    } else if (type == "newick") {
+        // console.log(syntenic_data.tree)
+    }
+    text_html += "<button onclick=dlText('" + download_data + "','Genes')>Download</button>"
+    jQuery('#exportModal').modal()
+    jQuery("#exportModal_content").html(text_html)
+
+}
+
+function exportAlignment() {
+    jQuery("#gridSystemModalLabel").html("Gene Alignment")
+
+    var text_html = "<table>"
+    var download_data = ""
+
+    jQuery.each(syntenic_data.cigar, function (key, data) {
+        text_html += "<tr><td>" + key + "</td><td>" + data + "</td></tr>";
+        download_data += key + ":" + data + "#"
+
+    })
+    text_html += "</table>"
+
+    text_html += "<button onclick=dlText('" + download_data + "','Sequence')>Download</button>"
+
+
+    jQuery("#exportModal_content").html(text_html)
+    jQuery('#exportModal').modal()
+}
+
+function exportSequence() {
+    jQuery("#gridSystemModalLabel").html("Protein Sequence")
+    var text_html = "<table>"
+    var download_data = ""
+    jQuery.each(syntenic_data.sequence, function (key, data) {
+        text_html += "<tr><td>" + key + "</td><td>" + data + "</td></tr>";
+        download_data += key + ":" + data + "#"
+    })
+    text_html += "</table>"
+
+    console.log(download_data)
+    text_html += "<button onclick=dlText('" + download_data + "','Sequence')>Download</button>"
+
+
+    jQuery("#exportModal_content").html(text_html)
+    jQuery('#exportModal').modal()
+}
+
+function dlText(data, name) {
+    download(data, name, "text/plain");
+}
+
+function download(data, strFileName, strMimeType) {
+
+    var self = window, // this script is only for browsers anyway...
+        u = "application/octet-stream", // this default mime also triggers iframe downloads
+        m = strMimeType || u,
+        x = data.replace(/:/g, "\t").replace(/#/g, "\n"),
+        D = document,
+        a = D.createElement("a"),
+        z = function (a) {
+            return String(a);
+        },
+
+
+        B = self.Blob || self.MozBlob || self.WebKitBlob || z,
+        BB = self.MSBlobBuilder || self.WebKitBlobBuilder || self.BlobBuilder,
+        fn = strFileName || "download",
+        blob,
+        b,
+        ua,
+        fr;
+
+    //if(typeof B.bind === 'function' ){ B=B.bind(self); }
+
+    if (String(this) === "true") { //reverse arguments, allowing download.bind(true, "text/xml", "export.xml") to act as a callback
+        x = [x, m];
+        m = x[0];
+        x = x[1];
+    }
+
+
+    //go ahead and download dataURLs right away
+    if (String(x).match(/^data\:[\w+\-]+\/[\w+\-]+[,;]/)) {
+        return navigator.msSaveBlob ?  // IE10 can't do a[download], only Blobs:
+            navigator.msSaveBlob(d2b(x), fn) :
+            saver(x); // everyone else can save dataURLs un-processed
+    }//end if dataURL passed?
+
+    try {
+
+        blob = x instanceof B ?
+            x :
+            new B([x], {type: m});
+    } catch (y) {
+        if (BB) {
+            b = new BB();
+            b.append([x]);
+            blob = b.getBlob(m); // the blob
+        }
+
+    }
+
+
+    function d2b(u) {
+        var p = u.split(/[:;,]/),
+            t = p[1],
+            dec = p[2] == "base64" ? atob : decodeURIComponent,
+            bin = dec(p.pop()),
+            mx = bin.length,
+            i = 0,
+            uia = new Uint8Array(mx);
+
+        for (i; i < mx; ++i) uia[i] = bin.charCodeAt(i);
+
+        return new B([uia], {type: t});
+    }
+
+    function saver(url, winMode) {
+
+
+        if ('download' in a) { //html5 A[download]
+            a.href = url;
+            a.setAttribute("download", fn);
+            a.innerHTML = "downloading...";
+            D.body.appendChild(a);
+            setTimeout(function () {
+                a.click();
+                D.body.removeChild(a);
+                if (winMode === true) {
+                    setTimeout(function () {
+                        self.URL.revokeObjectURL(a.href);
+                    }, 250);
+                }
+            }, 66);
+            return true;
+        }
+
+        //do iframe dataURL download (old ch+FF):
+        var f = D.createElement("iframe");
+        D.body.appendChild(f);
+        if (!winMode) { // force a mime that will download:
+            url = "data:" + url.replace(/^data:([\w\/\-\+]+)/, u);
+        }
+
+
+        f.src = url;
+        setTimeout(function () {
+            D.body.removeChild(f);
+        }, 333);
+
+    }//end saver
+
+
+    if (navigator.msSaveBlob) { // IE10+ : (has Blob, but not a[download] or URL)
+        return navigator.msSaveBlob(blob, fn);
+    }
+
+    if (self.URL) { // simple fast and modern way using Blob and URL:
+        saver(self.URL.createObjectURL(blob), true);
+    } else {
+        // handle non-Blob()+non-URL browsers:
+        if (typeof blob === "string" || blob.constructor === z) {
+            try {
+                return saver("data:" + m + ";base64," + self.btoa(blob));
+            } catch (y) {
+                return saver("data:" + m + "," + encodeURIComponent(blob));
+            }
+        }
+
+        // Blob but not URL:
+        fr = new FileReader();
+        fr.onload = function (e) {
+            saver(this.result);
+        };
+        fr.readAsDataURL(blob);
+    }
+    return true;
+}
+/* end download() */
 
