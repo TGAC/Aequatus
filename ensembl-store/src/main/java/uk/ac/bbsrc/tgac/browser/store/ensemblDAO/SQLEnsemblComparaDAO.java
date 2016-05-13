@@ -181,6 +181,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_SEQUENCE_ID = "SELECT sequence_id FROM seq_member where seq_member_id = ?";
 
+    public static final String GET_SEQUENCE = "SELECT sequence FROM sequence where sequence_id = ?";
+//
     public static final String GET_MEMBER_FROM_ID = "SELECT * FROM gene_member where gene_member_id = ?";
 
 
@@ -906,10 +908,13 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                 sequence.put("id", seq_id);
 
 
+                String sequence_id = template.queryForObject(GET_SEQUENCE_ID, new Object[]{map_two.get("seq_member_id")}, String.class);
+                log.info("\n\n\n\n\n\t\t sequence id "+sequence_id);
+
                 JSONObject mol_seq = new JSONObject();
 
                 mol_seq.put("cigar_line", template.queryForObject(GET_CIGAR_LINE, new Object[]{map_two.get("seq_member_id"), gene_align_id}, String.class));
-                mol_seq.put("seq", "");
+                mol_seq.put("seq", template.queryForObject(GET_SEQUENCE, new Object[]{sequence_id}, String.class));
                 mol_seq.put("is_aligned", 0);
 
                 sequence.put("mol_seq", mol_seq);
