@@ -37,7 +37,7 @@
                         <tr>
                             <td colspan="2" align="left"><b>Help</b> <br>
                                 &nbsp;&nbsp;&nbsp;&nbsp; <a target="_blank"
-                                                            href="http://browser.tgac.ac.uk/aequatus-user-guide">
+                                                            href="http://aequatus.tgac.ac.uk/aequatus-user-guide">
                                     User-guide </a></td>
                         </tr>
                         <tr>
