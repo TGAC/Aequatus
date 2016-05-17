@@ -8,7 +8,7 @@
             <td width="300px" id=control_divs>
 
                 <div id="settings_div"
-                     style="padding: 10px; height: 296px; background: none repeat scroll 0% 0% darkcyan; font-size: large;">
+                     style="padding: 10px; height: 296px; background: none repeat scroll 0% 0% darkcyan; font-size: medium;">
                 </div>
 
                 <div id="search_div"
