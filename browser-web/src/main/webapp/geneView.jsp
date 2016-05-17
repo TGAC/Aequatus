@@ -402,8 +402,8 @@
 
 
 
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="exportModal">
-    <div class="modal-dialog" role="document">
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="exportModal" style=" z-index: 1999;">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -411,8 +411,10 @@
                 <h4 class="modal-title" id="gridSystemModalLabel"></h4>
             </div>
             <div class="modal-body">
+                <div id="downloadButton">
+                </div>
+                <br>
                 <div id="exportModal_content">
-
                 </div>
             </div>
         </div>
