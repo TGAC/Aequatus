@@ -652,11 +652,11 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         }
     }
 
-    public JSONObject getGenefromCore(String query, String genome, String member_id, String genome_db_id, String desc) throws IOException {    try {
+    public JSONObject getGenefromCore(String query, String genome, String member_id, String gene_stable_id, String desc) throws IOException {    try {
 
             genome = template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{genome}, String.class);
 
-        JSONObject gene =  SQLSequenceDAO.getGenebyStableid(query, genome, member_id, template.queryForObject(GET_LOCATION_FOR_GENOME, new Object[]{genome_db_id}, String.class));
+        JSONObject gene =  SQLSequenceDAO.getGenebyStableid(query, genome, member_id, gene_stable_id);
 
         gene.put("display_name", desc);
         gene.put("species", genome);
@@ -690,7 +690,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             String gene_member_id = template.queryForObject(GET_GENE_MEMBER_ID_FROM_SEQ_MEMBER_ID, new Object[]{map_two.get("seq_member_id")}, String.class);
             String gene_stable_id = template.queryForObject(GET_STABLE_ID_FROM_GENE_MEMBER_ID, new Object[]{gene_member_id}, String.class);
             log.info("\n\n\n\t" +map_two.toString());
-            member.put(gene_stable_id, getGenefromCore(map_two.get("stable_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("seq_member_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("desc").toString()));
+            member.put(gene_stable_id, getGenefromCore(map_two.get("stable_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("seq_member_id").toString(), gene_stable_id, map_two.get("desc").toString()));
 
         }
 

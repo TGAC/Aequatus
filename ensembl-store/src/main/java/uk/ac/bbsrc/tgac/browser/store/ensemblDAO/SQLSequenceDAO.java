@@ -80,7 +80,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
         this.template = template;
     }
 
-    public static JSONObject getGenebyStableid(String query, String genome, String member_id, String db_url) {
+    public static JSONObject getGenebyStableid(String query, String genome, String member_id, String gene_stable_id) {
         try {
 
             int length = 0;
@@ -102,7 +102,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             gene.put("gene_id", gene_id);
             gene.put("start", start);
             gene.put("end", end);
-            gene.put("stable_id", query);
+            gene.put("stable_id", gene_stable_id);
             gene.put("member_id", member_id);
             gene.put("length", end - start + 1);
             gene.put("reference", new_Template.queryForObject(GET_SEQ_REGION_NAME_FROM_ID, new Object[]{ref_id}, String.class));
