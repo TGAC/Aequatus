@@ -46,7 +46,7 @@ function newpopup(member_id, protein_id) {
 
     if (syntenic_data.member[member_id]) {
         gene = syntenic_data.member[member_id];
-        stable_id = syntenic_data.member[member_id].stable_id
+        stable_id = syntenic_data.member[member_id].id
     } else {
         return;
     }
