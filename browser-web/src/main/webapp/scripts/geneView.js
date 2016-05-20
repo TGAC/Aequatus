@@ -551,15 +551,14 @@ function makeMeTop(new_gene_id, new_protein_id) {
 function exportGeneLabel(type) {
     var download_data = ""
 
-    console.log("exportGeneLabel")
     jQuery("#gridSystemModalLabel").html("Gene Labels")
 
     jQuery("#exportModal_content").html("")
-    var text_html = "<table class='table table-condensed'><thead><tr><th>species<th>"+type.replace(".","")+"</tr></thead><tbody>"
+    var text_html = "<table class='table table-condensed'><thead><tr><th>species<th>" + type.replace(".", "") + "</tr></thead><tbody>"
 
     jQuery(type).each(function (index) {
         text_html += "<tr><td>" + jQuery(this).text().split(":")[0] + "</td><td>" + jQuery(this).text().split(":")[1] + "</td></tr>";
-        download_data += jQuery(this).text().split(":")[0]+","+jQuery(this).text().split(":")[1]+"\\n"
+        download_data += jQuery(this).text().split(":")[0] + "," + jQuery(this).text().split(":")[1] + "\\n"
 
     });
     text_html += "</tbody></table>"
@@ -568,30 +567,29 @@ function exportGeneLabel(type) {
     jQuery("#exportModal_content").append(text_html)
     jQuery("#downloadButton").html("<button class='btn btn-default' onclick=dlText('" + download_data + "','Genes.csv')>Download</button>")
 
-    if(!jQuery('#exportModal').hasClass('in')){
+    if (!jQuery('#exportModal').hasClass('in')) {
         jQuery('#exportModal').modal()
     }
 }
 
 
 function exportGeneTree(type) {
-    console.log("exportGeneTree")
     jQuery("#gridSystemModalLabel").html("Gene Tree")
     var download_data = ""
     var text_html = ""
 
     if (type == "json") {
-        if(jQuery('#exportModal').hasClass('in')){
+        if (jQuery('#exportModal').hasClass('in')) {
             jQuery('#exportModal').modal('hide')
         }
         download_data += syntenic_data.tree.toSource()
-        download_data = download_data.substring(1, download_data.length-1)
+        download_data = download_data.substring(1, download_data.length - 1)
         download_data = download_data.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:([^\/])/g, '"$2":$4');
-        dlText(download_data,'GeneTree')
+        dlText(download_data, 'GeneTree')
     } else if (type == "newick") {
-        var text_html = ""
+        var text_html = jsonToNewick(syntenic_data.tree)
 
-        if(!jQuery('#exportModal').hasClass('in')){
+        if (!jQuery('#exportModal').hasClass('in')) {
             jQuery('#exportModal').modal('show')
         }
         jQuery("#exportModal_content").html(text_html)
@@ -600,6 +598,50 @@ function exportGeneTree(type) {
 
 }
 
+function jsonToNewick(json) {
+    var newick = "("
+    newick = recursive_tree_Newick(json, newick)
+    newick += ");"
+
+    return newick
+}
+
+function recursive_tree_Newick(tree, newick) {
+    var child_lenth = tree.children.length;
+    var flag = false;
+
+    //loops through all child nodes
+    while (child_lenth--) {
+        //if found leaf adds to newick
+        if (tree.children[child_lenth].sequence) {
+            //if adding sister node than adds ,
+            if (flag) {
+                newick += ","
+            }
+            newick += child.sequence.id[0].accession;
+
+            flag = true;
+        }
+        //else go through nested child
+        else {
+            //if last node was leaf or another child node closed than adds ,
+            if (newick.charAt(newick.length - 1) == ")") {
+                newick += ","
+            }
+            //opens a child node in newick
+            newick += "("
+            newick = recursive_tree_Newick(tree.children[child_lenth], newick)
+            //closes a child node in newick
+            newick += ")"
+        }
+    }
+    return newick
+
+}
+
+/**
+ *
+ */
 function exportAlignment() {
     var download_data = ""
 
@@ -609,22 +651,25 @@ function exportAlignment() {
     });
 
     jQuery.each(syntenic_data.cigar, function (key, data) {
-        if(Protein_id.indexOf(key) >=0 ){
+        if (Protein_id.indexOf(key) >= 0) {
             download_data += key + "," + data + "\n"
         }
     })
 
 
-    if(jQuery('#exportModal').hasClass('in')){
+    if (jQuery('#exportModal').hasClass('in')) {
         jQuery('#exportModal').modal('hide')
     }
 
     jQuery("#exportModal_content").html("")
 
-    dlText(download_data,'CIGAR.csv')
+    dlText(download_data, 'CIGAR.csv')
 
 }
 
+/**
+ *
+ */
 function exportSequence() {
 
     var download_data = ""
@@ -635,27 +680,29 @@ function exportSequence() {
     });
 
     jQuery.each(syntenic_data.sequence, function (key, data) {
-        if(Protein_id.indexOf(key) >=0 ){
+        if (Protein_id.indexOf(key) >= 0) {
             download_data += key + "," + data + "\n"
         }
     })
 
 
-    if(jQuery('#exportModal').hasClass('in')){
+    if (jQuery('#exportModal').hasClass('in')) {
         jQuery('#exportModal').modal('hide')
     }
 
     jQuery("#exportModal_content").html("")
 
-    dlText(download_data,'Sequence.csv')
+    dlText(download_data, 'Sequence.csv')
 
 }
 
+/**
+ *
+ * @param data
+ * @param name
+ */
 function dlText(data, name) {
     download(data, name, "text/plain");
 }
 
-function dlBlob(data, name) {
-    download(data, name, "text/plain");
-}
 
