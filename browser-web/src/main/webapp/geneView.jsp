@@ -414,7 +414,7 @@
                 <div id="downloadButton">
                 </div>
                 <br>
-                <div id="exportModal_content">
+                <div id="exportModal_content" style="width: 100%; word-wrap: break-word;">
                 </div>
             </div>
         </div>

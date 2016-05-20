@@ -607,36 +607,46 @@ function jsonToNewick(json) {
 }
 
 function recursive_tree_Newick(tree, newick) {
-    var child_lenth = tree.children.length;
-    var flag = false;
-
-    //loops through all child nodes
-    while (child_lenth--) {
-        //if found leaf adds to newick
-        if (tree.children[child_lenth].sequence) {
-            //if adding sister node than adds ,
-            if (flag) {
-                newick += ","
-            }
-            newick += child.sequence.id[0].accession;
-
-            flag = true;
+    if (tree.children) {
+        var child_lenth = tree.children.length;
+        var flag = false;
+        if (typeof newick === 'undefined') {
+            newick = ""
         }
-        //else go through nested child
-        else {
+        newick += "("
+
+        //loops through all child nodes
+        while (child_lenth--) {
+            //if found leaf adds to newick
+            if (tree.children[child_lenth].sequence) {
+                if (typeof newick === 'undefined') {
+                    newick = ""
+                }
+                //if adding sister node than adds ,
+                if (flag) {
+                    newick += ","
+                }
+                newick += tree.children[child_lenth].sequence.id[0].accession;
+                flag = true;
+            }
+            //else go through nested child
+            else {
+                //opens a child node in newick
+                newick = recursive_tree_Newick(tree.children[child_lenth], newick)
+
+            }
             //if last node was leaf or another child node closed than adds ,
-            if (newick.charAt(newick.length - 1) == ")") {
-                newick += ","
+            if (newick.replace(/\(/g, "").length > 0 && tree.children[child_lenth].branch_length) {
+                newick += ":" + tree.children[child_lenth].branch_length;
             }
-            //opens a child node in newick
-            newick += "("
-            newick = recursive_tree_Newick(tree.children[child_lenth], newick)
-            //closes a child node in newick
-            newick += ")"
         }
+        //closes a child node in newick
+        newick += ")"
+        return newick
     }
-    return newick
-
+    else {
+        return newick;
+    }
 }
 
 /**
