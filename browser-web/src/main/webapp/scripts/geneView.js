@@ -592,7 +592,10 @@ function exportGeneTree(type) {
         if (!jQuery('#exportModal').hasClass('in')) {
             jQuery('#exportModal').modal('show')
         }
+
         jQuery("#exportModal_content").html(text_html)
+        jQuery("#downloadButton").html("<button class='btn btn-default' onclick=dlText('" + text_html + "','GeneTree.nhx')>Download</button>")
+
     }
 
 

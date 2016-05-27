@@ -130,7 +130,7 @@
                         <tr>
                             <td>
                                 Newick <br>
-                                <a class="btn btn-small" href="#" disabled onclick="exportGeneTree('json')"> <i
+                                <a class="btn btn-small" href="#"  onclick="exportGeneTree('newick')"> <i
                                         style="color: white " class="fa fa-download"></i></a>
                                 </a>
                             </td>
@@ -201,7 +201,7 @@
                 <div onclick="toggleLeftInfo(jQuery('#Chrdiv_arrowclick'), 'chr_maps');"
                      style="text-align: center; padding: 5px; background: none repeat scroll 0% 0% steelblue;"><i
                         style="color: white;"
-                        class="fa fa-bar-chart fa-3x control-buttons"></i>
+                        class="fa fa-bars fa-3x control-buttons fa-rotate-90"></i>
                 </div>
                 <div onclick="openPanel('#search_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% green;"><i
@@ -213,11 +213,6 @@
                         style="color: white;"
                         class="fa fa-cogs fa-3x control-buttons"></i>
                 </div>
-                <div onclick="openPanel('#info_div')"
-                     style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% peru;"><i
-                        style="color: white;"
-                        class="fa fa-question fa-3x control-buttons"></i>
-                </div>
                 <div onclick="openPanel('#filter_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% orange;"><i
                         style="color: white;"
@@ -227,6 +222,11 @@
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% rebeccapurple;"><i
                         style="color: white;"
                         class="fa fa-external-link fa-3x control-buttons"></i>
+                </div>
+                <div onclick="openPanel('#info_div')"
+                     style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% peru;"><i
+                        style="color: white;"
+                        class="fa fa-question fa-3x control-buttons"></i>
                 </div>
                 <%--<div onclick="openClosePanel('#settings_div')"--%>
                 <%--style="padding: 5px; text-align: center;  background: none repeat scroll 0% 0% gray;"><i--%>
