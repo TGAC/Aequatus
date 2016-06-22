@@ -28,58 +28,13 @@
     </context-param>
 
     <context-param>
-        <param-name>fasta</param-name>
-        <param-value>${browser.fasta}</param-value>
-    </context-param>
-
-    <context-param>
-        <param-name>blast</param-name>
-        <param-value>${browser.blast}</param-value>
-    </context-param>
-
-    <context-param>
         <param-name>header</param-name>
         <param-value>${browser.header}</param-value>
     </context-param>
 
     <context-param>
-        <param-name>blastdblink</param-name>
-        <param-value>${browser.blastdblink}</param-value>
-    </context-param>
-
-    <context-param>
-        <param-name>blastdblocation</param-name>
-        <param-value>${browser.blastdblocation}</param-value>
-    </context-param>
-
-    <context-param>
-        <param-name>defaultRef</param-name>
-        <param-value>${browser.defaultRef}</param-value>
-    </context-param>
-
-    <context-param>
-        <param-name>trackfiles</param-name>
-        <param-value>${browser.trackfiles}</param-value>
-    </context-param>
-
-    <context-param>
         <param-name>urlpath</param-name>
         <param-value>${browser.urlpath}</param-value>
-    </context-param>
-
-    <context-param>
-        <param-name>linkLocation</param-name>
-        <param-value>${browser.linkLocation}</param-value>
-    </context-param>
-
-    <context-param>
-        <param-name>blastLocation</param-name>
-        <param-value>${browser.blastLocation}</param-value>
-    </context-param>
-
-    <context-param>
-            <param-name>blastType</param-name>
-            <param-value>${browser.blastType}</param-value>
     </context-param>
 
     <!--parameter goes to JSPs ends-->
