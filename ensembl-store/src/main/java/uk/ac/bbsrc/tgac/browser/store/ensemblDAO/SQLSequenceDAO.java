@@ -86,7 +86,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             int length = 0;
             JSONObject gene = new JSONObject();
 
-
+log.info("\n\n\n\n genome "+genome+" "+query+ " "+gene_stable_id);
             JdbcTemplate new_Template = DatabaseSchemaSelector.getConnection(genome);
 
             int transcript_id = new_Template.queryForObject(GET_Transcript_by_stable_id, new Object[]{query}, Integer.class);
