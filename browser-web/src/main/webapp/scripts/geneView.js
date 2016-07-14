@@ -132,6 +132,7 @@ function setCredentials(chr_name, genome_id) {
     chr = chr_name;
     genome_db_id = genome_id;
     select_chr();
+    select_genome()
 }
 
 function getMember(member) {
