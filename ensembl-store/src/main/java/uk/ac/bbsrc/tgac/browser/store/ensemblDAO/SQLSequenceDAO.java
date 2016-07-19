@@ -1,23 +1,23 @@
 /*
 #
-# Copyright (c) 2013. The Genome Analysis Centre, Norwich, UK
-# TGAC Browser project contacts: Anil Thanki, Xingdong Bian, Robert Davey, Mario Caccamo @ TGAC
+# Copyright (c) 2013.  Earlham Institute, Norwich, UK
+# Aequatus project contacts: Anil Thanki, Xingdong Bian, Robert Davey, Mario Caccamo @ Earlham Institute
 # **********************************************************************
 #
-# This file is part of TGAC Browser.
+# This file is part of Aequatus.
 #
-# TGAC Browser is free software: you can redistribute it and/or modify
+# Aequatus is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# TGAC Browser is distributed in the hope that it will be useful,
+# Aequatus is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with TGAC Browser.  If not, see <http://www.gnu.org/licenses/>.
+# along with Aequatus.  If not, see <http://www.gnu.org/licenses/>.
 #
 # ***********************************************************************
 #
@@ -88,6 +88,8 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
 
 log.info("\n\n\n\n genome "+genome+" "+query+ " "+gene_stable_id);
             JdbcTemplate new_Template = DatabaseSchemaSelector.getConnection(genome);
+
+            log.info("\n\n\t\t "+template.getDataSource());
 
             int transcript_id = new_Template.queryForObject(GET_Transcript_by_stable_id, new Object[]{query}, Integer.class);
             int gene_id = new_Template.queryForObject(GET_Gene_by_transcript_id, new Object[]{transcript_id}, Integer.class);
@@ -206,7 +208,7 @@ log.info("\n\n\n\n genome "+genome+" "+query+ " "+gene_stable_id);
             return gene;
         } catch (Exception e) {
             e.printStackTrace();
-            log.info("Gene not found: " + e.getMessage());
+            log.info("Gene not found: " + e.getMessage()+ " "+genome+" "+query+ " "+gene_stable_id);
             return null;
         }
     }

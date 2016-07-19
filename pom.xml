@@ -9,8 +9,8 @@
     <version>unus</version>
     <artifactId>tgac-browser</artifactId>
     <packaging>pom</packaging>
-    <name>TGAC Browser Framework</name>
-    <url>http://www.tgac.bbsrc.ac.uk/software/tgac-browser</url>
+    <name>Aeqautus Framework</name>
+    <url>http://www.earlham.ac.uk/aequatus</url>
 
     <!-- Reporting/Documentation output -->
     <reporting>
@@ -71,9 +71,9 @@
         <developer>
             <id>davey</id>
             <name>Rob Davey</name>
-            <email>robert.davey@bbsrc.ac.uk</email>
-            <organization>TGAC</organization>
-            <organizationUrl>http://www.tgac.bbsrc.ac.uk/staff/robert_davey</organizationUrl>
+            <email>robert.davey@earlham.ac.uk</email>
+            <organization>Earlham Institute</organization>
+            <organizationUrl>http://www.earlham.ac.uk/rob-davey</organizationUrl>
             <roles>
                 <role>administrator</role>
                 <role>Developer</role>
@@ -85,9 +85,9 @@
         <developer>
             <id>bianx</id>
             <name>Xingdong Bian</name>
-            <email>xingdong.bian@bbsrc.ac.uk</email>
-            <organization>TGAC</organization>
-            <organizationUrl>http://www.tgac.ac.uk/</organizationUrl>
+            <email>xingdong.bian@earlham.ac.uk</email>
+            <organization>Earlham Institute</organization>
+            <organizationUrl>http://www.earlham.ac.uk/xingdong-bian/</organizationUrl>
             <roles>
                 <role>administrator</role>
                 <role>Developer</role>
@@ -99,9 +99,9 @@
         <developer>
             <id>thankia</id>
             <name>Anil Thanki</name>
-            <email>anil.thanki@tgac.ac.uk</email>
-            <organization>TGAC</organization>
-            <organizationUrl>http://www.tgac.ac.uk/</organizationUrl>
+            <email>anil.thanki@earlham.ac.uk</email>
+            <organization>Earlham Institute</organization>
+            <organizationUrl>http://www.earlham.ac.uk/anil-thanki</organizationUrl>
             <roles>
                 <role>administrator</role>
                 <role>Developer</role>
