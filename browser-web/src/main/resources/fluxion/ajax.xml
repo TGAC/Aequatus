@@ -12,7 +12,7 @@
     </bean>
     
     <bean id="comparaService"
-          class="uk.ac.bbsrc.tgac.browser.service.ajax.ComparaService">
+          class="uk.ac.bbsrc.earlham.browser.service.ajax.ComparaService">
     </bean>
 
 </beans>

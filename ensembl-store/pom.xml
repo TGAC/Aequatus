@@ -28,8 +28,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <artifactId>tgac-browser</artifactId>
-        <groupId>uk.ac.bbsrc.tgac.tgac-browser</groupId>
+        <artifactId>aequatus</artifactId>
+        <groupId>uk.ac.bbsrc.earlham.aequatus</groupId>
         <version>unus</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -37,7 +37,7 @@
     <version>${parent.version}</version>
     <artifactId>ensembl-store</artifactId>
     <packaging>jar</packaging>
-    <name>TGAC Browser - Ensembl Store Module</name>
+    <name>Aequatus - Ensembl Store Module</name>
     <url>http://maven.apache.org</url>
     <build>
         <plugins>
@@ -64,7 +64,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>uk.ac.bbsrc.tgac.tgac-browser</groupId>
+            <groupId>uk.ac.bbsrc.earlham.aequatus</groupId>
             <artifactId>core</artifactId>
             <version>unus</version>
         </dependency>

@@ -23,7 +23,7 @@
 #
  */
 
-package uk.ac.bbsrc.tgac.browser.core.store;
+package uk.ac.bbsrc.earlham.browser.core.store;
 
 import javax.sound.sampled.Line;
 import java.io.IOException;
@@ -36,7 +36,7 @@ import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.set.SynchronizedSortedSet;
-import uk.ac.bbsrc.tgac.browser.core.store.*;
+import uk.ac.bbsrc.earlham.browser.core.store.*;
 
 import java.io.IOException;
 import java.lang.reflect.Array;

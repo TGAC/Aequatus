@@ -23,7 +23,7 @@
 #
  */
 
-package uk.ac.bbsrc.tgac.browser.store.ensemblDAO;
+package uk.ac.bbsrc.earlham.browser.store.ensemblDAO;
 
 
 import net.sf.ehcache.CacheManager;
@@ -33,7 +33,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import uk.ac.bbsrc.tgac.browser.core.store.*;
+import uk.ac.bbsrc.earlham.browser.core.store.EnsemblCoreStore;
+import uk.ac.bbsrc.earlham.browser.core.store.*;
 
 import java.util.*;
 

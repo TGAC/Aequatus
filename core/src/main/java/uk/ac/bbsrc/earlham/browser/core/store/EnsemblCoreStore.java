@@ -23,13 +23,7 @@
 #
  */
 
-package uk.ac.bbsrc.tgac.browser.core.store;
-
-import net.sf.json.JSONArray;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+package uk.ac.bbsrc.earlham.browser.core.store;
 
 /**
  * Created by IntelliJ IDEA.

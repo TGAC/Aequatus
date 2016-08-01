@@ -23,13 +23,12 @@
 #
  */
 
-package uk.ac.bbsrc.tgac.browser.core.store;
+package uk.ac.bbsrc.earlham.browser.core.store;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 

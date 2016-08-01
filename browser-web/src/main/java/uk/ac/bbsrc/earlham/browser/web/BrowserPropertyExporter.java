@@ -1,4 +1,4 @@
-package uk.ac.bbsrc.tgac.browser.web;
+package uk.ac.bbsrc.earlham.browser.web;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.InvalidPropertyException;

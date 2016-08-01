@@ -23,7 +23,7 @@
 #
  */
 
-package uk.ac.bbsrc.tgac.browser.store.ensemblDAO;
+package uk.ac.bbsrc.earlham.browser.store.ensemblDAO;
 
 
 import net.sf.ehcache.CacheManager;
@@ -34,10 +34,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import uk.ac.bbsrc.tgac.browser.core.store.ComparaStore;
+import uk.ac.bbsrc.earlham.browser.core.store.ComparaStore;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.*;
 
 /**

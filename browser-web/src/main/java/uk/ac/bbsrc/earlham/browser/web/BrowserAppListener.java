@@ -1,4 +1,4 @@
-package uk.ac.bbsrc.tgac.browser.web;
+package uk.ac.bbsrc.earlham.browser.web;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.context.support.XmlWebApplicationContext;
-import uk.ac.bbsrc.tgac.browser.core.store.EnsemblCoreStore;
+import uk.ac.bbsrc.earlham.browser.core.store.EnsemblCoreStore;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;

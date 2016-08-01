@@ -9,7 +9,7 @@
 
     <!-- <context:load-time-weaver aspectj-weaving="on" weaver-class="org.springframework.instrument.classloading.ReflectiveLoadTimeWeaver"/> -->
 
-    <context:component-scan annotation-config="true" base-package="uk.ac.bbsrc.tgac.browser"/>
+    <context:component-scan annotation-config="true" base-package="uk.ac.bbsrc.earlham.browser"/>
     <context:component-scan annotation-config="true" base-package="net.sourceforge.fluxion.ajax"/>
 
     <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">

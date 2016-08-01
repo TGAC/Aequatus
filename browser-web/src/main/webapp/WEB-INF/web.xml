@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
 
-    <display-name> Aequaus </display-name>
+    <display-name> Aequatus </display-name>
 
     <!-- logging -->
     <context-param>
@@ -44,7 +44,7 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
     <listener>
-        <listener-class>uk.ac.bbsrc.tgac.browser.web.BrowserAppListener</listener-class>
+        <listener-class>uk.ac.bbsrc.earlham.browser.web.BrowserAppListener</listener-class>
     </listener>
     <context-param>
         <param-name>webAppRootKey</param-name>
@@ -52,12 +52,12 @@
     </context-param>
 
     <servlet>
-        <servlet-name>tgacbrowser</servlet-name>
+        <servlet-name>aequatus</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>tgacbrowser</servlet-name>
+        <servlet-name>aequatus</servlet-name>
         <url-pattern>/${browser.urlpath}/*</url-pattern>
     </servlet-mapping>
 

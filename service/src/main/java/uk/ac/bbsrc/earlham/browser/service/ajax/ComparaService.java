@@ -23,7 +23,7 @@
 #
  */
 
-package uk.ac.bbsrc.tgac.browser.service.ajax;
+package uk.ac.bbsrc.earlham.browser.service.ajax;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -32,7 +32,7 @@ import net.sourceforge.fluxion.ajax.util.JSONUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import uk.ac.bbsrc.tgac.browser.core.store.ComparaStore;
+import uk.ac.bbsrc.earlham.browser.core.store.ComparaStore;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;

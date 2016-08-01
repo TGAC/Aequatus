@@ -27,8 +27,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <artifactId>tgac-browser</artifactId>
-        <groupId>uk.ac.bbsrc.tgac.tgac-browser</groupId>
+        <artifactId>aequatus</artifactId>
+        <groupId>uk.ac.bbsrc.earlham.aequatus</groupId>
         <version>unus</version>
     </parent>
     <groupId>${parent.groupId}</groupId>
@@ -36,7 +36,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>browser-web</artifactId>
     <packaging>war</packaging>
-    <name>TGAC Browser - Web Module</name>
+    <name>Aequatus - Web Module</name>
     <url>http://maven.apache.org</url>
     <build>
 
@@ -166,7 +166,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>uk.ac.bbsrc.tgac.tgac-browser</groupId>
+            <groupId>uk.ac.bbsrc.earlham.aequatus</groupId>
             <artifactId>service</artifactId>
             <version>unus</version>
         </dependency>
