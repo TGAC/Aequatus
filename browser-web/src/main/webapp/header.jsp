@@ -60,7 +60,7 @@
 
 
     <%--Aequatus CSS--%>
-    <link REL="SHORTCUT ICON" href="<c:url value='/images/browser/tgac_logo.png'/>">
+    <link REL="SHORTCUT ICON" href="<c:url value='/images/EI_favicon.jpg'/>">
     <link rel="stylesheet" href="<c:url value='/styles/style.css'/>" type="text/css">
 
 
