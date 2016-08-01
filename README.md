@@ -1,4 +1,4 @@
- ![Logo](http://tgac-browser.tgac.ac.uk/aequatus-browser/aequatus_logo2_trans.png)
+ <img src="http://aequatus.tgac.ac.uk/aequatus-user-guide/img/aequatus-logo.png" alt="Aequatus" width="200px"/>
  
 Aequatus 
 ================
