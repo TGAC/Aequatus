@@ -30,7 +30,7 @@ You should have received a copy of the GNU General Public License along with Aeq
 
 # <a name="demo"></a> Demo:
 
-http://browser.tgac.ac.uk/aequatus/
+http://aequatus.tgac.ac.uk
 
 # <a name="Documentation"></a> Documentation:
 
