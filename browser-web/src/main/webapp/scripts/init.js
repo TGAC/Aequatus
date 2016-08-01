@@ -194,28 +194,9 @@ function getMemberfromURL(query){
                     jQuery("#control_search").val(query);
                     jQuery("#search").val(query);
                     var content = "";
-                    if(json.html.length > 0){
-                        for (var i = 0; i < json.html.length; i++) {
-                            if (i == 0) {
-                                content += "<p id='search_hit' style='background: white;'>";
-                            }
-                            var link = "<i style='cursor:pointer' onclick='openClosePanel(); jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");' class=\"fa fa-external-link\"></i>"
 
-                            content += "<div class='search_div' onclick='openClosePanel(); jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");'> <div class='search_header'> " + json.html[i].genome + " : " + json.html[i].name + " </div> <div class='search_info'> " + json.html[i].description + "<br> " + json.html[i].stable_id + "</div></div>";
+                    listResult(json)
 
-                            if (i == json.html.length - 1) {
-                                content += "</p>";
-                                jQuery("#search_result").html(content);
-                                jQuery("#search_result").fadeIn();
-                                jQuery("#search_hit").tablesorter();
-                            }
-
-                        }
-                    }
-                    else{
-                        jQuery("#search_result").html("<div style='width: 100%; text-align: center; padding-top: 15px; font-size: 15px;'>No Result found</div>");
-
-                    }
 
                 }
 
@@ -250,5 +231,43 @@ function resize() {
         rearrange_selector(member_id, start, chr);
         drawSelected();
         drawSynteny(true);
+    }
+}
+
+function listResult(json){
+    var content = "";
+
+    if(json.html.length > 0){
+        for (var i = 0; i < json.html.length; i++) {
+            if (i == 0) {
+                content += "<p id='search_hit' style='background: white;'>";
+            }
+            var link = "<i style='cursor:pointer' " +
+                "onclick='openClosePanel(); jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");' " +
+                "class=\"fa fa-external-link\"></i>"
+
+            content += "<div class='search_div' " +
+                "onclick='openClosePanel(); " +
+                "jQuery(\"#canvas\").show(); " +
+                "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
+                "getChromosomes(); " +
+                "getMember();   " +
+                "getcoreMember(" + json.html[i].gene_member_id + ",\"true\");'> " +
+                "<div class='search_header'> "+ json.html[i].stable_id + " <span class='badge' title='"+json.html[i].homologous+" Homologous'>"+json.html[i].homologous+"</span> </div> " +
+                "<div class='search_info'> " + json.html[i].genome + " : " + json.html[i].coord_system_name + " "+ json.html[i].name + " <br> " + json.html[i].description   + "</div>" +
+                "</div>";
+
+            if (i == json.html.length - 1) {
+                content += "</p>";
+                jQuery("#search_result").html(content);
+                jQuery("#search_result").fadeIn();
+                jQuery("#search_hit").tablesorter();
+            }
+
+        }
+    }
+    else{
+        jQuery("#search_result").html("<div style='width: 100%; text-align: center; padding-top: 15px; font-size: 15px;'>No Result found</div>");
+
     }
 }

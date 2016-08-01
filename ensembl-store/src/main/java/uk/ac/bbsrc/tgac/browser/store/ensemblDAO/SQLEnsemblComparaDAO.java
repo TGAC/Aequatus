@@ -708,8 +708,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                 "JOIN gene_align_member gam USING (gene_align_id) " +
                 "JOIN seq_member m3 ON (gam.seq_member_id = m3.seq_member_id) " +
                 "JOIN gene_member m4 on (m4.canonical_member_id = m3.seq_member_id) " +
-                "WHERE m1.gene_member_id = ? AND m3.genome_db_id in " + genome_ids + " and gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" " +
-                "AND m2.stable_id <> m3.stable_id";
+                "WHERE m1.gene_member_id = ? AND m3.genome_db_id in " + genome_ids + " and gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" ";
 
         int homology_member_id = template.queryForInt(GET_GENE_TREE_FOR_REFERENCE, new Object[]{query});
 
@@ -964,9 +963,11 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             if (map_two.get("canonical_member_id") == null) {
                 Map temp = template.queryForMap(GET_MEMBER_FROM_ID, new Object[]{map_two.get("gene_member_id")});
                 temp.put("genome", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{temp.get("genome_db_id")}, String.class));
+                temp.put("homologous" , countGeneTreeforMember(temp.get("gene_member_id").toString()));
                 homologouses.add(temp);
             } else {
                 map_two.put("genome", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{map_two.get("genome_db_id")}, String.class));
+                map_two.put("homologous" , countGeneTreeforMember(map_two.get("gene_member_id").toString()));
                 homologouses.add(map_two);
             }
         }
