@@ -46,7 +46,12 @@ function getChromosomes(member_id) {
                 'doOnSuccess': function (json) {
 
                     chromosomes = json.member;
-
+                    if(chromosomes.length > 0){
+                        showGeneReference()
+                    }else{
+                        hideGeneReference()
+                    }
+                    
                     drawChromosome()
                     if (chr == undefined) {
                         setCredentials(chromosomes[0].id, genome_db_id);

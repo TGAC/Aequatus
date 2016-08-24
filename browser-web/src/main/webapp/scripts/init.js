@@ -253,7 +253,9 @@ function listResult(json){
                 "getChromosomes(); " +
                 "getMember();   " +
                 "getcoreMember(" + json.html[i].gene_member_id + ",\"true\");'> " +
-                "<div class='search_header'> "+ json.html[i].stable_id + " <span class='badge' title='"+json.html[i].homologous+" Homologous'>"+json.html[i].homologous+"</span> </div> " +
+                "<div class='search_header'> "+ json.html[i].stable_id + " " +
+                //"<span class='badge' title='"+json.html[i].homologous+" Homologous'>"+json.html[i].homologous+"</span> " +
+                "</div> " +
                 "<div class='search_info'> " + json.html[i].genome + " : " + json.html[i].coord_system_name + " "+ json.html[i].name + " <br> " + json.html[i].description   + "</div>" +
                 "</div>";
 
@@ -270,4 +272,18 @@ function listResult(json){
         jQuery("#search_result").html("<div style='width: 100%; text-align: center; padding-top: 15px; font-size: 15px;'>No Result found</div>");
 
     }
+}
+
+function hideGeneReference(){
+    jQuery("#chr_maps").hide()
+    jQuery("#bar_image_selector").hide()
+    jQuery("#selected_region").hide()
+    jQuery("#bar_image_ref").hide()
+}
+
+function showGeneReference(){
+    jQuery("#chr_maps").show()
+    jQuery("#bar_image_selector").show()
+    jQuery("#selected_region").show()
+    jQuery("#bar_image_ref").show()
 }
