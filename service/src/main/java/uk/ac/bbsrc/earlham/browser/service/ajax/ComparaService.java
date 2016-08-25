@@ -265,13 +265,13 @@ public class ComparaService {
         String reference = json.getString("reference");
 
         try {
-        int genome_id = comparaStore.getGenomeId(reference).getInt("ref");
+            int genome_id = comparaStore.getGenomeId(reference).getInt("ref");
             int chr_id = comparaStore.getChrId(chr_name, genome_id).getInt("chr");
             response.put("chr_id", chr_id);
 
-        response.put("trackname", "member");
-        int count;
-log.info(" \n\n\n "+ genome_id + "\t "+ chr_id);
+            response.put("trackname", "member");
+            int count;
+            log.info(" \n\n\n " + genome_id + "\t " + chr_id);
             response.put("chr_length", comparaStore.getChromosomeLength(chr_id, genome_id));
             response.put("member", comparaStore.getAllMember(chr_id, genome_id));
             response.put("overview", comparaStore.getOverviewAllMember(chr_id, genome_id));
@@ -316,7 +316,7 @@ log.info(" \n\n\n "+ genome_id + "\t "+ chr_id);
 
         response.put("trackname", "member");
         try {
-int genome_db_id = comparaStore.getGenomeId(reference).getInt("ref");
+            int genome_db_id = comparaStore.getGenomeId(reference).getInt("ref");
             response.put("member", comparaStore.getAllChromosome(genome_db_id));
 
 
@@ -329,6 +329,7 @@ int genome_db_id = comparaStore.getGenomeId(reference).getInt("ref");
 
         return response;
     }
+
     public JSONObject getCoreMember(HttpSession session, JSONObject json) {
         String query = json.getString("query");
         JSONObject response = new JSONObject();
@@ -435,9 +436,9 @@ int genome_db_id = comparaStore.getGenomeId(reference).getInt("ref");
         response.put("ref", "member");
         try {
             String member_id = comparaStore.getMemberId(query);
-            if(member_id == ""){
+            if (member_id == "") {
                 response.put("html", comparaStore.searchMember(query));
-            }else{
+            } else {
                 String ref = comparaStore.getReferencefromStableId(query);
                 String dnafrag = comparaStore.getDnafragIdfromStableId(query);
                 response.put("member_id", member_id);
