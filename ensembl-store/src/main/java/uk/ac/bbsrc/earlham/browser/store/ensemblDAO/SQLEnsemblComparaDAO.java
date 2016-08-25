@@ -37,7 +37,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import uk.ac.bbsrc.earlham.browser.core.store.ComparaStore;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -51,7 +54,6 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     protected static final Logger log = LoggerFactory.getLogger(SQLEnsemblComparaDAO.class);
 
     private static String genome_ids = "(";
-
 
     public static final String TABLE = "";
     public static final String GET_ALL_GENOMES = "select * from genome_db where name like ?";
@@ -698,15 +700,13 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     }
 
     public int countGeneTreeforMember(String query) throws IOException {
-
         final String GET_GENE_TREE_FOR_REFERENCE = "select count(m3.seq_member_id) " +
                 "from gene_member m1 " +
                 "JOIN seq_member m2 ON (m1.canonical_member_id = m2.seq_member_id) " +
-                "JOIN gene_tree_node gtn1 ON (m2.seq_member_id = gtn1.seq_member_id) " +
-                "JOIN gene_tree_root gtr ON (gtr.root_id = gtn1.root_id) " +
-                "JOIN gene_align_member gam USING (gene_align_id) " +
-                "JOIN seq_member m3 ON (gam.seq_member_id = m3.seq_member_id) " +
-                "JOIN gene_member m4 on (m4.canonical_member_id = m3.seq_member_id) " +
+                "JOIN gene_align_member gam USING (seq_member_id) " +
+                "JOIN gene_tree_root gtr using (gene_align_id) " +
+                "JOIN gene_tree_node gtn1 using (root_id) " +
+                "JOIN seq_member m3 ON (gtn1.seq_member_id = m3.seq_member_id) " +
                 "WHERE m1.gene_member_id = ? AND m3.genome_db_id in " + genome_ids + " and gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" ";
 
         int homology_member_id = template.queryForInt(GET_GENE_TREE_FOR_REFERENCE, new Object[]{query});
@@ -804,16 +804,24 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public Map getGeneTree(String query) throws IOException {
         JSONObject homology_members = new JSONObject();
 
-        final String GET_GENE_MEMBER_ID_FOR_REFERENCE = "select  m3.seq_member_id, gtr.root_id,  m3.gene_member_id, gam.gene_align_id   " +
-                "from gene_member m1 " +
-                "JOIN seq_member m2 ON (m1.canonical_member_id = m2.seq_member_id) " +
-                "JOIN gene_tree_node gtn1 ON (m2.seq_member_id = gtn1.seq_member_id) " +
-                "JOIN gene_tree_root gtr ON (gtr.root_id = gtn1.root_id) " +
-                "JOIN gene_align_member gam USING (gene_align_id) " +
-                "JOIN seq_member m3 ON (gam.seq_member_id = m3.seq_member_id) " +
-                "JOIN gene_member m4 on (m4.canonical_member_id = m3.seq_member_id) " +
-                "WHERE m1.gene_member_id = ? AND m3.genome_db_id in " + genome_ids + " and gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" ";
+//        final String GET_GENE_MEMBER_ID_FOR_REFERENCE = "select  m3.seq_member_id, gtr.root_id,  m3.gene_member_id, gam.gene_align_id   " +
+//                "from gene_member m1 " +
+//                "JOIN seq_member m2 ON (m1.canonical_member_id = m2.seq_member_id) " +
+//                "JOIN gene_tree_node gtn1 ON (m2.seq_member_id = gtn1.seq_member_id) " +
+//                "JOIN gene_tree_root gtr ON (gtr.root_id = gtn1.root_id) " +
+//                "JOIN gene_align_member gam USING (gene_align_id) " +
+//                "JOIN seq_member m3 ON (gam.seq_member_id = m3.seq_member_id) " +
+//                "JOIN gene_member m4 on (m4.canonical_member_id = m3.seq_member_id) " +
+//                "WHERE m1.gene_member_id = ? AND m3.genome_db_id in " + genome_ids + " and gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" ";
 
+        final String GET_GENE_MEMBER_ID_FOR_REFERENCE = "select  m3.seq_member_id, gtr.root_id,  m3.gene_member_id, gam.gene_align_id " +
+                "from gene_member m1" +
+                " JOIN seq_member m2 ON (m1.canonical_member_id = m2.seq_member_id)" +
+                " JOIN gene_align_member gam USING (seq_member_id)" +
+                " JOIN gene_tree_root gtr using (gene_align_id)" +
+                " JOIN gene_tree_node gtn1 using (root_id)" +
+                " JOIN seq_member m3 ON (gtn1.seq_member_id = m3.seq_member_id)" +
+                " WHERE m1.gene_member_id = ? AND m3.genome_db_id in " + genome_ids + " and gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\"";
 //        gets all intermediate nodes for each gene from root to node
         List<Map<String, Object>> root_id = template.queryForList(GET_GENE_MEMBER_ID_FOR_REFERENCE, new Object[]{query});
         List<List<Map>> trees = new ArrayList<List<Map>>();

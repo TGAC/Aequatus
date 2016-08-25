@@ -246,6 +246,11 @@ function listResult(json){
                 "onclick='openClosePanel(); jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");' " +
                 "class=\"fa fa-external-link\"></i>"
 
+            var description = json.html[i].description
+
+            if(description == null){
+                description = ""
+            }
             content += "<div class='search_div' " +
                 "onclick='openClosePanel(); " +
                 "jQuery(\"#canvas\").show(); " +
@@ -254,9 +259,11 @@ function listResult(json){
                 "getMember();   " +
                 "getcoreMember(" + json.html[i].gene_member_id + ",\"true\");'> " +
                 "<div class='search_header'> "+ json.html[i].stable_id + " " +
-                //"<span class='badge' title='"+json.html[i].homologous+" Homologous'>"+json.html[i].homologous+"</span> " +
+                "<span class='badge' title='"+json.html[i].homologous+" Homologous'>"+json.html[i].homologous+"</span> " +
                 "</div> " +
-                "<div class='search_info'> " + json.html[i].genome + " : " + json.html[i].coord_system_name + " "+ json.html[i].name + " <br> " + json.html[i].description   + "</div>" +
+                "<div class='search_info'> " + json.html[i].genome + " : " + json.html[i].coord_system_name + " "+ json.html[i].name +
+                " <br> " +
+                description   + "</div>" +
                 "</div>";
 
             if (i == json.html.length - 1) {
