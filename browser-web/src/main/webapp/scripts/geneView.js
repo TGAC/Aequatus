@@ -67,6 +67,8 @@ function getChromosomes(member_id) {
                                 chr_name = json.chr_name
                             }
                         });
+
+
                     if (member_id == undefined) {
                         getMember();
                     } else if (chr_name == null) {
@@ -83,15 +85,22 @@ function getChromosomes(member_id) {
                 'doOnSuccess': function (json) {
 
                     chromosomes = json.member;
+
+                    if(chromosomes.length > 0){
+                        showGeneReference()
+                    }else{
+                        hideGeneReference()
+                    }
+
                     drawChromosome()
                     if (chr == undefined && chr_name == null) {
                         setCredentials(chromosomes[0].id, genome_db_id);
-                    } else {
-                        select_chr()
                     }
 
                     if (member_id == undefined) {
                         getMember();
+                    } else if (chr_name == null) {
+                        select_chr()
                     }
                 }
             })
@@ -473,6 +482,9 @@ function select_member() {
 
 function select_chr() {
     jQuery('div[id^="chr"]').removeClass("selected")
+
+    console.log(chr)
+
     jQuery("#chr" + chr).addClass("selected")
     if (chr_name == null) {
         Fluxion.doAjax(
