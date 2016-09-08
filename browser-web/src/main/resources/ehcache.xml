@@ -42,15 +42,17 @@
                      retryAttempts="0" retryAttemptDelaySeconds="0"/>
     </cache>
 
-   <cache name="hitCache"
+   <cache name="getGeneTreeforMemberCache"
            maxElementsInMemory="10000"
            eternal="true"
            overflowToDisk="true"
            statistics="true"/>
 
-    <cache name="geneCache"
-               maxElementsInMemory="10000"
-               eternal="true"
-               overflowToDisk="true"
-               statistics="true"/>
+    <cache name="countGeneTreeforMemberCache"
+           maxElementsInMemory="1000000"
+           eternal="true"
+           overflowToDisk="true"
+           statistics="true"/>
+
+
 </ehcache>

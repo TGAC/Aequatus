@@ -26,6 +26,11 @@
 package uk.ac.bbsrc.earlham.browser.store.ensemblDAO;
 
 
+import com.googlecode.ehcache.annotations.Cacheable;
+import com.googlecode.ehcache.annotations.KeyGenerator;
+import com.googlecode.ehcache.annotations.Property;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.CacheManager;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -668,6 +673,16 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         }
     }
 
+    @Cacheable(cacheName="getGeneTreeforMemberCache",
+            keyGenerator = @KeyGenerator(
+                    name = "HashCodeCacheKeyGenerator",
+                    properties = {
+                            @Property(name = "includeMethod", value = "false"),
+                            @Property(name = "includeParameterTypes", value = "false")
+                    }
+            )
+    )
+
     public JSONObject getGeneTreeforMember(String query) throws IOException {
 
         JSONObject member = new JSONObject();
@@ -698,6 +713,16 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         return member;
 
     }
+
+    @Cacheable(cacheName="countGeneTreeforMemberCache",
+            keyGenerator = @KeyGenerator(
+                    name = "HashCodeCacheKeyGenerator",
+                    properties = {
+                            @Property(name = "includeMethod", value = "false"),
+                            @Property(name = "includeParameterTypes", value = "false")
+                    }
+            )
+    )
 
     public int countGeneTreeforMember(String query) throws IOException {
         final String GET_GENE_TREE_FOR_REFERENCE = "select count(m3.seq_member_id) " +
