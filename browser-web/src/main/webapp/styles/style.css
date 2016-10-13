@@ -327,7 +327,7 @@
 .link {
     fill: none;
     stroke: #cccccc;
-    stroke-width: 1.5px;
+    /*stroke-width: 1.5px;*/
 }
 div.tooltip {
     background: #dddddd none repeat scroll 0 0;

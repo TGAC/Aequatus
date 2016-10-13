@@ -309,7 +309,7 @@ function getcoreMember(query, redrawn) {
             'doOnSuccess': function (json) {
                 syntenic_data = json
                 //window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);
-                init(json, "#settings_div", "#filter_div")
+                init(json, "#settings_div", "#filter" , "#sliderfilter")
 
                 setSelector()
 

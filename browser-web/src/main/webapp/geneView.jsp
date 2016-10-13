@@ -108,10 +108,15 @@
                         </tbody>
                     </table>
                 </div>
-                <div style="display: none; background: none repeat scroll 0% 0% orange; padding: 10px; height: 296px; text-align: center; font-size: 20px;"
+                <div style="display: none; background: none repeat scroll 0% 0% orange; padding: 10px; height: 296px; text-align: center; font-size: medium;"
                      id="filter_div">
                     <b>Species list:</b>
                     <div id="filter"></div>
+                    <div id="sliderfilter" style="text-align: left; margin-top: 10px">
+                    </div>
+
+
+
                 </div>
                 <div id="export_div"
                      style="display: block; height: 296px; background: none repeat scroll 0% 0% rebeccapurple; padding: 10px; color: white">
