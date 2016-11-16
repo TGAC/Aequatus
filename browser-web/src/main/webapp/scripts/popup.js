@@ -73,6 +73,10 @@ function newpopup(member_id, protein_id) {
                 jQuery('#gene_desc').html(stringTrim(desc, 200))
 
                 jQuery('#ensemblLink').html("<a target='_blank' href='http://www.ensembl.org/id/" + stable_id + "'><button type='button' class='btn btn-default'> <i class='fa fa-1x'>e!</i></button></a>")
+
+                jQuery('#exportAlignmentLink').html("<button type='button' class='btn btn-default' onclick='exportAlignment(\""+protein_id+"\")'> <i class='fa fa-1x'>Aln</i></button>")
+
+                jQuery('#exportSequenceLink').html("<button type='button' class='btn btn-default' onclick='exportSequence(\""+protein_id+"\")'> <i class='fa fa-1x'>Seq</i></button>")
             }
         });
 

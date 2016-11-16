@@ -51,7 +51,7 @@ function getChromosomes(member_id) {
                     }else{
                         hideGeneReference()
                     }
-                    
+
                     drawChromosome()
                     if (chr == undefined) {
                         setCredentials(chromosomes[0].id, genome_db_id);
@@ -673,15 +673,23 @@ function recursive_tree_Newick(tree, newick) {
 /**
  *
  */
-function exportAlignment() {
+function exportAlignment(id) {
     var download_data = ""
-
+    var data = {}
     var Protein_id = []
     jQuery(".protein_id").each(function (index) {
         Protein_id.push(jQuery(this).text().split(":")[1]);
     });
 
-    jQuery.each(syntenic_data.cigar, function (key, data) {
+    if(!id){
+        data = syntenic_data.cigar
+    }else{
+        data[id] = syntenic_data.cigar[id]
+    }
+
+    console.log(ids)
+
+    jQuery.each(data, function (key, data) {
         if (Protein_id.indexOf(key) >= 0) {
             download_data += key + "," + data + "\n"
         }
@@ -701,16 +709,24 @@ function exportAlignment() {
 /**
  *
  */
-function exportSequence() {
+function exportSequence(id) {
 
     var download_data = ""
+
+    var data = {}
 
     var Protein_id = []
     jQuery(".protein_id").each(function (index) {
         Protein_id.push(jQuery(this).text().split(":")[1]);
     });
 
-    jQuery.each(syntenic_data.sequence, function (key, data) {
+    if(!id){
+        data = syntenic_data.sequence
+    }else{
+        data[id] = syntenic_data.sequence[id]
+    }
+
+    jQuery.each(data, function (key, data) {
         if (Protein_id.indexOf(key) >= 0) {
             download_data += key + "," + data + "\n"
         }

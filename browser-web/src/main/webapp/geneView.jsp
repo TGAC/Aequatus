@@ -388,6 +388,12 @@
                         <tbody>
                         <tr>
                             <td>
+                                <div id="exportSequenceLink" style="float: right" title="Export Sequence"></div>
+                            </td>
+                            <td>
+                                <div id="exportAlignmentLink" style="float: right" title="Export Alignment"></div>
+                            </td>
+                            <td>
                                 <div id="makemetop_button" style="float: right" title="Change Reference to"></div>
 
                             </td>
