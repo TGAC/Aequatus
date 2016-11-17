@@ -400,6 +400,9 @@
                             <td>
                                 <div id="ensemblLink" style="float: right" title="Link to Ensembl"></div>
                             </td>
+                            <td>
+                                <div id="testLink" style="float: right" title="test"></div>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -426,6 +429,22 @@
                 </div>
                 <br>
                 <div id="exportModal_content" style="width: 100%; word-wrap: break-word;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="pairwiseModal" style=" z-index: 1999;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div id="pairwiseModal_content" style="width: 100%; word-wrap: break-word;">
                 </div>
             </div>
         </div>
