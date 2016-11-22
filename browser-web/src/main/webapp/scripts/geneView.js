@@ -759,19 +759,59 @@ function getAlignment(hit, ref) {
         {'hit': hit, 'ref': ref, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                if (jQuery('#exportModal').hasClass('in')) {
-                    jQuery('#exportModal').modal('hide')
-                }
 
-                jQuery("#pairwiseModal_content").html("<div style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : 1000px;'><div id = 'pairwise" + hit + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : 1000px;'></div></div>" +
+                ////if (mouseX + jQuery("#info-popup").width() > jQuery("#main1").width()) {
+                //    jQuery("#info-popup").css({"left": mouseX - jQuery("#info-popup").width());
+                //    jQuery("#info-popup").css({"top": (mouseY - jQuery("#info-popup").height());
+                //    //jQuery("#info-popup").attr('class', 'bubbleright')
+                ////}
+                ////else {
+                ////    jQuery("#info-popup").css({"left": (mouseX - 26)});
+                ////    jQuery("#info-popup").css({"top": (mouseY - jQuery("#popup").height() - 30)});
+                ////    jQuery("#info-popup").attr('class', 'bubbleleft')
+                ////}
+
+                jQuery("#info_popup_wrapper").fadeIn();
+
+                jQuery("#info-popup").width(jQuery(window).width() * 0.8);
+
+                jQuery("#pairwiseModal_content").width(jQuery(window).width() * 0.8);
+
+                jQuery("#pairwiseModal_content").html("<div style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : "+jQuery(window).width() * 0.8+"'>" +
+                    "<div id = 'pairwise" + hit + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : "+jQuery(window).width() * 0.8+";'></div></div>" +
                     "<br>" +
-                    "<div id = 'pairwise" + ref + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : 1000px;'></div>");
+                    "<div id = 'pairwise" + ref + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : "+jQuery(window).width() * 0.8+"'></div>");
                 jQuery("#pairwise" + hit).svg()
                 jQuery("#pairwise" + ref).svg()
 
-                if (!jQuery('#pairwiseModal').hasClass('in')) {
-                    jQuery('#pairwiseModal').modal('show')
-                }
+                var svg = jQuery("#pairwise" + hit).svg("get")
+
+                var text = hit
+
+                svg.text(parseInt(jQuery(window).width() * 0.6) + 10, 10, text, {
+                    fontFamily: 'Verdana',
+                    fontSize: 10,
+                    textAnchor: 'begin',
+                    fill: "gray",
+                    class: "protein_id genelabel genetext"
+                });
+
+                svg.line(0, 6, jQuery(window).width() * 0.6, 6, {id: 'id geneline', stroke: 'green', strokeWidth: 1});
+
+                svg = jQuery("#pairwise" + ref).svg("get")
+
+                var text = ref
+
+                svg.text(parseInt(jQuery(window).width() * 0.6) + 10, 10, text, {
+                    fontFamily: 'Verdana',
+                    fontSize: 10,
+                    textAnchor: 'begin',
+                    fill: "red",
+                    class: "protein_id genelabel genetext"
+                });
+
+                svg.line(0, 6, jQuery(window).width() * 0.6, 6, {id: 'id geneline', stroke: 'red', strokeWidth: 2});
+
 
                 dispGenesExonForMember_id("#pairwise" + hit, json.hit.alignment, json.hit.gene_id, json.hit.protein_id)
                 dispGenesExonForMember_id("#pairwise" + ref, json.ref.alignment, json.ref.gene_id, json.ref.protein_id)

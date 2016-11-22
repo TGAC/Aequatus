@@ -116,7 +116,6 @@
                     </div>
 
 
-
                 </div>
                 <div id="export_div"
                      style="display: block; height: 296px; background: none repeat scroll 0% 0% rebeccapurple; padding: 10px; color: white">
@@ -135,7 +134,7 @@
                         <tr>
                             <td>
                                 Newick <br>
-                                <a class="btn btn-small" href="#"  onclick="exportGeneTree('newick')"> <i
+                                <a class="btn btn-small" href="#" onclick="exportGeneTree('newick')"> <i
                                         style="color: white " class="fa fa-download"></i></a>
                                 </a>
                             </td>
@@ -415,8 +414,8 @@
 </div>
 
 
-
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="exportModal" style=" z-index: 1999;">
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel"
+     id="exportModal" style=" z-index: 1999;">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -435,21 +434,52 @@
     </div>
 </div>
 
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="pairwiseModal" style=" z-index: 1999;">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"></h4>
-            </div>
-            <div class="modal-body">
-                <div id="pairwiseModal_content" style="width: 100%; word-wrap: break-word;">
-                </div>
-            </div>
+<%--<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="pairwiseModal" style=" z-index: 1999;">--%>
+<%--<div class="modal-dialog modal-lg" role="document">--%>
+<%--<div class="modal-content">--%>
+<%--<div class="modal-header">--%>
+<%--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span--%>
+<%--aria-hidden="true">&times;</span></button>--%>
+<%--<h4 class="modal-title"></h4>--%>
+<%--</div>--%>
+<%--<div class="modal-body">--%>
+
+<%--</div>--%>
+<%--</div>--%>
+<%--</div>--%>
+<%--</div>--%>
+<div id="info_popup_wrapper" style="display: none;">
+    <div style="background: darkgrey none repeat scroll 0% 0%; height: 100%; width: 100%; position: fixed; opacity: 0.8;z-index: 1999;" onclick="removeInfoPopup()">
+    </div>
+    <div id="info-popup" class="popup"
+         style="margin-left: auto; margin-right: auto; top: 100px; position: relative; background: white none repeat scroll 0% 0%; padding: 20px; box-shadow: 5px 5px 5px gray; z-index: 2000; ">
+        <div style="position: absolute; left: 0px; top: 0px; width: 100%;">
+            <table width="100%" cellspacing="0" border="0">
+                <thead>
+                <tr>
+                    <td bgcolor="darkcyan"><span style="color:white"> Pairwise Alignment </span>
+                    </td>
+                    <td bgcolor="darkcyan">
+                        <i onclick="removeInfoPopup();" class="fa fa-close "
+                           style="color: white; right: 5px; cursor: pointer; position: absolute; top: 3px;">&nbsp;</i>
+                    </td>
+                </tr>
+                </thead>
+            </table>
         </div>
+
+        <div style="overflow: hidden; left: 0px; position: relative; top: 10px;">
+            <div id="pairwiseModal_content" style=" word-wrap: break-word;"></div>
+        </div>
+
     </div>
 </div>
+
+</div>
+
+</div>
+</div>
+
 <p style="z-index:10; position:fixed;font-size: small;" id="besideMouse"></p>
 
 

@@ -88,3 +88,7 @@ function newpopup(member_id, protein_id) {
 function removePopup() {
     jQuery("#popup").fadeOut()
 }
+
+function removeInfoPopup(){
+    jQuery("#info_popup_wrapper").fadeOut()
+}
