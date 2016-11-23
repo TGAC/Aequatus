@@ -400,7 +400,7 @@
                                 <div id="ensemblLink" style="float: right" title="Link to Ensembl"></div>
                             </td>
                             <td>
-                                <div id="testLink" style="float: right" title="test"></div>
+                                <div id="1to1Link" style="float: right" title="1 to 1 Alignment"></div>
                             </td>
                         </tr>
                         </tbody>
