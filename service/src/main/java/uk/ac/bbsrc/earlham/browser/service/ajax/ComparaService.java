@@ -377,12 +377,20 @@ public class ComparaService {
 
     public JSONObject getInfoForCoreMember(HttpSession session, JSONObject json) {
         String query = json.getString("query");
+        String ref = json.getString("ref");
+        String protein_id = json.getString("protein_id");
+
         JSONObject response = new JSONObject();
 
 
-        response.put("trackname", "member");
         try {
-            return comparaStore.getInfoforMember(query);
+            int ref_seq_member_id = comparaStore.getSeqMemberIDfromStableID(ref);
+            int hit_seq_member_id = comparaStore.getSeqMemberIDfromStableID(protein_id);
+
+            response.put("info", comparaStore.getInfoforMember(query).get("info"));
+            response.put("orthology", comparaStore.getInfoforOrtholog(hit_seq_member_id, ref_seq_member_id));
+
+            return response;
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             return JSONUtils.SimpleJSONError(e.getMessage());

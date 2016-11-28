@@ -155,6 +155,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_PAIRWISE_ALIGNMENT = "select hm1.cigar_line as ref, hm2.cigar_line as hit from homology_member hm1, homology_member hm2 where hm1.seq_member_id = ? and hm2.seq_member_id = ? and  hm1.homology_id = hm2.homology_id;";
 
+    public static final String IS_PAIRWISE_ALIGNMENT =  "select count(*) from homology_member hm1, homology_member hm2 where hm1.seq_member_id = ? and hm2.seq_member_id = ? and  hm1.homology_id = hm2.homology_id;";
     public static final String GET_SEQ_MEMBER_ID_FROM_STABLE_ID = "select seq_member_id from seq_member where stable_id = ?";
 
     public static final String GET_GENE_STABLE_ID_FROM_GENE_MEMBER_ID = "select stable_id from gene_member where gene_member_id = ?";
@@ -794,6 +795,22 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         Map<String, Object> geneinfo = template.queryForMap(GET_GENE_INFO, new Object[]{query});
         gene_info.put("info", geneinfo);
         return gene_info;
+
+    }
+
+    public boolean getInfoforOrtholog(int ref, int hit) throws IOException{
+        boolean response = false;
+
+        int pairwise_alignemnt = template.queryForInt(IS_PAIRWISE_ALIGNMENT, new Object[]{ref, hit});
+
+        if(pairwise_alignemnt >=1)
+        {
+            response = true;
+        }else{
+            response = false;
+        }
+
+        return response;
 
     }
 

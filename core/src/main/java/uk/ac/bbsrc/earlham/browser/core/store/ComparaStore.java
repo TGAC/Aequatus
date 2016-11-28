@@ -66,6 +66,7 @@ public interface ComparaStore extends Store<String> {
     Map getGeneTree(String query) throws IOException;
     int countGeneTreeforMember(String query) throws IOException;
     JSONObject getInfoforMember(String query) throws IOException;
+    boolean getInfoforOrtholog(int ref, int hit) throws IOException;
     JSONObject getGenomeId(String query) throws IOException;
     JSONObject getChrId(String query, int ref) throws IOException;
     String getMemberId(String query) throws Exception;

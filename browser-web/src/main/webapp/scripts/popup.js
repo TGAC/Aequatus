@@ -55,7 +55,7 @@ function newpopup(member_id, protein_id) {
     Fluxion.doAjax(
         'comparaService',
         'getInfoForCoreMember',
-        {'query': member_id, 'url': ajaxurl},
+        {'query': member_id, 'protein_id':protein_id, 'ref':syntenic_data.protein_id, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
                 if (json.info.display_label) {
@@ -64,7 +64,11 @@ function newpopup(member_id, protein_id) {
                     jQuery('#stable_label').html(stable_id)
                 }
 
-                jQuery('#makemetop_button').html("<button onclick='makeMeTop(\"" + member_id + "\",\""+protein_id+"\")' class='btn btn-default' type='button'> <i class='fa fa-random fa-1x'></i></button>");
+                if(protein_id != syntenic_data.protein_id){
+                    jQuery('#makemetop_button').html("<button onclick='makeMeTop(\"" + member_id + "\",\""+protein_id+"\")' class='btn btn-default' type='button'> <i class='fa fa-random fa-1x'></i></button>");
+                }else{
+                    jQuery('#makemetop_button').html("<button disabled class='btn btn-default' type='button'> <i class='fa fa-random fa-1x'></i></button>");
+                }
 
                 jQuery('#ref_name').html("Chr " + json.info.name)
 
@@ -72,13 +76,17 @@ function newpopup(member_id, protein_id) {
 
                 jQuery('#gene_desc').html(stringTrim(desc, 200))
 
-                jQuery('#ensemblLink').html("<a target='_blank' href='http://www.ensembl.org/id/" + stable_id + "'><button type='button' class='btn btn-default'> <i class='fa fa-1x'>e!</i></button></a>")
+                jQuery('#ensemblLink').html("<a target='_blank' href='http://www.ensembl.org/id/" + stable_id + "'><button type='button' class='btn btn-default'> <i class='fa fa-1x'><b><i>e!</i></b></button></a>")
 
                 jQuery('#exportAlignmentLink').html("<button type='button' class='btn btn-default' onclick='exportAlignment(\""+protein_id+"\")'> <i class='fa fa-1x'>Aln</i></button>")
 
                 jQuery('#exportSequenceLink').html("<button type='button' class='btn btn-default' onclick='exportSequence(\""+protein_id+"\")'> <i class='fa fa-1x'>Seq</i></button>")
 
-                jQuery('#1to1Link').html("<button type='button' class='btn btn-default' onclick='getAlignment(\"" + protein_id + "\",\""+syntenic_data.protein_id+"\")'> <i class='fa fa-1x'>1:1</i></button>")
+                if(json.orthology == true && protein_id != syntenic_data.protein_id){
+                    jQuery('#1to1Link').html("<button type='button' class='btn btn-default' onclick='getAlignment(\"" + protein_id + "\",\""+syntenic_data.protein_id+"\")'> <i class='fa fa-1x fa-refresh'></i></button>")
+                }else{
+                    jQuery('#1to1Link').html("<button type='button' disabled class='btn btn-default'> <i class='fa fa-1x fa-refresh'></i></button>")
+                }
 
 
             }
