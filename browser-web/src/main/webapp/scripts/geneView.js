@@ -777,26 +777,13 @@ function getAlignment(hit, ref) {
 
                 jQuery("#pairwiseModal_content").width(jQuery(window).width() * 0.8);
 
-                jQuery("#pairwiseModal_content").html("<div style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : "+jQuery(window).width() * 0.8+"'>" +
-                    "<div id = 'pairwise" + hit + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : "+jQuery(window).width() * 0.8+";'></div></div>" +
+                jQuery("#pairwiseModal_content").html("<div id = 'pairwise" + ref + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : "+jQuery(window).width() * 0.8+"'></div>" +
                     "<br>" +
-                    "<div id = 'pairwise" + ref + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : "+jQuery(window).width() * 0.8+"'></div>");
+                    "<div id = 'pairwise" + hit + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : "+jQuery(window).width() * 0.8+";'></div>")
                 jQuery("#pairwise" + hit).svg()
                 jQuery("#pairwise" + ref).svg()
 
-                var svg = jQuery("#pairwise" + hit).svg("get")
 
-                var text = hit
-
-                svg.text(parseInt(jQuery(window).width() * 0.6) + 10, 10, text, {
-                    fontFamily: 'Verdana',
-                    fontSize: 10,
-                    textAnchor: 'begin',
-                    fill: "gray",
-                    class: "protein_id genelabel genetext"
-                });
-
-                svg.line(0, 6, jQuery(window).width() * 0.6, 6, {id: 'id geneline', stroke: 'green', strokeWidth: 1});
 
                 svg = jQuery("#pairwise" + ref).svg("get")
 
@@ -812,11 +799,25 @@ function getAlignment(hit, ref) {
 
                 svg.line(0, 6, jQuery(window).width() * 0.6, 6, {id: 'id geneline', stroke: 'red', strokeWidth: 2});
 
+                var svg = jQuery("#pairwise" + hit).svg("get")
 
+                var text = hit
+
+                svg.text(parseInt(jQuery(window).width() * 0.6) + 10, 10, text, {
+                    fontFamily: 'Verdana',
+                    fontSize: 10,
+                    textAnchor: 'begin',
+                    fill: "gray",
+                    class: "protein_id genelabel genetext"
+                });
+
+                svg.line(0, 6, jQuery(window).width() * 0.6, 6, {id: 'id geneline', stroke: 'green', strokeWidth: 1});
+
+                dispGenesExonForMember_id("#pairwise" + ref, json.ref.alignment, json.ref.gene_id, json.ref.protein_id, json.hit.alignment)
                 dispGenesExonForMember_id("#pairwise" + hit, json.hit.alignment, json.hit.gene_id, json.hit.protein_id, json.ref.alignment)
-                dispGenesExonForMember_id("#pairwise" + ref, json.ref.alignment, json.ref.gene_id, json.ref.protein_id)
 
 
+                separateSeq(json)
 
             }
         });

@@ -452,24 +452,29 @@
     <div style="background: darkgrey none repeat scroll 0% 0%; height: 100%; width: 100%; position: fixed; opacity: 0.8;z-index: 1999;" onclick="removeInfoPopup()">
     </div>
     <div id="info-popup" class="popup"
-         style="margin-left: auto; margin-right: auto; top: 100px; position: relative; background: white none repeat scroll 0% 0%; padding: 20px; box-shadow: 5px 5px 5px gray; z-index: 2000; ">
-        <div style="position: absolute; left: 0px; top: 0px; width: 100%;">
+         style="margin-left: auto; margin-right: auto; top: 100px; position: relative; background: white none repeat scroll 0% 0%; box-shadow: 5px 5px 5px gray; z-index: 2000; ">
+        <div style="position: relative; left: 0px; top: 0px; width: 100%;">
             <table width="100%" cellspacing="0" border="0">
                 <thead>
                 <tr>
-                    <td bgcolor="darkcyan"><span style="color:white"> Pairwise Alignment </span>
+                    <td  height="30px" bgcolor="darkcyan"><span style="color:white"> Pairwise Alignment </span>
                     </td>
-                    <td bgcolor="darkcyan">
+                    <td width=20px bgcolor="darkcyan">
                         <i onclick="removeInfoPopup();" class="fa fa-close "
-                           style="color: white; right: 5px; cursor: pointer; position: absolute; top: 3px;">&nbsp;</i>
+                           style="color: white;  cursor: pointer; top: 3px;">&nbsp;</i>
                     </td>
                 </tr>
                 </thead>
             </table>
         </div>
 
-        <div style="overflow: hidden; left: 0px; position: relative; top: 10px;">
+        <div style="overflow: hidden; left: 0px; position: relative; top: 10px; padding: 10px">
             <div id="pairwiseModal_content" style=" word-wrap: break-word;"></div>
+        </div>
+
+        <div style="position: relative; top: 10px; padding: 10px">
+            Protein Alignment: <br>
+            <div id="pairwise_alignment" style="font-family: monospace;"></div>
         </div>
 
     </div>
