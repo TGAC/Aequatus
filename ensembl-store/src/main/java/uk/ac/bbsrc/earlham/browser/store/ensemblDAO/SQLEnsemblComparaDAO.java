@@ -557,6 +557,16 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     }
 
+    public String getSeq(int seq_member_id)  throws Exception{
+        String sequence;
+
+        String sequence_id = template.queryForObject(GET_SEQUENCE_ID, new Object[]{seq_member_id}, String.class);
+
+        sequence = template.queryForObject(GET_SEQUENCE, new Object[]{sequence_id}, String.class);
+
+        return sequence;
+    }
+
     public String getGeneStableIDfromGeneMemberID(int gene_member_id) throws Exception{
         return template.queryForObject(GET_GENE_STABLE_ID_FROM_GENE_MEMBER_ID, new Object[]{gene_member_id}, String.class);
     }

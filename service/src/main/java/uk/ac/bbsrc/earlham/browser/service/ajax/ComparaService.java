@@ -531,6 +531,9 @@ public class ComparaService {
             ref_object.put("alignment", alignment.get("ref"));
             hit_object.put("alignment", alignment.get("hit"));
 
+            ref_object.put("sequence", comparaStore.getSeq(ref_seq_member_id));
+            hit_object.put("sequence",comparaStore.getSeq(hit_seq_member_id));;
+
             response.put("ref", ref_object);
             response.put("hit", hit_object);
 

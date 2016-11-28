@@ -75,6 +75,7 @@ public interface ComparaStore extends Store<String> {
     String getRefStableID(String query) throws Exception;
     String getRefPtnStableID(String query) throws Exception;
     JSONObject getPairwiseAlignment(int ref, int query) throws Exception;
+    String getSeq(int seq_member_id)  throws Exception;
     int getSeqMemberIDfromStableID(String stableID) throws Exception;
     String getGeneStableIDfromGeneMemberID(int gene_member_id) throws Exception;
     int getGeneMemberIDfromSeqMemberID(int seq_member_id) throws Exception;
