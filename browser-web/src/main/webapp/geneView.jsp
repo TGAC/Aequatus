@@ -387,21 +387,33 @@
                         <tbody>
                         <tr>
                             <td>
-                                <div id="exportSequenceLink" style="float: right" title="Export Sequence"></div>
-                            </td>
-                            <td>
-                                <div id="exportAlignmentLink" style="float: right" title="Export Alignment"></div>
-                            </td>
-                            <td>
-                                <div id="makemetop_button" style="float: right" title="Change Reference to"></div>
+                                <%--<div id="exportSequenceLink" style="float: right" title="Export Sequence"></div>--%>
+                            <%--</td>--%>
+                            <%--<td>--%>
+                                <%--<div id="exportAlignmentLink" style="float: right" title="Export Alignment"></div>--%>
+                                    <div class="btn-group open">
+                                        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-external-link fa-fw"></i> </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a id="exportSequenceLink" href="#" title="Export Sequence"><i class="fa  fa-fw"></i> Seq </a></li>
+                                            <li class="divider"></li>
+                                            <li><a id="exportAlignmentLink" href="#" title="Export Alignment"><i class="fa  fa-fw"></i> Aln</a></li>
+                                        </ul>
+                                        <div id="makemetop_button" style="float: right" title="Change Reference to"></div>
+                                        <div id="ensemblLink" style="float: right" title="Link to Ensembl"></div>
+                                        <div id="1to1Link" style="float: right" title="1 to 1 Alignment"></div>
 
+                                    </div>
                             </td>
-                            <td>
-                                <div id="ensemblLink" style="float: right" title="Link to Ensembl"></div>
-                            </td>
-                            <td>
-                                <div id="1to1Link" style="float: right" title="1 to 1 Alignment"></div>
-                            </td>
+                            <%--<td>--%>
+                                <%--<div id="makemetop_button" style="float: right" title="Change Reference to"></div>--%>
+
+                            <%--</td>--%>
+                            <%--<td>--%>
+                                <%--<div id="ensemblLink" style="float: right" title="Link to Ensembl"></div>--%>
+                            <%--</td>--%>
+                            <%--<td>--%>
+                                <%--<div id="1to1Link" style="float: right" title="1 to 1 Alignment"></div>--%>
+                            <%--</td>--%>
                         </tr>
                         </tbody>
                     </table>

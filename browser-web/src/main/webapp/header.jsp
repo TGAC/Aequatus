@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="<c:url value='/styles/bootstrap-css/bootstrap-theme.min.css'/>" type="text/css">
 
     <%--font awesome--%>
-    <link rel="stylesheet" href="<c:url value='/styles/font-awesome-4.2.0/css/font-awesome.css'/>" type="text/css">
+    <link rel="stylesheet" href="<c:url value='/styles/font-awesome-4.7.0/css/font-awesome.min.css'/>" type="text/css">
 
     <%--Fluxion--%>
     <script type="text/javascript" src="<c:url value='/scripts/scriptaculous/prototype.js'/>"></script>
