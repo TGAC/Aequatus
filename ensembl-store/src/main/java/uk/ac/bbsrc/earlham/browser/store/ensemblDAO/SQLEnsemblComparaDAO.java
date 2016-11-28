@@ -153,7 +153,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_GENOME_NAME_FROM_SEQ_MEMBER_ID = "select name from genome_db where genome_db_id in (select genome_db_id from seq_member where seq_member_id = ?)";
 
-    public static final String GET_PAIRWISE_ALIGNMENT = "select hm1.cigar_line as hit, hm2.cigar_line as ref from homology_member hm1, homology_member hm2 where hm1.seq_member_id = ? and hm2.seq_member_id = ? and  hm1.homology_id = hm2.homology_id;";
+    public static final String GET_PAIRWISE_ALIGNMENT = "select hm1.cigar_line as ref, hm2.cigar_line as hit from homology_member hm1, homology_member hm2 where hm1.seq_member_id = ? and hm2.seq_member_id = ? and  hm1.homology_id = hm2.homology_id;";
 
     public static final String GET_SEQ_MEMBER_ID_FROM_STABLE_ID = "select seq_member_id from seq_member where stable_id = ?";
 
