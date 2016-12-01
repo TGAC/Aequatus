@@ -136,7 +136,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
 
     public static final String GET_GENE_MEMBER_ID_FROM_STABLE_ID = "select gene_member_id from gene_member where stable_id = ?";
-    public static final String GET_SEQ_MEMBER_ID_FROM_STABLE_ID = "select gene_member_id from seq_member where stable_id = ?";
+    public static final String GET_SEQ_MEMBER_ID_FROM_STABLE_ID = "select seq_member_id from seq_member where stable_id = ?";
     public static final String GET_Referece_ID_FROM_STABLE_ID = "select genome_db_id from seq_member where stable_id = ?";
     public static final String GET_dnafrag_ID_FROM_STABLE_ID = "select dnafrag_id from seq_member where stable_id = ?";
     public static final String GET_STABLE_ID_FROM_SEQ_MEMBER_ID = "select stable_id from seq_member where seq_member_id = ?";
@@ -548,6 +548,16 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public String getRefPtnStableID(String query) throws Exception {
         String canonical_id =  template.queryForObject(GET_CANONICAL_MEMBER_ID_FROM_GENE_MEMBER_ID, new Object[]{query}, String.class);
         return template.queryForObject(GET_STABLE_ID_FROM_SEQ_MEMBER_ID, new Object[]{canonical_id}, String.class);
+    }
+
+    public int getSeqMemberIDfromStableID(String query) throws Exception{
+        int seq_member_id = template.queryForInt(GET_SEQ_MEMBER_ID_FROM_STABLE_ID, new Object[]{query});
+        return seq_member_id;
+    }
+
+    public int getGeneMemberIDfromSeqMemberID(int seq_member_id) throws Exception{
+        int gene_member_id = template.queryForInt(GET_GENE_MEMBER_ID_FROM_SEQ_MEMBER_ID, new Object[]{seq_member_id});
+        return gene_member_id;
     }
 
     public JSONArray getHomologyforMember(String query) throws IOException {
@@ -1016,11 +1026,20 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
         final String SEARCH_MEMBER = "SELECT m1.*, df.* " +
                 "FROM gene_member m1, dnafrag df " +
-                "where (description like ? OR display_label like ? OR stable_id like ?) and m1.genome_db_id in " + genome_ids + " and df.dnafrag_id = m1.dnafrag_id limit 100";
+                "where (m1.description like ? OR m1.display_label like ? OR m1.stable_id like ?) and m1.genome_db_id in " + genome_ids + " and df.dnafrag_id = m1.dnafrag_id limit 100";
 
+
+        final String SEARCH_SEQ_MEMBER = "SELECT s1.*, df.* " +
+                "FROM  seq_member s1, dnafrag df " +
+                "where (s1.description like ? OR s1.display_label like ? OR s1.stable_id like ?) and s1.genome_db_id in " + genome_ids + " and df.dnafrag_id = s1.dnafrag_id limit 100;";
 
         JSONArray homologouses = new JSONArray();
         List<Map<String, Object>> homology_member_id = template.queryForList(SEARCH_MEMBER, new Object[]{"%" + query + "%", "%" + query + "%", "%" + query + "%"});
+
+        if(homology_member_id.size() == 0)
+        {
+            homology_member_id = template.queryForList(SEARCH_SEQ_MEMBER, new Object[]{"%" + query + "%", "%" + query + "%", "%" + query + "%"});
+        }
 
         for (Map map_two : homology_member_id) {
             if (map_two.get("canonical_member_id") == null) {

@@ -78,5 +78,7 @@ public interface ComparaStore extends Store<String> {
 
     int getGeneMemberIDfromStableID(String query) throws Exception;
     int getSeqMemberIDfromGeneMemberID(int gene_member_id) throws Exception;
+    int getSeqMemberIDfromStableID(String query) throws Exception;
+    int getGeneMemberIDfromSeqMemberID(int seq_member_id) throws Exception;
     String getSeqStableIDfromSeqMemberID(int seq_member_id) throws Exception;
     }

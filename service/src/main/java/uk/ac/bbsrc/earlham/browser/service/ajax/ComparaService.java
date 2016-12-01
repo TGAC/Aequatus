@@ -438,16 +438,17 @@ public class ComparaService {
             int gene_member_id = comparaStore.getGeneMemberId(query);
             int seq_member_id = comparaStore.getSeqMemberId(query);
             if (gene_member_id == 0 && seq_member_id == 0) {
-                log.info("\n\n\t if");
                 response.put("html", comparaStore.searchMember(query));
             } else{
-                log.info("\n\n\t else");
                 if(seq_member_id == 0){
-                    log.info("\n\n\t else iff "+query);
-
                     gene_member_id = comparaStore.getGeneMemberIDfromStableID(query);
                     seq_member_id = comparaStore.getSeqMemberIDfromGeneMemberID(gene_member_id);
                     query = comparaStore.getSeqStableIDfromSeqMemberID(seq_member_id);
+
+                }
+                if(gene_member_id == 0){
+                    seq_member_id = comparaStore.getSeqMemberIDfromStableID(query);
+                    gene_member_id = comparaStore.getGeneMemberIDfromSeqMemberID(seq_member_id);
 
                 }
                 log.info("\n\n\t after    else iff "+query);
