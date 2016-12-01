@@ -68,10 +68,15 @@ public interface ComparaStore extends Store<String> {
     JSONObject getInfoforMember(String query) throws IOException;
     JSONObject getGenomeId(String query) throws IOException;
     JSONObject getChrId(String query, int ref) throws IOException;
-    String getMemberId(String query) throws Exception;
+    int getGeneMemberId(String query) throws Exception;
+    int getSeqMemberId(String query) throws Exception;
     String getReferencefromStableId(String query) throws IOException;
     String getDnafragIdfromStableId(String query) throws IOException;
     String getDnafragnamefromId(String query) throws IOException;
     String getRefStableID(String query) throws Exception;
     String getRefPtnStableID(String query) throws Exception;
+
+    int getGeneMemberIDfromStableID(String query) throws Exception;
+    int getSeqMemberIDfromGeneMemberID(int gene_member_id) throws Exception;
+    String getSeqStableIDfromSeqMemberID(int seq_member_id) throws Exception;
     }

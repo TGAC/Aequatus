@@ -435,13 +435,25 @@ public class ComparaService {
 
         response.put("ref", "member");
         try {
-            String member_id = comparaStore.getMemberId(query);
-            if (member_id == "") {
+            int gene_member_id = comparaStore.getGeneMemberId(query);
+            int seq_member_id = comparaStore.getSeqMemberId(query);
+            if (gene_member_id == 0 && seq_member_id == 0) {
+                log.info("\n\n\t if");
                 response.put("html", comparaStore.searchMember(query));
-            } else {
+            } else{
+                log.info("\n\n\t else");
+                if(seq_member_id == 0){
+                    log.info("\n\n\t else iff "+query);
+
+                    gene_member_id = comparaStore.getGeneMemberIDfromStableID(query);
+                    seq_member_id = comparaStore.getSeqMemberIDfromGeneMemberID(gene_member_id);
+                    query = comparaStore.getSeqStableIDfromSeqMemberID(seq_member_id);
+
+                }
+                log.info("\n\n\t after    else iff "+query);
                 String ref = comparaStore.getReferencefromStableId(query);
                 String dnafrag = comparaStore.getDnafragIdfromStableId(query);
-                response.put("member_id", member_id);
+                response.put("member_id", gene_member_id);
                 response.put("ref", ref);
                 response.put("dnafrag", dnafrag);
             }

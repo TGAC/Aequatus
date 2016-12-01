@@ -135,7 +135,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public static final String GET_MLSSID_FOR_HOMOLOGY = "select method_link_species_set_id from homology where homology_id = ?";
 
 
-    public static final String GET_MEMBER_ID_FROM_STABLE_ID = "select gene_member_id from seq_member where stable_id = ?";
+    public static final String GET_GENE_MEMBER_ID_FROM_STABLE_ID = "select gene_member_id from gene_member where stable_id = ?";
+    public static final String GET_SEQ_MEMBER_ID_FROM_STABLE_ID = "select gene_member_id from seq_member where stable_id = ?";
     public static final String GET_Referece_ID_FROM_STABLE_ID = "select genome_db_id from seq_member where stable_id = ?";
     public static final String GET_dnafrag_ID_FROM_STABLE_ID = "select dnafrag_id from seq_member where stable_id = ?";
     public static final String GET_STABLE_ID_FROM_SEQ_MEMBER_ID = "select stable_id from seq_member where seq_member_id = ?";
@@ -529,6 +530,21 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     }
 
 
+    public int getGeneMemberIDfromStableID(String query) throws Exception{
+        int gene_member_id = template.queryForInt(GET_GENE_MEMBER_ID_FROM_STABLE_ID, new Object[]{query});
+        return gene_member_id;
+    }
+
+    public int getSeqMemberIDfromGeneMemberID(int gene_member_id) throws Exception{
+        int seq_member_id = template.queryForInt(GET_SEQ_MEMBER_ID_FROM_GENE_MEMBER_ID, new Object[]{gene_member_id});
+        return seq_member_id;
+    }
+
+    public String getSeqStableIDfromSeqMemberID(int seq_member_id) throws Exception{
+        String Stable_ID =  template.queryForObject(GET_STABLE_ID_FROM_SEQ_MEMBER_ID, new Object[]{seq_member_id}, String.class);
+        return Stable_ID;
+    }
+
     public String getRefPtnStableID(String query) throws Exception {
         String canonical_id =  template.queryForObject(GET_CANONICAL_MEMBER_ID_FROM_GENE_MEMBER_ID, new Object[]{query}, String.class);
         return template.queryForObject(GET_STABLE_ID_FROM_SEQ_MEMBER_ID, new Object[]{canonical_id}, String.class);
@@ -781,15 +797,30 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     }
 
 
-    public String getMemberId(String query) throws Exception {
+    public int getGeneMemberId(String query) throws Exception {
 
 
         try {
-            String member_id = template.queryForObject(GET_MEMBER_ID_FROM_STABLE_ID, new Object[]{query}, String.class);
+            int member_id = template.queryForInt(GET_GENE_MEMBER_ID_FROM_STABLE_ID, new Object[]{query});
             return member_id;
         } catch (EmptyResultDataAccessException s) {
             getAllGenomeId("");
-            return "";
+            return 0;
+        } catch (Exception e) {
+            throw new Exception("Search result not found");
+
+        }
+    }
+
+    public int getSeqMemberId(String query) throws Exception {
+
+
+        try {
+            int member_id = template.queryForInt(GET_SEQ_MEMBER_ID_FROM_STABLE_ID, new Object[]{query});
+            return member_id;
+        } catch (EmptyResultDataAccessException s) {
+            getAllGenomeId("");
+            return 0;
         } catch (Exception e) {
             throw new Exception("Search result not found");
 
