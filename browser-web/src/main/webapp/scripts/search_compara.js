@@ -69,7 +69,9 @@ function search(query) {
     jQuery('#tabGO').html('');
     jQuery('#tabTranscripts').html('');
 
-    jQuery("#searchresultHead").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>");
+    jQuery("#searchresultHead").html("<br> <span style='color: grey; font-size: large;'>Searching...<span> " +
+        "<br><br>" +
+        "<img style='position: relative;' src='./images/browser/loading_big.gif' alt='Loading'>");
     var reference = jQuery('#genomes').val();
     Fluxion.doAjax(
         'comparaService',
@@ -114,10 +116,14 @@ function search_member(query) {
     jQuery('#canvas').hide();
     jQuery("#search_result").html("");
 
-    jQuery("#searchresultHead").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>");
+    jQuery("#searchresultHead").html("<br> <span style='color: grey; font-size: large;'>Searching...<span> " +
+        "<br><br>" +
+        "<img style='position: relative;' src='./images/browser/loading_big.gif' alt='Loading'>");
     var reference = jQuery('#genomes').val();
     jQuery("#search_result").fadeIn();
-    jQuery("#search_result").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>");
+    jQuery("#search_result").html("<br> <span style='color: grey; font-size: large;'>Searching...<span> " +
+        "<br><br>" +
+        "<img style='position: relative;' src='./images/browser/loading_big.gif' alt='Loading'>");
 
     URLSearch(query)
 

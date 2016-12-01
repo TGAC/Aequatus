@@ -2,18 +2,21 @@
 .circleBase {
     border-radius: 50%;
 }
+
 .type1 {
     background: #ffff00 none repeat scroll 0 0;
     border: 3px solid red;
     height: 100px;
     width: 100px;
 }
+
 .type2 {
     background: #cccccc none repeat scroll 0 0;
     border: 1px solid #4682b4;
     height: 20px;
     width: 20px;
 }
+
 #info_div {
     background: #cd853f none repeat scroll 0 0;
     display: none;
@@ -22,12 +25,14 @@
     padding: 10px;
     text-align: center;
 }
+
 #settings_div {
     background: #008b8b none repeat scroll 0 0;
     font-size: large;
     height: 248px;
     padding: 10px;
 }
+
 #control_panel {
     height: auto;
     left: -300px;
@@ -35,6 +40,7 @@
     top: 100px;
     z-index: 2999;
 }
+
 #control_panel_handle {
     background: #708090 none repeat scroll 0 0;
     color: white;
@@ -42,21 +48,25 @@
     padding: 5px;
     text-align: center;
 }
+
 #settings_div_handle {
     background: #008b8b none repeat scroll 0 0;
     padding: 5px;
     text-align: center;
 }
+
 #info_panel_handle {
     background: #cd853f none repeat scroll 0 0;
     padding: 5px;
     text-align: center;
 }
+
 #openclose_handle {
     background: #808080 none repeat scroll 0 0;
     padding: 5px;
     text-align: center;
 }
+
 #gene_tree {
     left: 50px;
     overflow: visible;
@@ -64,29 +74,35 @@
     top: 50px;
     width: 100%;
 }
+
 #popup {
     display: none;
     height: 130px;
     width: 200px;
 }
+
 #stable_id_header {
     color: white;
     padding: 2px;
     width: 100%;
 }
+
 #makemetop_button {
     float: right;
 }
+
 #popup_header {
     left: 0;
     overflow: hidden;
     position: relative;
     top: 0;
 }
+
 #popup_body {
     padding: 5px;
     position: relative;
 }
+
 #ruler {
     font-family: Courier;
     font-size: 13px;
@@ -94,9 +110,10 @@
     white-space: nowrap;
     width: auto;
 }
+
 .bubbleright {
     background-color: white;
-    background-image: -moz-linear-gradient(center top , rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+    background-image: -moz-linear-gradient(center top, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
     border: 1px solid #888888;
     box-shadow: 10px 10px 35px #888888;
     color: #333333;
@@ -106,6 +123,7 @@
     width: 100%;
     z-index: 999;
 }
+
 .bubbleright::after {
     border-bottom: 25px solid transparent;
     border-right: 25px solid white;
@@ -116,6 +134,7 @@
     position: absolute;
     z-index: 999;
 }
+
 .bubbleright::before {
     border-left: 25px solid rgba(0, 0, 0, 0.1);
     bottom: -28px;
@@ -123,6 +142,7 @@
     margin-left: -10px;
     z-index: 999;
 }
+
 #footer {
     background: #000000 none repeat scroll 0 0;
     bottom: 0;
@@ -137,9 +157,11 @@
     text-align: center;
     width: 100%;
 }
+
 #footer a {
     color: #ffffff;
 }
+
 .headerbar {
     -moz-user-select: none;
     background-color: #4682b4;
@@ -153,28 +175,34 @@
     width: 100%;
     z-index: 2999;
 }
+
 .headerbar a:link {
     -moz-user-select: none;
     color: white;
     text-decoration: none;
 }
+
 .headerbar a:visited {
     -moz-user-select: none;
     color: #ffffff;
     text-decoration: none;
 }
+
 .headerbar a:hover {
     -moz-user-select: none;
     color: yellow;
     text-decoration: none;
 }
+
 .headerlink {
     color: white;
     font-family: arial;
 }
+
 .headerlink a:link {
     color: #ffffff;
 }
+
 .refmap {
     background: #a9a9a9 none repeat scroll 0 0;
     border-radius: 7px;
@@ -184,12 +212,14 @@
     overflow: hidden;
     position: absolute;
 }
+
 #refmap {
     height: 150px;
     position: absolute;
     width: 100%;
     z-index: 999;
 }
+
 .refmapmarker {
     background: #0000ff none repeat scroll 0 0;
     border-radius: 1px;
@@ -197,6 +227,7 @@
     opacity: 1;
     position: absolute;
 }
+
 .refmapsearchmarkergene {
     background: #ff0000 none repeat scroll 0 0;
     border-radius: 1px;
@@ -206,6 +237,7 @@
     padding: 0;
     position: absolute;
 }
+
 .refmapsearchmarkerseqregion {
     background: #808080 none repeat scroll 0 0;
     border: 0.5px solid black;
@@ -216,6 +248,7 @@
     padding: 0;
     position: absolute;
 }
+
 .refmapsearchmarkertranscript {
     background: #008000 none repeat scroll 0 0;
     border-radius: 1px;
@@ -225,6 +258,7 @@
     padding: 0;
     position: absolute;
 }
+
 .refmapsearchmarkergo {
     background: #000000 none repeat scroll 0 0;
     border-radius: 1px;
@@ -234,6 +268,7 @@
     padding: 0;
     position: absolute;
 }
+
 .refMarker {
     background: #000000 none repeat scroll 0 0;
     cursor: pointer;
@@ -243,6 +278,7 @@
     top: 0;
     z-index: 999;
 }
+
 .refMarkerShow {
     background: #008000 none repeat scroll 0 0;
     cursor: pointer;
@@ -251,11 +287,13 @@
     top: 0;
     z-index: 999;
 }
+
 .selected {
     background: #ff0000 none repeat scroll 0 0;
     box-shadow: 0 0 2px 2px blue;
     z-index: 1999;
 }
+
 #gene_widget {
     height: auto;
     left: 0;
@@ -264,12 +302,15 @@
     width: 100%;
     z-index: 999;
 }
+
 .frontcorner {
     border-radius: 5px 0 0 5px;
 }
+
 .endcorner {
     border-radius: 0 5px 5px 0;
 }
+
 #genomes {
     -moz-appearance: -moz-window-titlebar;
     background: #ffffff none repeat scroll 0 0;
@@ -278,15 +319,19 @@
     margin: 0;
     padding: 0;
 }
+
 #genomes li:hover {
     color: #ffffff;
 }
+
 .flip {
     transform: rotate(-180deg);
 }
+
 .flip-label {
     transform: rotate(180deg);
 }
+
 #gene_tree {
     height: auto;
     left: 0;
@@ -295,6 +340,7 @@
     width: 20%;
     z-index: 999;
 }
+
 .reverse {
     border-color: #ffffff rgba(0, 0, 0, 0) #ffffff white;
     border-style: solid;
@@ -304,6 +350,7 @@
     width: 0;
     z-index: 1999;
 }
+
 .forward {
     border-bottom: 7px solid white;
     border-left: 10px solid transparent;
@@ -313,22 +360,27 @@
     width: 0;
     z-index: 1999;
 }
+
 .node {
     cursor: pointer;
 }
+
 .node circle {
     fill: #ffffff;
     stroke: steelblue;
     stroke-width: 1.5px;
 }
+
 .node text {
     font: 10px sans-serif;
 }
+
 .link {
     fill: none;
     stroke: #cccccc;
     /*stroke-width: 1.5px;*/
 }
+
 div.tooltip {
     background: #dddddd none repeat scroll 0 0;
     border: 1px solid #aaaaaa;
@@ -341,41 +393,51 @@ div.tooltip {
     text-align: left;
     width: 100px;
 }
+
 .circleBase {
     border-radius: 50%;
 }
+
 .type1 {
     background: #ffff00 none repeat scroll 0 0;
     border: 3px solid red;
     height: 100px;
     width: 100px;
 }
+
 .type2 {
     background: #cccccc none repeat scroll 0 0;
     border: 1px solid #4682b4;
     height: 15px;
     width: 15px;
 }
+
 .search_header {
     font-size: large;
     padding: 10px;
 }
+
 .search_info {
     font-size: larger;
     padding: 10px;
 }
+
 .search_div {
     background: #90ee90 none repeat scroll 0 0;
     border: 1px solid lightgray;
     cursor: pointer;
     margin: 10px;
+    text-align: left;
 }
+
 .search_div:hover {
     border: 1px solid black;
 }
+
 .control-buttons {
     cursor: pointer;
 }
+
 .filter {
     display: block;
     font-size: smaller;
@@ -384,10 +446,12 @@ div.tooltip {
     margin-right: 10px;
     text-align: left;
 }
+
 .filter input {
     left: 5px;
     position: absolute;
 }
+
 #canvas {
     background-color: white;
     left: 0;
@@ -395,4 +459,14 @@ div.tooltip {
     position: absolute;
     top: 30px;
     width: 100%;
+}
+
+#besideMouse {
+    z-index: 10;
+    position: fixed;
+    font-size: small;
+    background: white none repeat scroll 0% 0%;
+    border: 1px solid lightgray;
+    padding: 2px;
+    display: none;
 }

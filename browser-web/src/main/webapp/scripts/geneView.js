@@ -283,7 +283,7 @@ function drawSelected(member) {
             'class': "refMarkerShow",
             'style': "LEFT:" + startposition + "px; width :" + stopposition + "px;",
             'onMouseOver': "countcoreMember(\"" + new_data[data_length].id + "\")",
-            'onMouseOut': "jQuery('#besideMouse').html('')",
+            'onMouseOut': "jQuery('#besideMouse').hide()",
             'onClick': "getcoreMember(\"" + new_data[data_length].id + "\")"
         }).appendTo("#selected_region");
 
@@ -327,7 +327,8 @@ function countcoreMember(query) {
         {'query': query, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                jQuery("#besideMouse").html(json.member)
+                jQuery('#besideMouse').show()
+                jQuery("#besideMouse").html(json.member+" homologous found.")
             }
         });
 }

@@ -243,7 +243,7 @@
         <tr>
             <td>
                 <div id="search_result"
-                     style="position: absolute; overflow-y: scroll; height: 500px; overflow: hidden; width:0px; height: 500px; overflow: auto; background: transparent;"></div>
+                     style="position: absolute; overflow-y: scroll; height: 500px; overflow: hidden; width:0px; height: 500px; overflow: auto; background: transparent; text-align: center;"></div>
             </td>
         </tr>
         </tbody>
@@ -312,7 +312,7 @@
 
     </div>
 
-    <div id="gene_tree_nj" style=" overflow: visible;   position: relative; top: 50px; width: 100%; left:100px;">
+    <div id="gene_tree_nj" style=" overflow: visible;   position: relative; top: 50px; width: 100%;">
 
     </div>
     <div style="height: auto; margin-left: auto; margin-right: auto; z-index: 1999; position: fixed;">
@@ -431,7 +431,7 @@
         </div>
     </div>
 </div>
-<p style="z-index:10; position:fixed;font-size: small;" id="besideMouse"></p>
+<p id="besideMouse"></p>
 
 
 <span id="ruler"></span>

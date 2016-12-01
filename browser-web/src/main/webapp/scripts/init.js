@@ -66,7 +66,7 @@ function setOff() {
     }
 
     jQuery(document).mousemove(function (e) {
-        var cpos = {top: e.pageY + 10, left: e.pageX + 10};
+        var cpos = {top: e.pageY + 20, left: e.pageX + 20};
         jQuery('#besideMouse').offset(cpos);
     });
 
