@@ -5,8 +5,7 @@
 function setOff() {
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
 
-
-
+    setGenomes()
 
     var name = arguments.callee.toString();
     var testTextBox = jQuery('#search');

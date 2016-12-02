@@ -438,8 +438,7 @@
 
 <script>
     jQuery(document).ready(function () {
-        kickOff();
         setOff()
-        getUrlVariables()
+        kickOff();
     });
 </script>

@@ -58,6 +58,20 @@ function getReferences() {
             }
         });
 }
+
+
+function setGenomes(){
+    Fluxion.doAjax(
+        'comparaService',
+        'setGenomes',
+        {'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+                console.log("genomeSet")
+                getUrlVariables()
+            }
+        });
+}
 function search(query) {
 
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';

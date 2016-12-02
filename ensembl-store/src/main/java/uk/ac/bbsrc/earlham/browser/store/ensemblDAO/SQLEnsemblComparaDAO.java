@@ -226,7 +226,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         }
     }
 
-    public JSONArray getAllGenomeId(String query) throws IOException {
+    public JSONArray setAllGenomeId(String query) throws IOException {
         try {
             genome_ids = "(";
             JSONArray genomes = new JSONArray();
@@ -240,7 +240,6 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                         genome_ids += (map.get("genome_db_id").toString());
                     } else {
                         genome_ids += "," + (map.get("genome_db_id").toString());
-
                     }
                     i++;
                 }
@@ -248,6 +247,22 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
             genome_ids += ")";
 
+            return genomes;
+        } catch (EmptyResultDataAccessException e) {
+            throw new IOException(" getAllGenomeId no result found");
+        }
+    }
+
+    public JSONArray getAllGenomeId(String query) throws IOException {
+        try {
+            JSONArray genomes = new JSONArray();
+            List<Map<String, Object>> genomeIDs = template.queryForList(GET_ALL_GENOMES, new Object[]{'%' + query + '%'});
+
+            for (Map map : genomeIDs) {
+                if (DatabaseSchemaSelector.createConnection(map.get("name").toString())) {
+                    genomes.add(map);
+                }
+            }
             return genomes;
         } catch (EmptyResultDataAccessException e) {
             throw new IOException(" getAllGenomeId no result found");

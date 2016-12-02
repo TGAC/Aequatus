@@ -203,6 +203,20 @@ public class ComparaService {
     }
 
 
+    public JSONObject setGenomes(HttpSession session, JSONObject json) {
+
+        JSONObject response = new JSONObject();
+        try {
+            JSONArray genomes = new JSONArray();
+            genomes = comparaStore.setAllGenomeId("");
+            response.put("genomes", genomes);
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        }
+
+    }
     /**
      * Returns a JSONObject that can be read as single reference or a list of results
      * <p/>
