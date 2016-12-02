@@ -241,6 +241,7 @@ function drawMember() {
 
 
 function drawSelected(member) {
+
     jQuery("#selected_region").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
     if (member == undefined) {
         jQuery("#gene_widget").html("")
@@ -310,24 +311,25 @@ function getcoreMember(query, redrawn) {
                 syntenic_data = json
                 //window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);
                 init(json, "#settings_div", "#filter" , "#sliderfilter")
-
-                setSelector()
-
                 URLMemberID(json.ref)
                 drawSynteny(redrawn);
+                setSelector()
+
             }
         });
 }
 
 
 function countcoreMember(query) {
+    jQuery("#besideMouse").html("")
+    jQuery('#besideMouse').show()
+
     Fluxion.doAjax(
         'comparaService',
         'countForCoreMember',
         {'query': query, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                jQuery('#besideMouse').show()
                 jQuery("#besideMouse").html(json.member+" homologous found.")
             }
         });
@@ -483,8 +485,6 @@ function select_member() {
 
 function select_chr() {
     jQuery('div[id^="chr"]').removeClass("selected")
-
-    console.log(chr)
 
     jQuery("#chr" + chr).addClass("selected")
     if (chr_name == null) {
@@ -687,8 +687,6 @@ function exportAlignment(id) {
     }else{
         data[id] = syntenic_data.cigar[id]
     }
-
-    console.log(ids)
 
     jQuery.each(data, function (key, data) {
         if (Protein_id.indexOf(key) >= 0) {
