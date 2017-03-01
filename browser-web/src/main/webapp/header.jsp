@@ -17,6 +17,7 @@
     <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-ui-1.11.2.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.cookie.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-migrate-1.2.1.min.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/toSource.js'/>"></script>
 
 
     <%--bootstrap--%>

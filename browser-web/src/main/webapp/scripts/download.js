@@ -87,6 +87,9 @@ function download(data, strFileName, strMimeType) {
             }, 66);
             return true;
         }
+        else{
+            window.open(url);
+        }
 
         //do iframe dataURL download (old ch+FF):
         var f = D.createElement("iframe");
