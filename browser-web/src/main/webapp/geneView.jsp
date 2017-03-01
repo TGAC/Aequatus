@@ -1,7 +1,6 @@
 <%--<%@ include file="header.jsp" %>--%>
 
-<div id="control_panel"
-     style="top: 100px;position: fixed; height: auto; left: -300px; z-index: 2999">
+<div id="control_panel">
     <table cellspacing="0" cellpadding="0" border="0">
         <tbody>
         <tr valign=top>
