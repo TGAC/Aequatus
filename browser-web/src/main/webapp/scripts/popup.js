@@ -83,9 +83,9 @@ function newpopup(member_id, protein_id) {
                 jQuery('#exportSequenceLink').html("<button type='button' class='btn btn-default' onclick='exportSequence(\""+protein_id+"\")'> <i class='fa fa-1x'>Seq</i></button>")
 
                 if(json.orthology == true && protein_id != syntenic_data.protein_id){
-                    jQuery('#1to1Link').html("<button type='button' class='btn btn-default' onclick='getAlignment(\"" + protein_id + "\",\""+syntenic_data.protein_id+"\")'> <i class='fa fa-1x fa-refresh'></i></button>")
+                    jQuery('#1to1Link').html("<button type='button' class='btn btn-default' onclick='getAlignment(\"" + protein_id + "\",\""+syntenic_data.protein_id+"\")'> <i class='fa fa-1x'>1:1</i></button>")
                 }else{
-                    jQuery('#1to1Link').html("<button type='button' disabled class='btn btn-default'> <i class='fa fa-1x fa-refresh'></i></button>")
+                    jQuery('#1to1Link').html("<button type='button' disabled class='btn btn-default'> <i class='fa fa-1x'>1;1</i></button>")
                 }
 
 
