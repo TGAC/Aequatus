@@ -115,7 +115,6 @@
                     </div>
 
 
-
                 </div>
                 <div id="export_div"
                      style="display: block; height: 296px; background: none repeat scroll 0% 0% rebeccapurple; padding: 10px; color: white">
@@ -134,7 +133,7 @@
                         <tr>
                             <td>
                                 Newick <br>
-                                <a class="btn btn-small" href="#"  onclick="exportGeneTree('newick')"> <i
+                                <a class="btn btn-small" href="#" onclick="exportGeneTree('newick')"> <i
                                         style="color: white " class="fa fa-download"></i></a>
                                 </a>
                             </td>
@@ -387,18 +386,33 @@
                         <tbody>
                         <tr>
                             <td>
-                                <div id="exportSequenceLink" style="float: right" title="Export Sequence"></div>
-                            </td>
-                            <td>
-                                <div id="exportAlignmentLink" style="float: right" title="Export Alignment"></div>
-                            </td>
-                            <td>
-                                <div id="makemetop_button" style="float: right" title="Change Reference to"></div>
+                                <%--<div id="exportSequenceLink" style="float: right" title="Export Sequence"></div>--%>
+                            <%--</td>--%>
+                            <%--<td>--%>
+                                <%--<div id="exportAlignmentLink" style="float: right" title="Export Alignment"></div>--%>
+                                    <div class="btn-group open">
+                                        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-external-link fa-fw"></i> </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a id="exportSequenceLink" href="#" title="Export Sequence"><i class="fa  fa-fw"></i> Seq </a></li>
+                                            <li class="divider"></li>
+                                            <li><a id="exportAlignmentLink" href="#" title="Export Alignment"><i class="fa  fa-fw"></i> Aln</a></li>
+                                        </ul>
+                                        <div id="makemetop_button" style="float: right" title="Change Reference to"></div>
+                                        <div id="ensemblLink" style="float: right" title="Link to Ensembl"></div>
+                                        <div id="1to1Link" style="float: right" title="1 to 1 Alignment"></div>
 
+                                    </div>
                             </td>
-                            <td>
-                                <div id="ensemblLink" style="float: right" title="Link to Ensembl"></div>
-                            </td>
+                            <%--<td>--%>
+                                <%--<div id="makemetop_button" style="float: right" title="Change Reference to"></div>--%>
+
+                            <%--</td>--%>
+                            <%--<td>--%>
+                                <%--<div id="ensemblLink" style="float: right" title="Link to Ensembl"></div>--%>
+                            <%--</td>--%>
+                            <%--<td>--%>
+                                <%--<div id="1to1Link" style="float: right" title="1 to 1 Alignment"></div>--%>
+                            <%--</td>--%>
                         </tr>
                         </tbody>
                     </table>
@@ -411,8 +425,8 @@
 </div>
 
 
-
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="exportModal" style=" z-index: 1999;">
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel"
+     id="exportModal" style=" z-index: 1999;">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -431,6 +445,59 @@
     </div>
 </div>
 <p id="besideMouse"></p>
+
+<%--<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="pairwiseModal" style=" z-index: 1999;">--%>
+<%--<div class="modal-dialog modal-lg" role="document">--%>
+<%--<div class="modal-content">--%>
+<%--<div class="modal-header">--%>
+<%--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span--%>
+<%--aria-hidden="true">&times;</span></button>--%>
+<%--<h4 class="modal-title"></h4>--%>
+<%--</div>--%>
+<%--<div class="modal-body">--%>
+
+<%--</div>--%>
+<%--</div>--%>
+<%--</div>--%>
+<%--</div>--%>
+<div id="info_popup_wrapper" style="display: none;">
+    <div style="background: darkgrey none repeat scroll 0% 0%; height: 100%; width: 100%; position: fixed; opacity: 0.8;z-index: 1999;" onclick="removeInfoPopup()">
+    </div>
+    <div id="info-popup" class="popup"
+         style="margin-left: auto; margin-right: auto; top: 100px; position: relative; background: white none repeat scroll 0% 0%; box-shadow: 5px 5px 5px gray; z-index: 2000; ">
+        <div style="position: relative; left: 0px; top: 0px; width: 100%;">
+            <table width="100%" cellspacing="0" border="0">
+                <thead>
+                <tr>
+                    <td  height="30px" bgcolor="darkcyan"><span style="color:white"> Pairwise Alignment </span>
+                    </td>
+                    <td width=20px bgcolor="darkcyan">
+                        <i onclick="removeInfoPopup();" class="fa fa-close "
+                           style="color: white;  cursor: pointer; top: 3px;">&nbsp;</i>
+                    </td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div style="overflow: hidden; left: 0px; position: relative; top: 10px; padding: 10px">
+            <div id="pairwiseModal_content" style=" word-wrap: break-word;"></div>
+        </div>
+
+        <div style="position: relative; top: 10px; padding: 10px">
+            Protein Alignment: <br>
+            <div id="pairwise_alignment" style="font-family: monospace;"></div>
+        </div>
+
+    </div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<p style="z-index:10; position:fixed;font-size: small;" id="besideMouse"></p>
 
 
 <span id="ruler"></span>

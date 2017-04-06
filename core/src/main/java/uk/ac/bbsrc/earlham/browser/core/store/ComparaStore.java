@@ -67,6 +67,7 @@ public interface ComparaStore extends Store<String> {
     Map getGeneTree(String query) throws IOException;
     int countGeneTreeforMember(String query) throws IOException;
     JSONObject getInfoforMember(String query) throws IOException;
+    boolean getInfoforOrtholog(int ref, int hit) throws IOException;
     JSONObject getGenomeId(String query) throws IOException;
     JSONObject getChrId(String query, int ref) throws IOException;
     int getGeneMemberId(String query) throws Exception;
@@ -82,4 +83,7 @@ public interface ComparaStore extends Store<String> {
     int getSeqMemberIDfromStableID(String query) throws Exception;
     int getGeneMemberIDfromSeqMemberID(int seq_member_id) throws Exception;
     String getSeqStableIDfromSeqMemberID(int seq_member_id) throws Exception;
+    JSONObject getPairwiseAlignment(int ref, int query) throws Exception;
+    String getSeq(int seq_member_id)  throws Exception;
+    String getGeneStableIDfromGeneMemberID(int gene_member_id) throws Exception;
     }

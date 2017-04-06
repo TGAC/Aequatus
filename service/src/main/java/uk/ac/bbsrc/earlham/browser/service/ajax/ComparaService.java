@@ -391,12 +391,20 @@ public class ComparaService {
 
     public JSONObject getInfoForCoreMember(HttpSession session, JSONObject json) {
         String query = json.getString("query");
+        String ref = json.getString("ref");
+        String protein_id = json.getString("protein_id");
+
         JSONObject response = new JSONObject();
 
 
-        response.put("trackname", "member");
         try {
-            return comparaStore.getInfoforMember(query);
+            int ref_seq_member_id = comparaStore.getSeqMemberIDfromStableID(ref);
+            int hit_seq_member_id = comparaStore.getSeqMemberIDfromStableID(protein_id);
+
+            response.put("info", comparaStore.getInfoforMember(query).get("info"));
+            response.put("orthology", comparaStore.getInfoforOrtholog(hit_seq_member_id, ref_seq_member_id));
+
+            return response;
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             return JSONUtils.SimpleJSONError(e.getMessage());
@@ -520,6 +528,49 @@ public class ComparaService {
             String chr_name = comparaStore.getDnafragnamefromId(chr);
             response.put("genome_name", genome_name);
             response.put("chr_name", chr_name);
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        }
+
+        return response;
+    }
+
+    public JSONObject getPairwiseAlignment(HttpSession session, JSONObject json) throws Exception {
+        String ref = json.getString("ref");
+        String hit = json.getString("hit");
+
+        JSONObject response = new JSONObject();
+
+        JSONObject ref_object = new JSONObject();
+        JSONObject hit_object = new JSONObject();
+
+
+        int ref_seq_member_id = comparaStore.getSeqMemberIDfromStableID(ref);
+        int hit_seq_member_id = comparaStore.getSeqMemberIDfromStableID(hit);
+
+        int ref_gene_member_id = comparaStore.getGeneMemberIDfromSeqMemberID(ref_seq_member_id);
+        int hit_gene_member_id = comparaStore.getGeneMemberIDfromSeqMemberID(hit_seq_member_id);
+
+        ref_object.put("gene_id", comparaStore.getGeneStableIDfromGeneMemberID(ref_gene_member_id));
+        ref_object.put("protein_id", ref);
+
+        hit_object.put("gene_id", comparaStore.getGeneStableIDfromGeneMemberID(hit_gene_member_id));
+        hit_object.put("protein_id", hit);
+        try {
+            JSONObject alignment =  comparaStore.getPairwiseAlignment(ref_seq_member_id, hit_seq_member_id);
+            ref_object.put("alignment", alignment.get("ref"));
+            hit_object.put("alignment", alignment.get("hit"));
+
+            ref_object.put("sequence", comparaStore.getSeq(ref_seq_member_id));
+            hit_object.put("sequence",comparaStore.getSeq(hit_seq_member_id));;
+
+            response.put("ref", ref_object);
+            response.put("hit", hit_object);
 
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

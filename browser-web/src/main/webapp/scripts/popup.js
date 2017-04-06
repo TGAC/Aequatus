@@ -55,7 +55,7 @@ function newpopup(member_id, protein_id) {
     Fluxion.doAjax(
         'comparaService',
         'getInfoForCoreMember',
-        {'query': member_id, 'url': ajaxurl},
+        {'query': member_id, 'protein_id':protein_id, 'ref':syntenic_data.protein_id, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
                 if (json.info.display_label) {
@@ -64,7 +64,11 @@ function newpopup(member_id, protein_id) {
                     jQuery('#stable_label').html(stable_id)
                 }
 
-                jQuery('#makemetop_button').html("<button onclick='makeMeTop(\"" + member_id + "\",\""+protein_id+"\")' class='btn btn-default' type='button'> <i class='fa fa-random fa-1x'></i></button>");
+                if(protein_id != syntenic_data.protein_id){
+                    jQuery('#makemetop_button').html("<button onclick='makeMeTop(\"" + member_id + "\",\""+protein_id+"\")' class='btn btn-default' type='button'> <i class='fa fa-random fa-1x'></i></button>");
+                }else{
+                    jQuery('#makemetop_button').html("<button disabled class='btn btn-default' type='button'> <i class='fa fa-random fa-1x'></i></button>");
+                }
 
                 jQuery('#ref_name').html("Chr " + json.info.name)
 
@@ -72,11 +76,19 @@ function newpopup(member_id, protein_id) {
 
                 jQuery('#gene_desc').html(stringTrim(desc, 200))
 
-                jQuery('#ensemblLink').html("<a target='_blank' href='http://www.ensembl.org/id/" + stable_id + "'><button type='button' class='btn btn-default'> <i class='fa fa-1x'>e!</i></button></a>")
+                jQuery('#ensemblLink').html("<a target='_blank' href='http://www.ensembl.org/id/" + stable_id + "'><button type='button' class='btn btn-default'> <i class='fa fa-1x'><b><i>e!</i></b></button></a>")
 
                 jQuery('#exportAlignmentLink').html("<button type='button' class='btn btn-default' onclick='exportAlignment(\""+protein_id+"\")'> <i class='fa fa-1x'>Aln</i></button>")
 
                 jQuery('#exportSequenceLink').html("<button type='button' class='btn btn-default' onclick='exportSequence(\""+protein_id+"\")'> <i class='fa fa-1x'>Seq</i></button>")
+
+                if(json.orthology == true && protein_id != syntenic_data.protein_id){
+                    jQuery('#1to1Link').html("<button type='button' class='btn btn-default' onclick='getAlignment(\"" + protein_id + "\",\""+syntenic_data.protein_id+"\")'> <i class='fa fa-1x'>1:1</i></button>")
+                }else{
+                    jQuery('#1to1Link').html("<button type='button' disabled class='btn btn-default'> <i class='fa fa-1x'>1;1</i></button>")
+                }
+
+
             }
         });
 
@@ -85,4 +97,91 @@ function newpopup(member_id, protein_id) {
 
 function removePopup() {
     jQuery("#popup").fadeOut()
+}
+
+function removeInfoPopup(){
+    jQuery("#info_popup_wrapper").fadeOut()
+}
+
+var sequence_list = {}
+var cigar_json = {}
+var align_list = {}
+
+function separateSeq(json){
+
+    sequence_list = {}
+    cigar_json = {}
+    align_list = {}
+
+    console.log("separateSeq")
+
+    for (var id in json){
+        sequence_list[json[id].protein_id] = json[id].sequence;
+        cigar_json[json[id].protein_id] = json[id].alignment;
+
+    }
+
+    joinAlignment()
+    printAlignment()
+
+}
+
+function printAlignment(){
+    console.log("printAlignment")
+
+    var first = ""
+    for (var id in align_list){
+        first = id;
+        break;
+    }
+
+    var formatted_seq = "<table>"
+
+    for(var i=0; i<align_list[first].length; i++)
+    {
+        for (var id in align_list) {
+            formatted_seq += "<tr><td>"+id+"<td>"+align_list[id][i]+"</tr>"
+        }
+        formatted_seq += "<tr><td colspan=2>&nbsp;</td>"
+    }
+
+    jQuery("#pairwise_alignment").html(formatted_seq)
+
+
+}
+
+function joinAlignment(){
+    console.log("joinAlignment")
+
+    for (var id in cigar_json) {
+        var cigar_string = expandCigar(cigar_json[id])
+        var j=0;
+        var seq = []
+        var line = 0;
+        seq[line] = "";
+        var count=1;
+
+        for (var i=0; i<cigar_string.length; i++)
+        {
+            if(cigar_string.charAt(i) == 'M')
+            {
+                seq[line] += sequence_list[id].charAt(j)
+                j++;
+            }
+            else if(cigar_string.charAt(i) == 'D')
+            {
+                seq[line] += "-"
+            }
+
+            if(count == 70)
+            {
+                line++;
+                seq[line] = "";
+                count = 0;
+            }
+            count++;
+
+        }
+        align_list[id] = seq
+    }
 }

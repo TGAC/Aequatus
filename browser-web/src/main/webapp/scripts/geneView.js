@@ -46,9 +46,9 @@ function getChromosomes(member_id) {
                 'doOnSuccess': function (json) {
 
                     chromosomes = json.member;
-                    if(chromosomes.length > 0){
+                    if (chromosomes.length > 0) {
                         showGeneReference()
-                    }else{
+                    } else {
                         hideGeneReference()
                     }
 
@@ -86,9 +86,9 @@ function getChromosomes(member_id) {
 
                     chromosomes = json.member;
 
-                    if(chromosomes.length > 0){
+                    if (chromosomes.length > 0) {
                         showGeneReference()
-                    }else{
+                    } else {
                         hideGeneReference()
                     }
 
@@ -310,10 +310,12 @@ function getcoreMember(query, redrawn) {
             'doOnSuccess': function (json) {
                 syntenic_data = json
                 //window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);
-                init(json, "#settings_div", "#filter" , "#sliderfilter")
+                init(json, "#settings_div", "#filter", "#sliderfilter")
+
+                setSelector()
+
                 URLMemberID(json.ref)
                 drawSynteny(redrawn);
-                setSelector()
 
             }
         });
@@ -682,9 +684,9 @@ function exportAlignment(id) {
         Protein_id.push(jQuery(this).text().split(":")[1]);
     });
 
-    if(!id){
+    if (!id) {
         data = syntenic_data.cigar
-    }else{
+    } else {
         data[id] = syntenic_data.cigar[id]
     }
 
@@ -719,9 +721,9 @@ function exportSequence(id) {
         Protein_id.push(jQuery(this).text().split(":")[1]);
     });
 
-    if(!id){
+    if (!id) {
         data = syntenic_data.sequence
-    }else{
+    } else {
         data[id] = syntenic_data.sequence[id]
     }
 
@@ -752,3 +754,74 @@ function dlText(data, name) {
 }
 
 
+function getAlignment(hit, ref) {
+    Fluxion.doAjax(
+        'comparaService',
+        'getPairwiseAlignment',
+        {'hit': hit, 'ref': ref, 'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+
+                ////if (mouseX + jQuery("#info-popup").width() > jQuery("#main1").width()) {
+                //    jQuery("#info-popup").css({"left": mouseX - jQuery("#info-popup").width());
+                //    jQuery("#info-popup").css({"top": (mouseY - jQuery("#info-popup").height());
+                //    //jQuery("#info-popup").attr('class', 'bubbleright')
+                ////}
+                ////else {
+                ////    jQuery("#info-popup").css({"left": (mouseX - 26)});
+                ////    jQuery("#info-popup").css({"top": (mouseY - jQuery("#popup").height() - 30)});
+                ////    jQuery("#info-popup").attr('class', 'bubbleleft')
+                ////}
+
+                jQuery("#info_popup_wrapper").fadeIn();
+
+                jQuery("#info-popup").width(jQuery(window).width() * 0.8);
+
+                jQuery("#pairwiseModal_content").width(jQuery(window).width() * 0.8);
+
+                jQuery("#pairwiseModal_content").html("<div id = 'pairwise" + ref + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : "+jQuery(window).width() * 0.8+"'></div>" +
+                    "<br>" +
+                    "<div id = 'pairwise" + hit + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : "+jQuery(window).width() * 0.8+";'></div>")
+                jQuery("#pairwise" + hit).svg()
+                jQuery("#pairwise" + ref).svg()
+
+
+
+                svg = jQuery("#pairwise" + ref).svg("get")
+
+                var text = ref
+
+                svg.text(parseInt(jQuery(window).width() * 0.6) + 10, 10, text, {
+                    fontFamily: 'Verdana',
+                    fontSize: 10,
+                    textAnchor: 'begin',
+                    fill: "red",
+                    class: "protein_id genelabel genetext"
+                });
+
+                svg.line(0, 6, jQuery(window).width() * 0.6, 6, {id: 'id geneline', stroke: 'red', strokeWidth: 2});
+
+                var svg = jQuery("#pairwise" + hit).svg("get")
+
+                var text = hit
+
+                svg.text(parseInt(jQuery(window).width() * 0.6) + 10, 10, text, {
+                    fontFamily: 'Verdana',
+                    fontSize: 10,
+                    textAnchor: 'begin',
+                    fill: "gray",
+                    class: "protein_id genelabel genetext"
+                });
+
+                svg.line(0, 6, jQuery(window).width() * 0.6, 6, {id: 'id geneline', stroke: 'green', strokeWidth: 1});
+
+                dispGenesExonForMember_id("#pairwise" + ref, json.ref.alignment, json.ref.gene_id, json.ref.protein_id)//, json.hit.alignment)
+                dispGenesExonForMember_id("#pairwise" + hit, json.hit.alignment, json.hit.gene_id, json.hit.protein_id, json.ref.alignment)
+
+
+                separateSeq(json)
+
+            }
+        });
+
+}
