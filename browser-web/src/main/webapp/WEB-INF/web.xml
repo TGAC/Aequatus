@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4">
+
+    <display-name> Aequatus </display-name>
+
+    <!-- logging -->
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>/WEB-INF/log4j.browser.properties</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>WEB-INF/applicationContext.xml</param-value>
+    </context-param>
+
+    <!--parameter goes to JSPs starts-->
+
+    <context-param>
+        <param-name>pageTitle</param-name>
+        <param-value>${browser.title}</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>header</param-name>
+        <param-value>${browser.header}</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>urlpath</param-name>
+        <param-value>${browser.urlpath}</param-value>
+    </context-param>
+
+    <!--parameter goes to JSPs ends-->
+
+    <!-- main servlet declaration -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>uk.ac.bbsrc.earlham.browser.web.BrowserAppListener</listener-class>
+    </listener>
+    <context-param>
+        <param-name>webAppRootKey</param-name>
+        <param-value>${browser.urlpath}</param-value>
+    </context-param>
+
+    <servlet>
+        <servlet-name>aequatus</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>aequatus</servlet-name>
+        <url-pattern>/${browser.urlpath}/*</url-pattern>
+    </servlet-mapping>
+
+    <session-config>
+        <session-timeout>60</session-timeout>
+    </session-config>
+
+
+</web-app>
