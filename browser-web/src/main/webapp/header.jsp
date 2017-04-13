@@ -59,6 +59,8 @@
     <script type="text/javascript" src="<c:url value='/scripts/popup.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/init.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/download.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='scripts/smart-domain.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='scripts/drawDomain.js'/>"></script>
 
 
     <%--Aequatus CSS--%>

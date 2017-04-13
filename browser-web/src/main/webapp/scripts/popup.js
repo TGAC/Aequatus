@@ -82,6 +82,8 @@ function newpopup(member_id, protein_id) {
 
                 jQuery('#exportSequenceLink').html("<button type='button' class='btn btn-default' onclick='exportSequence(\""+protein_id+"\")'> <i class='fa fa-1x'>Seq</i></button>")
 
+                jQuery('#smartDomain').html("<button type='button' class='btn btn-default' onclick='smart(\""+protein_id+"\")'> <i class='fa fa-1x'>Domain</i></button>")
+
                 if(json.orthology == true && protein_id != syntenic_data.protein_id){
                     jQuery('#1to1Link').html("<button type='button' class='btn btn-default' onclick='getAlignment(\"" + protein_id + "\",\""+syntenic_data.protein_id+"\")'> <i class='fa fa-1x'>1:1</i></button>")
                 }else{
@@ -101,6 +103,10 @@ function removePopup() {
 
 function removeInfoPopup(){
     jQuery("#info_popup_wrapper").fadeOut()
+}
+
+function removeDomainPopup(){
+    jQuery("#domain_popup_wrapper").fadeOut()
 }
 
 var sequence_list = {}

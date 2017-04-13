@@ -396,6 +396,7 @@
                                             <li><a id="exportSequenceLink" href="#" title="Export Sequence"><i class="fa  fa-fw"></i> Seq </a></li>
                                             <li class="divider"></li>
                                             <li><a id="exportAlignmentLink" href="#" title="Export Alignment"><i class="fa  fa-fw"></i> Aln</a></li>
+                                            <li><a id="smartDomain" href="#" title="Export Alignment"><i class="fa  fa-fw"></i> Domain</a></li>
                                         </ul>
                                         <div id="makemetop_button" style="float: right" title="Change Reference to"></div>
                                         <div id="ensemblLink" style="float: right" title="Link to Ensembl"></div>
@@ -488,6 +489,66 @@
             Protein Alignment: <br>
             <div id="pairwise_alignment" style="font-family: monospace;"></div>
         </div>
+
+    </div>
+</div>
+
+
+<div id="domain_popup_wrapper" style="display: none;">
+    <div style="background: darkgrey none repeat scroll 0% 0%; height: 100%; width: 100%; position: fixed; opacity: 0.8;z-index: 1999;" onclick="removeInfoPopup()">
+    </div>
+    <div id="domain-popup" class="popup"
+         style="margin-left: auto; margin-right: auto; top: 100px; position: relative; background: white none repeat scroll 0% 0%; box-shadow: 5px 5px 5px gray; z-index: 2000; ">
+        <div style="position: relative; left: 0px; top: 0px; width: 100%;">
+            <table width="100%" cellspacing="0" border="0">
+                <thead>
+                <tr>
+                    <td  height="30px" bgcolor="darkcyan"><span style="color:white"> Protein Domains </span>
+                    </td>
+                    <td width=20px bgcolor="darkcyan">
+                        <i onclick="removeDomainPopup();" class="fa fa-close "
+                           style="color: white;  cursor: pointer; top: 3px;">&nbsp;</i>
+                    </td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div style="overflow: hidden; left: 0px; position: relative; top: 10px; padding: 10px">
+            <div id="domainModal_content" style=" word-wrap: break-word;">
+                <table width="100%">
+                    <tr>
+                        <td colspan="2">
+                            <div style="overflow: hidden; left: 0px; position: relative; top: 10px; padding: 10px">
+                                <div id="domainStructure" style=" word-wrap: break-word;"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr valign="top">
+                        <td>
+                            <div style="overflow: hidden; left: 0px; position: relative; top: 10px; padding: 10px">
+                                <div id="visibleDomainList" style=" word-wrap: break-word;"></div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="overflow: hidden; left: 0px; position: relative; top: 10px; padding: 10px">
+                                <div id="hiddenDomainList" style=" word-wrap: break-word;"></div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+
+
+
+
+
+        <%--<div style="position: relative; top: 10px; padding: 10px">--%>
+            <%--Protein Alignment: <br>--%>
+            <%--<div id="pairwise_alignment" style="font-family: monospace;"></div>--%>
+        <%--</div>--%>
 
     </div>
 </div>
