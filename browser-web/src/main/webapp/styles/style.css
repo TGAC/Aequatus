@@ -471,3 +471,22 @@ div.tooltip {
     padding: 2px;
     display: none;
 }
+
+
+/*Domains*/
+
+.SMART {
+    stroke: green;
+    fill: green;
+
+}
+
+.PFAM {
+    stroke: gray;
+    fill: gray;
+}
+
+.INTRINSIC {
+    stroke: blue;
+    fill: steelblue;
+}
