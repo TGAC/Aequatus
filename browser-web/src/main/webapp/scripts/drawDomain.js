@@ -54,7 +54,7 @@ function dispEachDomain(g, svg, domains, width, max_len) {
                 startposition += 1
 
                 svg.rect(g, startposition, 1, stopposition, 20, {
-                    'id': "exon" + domains[domain_len].DOMAIN + "style1",
+                    'id': "domain" + domains[domain_len].DOMAIN,
                     'class':dom_class,
                     strokeWidth: 1
                 });
@@ -67,7 +67,7 @@ function dispEachDomain(g, svg, domains, width, max_len) {
                     fontSize: 10,
                     textAnchor: 'middle',
                     fill: "black",
-                    class: "protein_id genelabel  genetext"
+                    class: "domain position"
                 });
 
                 svg.text(parseInt(startposition+stopposition), 55, domains[domain_len].END, {
@@ -75,7 +75,7 @@ function dispEachDomain(g, svg, domains, width, max_len) {
                     fontSize: 10,
                     textAnchor: 'middle',
                     fill: "black",
-                    class: "protein_id genelabel  genetext"
+                    class: "domain position"
                 });
 
                 var text = "";
@@ -93,7 +93,7 @@ function dispEachDomain(g, svg, domains, width, max_len) {
                     fontSize: 10,
                     textAnchor: 'middle',
                     fill: "white",
-                    class: "protein_id genelabel  genetext"
+                    class: "domain label"
                 });
             }
         }
