@@ -36,10 +36,9 @@ function smart(gene_id, protein_id) {
 
                     checkStatus(json.jobid, gene_id, protein_id)
 
+                    jQuery("#visibleDomainList").html(visible_table_content)
+                    jQuery("#hiddenDomainList").html(hidden_table_content)
                 }
-
-                jQuery("#visibleDomainList").html(visible_table_content)
-                jQuery("#hiddenDomainList").html(hidden_table_content)
             }
         });
 }
