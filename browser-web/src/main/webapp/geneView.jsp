@@ -519,7 +519,7 @@
                 <table width="100%">
                     <tr>
                         <td colspan="2">
-                            <div style="overflow: hidden; left: 0px; position: relative; top: 0px; padding: 0px; height: 160px">
+                            <div style=" left: 0px; position: relative; top: 0px; padding: 0px; height: 160px">
                                 <div id="domainHeader" style=" word-wrap: break-word;"></div>
                                 <div id="domainStructure" style=" word-wrap: break-word;"></div>
                             </div>

@@ -20,7 +20,43 @@ function drawDomain(id, domains){
 
 function dispEachDomain(g, svg, domains, width, max_len) {
 
+
     if (domains.length > 0) {
+
+        var domain_len = domains.length;
+
+        domains.sort(sort_by('START', true, parseInt));
+
+        var end = 0;
+
+        for (var i=0; i<domain_len; i++) {
+            if(domains[i].STATUS.split("|")[0] == "visible"){
+                end = domains[0].END;
+                break;
+            }
+        }
+        console.log(end)
+        var layer = 0
+        domains[0].layer = layer;
+        for (var i=1; i<domain_len; i++) {
+            if(domains[i].STATUS.split("|")[0] == "visible"){
+                console.log("layer "+layer)
+
+                if(parseInt(domains[i].START) < parseInt(end))
+                {
+                    console.log(domains[i].START+" < "+end);
+                    layer++;
+                    domains[i].layer = layer;
+                    console.log("if "+i+" "+layer)
+                } else {
+                    console.log(domains[i].START+" => "+end);
+                    layer = 0;
+                    domains[i].layer = layer;
+                    console.log("else "+i+" "+layer)
+                    end = domains[i].END
+                }
+            }
+        }
 
         var domain_len = domains.length;
 
@@ -53,30 +89,33 @@ function dispEachDomain(g, svg, domains, width, max_len) {
                 }
                 startposition += 1
 
-                svg.rect(g, startposition, 1, stopposition, 20, {
+                var top = domains[domain_len].layer * 22;
+                console.log(top)
+
+                svg.rect(g, startposition, top, stopposition, (20), {
                     'id': "domain" + domains[domain_len].DOMAIN,
                     'class':dom_class,
                     strokeWidth: 1
                 });
 
-                svg.line(parseInt(startposition), 20, parseInt(startposition), 45, {stroke: 'gray', strokeWidth: 1});
-                svg.line(parseInt(startposition+stopposition), 20, parseInt(startposition+stopposition), 45, {stroke: 'gray', strokeWidth: 1});
+                // svg.line(parseInt(startposition), 20, parseInt(startposition), 45, {stroke: 'gray', strokeWidth: 1});
+                // svg.line(parseInt(startposition+stopposition), 20, parseInt(startposition+stopposition), 45, {stroke: 'gray', strokeWidth: 1});
 
-                svg.text(parseInt(startposition), 55, domains[domain_len].START, {
-                    fontFamily: 'Verdana',
-                    fontSize: 10,
-                    textAnchor: 'middle',
-                    fill: "black",
-                    class: "domain position"
-                });
+                // svg.text(parseInt(startposition), 55, domains[domain_len].START, {
+                //     fontFamily: 'Verdana',
+                //     fontSize: 10,
+                //     textAnchor: 'middle',
+                //     fill: "black",
+                //     class: "domain position"
+                // });
 
-                svg.text(parseInt(startposition+stopposition), 55, domains[domain_len].END, {
-                    fontFamily: 'Verdana',
-                    fontSize: 10,
-                    textAnchor: 'middle',
-                    fill: "black",
-                    class: "domain position"
-                });
+                // svg.text(parseInt(startposition+stopposition), 55, domains[domain_len].END, {
+                //     fontFamily: 'Verdana',
+                //     fontSize: 10,
+                //     textAnchor: 'middle',
+                //     fill: "black",
+                //     class: "domain position"
+                // });
 
                 var text = "";
 
@@ -87,8 +126,12 @@ function dispEachDomain(g, svg, domains, width, max_len) {
                     text = domains[domain_len].DOMAIN
                 }
 
+                var top = (parseInt(domains[domain_len].layer)+parseFloat(0.5)) * 22;
+
+                console.log(top)
+
                 var textPosition = startposition + (stopposition)/2
-                svg.text(parseInt(textPosition), 15, text, {
+                svg.text(parseInt(textPosition), top, text, {
                     fontFamily: 'Verdana',
                     fontSize: 10,
                     textAnchor: 'middle',
