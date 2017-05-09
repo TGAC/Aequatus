@@ -486,7 +486,17 @@ div.tooltip {
     fill: gray;
 }
 
-.INTRINSIC {
+.transmembrane_domain {
+    stroke: blue;
+    fill: steelblue;
+}
+
+.low_complexity_region {
+    stroke: blue;
+    fill: pink;
+}
+
+.internal_repeat {
     stroke: blue;
     fill: steelblue;
 }

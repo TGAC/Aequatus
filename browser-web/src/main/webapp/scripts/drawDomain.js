@@ -35,24 +35,18 @@ function dispEachDomain(g, svg, domains, width, max_len) {
                 break;
             }
         }
-        console.log(end)
         var layer = 0
         domains[0].layer = layer;
         for (var i=1; i<domain_len; i++) {
             if(domains[i].STATUS.split("|")[0] == "visible"){
-                console.log("layer "+layer)
 
                 if(parseInt(domains[i].START) < parseInt(end))
                 {
-                    console.log(domains[i].START+" < "+end);
                     layer++;
                     domains[i].layer = layer;
-                    console.log("if "+i+" "+layer)
                 } else {
-                    console.log(domains[i].START+" => "+end);
                     layer = 0;
                     domains[i].layer = layer;
-                    console.log("else "+i+" "+layer)
                     end = domains[i].END
                 }
             }
@@ -62,6 +56,17 @@ function dispEachDomain(g, svg, domains, width, max_len) {
 
         while (domain_len--) {
             var dom_class=domains[domain_len].TYPE;
+
+
+            if(dom_class == "PROSPERO"){
+                dom_class = "'internal_repeat "+domains[domain_len].DOMAIN+"'"
+            } else if (dom_class == "INTRINSIC"){
+                if (domains[domain_len].DOMAIN == "transmembrane_domain"){
+                    dom_class = "transmembrane_domain"
+                }else if (domains[domain_len].DOMAIN == "low_complexity_region"){
+                    dom_class = "low_complexity_region"
+                }
+            }
 
             if(domains[domain_len].TYPE.split("|")[0]){
 
@@ -90,7 +95,6 @@ function dispEachDomain(g, svg, domains, width, max_len) {
                 startposition += 1
 
                 var top = domains[domain_len].layer * 22;
-                console.log(top)
 
                 svg.rect(g, startposition, top, stopposition, (20), {
                     'id': "domain" + domains[domain_len].DOMAIN,
@@ -128,7 +132,6 @@ function dispEachDomain(g, svg, domains, width, max_len) {
 
                 var top = (parseInt(domains[domain_len].layer)+parseFloat(0.5)) * 22;
 
-                console.log(top)
 
                 var textPosition = startposition + (stopposition)/2
                 svg.text(parseInt(textPosition), top, text, {
