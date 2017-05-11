@@ -87,10 +87,6 @@
     width: 100%;
 }
 
-#makemetop_button {
-    float: right;
-}
-
 #popup_header {
     left: 0;
     overflow: hidden;
@@ -116,23 +112,27 @@
     background-image: -moz-linear-gradient(center top, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
     border: 1px solid #888888;
     box-shadow: 10px 10px 35px #888888;
-    color: #333333;
+    color: gray;
     display: inline-block;
     position: absolute;
     text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
     width: 100%;
     z-index: 999;
-    font-family: fontawesome;
+    font-family: Verdana;
 }
 
 .bubbleright::after {
-    border-bottom: 25px solid transparent;
-    border-right: 25px solid white;
-    bottom: -25px;
+    border-bottom-color: transparent;
+    border-bottom-style: solid;
+    border-bottom-width: 25px;
+    border-right-color: darkcyan;
+    border-right-style: solid;
+    border-right-width: 25px;
     content: "";
-    left: 176px;
+    left: -15px;
     margin-left: -10px;
     position: absolute;
+    top: -1px;
     z-index: 999;
 }
 
@@ -472,6 +472,26 @@ div.tooltip {
     display: none;
 }
 
+.popup_menu {
+    padding: 2px;
+    color: gray;
+    cursor: pointer;
+}
+
+.popup_menu:hover {
+    color: #333333;
+    background: lightgray;
+}
+
+#smartDomainParams {
+    left: 200px;
+    top:45px;
+    position: absolute;
+    width: 200px;
+    background: white none repeat scroll 0% 0%;
+    border: 1px solid gray;
+    box-shadow: 30px 5px 35px 5px rgb(136, 136, 136);
+}
 
 /*Domains*/
 
@@ -499,4 +519,9 @@ div.tooltip {
 .internal_repeat {
     stroke: blue;
     fill: steelblue;
+}
+
+.INTRINSIC {
+    stroke: blue;
+    fill: blue;
 }

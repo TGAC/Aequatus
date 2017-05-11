@@ -344,7 +344,88 @@
 
 </div>
 
-<div id="popup" class="bubbleleft" style="width:200px; height:130px;">
+<%--<div id="popup" class="bubbleleft" style="width:200px; height:130px;">--%>
+<%--<div style="overflow: hidden; left: 0px; top: 0px; position: relative;">--%>
+<%--<table width="100%" cellspacing="0" border="0">--%>
+<%--<thead>--%>
+<%--<tr>--%>
+<%--<td bgcolor="darkcyan">--%>
+<%--<div style="color: white; padding: 2px; width: 100%;" id="stable_id_header"><span--%>
+<%--id="stable_label"></span>--%>
+<%--<i onclick="removePopup();" class="fa fa-close "--%>
+<%--style="color: white; position: absolute; right: 5px; cursor: pointer; "></i>--%>
+<%--</div>--%>
+<%--</td>--%>
+<%--</tr>--%>
+<%--</thead>--%>
+<%--</table>--%>
+
+<%--</div>--%>
+<%--<div style="position: relative; padding: 5px;">--%>
+<%--<table width=100% cellspacing="0" border="0">--%>
+<%--<tbody>--%>
+<%--<tr>--%>
+<%--<td>--%>
+<%--<div id="ref_name"></div>--%>
+<%--</td>--%>
+<%--</tr>--%>
+<%--<tr>--%>
+<%--<td>--%>
+<%--<div id="position"></div>--%>
+<%--</td>--%>
+<%--</tr>--%>
+
+<%--<tr>--%>
+<%--<td>--%>
+<%--<div id="gene_desc"></div>--%>
+<%--</td>--%>
+<%--</tr>--%>
+<%--<tr align="right">--%>
+<%--<td align="">--%>
+<%--<table>--%>
+<%--<tbody>--%>
+<%--<tr>--%>
+<%--<td>--%>
+<%--&lt;%&ndash;<div id="exportSequenceLink" style="float: right" title="Export Sequence"></div>&ndash;%&gt;--%>
+<%--&lt;%&ndash;</td>&ndash;%&gt;--%>
+<%--&lt;%&ndash;<td>&ndash;%&gt;--%>
+<%--&lt;%&ndash;<div id="exportAlignmentLink" style="float: right" title="Export Alignment"></div>&ndash;%&gt;--%>
+<%--<div class="btn-group open">--%>
+<%--<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-external-link fa-fw"></i> </a>--%>
+<%--<ul class="dropdown-menu">--%>
+<%--<li><a id="exportSequenceLink" href="#" title="Export Sequence"><i class="fa  fa-fw"></i> Seq </a></li>--%>
+<%--<li class="divider"></li>--%>
+<%--<li><a id="exportAlignmentLink" href="#" title="Export Alignment"><i class="fa  fa-fw"></i> Aln</a></li>--%>
+<%--<li><a id="smartDomain" href="#" title="Export Alignment"><i class="fa  fa-fw"></i> Domain</a></li>--%>
+<%--</ul>--%>
+<%--<div id="makemetop_button" style="float: right" title="Change Reference to"></div>--%>
+<%--<div id="ensemblLink" style="float: right" title="Link to Ensembl"></div>--%>
+<%--<div id="1to1Link" style="float: right" title="1 to 1 Alignment"></div>--%>
+
+<%--</div>--%>
+<%--</td>--%>
+<%--&lt;%&ndash;<td>&ndash;%&gt;--%>
+<%--&lt;%&ndash;<div id="makemetop_button" style="float: right" title="Change Reference to"></div>&ndash;%&gt;--%>
+
+<%--&lt;%&ndash;</td>&ndash;%&gt;--%>
+<%--&lt;%&ndash;<td>&ndash;%&gt;--%>
+<%--&lt;%&ndash;<div id="ensemblLink" style="float: right" title="Link to Ensembl"></div>&ndash;%&gt;--%>
+<%--&lt;%&ndash;</td>&ndash;%&gt;--%>
+<%--&lt;%&ndash;<td>&ndash;%&gt;--%>
+<%--&lt;%&ndash;<div id="1to1Link" style="float: right" title="1 to 1 Alignment"></div>&ndash;%&gt;--%>
+<%--&lt;%&ndash;</td>&ndash;%&gt;--%>
+<%--</tr>--%>
+<%--</tbody>--%>
+<%--</table>--%>
+<%--</td>--%>
+<%--</tr>--%>
+<%--</tbody>--%>
+<%--</table>--%>
+<%--</div>--%>
+
+<%--</div>--%>
+
+<div id="popup" class="bubbleleft" style="width:200px; height:auto;">
     <div style="overflow: hidden; left: 0px; top: 0px; position: relative;">
         <table width="100%" cellspacing="0" border="0">
             <thead>
@@ -380,46 +461,93 @@
                     <div id="gene_desc"></div>
                 </td>
             </tr>
-            <tr align="right">
-                <td align="">
-                    <table>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <%--<div id="exportSequenceLink" style="float: right" title="Export Sequence"></div>--%>
-                            <%--</td>--%>
-                            <%--<td>--%>
-                                <%--<div id="exportAlignmentLink" style="float: right" title="Export Alignment"></div>--%>
-                                    <div class="btn-group open">
-                                        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-external-link fa-fw"></i> </a>
-                                        <ul class="dropdown-menu">
-                                            <li><a id="exportSequenceLink" href="#" title="Export Sequence"><i class="fa  fa-fw"></i> Seq </a></li>
-                                            <li class="divider"></li>
-                                            <li><a id="exportAlignmentLink" href="#" title="Export Alignment"><i class="fa  fa-fw"></i> Aln</a></li>
-                                            <li><a id="smartDomain" href="#" title="Export Alignment"><i class="fa  fa-fw"></i> Domain</a></li>
-                                        </ul>
-                                        <div id="makemetop_button" style="float: right" title="Change Reference to"></div>
-                                        <div id="ensemblLink" style="float: right" title="Link to Ensembl"></div>
-                                        <div id="1to1Link" style="float: right" title="1 to 1 Alignment"></div>
+            <tr>
+                <td>
 
-                                    </div>
-                            </td>
-                            <%--<td>--%>
-                                <%--<div id="makemetop_button" style="float: right" title="Change Reference to"></div>--%>
+                    <hr style="margin-bottom: 0px;margin-top: 0px;">
+            <tr>
+                <td>
 
-                            <%--</td>--%>
-                            <%--<td>--%>
-                                <%--<div id="ensemblLink" style="float: right" title="Link to Ensembl"></div>--%>
-                            <%--</td>--%>
-                            <%--<td>--%>
-                                <%--<div id="1to1Link" style="float: right" title="1 to 1 Alignment"></div>--%>
-                            <%--</td>--%>
-                        </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
+                    <%--<div class="btn-group open">--%>
+
+                    <div class="popup_menu" id="smartDomain" title="Domain"
+                         onclick="jQuery('#smartDomainParams').toggle()"><span>Protein Domains <i class="fa fa-caret-right" aria-hidden="true" style="float:right"></i></span></div>
+                    <div class="popup_menu" id="smartDomainParams" title="Domain" style="display: none;">
+                        <div class="popup_menu"
+                             style="text-align: center; font-weight: bold; color: gray; padding: 5px;">
+                            SMART parameters:
+                        </div>
+                        <hr style="margin-bottom: 0px;margin-top: 0px;">
+                        <div class="popup_menu">
+                            <label style="font-weight: normal;">
+                                <input name="SMARTParams" type="checkbox" value="pfam"> <span
+                                    title="Include Pfam">Pfam</span>
+                            </label>
+                        </div>
+                        <div class="popup_menu">
+                            <label style="font-weight: normal;">
+                                <input name="SMARTParams" type="checkbox" value="signal"> <span
+                                    title="Include signal peptide prediction">Signal peptide</span></label></div>
+                        <div class="popup_menu">
+                            <label style="font-weight: normal;">
+                                <input name="SMARTParams" type="checkbox" value="repeat"> <span
+                                    title="Include internal repeat predictions">Internal repeat</span>
+                            </label>
+                        </div>
+                        <div class="popup_menu">
+                            <label style="font-weight: normal;">
+                                <input name="SMARTParams" type="checkbox" value="protein_disorder"> <span
+                                    title="Include predictions of internal protein disorder">Internal protein disorder</span>
+                            </label>
+                        </div>
+                        <div class="popup_menu">
+                            <label style="font-weight: normal;">
+                                <input name="SMARTParams" type="checkbox" value="out_homologous"> <span
+                                    title="Include predictions of outlier homologues and homologues of known structures">Homologues</span>
+                            </label>
+                        </div>
+                        <hr style="margin-bottom: 0px;margin-top: 0px;">
+                        <div id="runSMART" style="text-align: center; font-weight: bold; color: gray; padding: 5px;">
+                        </div>
+                    </div>
+            <tr>
+                <td>
+
+                    <%--<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"><i--%>
+                    <%--class="fa fa-external-link fa-fw"></i> </a>--%>
+
+            <tr>
+                <td>
+                    <div class="popup_menu" id="exportSequenceLink" href="#" title="Export Sequence"><i
+                            class="fa  fa-fw"></i> Seq
+                    </div>
+            <tr>
+                <td>
+                    <div class="popup_menu" id="exportAlignmentLink" href="#" title="Export Alignment"><i
+                            class="fa  fa-fw"></i> Aln
+                    </div>
+            <tr>
+                <td>
+
+                    <div class="popup_menu" id="makemetop_button" title="Change Reference to"></div>
+            <tr>
+                <td>
+
+                    <div class="popup_menu" id="ensemblLink" title="Link to Ensembl"></div>
+            <tr>
+                <td>
+
+                    <div class="popup_menu" id="1to1Link" title="1 to 1 Alignment"></div>
+
+                    <%--</div>--%>
+                    <%--</td>--%>
+
+                    <%--</tr>--%>
             </tbody>
+        </table>
+        </td>
+        </tr>
+        </tbody>
         </table>
     </div>
 
@@ -462,7 +590,8 @@
 <%--</div>--%>
 <%--</div>--%>
 <div id="info_popup_wrapper" style="display: none;">
-    <div style="background: darkgrey none repeat scroll 0% 0%; height: 100%; width: 100%; position: fixed; opacity: 0.8;z-index: 1999;" onclick="removeInfoPopup()">
+    <div style="background: darkgrey none repeat scroll 0% 0%; height: 100%; width: 100%; position: fixed; opacity: 0.8;z-index: 1999;"
+         onclick="removeInfoPopup()">
     </div>
     <div id="info-popup" class="popup"
          style="margin-left: auto; margin-right: auto; top: 100px; position: relative; background: white none repeat scroll 0% 0%; box-shadow: 5px 5px 5px gray; z-index: 2000; ">
@@ -470,7 +599,7 @@
             <table width="100%" cellspacing="0" border="0">
                 <thead>
                 <tr>
-                    <td  height="30px" bgcolor="darkcyan"><span style="color:white"> Pairwise Alignment </span>
+                    <td height="30px" bgcolor="darkcyan"><span style="color:white"> Pairwise Alignment </span>
                     </td>
                     <td width=20px bgcolor="darkcyan">
                         <i onclick="removeInfoPopup();" class="fa fa-close "
@@ -495,7 +624,8 @@
 
 
 <div id="domain_popup_wrapper" style="display: none;">
-    <div style="background: darkgrey none repeat scroll 0% 0%; height: 100%; width: 100%; position: fixed; opacity: 0.8;z-index: 1999;" onclick="removeInfoPopup()">
+    <div style="background: darkgrey none repeat scroll 0% 0%; height: 100%; width: 100%; position: fixed; opacity: 0.8;z-index: 1999;"
+         onclick="removeInfoPopup()">
     </div>
     <div id="domain-popup" class="popup"
          style="margin-left: auto; margin-right: auto; top: 100px; position: relative; background: white none repeat scroll 0% 0%; box-shadow: 5px 5px 5px gray; z-index: 2000; ">
@@ -503,7 +633,7 @@
             <table width="100%" cellspacing="0" border="0">
                 <thead>
                 <tr>
-                    <td  height="30px" bgcolor="darkcyan"><span style="color:white"> Protein Domains </span>
+                    <td height="30px" bgcolor="darkcyan"><span style="color:white"> Protein Domains </span>
                     </td>
                     <td width=20px bgcolor="darkcyan">
                         <i onclick="removeDomainPopup();" class="fa fa-close "
@@ -543,12 +673,9 @@
         </div>
 
 
-
-
-
         <%--<div style="position: relative; top: 10px; padding: 10px">--%>
-            <%--Protein Alignment: <br>--%>
-            <%--<div id="pairwise_alignment" style="font-family: monospace;"></div>--%>
+        <%--Protein Alignment: <br>--%>
+        <%--<div id="pairwise_alignment" style="font-family: monospace;"></div>--%>
         <%--</div>--%>
 
     </div>
