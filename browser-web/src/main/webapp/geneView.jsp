@@ -470,9 +470,9 @@
 
                     <%--<div class="btn-group open">--%>
 
-                    <div class="popup_menu" id="smartDomain" title="Domain"
+                    <div class="popup_menu" id="smartDomain"
                          onclick="jQuery('#smartDomainParams').toggle()"><span>Protein Domains <i class="fa fa-caret-right" aria-hidden="true" style="float:right"></i></span></div>
-                    <div class="popup_menu" id="smartDomainParams" title="Domain" style="display: none;">
+                    <div class="popup_menu" id="smartDomainParams" style="display: none;">
                         <div class="popup_menu"
                              style="text-align: center; font-weight: bold; color: gray; padding: 5px;">
                             SMART parameters:
@@ -518,26 +518,26 @@
 
             <tr>
                 <td>
-                    <div class="popup_menu" id="exportSequenceLink" href="#" title="Export Sequence"><i
+                    <div class="popup_menu" id="exportSequenceLink" href="#"><i
                             class="fa  fa-fw"></i> Seq
                     </div>
             <tr>
                 <td>
-                    <div class="popup_menu" id="exportAlignmentLink" href="#" title="Export Alignment"><i
+                    <div class="popup_menu" id="exportAlignmentLink" href="#"><i
                             class="fa  fa-fw"></i> Aln
                     </div>
             <tr>
                 <td>
 
-                    <div class="popup_menu" id="makemetop_button" title="Change Reference to"></div>
+                    <div class="popup_menu" id="makemetop_button"></div>
             <tr>
                 <td>
 
-                    <div class="popup_menu" id="ensemblLink" title="Link to Ensembl"></div>
+                    <div class="popup_menu" id="ensemblLink"></div>
             <tr>
                 <td>
 
-                    <div class="popup_menu" id="1to1Link" title="1 to 1 Alignment"></div>
+                    <div class="popup_menu" id="1to1Link"></div>
 
                     <%--</div>--%>
                     <%--</td>--%>

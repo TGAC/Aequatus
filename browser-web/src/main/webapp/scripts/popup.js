@@ -76,7 +76,7 @@ function newpopup(member_id, protein_id) {
 
                 jQuery('#gene_desc').html(stringTrim(desc, 200))
 
-                jQuery('#ensemblLink').html("<a target='_blank' href='http://www.ensembl.org/id/" + stable_id + "'><span> <i>e!</i></b></span></a>")
+                jQuery('#ensemblLink').html("<a target='_blank' href='http://www.ensembl.org/id/" + stable_id + "'><span style='color: gray;' onmouseover=\"this.style.color='black'\" onmouseout=\"this.style.color='gray'\"> Link to Ensembl (<i>e!</i>)</span></a>")
 
                 jQuery('#exportAlignmentLink').html("<span onclick='exportAlignment(\""+protein_id+"\")'> Export Alignment</i></span>")
 
