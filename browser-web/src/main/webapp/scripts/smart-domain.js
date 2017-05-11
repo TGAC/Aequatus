@@ -7,10 +7,40 @@ function smart(gene_id, protein_id) {
 
     var sequence = syntenic_data.sequence[protein_id];
 
+    var pfam= false;
+    var signal = false;
+    var repeat = false;
+    var protein_disorder = false;
+    var out_homologous = false;
+
+    jQuery("input[name='SMARTParams']").each( function () {
+        if(jQuery(this).val() == "pfam" && jQuery(this).is(":checked"))
+        {
+            console.log("pfam")
+            pfam = true;
+        }else  if(jQuery(this).val() == "signal" && jQuery(this).is(":checked"))
+        {
+            console.log("signal")
+            signal = true;
+        }else  if(jQuery(this).val() == "repeat" && jQuery(this).is(":checked"))
+        {
+            console.log("repeat")
+            repeat = true;
+        }else  if(jQuery(this).val() == "protein_disorder" && jQuery(this).is(":checked"))
+        {
+            console.log("disorder")
+            protein_disorder = true;
+        }else  if(jQuery(this).val() == "out_homologous" && jQuery(this).is(":checked"))
+        {
+            console.log("homologous")
+            out_homologous = true;
+        }
+    });
+
     Fluxion.doAjax(
         'smartDomain',
         'smartSearchSequence',
-        {'sequence': sequence, 'url': ajaxurl},
+        {'sequence': sequence, 'pfam': pfam, 'signal':signal, 'repeat': repeat, 'protein_disorder': protein_disorder, 'out_homologous': out_homologous, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
                 jQuery("#domain_popup_wrapper").fadeIn();
@@ -51,8 +81,54 @@ function showDomainResult(json, gene_id, protein_id) {
 }
 
 function domainTable(domains) {
-    var visible_table_content = "<h3>Confidently predicted domains, repeats, motifs and features from SMART</h3><table class='table table-condensed' width='100%'><tr><th>Name</th><th>Start</th><th>End</th><th>E-value</th><th>Type</th></tr>"
-    var hidden_table_content = "<h3>Features NOT shown in the diagram: </h3> <table class='table table-condensed' width='100%'><tr><th>Name</th><th>Start</th><th>End</th><th>E-value</th><th>Type</th><th>Reason</th></tr>"
+    var visible_table_content = "<h3>Confidently predicted domains, repeats, motifs and features from SMART</h3>" +
+        "<table id='visibleDomainListTable' class='table table-condensed' width='100%'>" +
+        "<thead>" +
+        "<tr>" +
+        "<th>Name</th>" +
+        "<th>Start</th>" +
+        "<th>End</th>" +
+        "<th>E-value</th>" +
+        "<th>Type</th>" +
+        "</tr>"+
+        "</thead>";
+
+    visible_table_content += "<tfoot>" +
+        "<tr>" +
+        "<th>Name</th>" +
+        "<th>Start</th>" +
+        "<th>End</th>" +
+        "<th>E-value</th>" +
+        "<th>Type</th>" +
+        "</tr>"+
+        "</tfoot>"+
+        "<tbody";
+
+
+    var hidden_table_content = "<h3>Features NOT shown in the diagram: </h3> " +
+        "<table id='hiddenDomainListTable' class='table table-condensed' width='100%'>" +
+        "<thead>" +
+        "<tr>" +
+        "<th>Name</th>" +
+        "<th>Start</th>" +
+        "<th>End</th>" +
+        "<th>E-value</th>" +
+        "<th>Type</th>" +
+        "<th>Reason</th>" +
+        "</tr>"+
+        "</thead>";
+
+    hidden_table_content += "<tfoot>" +
+        "<tr>" +
+        "<th>Name</th>" +
+        "<th>Start</th>" +
+        "<th>End</th>" +
+        "<th>E-value</th>" +
+        "<th>Type</th>" +
+        "<th>Reason</th>" +
+        "</tr>"+
+        "</tfoot>" +
+        "<tbody";
 
     jQuery("#visibleDomainList").html("")
     jQuery("#hiddenDomainList").html("")
@@ -79,11 +155,14 @@ function domainTable(domains) {
         }
     }
 
-    visible_table_content += "</table>"
-    hidden_table_content += "</table>"
+    visible_table_content += "</tbody></table>"
+    hidden_table_content += "</tbody></table>"
 
     jQuery("#visibleDomainList").html(visible_table_content)
     jQuery("#hiddenDomainList").html(hidden_table_content)
+
+    jQuery('#visibleDomainListTable').DataTable();
+    jQuery('#hiddenDomainListTable').DataTable();
 }
 
 function checkStatus(jobid, gene_id, protein_id) {
