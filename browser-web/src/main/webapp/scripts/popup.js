@@ -99,6 +99,8 @@ function newpopup(member_id, protein_id) {
 
 function removePopup() {
     jQuery("#popup").fadeOut()
+    jQuery("#smartDomainParams").css("display","none");
+
 }
 
 function removeInfoPopup(){
