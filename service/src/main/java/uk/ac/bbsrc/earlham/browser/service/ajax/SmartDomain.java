@@ -31,10 +31,43 @@ public class SmartDomain {
         try {
             String sequence = json.getString("sequence");
 
+            boolean pfam, signal, repeat, protein_disorder, out_homologous = false;
+
+            pfam = json.getBoolean("pfam");
+            signal = json.getBoolean("signal");
+            repeat = json.getBoolean("repeat");
+            protein_disorder = json.getBoolean("protein_disorder");
+            out_homologous = json.getBoolean("out_homologous");
+
+
             Map<String, Object> params = new LinkedHashMap<>();
             params.put("SEQUENCE", sequence);
             params.put("TEXTONLY", 1);
-            params.put("DO_PFAM", "DO_PFAM");
+
+            if(pfam){
+                log.info("\n\n pfam "+pfam);
+                params.put("DO_PFAM", "DO_PFAM");
+            }
+
+            if(signal){
+                log.info("\n\n INCLUDE_SIGNALP "+signal);
+                params.put("INCLUDE_SIGNALP", "INCLUDE_SIGNALP");
+            }
+
+            if(repeat){
+                log.info("\n\n DO_PROSPERO "+repeat);
+                params.put("DO_PROSPERO", "DO_PROSPERO");
+            }
+
+            if(protein_disorder){
+                log.info("\n\n DO_DISEMBL "+protein_disorder);
+                params.put("DO_DISEMBL", "DO_DISEMBL");
+            }
+
+            if(out_homologous){
+                log.info("\n\n INCLUDE_BLAST "+out_homologous);
+                params.put("INCLUDE_BLAST", "INCLUDE_BLAST");
+            }
 
             StringBuilder postData = new StringBuilder();
             for (Map.Entry<String, Object> param : params.entrySet()) {
