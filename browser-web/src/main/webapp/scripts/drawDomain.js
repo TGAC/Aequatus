@@ -29,15 +29,18 @@ function dispEachDomain(g, svg, domains, width, max_len) {
 
         var end = 0;
 
+        var layer = 0
+        var start = 0;
         for (var i=0; i<domain_len; i++) {
             if(domains[i].STATUS.split("|")[0] == "visible"){
-                end = domains[0].END;
+                end = domains[i].END;
+                domains[i].layer = layer;
+                start = parseInt(i)+1;
                 break;
             }
         }
-        var layer = 0
-        domains[0].layer = layer;
-        for (var i=1; i<domain_len; i++) {
+
+        for (var i=start; i<domain_len; i++) {
             if(domains[i].STATUS.split("|")[0] == "visible"){
 
                 if(parseInt(domains[i].START) < parseInt(end))
