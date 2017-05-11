@@ -1,13 +1,13 @@
 /**
  * Created by thankia on 13/04/2017.
  */
-function drawDomain(id, domains){
+function drawDomain(id, domains) {
     jQuery("#domainStructure").svg()
     var svg = jQuery("#domainStructure").svg("get")
     var maxLentemp = jQuery("#domainStructure").width();
     var stopposition = maxLentemp;
 
-    svg.rect(0, 1, stopposition, 20, {
+    svg.rect(0, 10, stopposition, 20, {
         'id': 'domainline',
         fill: 'lightgray'
     });
@@ -31,20 +31,19 @@ function dispEachDomain(g, svg, domains, width, max_len) {
 
         var layer = 0
         var start = 0;
-        for (var i=0; i<domain_len; i++) {
-            if(domains[i].STATUS.split("|")[0] == "visible"){
+        for (var i = 0; i < domain_len; i++) {
+            if (domains[i].STATUS.split("|")[0] == "visible") {
                 end = domains[i].END;
                 domains[i].layer = layer;
-                start = parseInt(i)+1;
+                start = parseInt(i) + 1;
                 break;
             }
         }
 
-        for (var i=start; i<domain_len; i++) {
-            if(domains[i].STATUS.split("|")[0] == "visible"){
+        for (var i = start; i < domain_len; i++) {
+            if (domains[i].STATUS.split("|")[0] == "visible") {
 
-                if(parseInt(domains[i].START) < parseInt(end))
-                {
+                if (parseInt(domains[i].START) < parseInt(end)) {
                     layer++;
                     domains[i].layer = layer;
                 } else {
@@ -58,23 +57,23 @@ function dispEachDomain(g, svg, domains, width, max_len) {
         var domain_len = domains.length;
 
         while (domain_len--) {
-            var dom_class=domains[domain_len].TYPE;
+            var dom_class = domains[domain_len].TYPE;
 
 
-            if(dom_class == "PROSPERO"){
-                dom_class = "'internal_repeat "+domains[domain_len].DOMAIN+"'"
-            } else if (dom_class == "INTRINSIC"){
-                if (domains[domain_len].DOMAIN == "transmembrane_domain"){
+            if (dom_class == "PROSPERO") {
+                dom_class = "'internal_repeat " + domains[domain_len].DOMAIN + "'"
+            } else if (dom_class == "INTRINSIC") {
+                if (domains[domain_len].DOMAIN == "transmembrane_domain") {
                     dom_class = "transmembrane_domain"
-                }else if (domains[domain_len].DOMAIN == "low_complexity_region"){
+                } else if (domains[domain_len].DOMAIN == "low_complexity_region") {
                     dom_class = "low_complexity_region"
                 }
             }
 
-            if(domains[domain_len].TYPE.split("|")[0]){
+            if (domains[domain_len].TYPE.split("|")[0]) {
 
             }
-            if(domains[domain_len].STATUS.split("|")[0] == "visible"){
+            if (domains[domain_len].STATUS.split("|")[0] == "visible") {
                 var domain_start;
                 var domain_stop;
 
@@ -97,46 +96,29 @@ function dispEachDomain(g, svg, domains, width, max_len) {
                 }
                 startposition += 1
 
-                var top = domains[domain_len].layer * 22;
+                var top = parseInt(domains[domain_len].layer * 22) + parseInt(10);
 
                 svg.rect(g, startposition, top, stopposition, (20), {
                     'id': "domain" + domains[domain_len].DOMAIN,
-                    'class':dom_class,
+                    'class': dom_class,
+                    'onmouseover': 'showDomainPosition("' + startposition + '","' + stopposition + '","' + domains[domain_len].START + '","' + domains[domain_len].END + '")',
+                    'onmouseout': 'hideDomainPosition()',
                     strokeWidth: 1
                 });
 
-                // svg.line(parseInt(startposition), 20, parseInt(startposition), 45, {stroke: 'gray', strokeWidth: 1});
-                // svg.line(parseInt(startposition+stopposition), 20, parseInt(startposition+stopposition), 45, {stroke: 'gray', strokeWidth: 1});
-
-                // svg.text(parseInt(startposition), 55, domains[domain_len].START, {
-                //     fontFamily: 'Verdana',
-                //     fontSize: 10,
-                //     textAnchor: 'middle',
-                //     fill: "black",
-                //     class: "domain position"
-                // });
-
-                // svg.text(parseInt(startposition+stopposition), 55, domains[domain_len].END, {
-                //     fontFamily: 'Verdana',
-                //     fontSize: 10,
-                //     textAnchor: 'middle',
-                //     fill: "black",
-                //     class: "domain position"
-                // });
-
                 var text = "";
 
-                if(dom_class == "PFAM"){
+                if (dom_class == "PFAM") {
                     text = domains[domain_len].DOMAIN.split(":")[1]
                 }
-                else if(dom_class == "SMART"){
+                else if (dom_class == "SMART") {
                     text = domains[domain_len].DOMAIN
                 }
 
-                var top = (parseInt(domains[domain_len].layer)+parseFloat(0.5)) * 22;
+                var top = parseFloat(parseFloat(parseInt(domains[domain_len].layer) + parseFloat(0.5)) * 22) + 10;
 
+                var textPosition = startposition + (stopposition) / 2
 
-                var textPosition = startposition + (stopposition)/2
                 svg.text(parseInt(textPosition), top, text, {
                     fontFamily: 'Verdana',
                     fontSize: 10,
@@ -147,4 +129,41 @@ function dispEachDomain(g, svg, domains, width, max_len) {
             }
         }
     }
+}
+
+function showDomainPosition(startposition, stopposition, start, stop) {
+
+    var svg = jQuery("#domainStructure").svg("get")
+    svg.line(parseInt(startposition), 10, parseInt(startposition), 30, {
+        stroke: 'red',
+        strokeWidth: 1,
+        class: "domain_position"
+    });
+
+    svg.line(parseInt(parseInt(startposition) + parseInt(stopposition)), 10, parseInt(parseInt(startposition) + parseInt(stopposition)), 30, {
+        stroke: 'red',
+        strokeWidth: 1,
+        class: "domain_position"
+    });
+
+    svg.text(parseInt(startposition), 8, start, {
+        fontFamily: 'Verdana',
+        fontSize: 10,
+        textAnchor: 'middle',
+        fill: "black",
+        class: "domain_position"
+    });
+
+    svg.text(parseInt(parseInt(startposition) + parseInt(stopposition)), 8, stop, {
+        fontFamily: 'Verdana',
+        fontSize: 10,
+        textAnchor: 'middle',
+        fill: "black",
+        class: "domain_position"
+    });
+
+}
+
+function hideDomainPosition() {
+    jQuery(".domain_position").remove()
 }
