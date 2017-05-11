@@ -72,6 +72,11 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='scripts/jquery/jquery.svg.css' />">
     <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.svg.js'/>"></script>
 
+
+    <%--jQuery DataTables--%>
+    <link rel="stylesheet" type="text/css" href="<c:url value='styles/DataTables/datatables.min.css' />">
+    <script type="text/javascript" src="<c:url value='/scripts/DataTables/datatables.min.js'/>"></script>
+
     <script type="text/javascript">jQuery.noConflict();</script>
 
     <title>${initParam.pageTitle}</title>
