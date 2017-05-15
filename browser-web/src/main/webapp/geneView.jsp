@@ -657,7 +657,7 @@
                                         <tbody>
                                         <tr>
                                             <td>
-                                                <b>Legend: </b>
+                                                <b>Legends: </b>
                                             </td>
                                             <td>
                                                 <div class="PFAM" style="width:50px;height:10px;"></div>
@@ -683,6 +683,12 @@
                                             </td>
                                             <td>
                                                 Internal Repeats
+                                            </td>
+                                            <td>
+                                                <div class="signal_peptide" style="width:50px;height:10px;"></div>
+                                            </td>
+                                            <td>
+                                                Signal Peptide
                                             </td>
                                             <td>
                                                 <div class="INTRINSIC" style="width:50px;height:10px;"></div>
