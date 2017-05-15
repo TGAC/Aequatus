@@ -536,3 +536,10 @@ div.tooltip {
     background: blue;
     border: 1px solid blue;
 }
+
+.signal_peptide{
+    stroke: red;
+    fill: red;
+    background: red;
+    border: 1px solid red;
+}
