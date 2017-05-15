@@ -61,13 +61,13 @@ function dispEachDomain(g, svg, domains, width, max_len) {
 
 
             if (dom_class == "PROSPERO") {
-                dom_class = "'internal_repeat " + domains[domain_len].DOMAIN + "'"
+                dom_class = "internal_repeat " + domains[domain_len].DOMAIN
             } else if (dom_class == "INTRINSIC") {
-                if (domains[domain_len].DOMAIN == "transmembrane_domain") {
-                    dom_class = "transmembrane_domain"
-                } else if (domains[domain_len].DOMAIN == "low_complexity_region") {
-                    dom_class = "low_complexity_region"
-                }
+                //if (domains[domain_len].DOMAIN == "transmembrane_domain") {
+                dom_class = "INTRINSIC " + domains[domain_len].DOMAIN
+                //} else if (domains[domain_len].DOMAIN == "low_complexity_region") {
+                //    dom_class = "low_complexity_region"
+                //}
             }
 
             if (domains[domain_len].TYPE.split("|")[0]) {
@@ -100,9 +100,11 @@ function dispEachDomain(g, svg, domains, width, max_len) {
 
                 svg.rect(g, startposition, top, stopposition, (20), {
                     'id': "domain" + domains[domain_len].DOMAIN,
-                    'class': dom_class,
-                    'onmouseover': 'showDomainPosition("' + startposition + '","' + stopposition + '","' + domains[domain_len].START + '","' + domains[domain_len].END + '")',
-                    'onmouseout': 'hideDomainPosition()',
+                    'class': "domain " + dom_class,
+                    'domain': domains[domain_len].DOMAIN,
+                    'domain_type' : dom_class,
+                    'onmouseover': 'showDomainPosition("' + startposition + '","' + stopposition + '","' + domains[domain_len].START + '","' + domains[domain_len].END + '"); highlightDomain("'+domains[domain_len].DOMAIN+'")',
+                    'onmouseout': 'hideDomainPosition(); resetDomain()',
                     strokeWidth: 1
                 });
 
@@ -124,7 +126,7 @@ function dispEachDomain(g, svg, domains, width, max_len) {
                     fontSize: 10,
                     textAnchor: 'middle',
                     fill: "white",
-                    class: "domain label"
+                    class: "label"
                 });
             }
         }
@@ -166,4 +168,20 @@ function showDomainPosition(startposition, stopposition, start, stop) {
 
 function hideDomainPosition() {
     jQuery(".domain_position").remove()
+}
+
+function highlightDomain(domain){
+    jQuery(".domain").each(function () {
+        var dom_class = jQuery(this).attr('domain')
+        if(dom_class != domain){
+            jQuery(this).attr('class', 'domain cigarover')
+        }
+    });
+}
+
+function resetDomain(){
+    jQuery(".domain").each(function () {
+        var dom_class = jQuery(this).attr('domain_type')
+        jQuery(this).attr('class', 'domain ' + dom_class)
+    });
 }
