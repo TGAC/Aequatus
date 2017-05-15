@@ -102,9 +102,9 @@ function dispEachDomain(g, svg, domains, width, max_len) {
                     'id': "domain" + domains[domain_len].DOMAIN,
                     'class': "domain " + dom_class,
                     'domain': domains[domain_len].DOMAIN,
-                    'domain_type' : dom_class,
-                    'onmouseover': 'showDomainPosition("' + startposition + '","' + stopposition + '","' + domains[domain_len].START + '","' + domains[domain_len].END + '"); highlightDomain("'+domains[domain_len].DOMAIN+'")',
-                    'onmouseout': 'hideDomainPosition(); resetDomain()',
+                    'domain_type': dom_class,
+                    'onmouseover': 'showDomainPosition("' + startposition + '","' + stopposition + '","' + domains[domain_len].START + '","' + domains[domain_len].END + '"); searchDomain("' + domains[domain_len].DOMAIN + '")',
+                    'onmouseout': 'hideDomainPosition(); searchDomain("")',
                     strokeWidth: 1
                 });
 
@@ -170,18 +170,20 @@ function hideDomainPosition() {
     jQuery(".domain_position").remove()
 }
 
-function highlightDomain(domain){
-    jQuery(".domain").each(function () {
-        var dom_class = jQuery(this).attr('domain')
-        if(dom_class != domain){
-            jQuery(this).attr('class', 'domain cigarover')
-        }
-    });
+function searchDomain(domain) {
+    var table = jQuery("#visibleDomainListTable").DataTable()
+    table.search(domain).draw();
 }
 
-function resetDomain(){
+function highlightDomain(domain) {
     jQuery(".domain").each(function () {
-        var dom_class = jQuery(this).attr('domain_type')
-        jQuery(this).attr('class', 'domain ' + dom_class)
+        var dom_class = jQuery(this).attr('domain')
+        if (domain.indexOf(dom_class) < 0) {
+            jQuery(this).attr('class', 'domain cigarover')
+        }
+        else {
+            var dom_class = jQuery(this).attr('domain_type')
+            jQuery(this).attr('class', 'domain ' + dom_class)
+        }
     });
 }

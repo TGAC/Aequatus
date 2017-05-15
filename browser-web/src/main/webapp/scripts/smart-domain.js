@@ -7,31 +7,26 @@ function smart(gene_id, protein_id) {
 
     var sequence = syntenic_data.sequence[protein_id];
 
-    var pfam= false;
+    var pfam = false;
     var signal = false;
     var repeat = false;
     var protein_disorder = false;
     var out_homologous = false;
 
-    jQuery("input[name='SMARTParams']").each( function () {
-        if(jQuery(this).val() == "pfam" && jQuery(this).is(":checked"))
-        {
+    jQuery("input[name='SMARTParams']").each(function () {
+        if (jQuery(this).val() == "pfam" && jQuery(this).is(":checked")) {
             console.log("pfam")
             pfam = true;
-        }else  if(jQuery(this).val() == "signal" && jQuery(this).is(":checked"))
-        {
+        } else if (jQuery(this).val() == "signal" && jQuery(this).is(":checked")) {
             console.log("signal")
             signal = true;
-        }else  if(jQuery(this).val() == "repeat" && jQuery(this).is(":checked"))
-        {
+        } else if (jQuery(this).val() == "repeat" && jQuery(this).is(":checked")) {
             console.log("repeat")
             repeat = true;
-        }else  if(jQuery(this).val() == "protein_disorder" && jQuery(this).is(":checked"))
-        {
+        } else if (jQuery(this).val() == "protein_disorder" && jQuery(this).is(":checked")) {
             console.log("disorder")
             protein_disorder = true;
-        }else  if(jQuery(this).val() == "out_homologous" && jQuery(this).is(":checked"))
-        {
+        } else if (jQuery(this).val() == "out_homologous" && jQuery(this).is(":checked")) {
             console.log("homologous")
             out_homologous = true;
         }
@@ -40,7 +35,15 @@ function smart(gene_id, protein_id) {
     Fluxion.doAjax(
         'smartDomain',
         'smartSearchSequence',
-        {'sequence': sequence, 'pfam': pfam, 'signal':signal, 'repeat': repeat, 'protein_disorder': protein_disorder, 'out_homologous': out_homologous, 'url': ajaxurl},
+        {
+            'sequence': sequence,
+            'pfam': pfam,
+            'signal': signal,
+            'repeat': repeat,
+            'protein_disorder': protein_disorder,
+            'out_homologous': out_homologous,
+            'url': ajaxurl
+        },
         {
             'doOnSuccess': function (json) {
                 jQuery("#domain_popup_wrapper").fadeIn();
@@ -90,7 +93,7 @@ function domainTable(domains) {
         "<th>End</th>" +
         "<th>E-value</th>" +
         "<th>Type</th>" +
-        "</tr>"+
+        "</tr>" +
         "</thead>";
 
     visible_table_content += "<tfoot>" +
@@ -100,8 +103,8 @@ function domainTable(domains) {
         "<th>End</th>" +
         "<th>E-value</th>" +
         "<th>Type</th>" +
-        "</tr>"+
-        "</tfoot>"+
+        "</tr>" +
+        "</tfoot>" +
         "<tbody";
 
 
@@ -115,7 +118,7 @@ function domainTable(domains) {
         "<th>E-value</th>" +
         "<th>Type</th>" +
         "<th>Reason</th>" +
-        "</tr>"+
+        "</tr>" +
         "</thead>";
 
     hidden_table_content += "<tfoot>" +
@@ -126,7 +129,7 @@ function domainTable(domains) {
         "<th>E-value</th>" +
         "<th>Type</th>" +
         "<th>Reason</th>" +
-        "</tr>"+
+        "</tr>" +
         "</tfoot>" +
         "<tbody";
 
@@ -137,18 +140,7 @@ function domainTable(domains) {
     for (var i = 0; i < domains.length; i++) {
         if (domains[i].STATUS.split("|")[0] == "visible") {
             var col1 = ""
-            if (domains[i].TYPE == "PFAM" || domains[i].TYPE == "SMART") {
-                var link = ""
-                if (domains[i].DOMAIN.indexOf(":") > 0) {
-                    link = domains[i].DOMAIN.split(":")[1];
-                } else {
-                    link = domains[i].DOMAIN;
-                }
-                col1 = "<a href='http://pfam.xfam.org/family/" + link + "' target='_new'>" + domains[i].DOMAIN + "</a>"
-            } else {
-                col1 = domains[i].DOMAIN
-            }
-
+            col1 = domains[i].DOMAIN
             visible_table_content += "<tr><td>" + col1 + "</td><td>" + domains[i].START + "</td><td>" + domains[i].END + "</td><td>" + domains[i].EVALUE + "</td><td>" + domains[i].TYPE + "</td></tr>";
         } else {
             hidden_table_content += "<tr><td>" + domains[i].DOMAIN + "</td><td>" + domains[i].START + "</td><td>" + domains[i].END + "</td><td>" + domains[i].EVALUE + "</td><td>" + domains[i].TYPE + "</td><td>" + domains[i].STATUS.split("|")[1] + "</td></tr>";
@@ -161,8 +153,18 @@ function domainTable(domains) {
     jQuery("#visibleDomainList").html(visible_table_content)
     jQuery("#hiddenDomainList").html(hidden_table_content)
 
-    jQuery('#visibleDomainListTable').DataTable();
+    var yrtable = jQuery('#visibleDomainListTable').DataTable();
     jQuery('#hiddenDomainListTable').DataTable();
+
+    jQuery("#visibleDomainListTable").on('search.dt', function () {
+        var filteredData = yrtable.rows({filter: 'applied'}).data().toArray();
+        console.log(filteredData)
+        var highlight = []
+        jQuery.each(filteredData, function (i) {
+            highlight[i] = filteredData[i][0];
+        })
+        highlightDomain(highlight)
+    });
 }
 
 function checkStatus(jobid, gene_id, protein_id) {
