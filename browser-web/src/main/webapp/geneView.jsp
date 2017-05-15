@@ -471,7 +471,8 @@
                     <%--<div class="btn-group open">--%>
 
                     <div class="popup_menu" id="smartDomain"
-                         onclick="jQuery('#smartDomainParams').toggle()"><span>Protein Domains <i class="fa fa-caret-right" aria-hidden="true" style="float:right"></i></span></div>
+                         onclick="jQuery('#smartDomainParams').toggle()"><span>Protein Domains <i
+                            class="fa fa-caret-right" aria-hidden="true" style="float:right"></i></span></div>
                     <div class="popup_menu" id="smartDomainParams" style="display: none;">
                         <div class="popup_menu"
                              style="text-align: center; font-weight: bold; color: gray; padding: 5px;">
@@ -649,10 +650,54 @@
                 <table width="100%">
                     <tr>
                         <td colspan="2">
-                            <div style=" left: 0px; position: relative; top: 0px; padding: 0px; height: 160px">
+                            <div style=" left: 0px; position: relative; top: 0px; padding: 0px;">
                                 <div id="domainHeader" style=" word-wrap: break-word;"></div>
-                                <div id="domainStructure" style=" word-wrap: break-word;"></div>
+                                <div id="domainLegends" style=" word-wrap: break-word;">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <b>Legend: </b>
+                                            </td>
+                                            <td>
+                                                <div class="PFAM" style="width:50px;height:10px;"></div>
+                                            </td>
+                                            <td>
+                                                PFAM domains
+                                            </td>
+
+                                            <td>
+                                                <div class="SMART" style="width:50px;height:10px;"></div>
+                                            </td>
+                                            <td>
+                                                SMART domains
+                                            </td>
+                                            <td>
+                                                <div class="low_complexity_region" style="width:50px;height:10px;"></div>
+                                            </td>
+                                            <td>
+                                                Low Complexity Region
+                                            </td>
+                                            <td>
+                                                <div class="internal_repeat" style="width:50px;height:10px;"></div>
+                                            </td>
+                                            <td>
+                                                Internal Repeats
+                                            </td>
+                                            <td>
+                                                <div class="INTRINSIC" style="width:50px;height:10px;"></div>
+                                            </td>
+                                            <td>
+                                                Other Intrinsic Region
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </div>
+                            <div id="domainStructure" style=" word-wrap: break-word;"></div>
+
                         </td>
                     </tr>
                     <tr valign="top">

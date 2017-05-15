@@ -498,30 +498,41 @@ div.tooltip {
 .SMART {
     stroke: green;
     fill: green;
-
+    background: green;
+    border: 1px solid green;
 }
 
 .PFAM {
     stroke: gray;
     fill: gray;
+    background: gray;
+    border: 1px solid gray;
 }
 
 .transmembrane_domain {
     stroke: blue;
     fill: steelblue;
+    background: steelblue;
+    border: 1px solid blue;
 }
 
 .low_complexity_region {
     stroke: blue;
     fill: pink;
+    background: pink;
+    border: 1px solid blue;
 }
 
 .internal_repeat {
     stroke: blue;
     fill: steelblue;
+    background: steelblue;
+    border: 1px solid blue;
 }
 
 .INTRINSIC {
     stroke: blue;
     fill: blue;
+    background: blue;
+    border: 1px solid blue;
 }
