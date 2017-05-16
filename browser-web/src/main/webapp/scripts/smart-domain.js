@@ -168,7 +168,7 @@ function domainTable(domains) {
             initComplete: function () {
                 this.api().columns([4]).every( function () {
                     var column = this;
-                    var select = jQuery('<select><option value=""></option></select>')
+                    var select = jQuery('<select><option value="">Select Type</option></select>')
                         .appendTo( jQuery(column.footer()).empty() )
                         .on( 'change', function () {
                             var val = jQuery.fn.dataTable.util.escapeRegex(
@@ -186,7 +186,7 @@ function domainTable(domains) {
                 } );
                 this.api().columns([3]).every( function () {
                     var column = this;
-                    var select = jQuery('<select id="evalue_filter"><option value="1"></option></select>')
+                    var select = jQuery('<select id="evalue_filter"><option value="1">Select E-value</option></select>')
                         .appendTo( jQuery(column.footer()).empty() )
                         .on( 'change', function () {
                             jQuery("#visibleDomainListTable").DataTable().draw();
