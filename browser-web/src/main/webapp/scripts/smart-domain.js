@@ -163,39 +163,39 @@ function domainTable(domains) {
     jQuery("#visibleDomainList").html(visible_table_content)
     jQuery("#hiddenDomainList").html(hidden_table_content)
 
-    var yrtable=jQuery('#visibleDomainListTable').DataTable(
+    var yrtable = jQuery('#visibleDomainListTable').DataTable(
         {
             initComplete: function () {
-                this.api().columns([4]).every( function () {
+                this.api().columns([4]).every(function () {
                     var column = this;
                     var select = jQuery('<select><option value="">Select Type</option></select>')
-                        .appendTo( jQuery(column.footer()).empty() )
-                        .on( 'change', function () {
+                        .appendTo(jQuery(column.footer()).empty())
+                        .on('change', function () {
                             var val = jQuery.fn.dataTable.util.escapeRegex(
                                 jQuery(this).val()
                             );
 
                             column
-                                .search( val ? '^'+val+'$' : '', true, false )
+                                .search(val ? '^' + val + '$' : '', true, false)
                                 .draw();
-                        } );
+                        });
 
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                } );
-                this.api().columns([3]).every( function () {
+                    column.data().unique().sort().each(function (d, j) {
+                        select.append('<option value="' + d + '">' + d + '</option>')
+                    });
+                });
+                this.api().columns([3]).every(function () {
                     var column = this;
                     var select = jQuery('<select id="evalue_filter"><option value="1">Select E-value</option></select>')
-                        .appendTo( jQuery(column.footer()).empty() )
-                        .on( 'change', function () {
+                        .appendTo(jQuery(column.footer()).empty())
+                        .on('change', function () {
                             jQuery("#visibleDomainListTable").DataTable().draw();
-                        } );
+                        });
 
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                } );
+                    column.data().unique().sort().each(function (d, j) {
+                        select.append('<option value="' + d + '">' + d + '</option>')
+                    });
+                });
             }
         }
     );
@@ -246,11 +246,10 @@ function checkStatus(jobid, gene_id, protein_id) {
  * extends DataTable Search function for E-value filteration
  */
 jQuery.fn.dataTable.ext.search.push(
-    function( settings, data, dataIndex ) {
+    function (settings, data, dataIndex) {
         var evalue_filter = jQuery('#evalue_filter').val() || 1;
-        var evalue = parseFloat( data[3] ) || 0;
-        if ( evalue <= evalue_filter )
-        {
+        var evalue = parseFloat(data[3]) || 0;
+        if (evalue <= evalue_filter) {
             return true;
         }
         return false;
