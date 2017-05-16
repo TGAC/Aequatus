@@ -169,6 +169,18 @@ function domainTable(domains) {
                         select.append( '<option value="'+d+'">'+d+'</option>' )
                     } );
                 } );
+                this.api().columns([3]).every( function () {
+                    var column = this;
+                    var select = jQuery('<select id="evalue_filter"><option value="1"></option></select>')
+                        .appendTo( jQuery(column.footer()).empty() )
+                        .on( 'change', function () {
+                            jQuery("#visibleDomainListTable").DataTable().draw();
+                        } );
+
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                } );
             }
         }
     );
@@ -208,4 +220,16 @@ function checkStatus(jobid, gene_id, protein_id) {
     );
 
 }
+
+jQuery.fn.dataTable.ext.search.push(
+    function( settings, data, dataIndex ) {
+        var evalue_filter = jQuery('#evalue_filter').val() || 1;
+        var evalue = parseFloat( data[3] ) || 0; // use data for the age column
+        if ( evalue <= evalue_filter )
+        {
+            return true;
+        }
+        return false;
+    }
+);
 
