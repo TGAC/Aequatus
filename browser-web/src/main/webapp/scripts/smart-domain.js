@@ -15,19 +15,14 @@ function smart(gene_id, protein_id) {
 
     jQuery("input[name='SMARTParams']").each(function () {
         if (jQuery(this).val() == "pfam" && jQuery(this).is(":checked")) {
-            console.log("pfam")
             pfam = true;
         } else if (jQuery(this).val() == "signal" && jQuery(this).is(":checked")) {
-            console.log("signal")
             signal = true;
         } else if (jQuery(this).val() == "repeat" && jQuery(this).is(":checked")) {
-            console.log("repeat")
             repeat = true;
         } else if (jQuery(this).val() == "protein_disorder" && jQuery(this).is(":checked")) {
-            console.log("disorder")
             protein_disorder = true;
         } else if (jQuery(this).val() == "out_homologous" && jQuery(this).is(":checked")) {
-            console.log("homologous")
             out_homologous = true;
         }
     });
@@ -153,12 +148,34 @@ function domainTable(domains) {
     jQuery("#visibleDomainList").html(visible_table_content)
     jQuery("#hiddenDomainList").html(hidden_table_content)
 
-    var yrtable = jQuery('#visibleDomainListTable').DataTable();
+    var yrtable=jQuery('#visibleDomainListTable').DataTable(
+        {
+            initComplete: function () {
+                this.api().columns([4]).every( function () {
+                    var column = this;
+                    var select = jQuery('<select><option value=""></option></select>')
+                        .appendTo( jQuery(column.footer()).empty() )
+                        .on( 'change', function () {
+                            var val = jQuery.fn.dataTable.util.escapeRegex(
+                                jQuery(this).val()
+                            );
+
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                } );
+            }
+        }
+    );
     jQuery('#hiddenDomainListTable').DataTable();
 
     jQuery("#visibleDomainListTable").on('search.dt', function () {
         var filteredData = yrtable.rows({filter: 'applied'}).data().toArray();
-        console.log(filteredData)
         var highlight = []
         jQuery.each(filteredData, function (i) {
             highlight[i] = filteredData[i][0];
