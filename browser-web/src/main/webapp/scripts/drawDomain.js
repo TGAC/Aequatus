@@ -1,6 +1,11 @@
 /**
  * Created by thankia on 13/04/2017.
  */
+/**
+ * Draw protein domain skeleton
+ * @param id
+ * @param domains
+ */
 function drawDomain(id, domains) {
     jQuery("#domainStructure").svg()
     var svg = jQuery("#domainStructure").svg("get")
@@ -18,6 +23,14 @@ function drawDomain(id, domains) {
 }
 
 
+/**
+ * draws individual domain with interactive functionality
+ * @param g
+ * @param svg
+ * @param domains
+ * @param width
+ * @param max_len
+ */
 function dispEachDomain(g, svg, domains, width, max_len) {
 
 
@@ -133,6 +146,13 @@ function dispEachDomain(g, svg, domains, width, max_len) {
     }
 }
 
+/**
+ * highlights domain position
+ * @param startposition
+ * @param stopposition
+ * @param start
+ * @param stop
+ */
 function showDomainPosition(startposition, stopposition, start, stop) {
 
     var svg = jQuery("#domainStructure").svg("get")
@@ -166,15 +186,26 @@ function showDomainPosition(startposition, stopposition, start, stop) {
 
 }
 
+/**
+ * hides domain position
+ */
 function hideDomainPosition() {
     jQuery(".domain_position").remove()
 }
 
+/**
+ * searches selected domain in DataTable
+ * @param domain
+ */
 function searchDomain(domain) {
     var table = jQuery("#visibleDomainListTable").DataTable()
     table.search(domain).draw();
 }
 
+/**
+ * highlight selected domains from DataTable
+ * @param domain
+ */
 function highlightDomain(domain) {
     jQuery(".domain").each(function () {
         var dom_class = jQuery(this).attr('domain')

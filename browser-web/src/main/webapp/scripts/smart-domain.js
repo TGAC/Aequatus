@@ -3,6 +3,11 @@
  */
 
 
+/**
+ * SMART search for protein sequence of selected gene
+ * @param gene_id
+ * @param protein_id
+ */
 function smart(gene_id, protein_id) {
 
     var sequence = syntenic_data.sequence[protein_id];
@@ -71,6 +76,12 @@ function smart(gene_id, protein_id) {
         });
 }
 
+/**
+ * calls a function to draw interactive domain structures
+ * @param json
+ * @param gene_id
+ * @param protein_id
+ */
 function showDomainResult(json, gene_id, protein_id) {
     jQuery("#domainStructure").html("")
 
@@ -78,6 +89,10 @@ function showDomainResult(json, gene_id, protein_id) {
     drawDomain(protein_id, json.domains)
 }
 
+/**
+ * displays domains in DataTable format
+ * @param domains
+ */
 function domainTable(domains) {
     var visible_table_content = "<h3>Confidently predicted domains, repeats, motifs and features from SMART</h3>" +
         "<table id='visibleDomainListTable' class='table table-condensed' width='100%'>" +
@@ -196,6 +211,12 @@ function domainTable(domains) {
     });
 }
 
+/**
+ * Checks response for the submitted job for SMART search
+ * @param jobid
+ * @param gene_id
+ * @param protein_id
+ */
 function checkStatus(jobid, gene_id, protein_id) {
 
     Fluxion.doAjax(
@@ -221,10 +242,13 @@ function checkStatus(jobid, gene_id, protein_id) {
 
 }
 
+/**
+ * extends DataTable Search function for E-value filteration
+ */
 jQuery.fn.dataTable.ext.search.push(
     function( settings, data, dataIndex ) {
         var evalue_filter = jQuery('#evalue_filter').val() || 1;
-        var evalue = parseFloat( data[3] ) || 0; // use data for the age column
+        var evalue = parseFloat( data[3] ) || 0;
         if ( evalue <= evalue_filter )
         {
             return true;
