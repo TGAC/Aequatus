@@ -186,7 +186,8 @@ function domainTable(domains) {
                 });
                 this.api().columns([3]).every(function () {
                     var column = this;
-                    var select = jQuery('<select id="evalue_filter"><option value="1">Select E-value</option></select>')
+
+                    var select = jQuery('<select id="evalue_filter"><option value="">Select E-value</option></select>')
                         .appendTo(jQuery(column.footer()).empty())
                         .on('change', function () {
                             jQuery("#visibleDomainListTable").DataTable().draw();
@@ -247,9 +248,9 @@ function checkStatus(jobid, gene_id, protein_id) {
  */
 jQuery.fn.dataTable.ext.search.push(
     function (settings, data, dataIndex) {
-        var evalue_filter = jQuery('#evalue_filter').val() || 1;
-        var evalue = parseFloat(data[3]) || 0;
-        if (evalue <= evalue_filter) {
+        var evalue_filter = jQuery('#evalue_filter').val() || null;
+        var evalue = parseFloat(data[3]);
+        if(evalue_filter == null || evalue <= evalue_filter) {
             return true;
         }
         return false;
