@@ -1,5 +1,6 @@
 <%--<%@ include file="header.jsp" %>--%>
 
+<%--Control Panel Code--%>
 <div id="control_panel">
     <table cellspacing="0" cellpadding="0" border="0">
         <tbody>
@@ -189,11 +190,7 @@
                             </td>
                         </tr>
                     </table>
-
-                    <%--<input type="radio" name="output_selection" value="all"> All Genes--%>
-                    <%--<input type="radio" name="output_selection" value="selected" checked> Visible Genes--%>
-                    <br>
-
+                   <br>
                 </div>
             </td>
             <td width="50px">
@@ -231,11 +228,6 @@
                         style="color: white;"
                         class="fa fa-question fa-3x control-buttons"></i>
                 </div>
-                <%--<div onclick="openClosePanel('#settings_div')"--%>
-                <%--style="padding: 5px; text-align: center;  background: none repeat scroll 0% 0% gray;"><i--%>
-                <%--style="color: white;"--%>
-                <%--class="fa fa-exchange fa-3x control-buttons"> </i>--%>
-                <%--</div>--%>
             </td>
         </tr>
         <tr>
@@ -277,7 +269,7 @@
 
 </div>
 
-
+<%--Main Canvas Code--%>
 <div id="canvas">
 
     <div id="genome_name"
@@ -343,87 +335,6 @@
 </div>
 
 </div>
-
-<%--<div id="popup" class="bubbleleft" style="width:200px; height:130px;">--%>
-<%--<div style="overflow: hidden; left: 0px; top: 0px; position: relative;">--%>
-<%--<table width="100%" cellspacing="0" border="0">--%>
-<%--<thead>--%>
-<%--<tr>--%>
-<%--<td bgcolor="darkcyan">--%>
-<%--<div style="color: white; padding: 2px; width: 100%;" id="stable_id_header"><span--%>
-<%--id="stable_label"></span>--%>
-<%--<i onclick="removePopup();" class="fa fa-close "--%>
-<%--style="color: white; position: absolute; right: 5px; cursor: pointer; "></i>--%>
-<%--</div>--%>
-<%--</td>--%>
-<%--</tr>--%>
-<%--</thead>--%>
-<%--</table>--%>
-
-<%--</div>--%>
-<%--<div style="position: relative; padding: 5px;">--%>
-<%--<table width=100% cellspacing="0" border="0">--%>
-<%--<tbody>--%>
-<%--<tr>--%>
-<%--<td>--%>
-<%--<div id="ref_name"></div>--%>
-<%--</td>--%>
-<%--</tr>--%>
-<%--<tr>--%>
-<%--<td>--%>
-<%--<div id="position"></div>--%>
-<%--</td>--%>
-<%--</tr>--%>
-
-<%--<tr>--%>
-<%--<td>--%>
-<%--<div id="gene_desc"></div>--%>
-<%--</td>--%>
-<%--</tr>--%>
-<%--<tr align="right">--%>
-<%--<td align="">--%>
-<%--<table>--%>
-<%--<tbody>--%>
-<%--<tr>--%>
-<%--<td>--%>
-<%--&lt;%&ndash;<div id="exportSequenceLink" style="float: right" title="Export Sequence"></div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;</td>&ndash;%&gt;--%>
-<%--&lt;%&ndash;<td>&ndash;%&gt;--%>
-<%--&lt;%&ndash;<div id="exportAlignmentLink" style="float: right" title="Export Alignment"></div>&ndash;%&gt;--%>
-<%--<div class="btn-group open">--%>
-<%--<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-external-link fa-fw"></i> </a>--%>
-<%--<ul class="dropdown-menu">--%>
-<%--<li><a id="exportSequenceLink" href="#" title="Export Sequence"><i class="fa  fa-fw"></i> Seq </a></li>--%>
-<%--<li class="divider"></li>--%>
-<%--<li><a id="exportAlignmentLink" href="#" title="Export Alignment"><i class="fa  fa-fw"></i> Aln</a></li>--%>
-<%--<li><a id="smartDomain" href="#" title="Export Alignment"><i class="fa  fa-fw"></i> Domain</a></li>--%>
-<%--</ul>--%>
-<%--<div id="makemetop_button" style="float: right" title="Change Reference to"></div>--%>
-<%--<div id="ensemblLink" style="float: right" title="Link to Ensembl"></div>--%>
-<%--<div id="1to1Link" style="float: right" title="1 to 1 Alignment"></div>--%>
-
-<%--</div>--%>
-<%--</td>--%>
-<%--&lt;%&ndash;<td>&ndash;%&gt;--%>
-<%--&lt;%&ndash;<div id="makemetop_button" style="float: right" title="Change Reference to"></div>&ndash;%&gt;--%>
-
-<%--&lt;%&ndash;</td>&ndash;%&gt;--%>
-<%--&lt;%&ndash;<td>&ndash;%&gt;--%>
-<%--&lt;%&ndash;<div id="ensemblLink" style="float: right" title="Link to Ensembl"></div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;</td>&ndash;%&gt;--%>
-<%--&lt;%&ndash;<td>&ndash;%&gt;--%>
-<%--&lt;%&ndash;<div id="1to1Link" style="float: right" title="1 to 1 Alignment"></div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;</td>&ndash;%&gt;--%>
-<%--</tr>--%>
-<%--</tbody>--%>
-<%--</table>--%>
-<%--</td>--%>
-<%--</tr>--%>
-<%--</tbody>--%>
-<%--</table>--%>
-<%--</div>--%>
-
-<%--</div>--%>
 
 <div id="popup" class="bubbleleft" style="width:200px; height:auto;">
     <div style="overflow: hidden; left: 0px; top: 0px; position: relative;">
@@ -514,9 +425,6 @@
             <tr>
                 <td>
 
-                    <%--<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"><i--%>
-                    <%--class="fa fa-external-link fa-fw"></i> </a>--%>
-
             <tr>
                 <td>
                     <div class="popup_menu" id="exportSequenceLink" href="#"><i
@@ -540,10 +448,6 @@
 
                     <div class="popup_menu" id="1to1Link"></div>
 
-                    <%--</div>--%>
-                    <%--</td>--%>
-
-                    <%--</tr>--%>
             </tbody>
         </table>
         </td>
@@ -576,20 +480,7 @@
 </div>
 <p id="besideMouse"></p>
 
-<%--<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="pairwiseModal" style=" z-index: 1999;">--%>
-<%--<div class="modal-dialog modal-lg" role="document">--%>
-<%--<div class="modal-content">--%>
-<%--<div class="modal-header">--%>
-<%--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span--%>
-<%--aria-hidden="true">&times;</span></button>--%>
-<%--<h4 class="modal-title"></h4>--%>
-<%--</div>--%>
-<%--<div class="modal-body">--%>
 
-<%--</div>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--</div>--%>
 <div id="info_popup_wrapper" style="display: none;">
     <div style="background: darkgrey none repeat scroll 0% 0%; height: 100%; width: 100%; position: fixed; opacity: 0.8;z-index: 1999;"
          onclick="removeInfoPopup()">
@@ -673,7 +564,8 @@
                                                 SMART domains
                                             </td>
                                             <td>
-                                                <div class="low_complexity_region" style="width:50px;height:10px;"></div>
+                                                <div class="low_complexity_region"
+                                                     style="width:50px;height:10px;"></div>
                                             </td>
                                             <td>
                                                 Low Complexity Region
@@ -723,22 +615,10 @@
             </div>
         </div>
 
-
-        <%--<div style="position: relative; top: 10px; padding: 10px">--%>
-        <%--Protein Alignment: <br>--%>
-        <%--<div id="pairwise_alignment" style="font-family: monospace;"></div>--%>
-        <%--</div>--%>
-
     </div>
 </div>
 
-</div>
-
-</div>
-</div>
-
 <p style="z-index:10; position:fixed;font-size: small;" id="besideMouse"></p>
-
 
 <span id="ruler"></span>
 
