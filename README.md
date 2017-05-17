@@ -47,4 +47,4 @@ Aequatus Browser funded by BBSRC, UK and transPLANT, EU
 
 </table>
 
-&copy; 2016. Earlham Institute, Norwich, UK
+&copy; 2015-2017. Earlham Institute, Norwich, UK
