@@ -22,13 +22,12 @@ You should have received a copy of the GNU General Public License along with Aeq
 
 # <a name="contacts"></a> Project contacts: 
 * Anil Thanki <Anil.Thanki@earlham.ac.uk>
-* Sarah Ayling <Sarah.Ayling@earlham.ac.uk>
 * Robert Davey <Robert.Davey@earlham.ac.uk>
  
 
 # <a name="demo"></a> Demo:
 
-http://aequatus.tgac.ac.uk
+http://aequatus.earlham.ac.uk
 
 
 # <a name="Documentation"></a> Documentation:
