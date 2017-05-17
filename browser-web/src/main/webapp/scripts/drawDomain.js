@@ -111,9 +111,15 @@ function dispEachDomain(g, svg, domains, width, max_len) {
 
                 var top = parseInt(domains[domain_len].layer * 22) + parseInt(10);
 
+                var g = svg.group({
+                    class: "domain " + dom_class,
+                    domain: domains[domain_len].DOMAIN,
+                    domain_type: dom_class
+                });
+
                 svg.rect(g, startposition, top, stopposition, (20), {
                     'id': "domain" + domains[domain_len].DOMAIN,
-                    'class': "domain " + dom_class,
+                    'class': dom_class,
                     'domain': domains[domain_len].DOMAIN,
                     'domain_type': dom_class,
                     'onmouseover': 'showDomainPosition("' + startposition + '","' + stopposition + '","' + domains[domain_len].START + '","' + domains[domain_len].END + '"); searchDomain("' + domains[domain_len].DOMAIN + '")',
@@ -134,12 +140,14 @@ function dispEachDomain(g, svg, domains, width, max_len) {
 
                 var textPosition = startposition + (stopposition) / 2
 
-                svg.text(parseInt(textPosition), top, text, {
+                svg.text(g, parseInt(textPosition), top, text, {
                     fontFamily: 'Verdana',
                     fontSize: 10,
                     textAnchor: 'middle',
                     fill: "white",
+                    stroke: "white",
                     class: "label"
+
                 });
             }
         }
