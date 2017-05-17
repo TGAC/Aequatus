@@ -40,7 +40,7 @@ Aequatus Browser funded by BBSRC, UK and transPLANT, EU
 
 <table>
 <tr>
-<td><img src="http://upload.wikimedia.org/wikipedia/en/d/dd/BBSRClogonew.png" alt="BBSRC, UK" width="200px"/>
+<td><img src="http://www.bbsrc.ac.uk/bbsrc/assets/Image/logo.png" alt="BBSRC, UK" width="200px"/>
 
 <td><img src="http://www.transplantdb.eu/sites/transplantdb.eu/files/tplogo_transparent.png" alt="EU transPLANT" width="200px"/>
 
