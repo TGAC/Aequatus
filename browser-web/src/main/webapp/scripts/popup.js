@@ -67,7 +67,7 @@ function newpopup(member_id, protein_id) {
                 if(protein_id != syntenic_data.protein_id){
                     jQuery('#makemetop_button').html("<span onclick='makeMeTop(\"" + member_id + "\",\""+protein_id+"\")'> Change guide gene</span>");
                 }else{
-                    jQuery('#makemetop_button').html("<span disabled> Change guide gene</span>");
+                    jQuery('#makemetop_button').html("<span style='color: lightgray; cursor: not-allowed;'> Change guide gene</span>");
                 }
 
                 jQuery('#ref_name').html("Chr " + json.info.name)
@@ -87,7 +87,7 @@ function newpopup(member_id, protein_id) {
                 if(json.orthology == true && protein_id != syntenic_data.protein_id){
                     jQuery('#1to1Link').html("<span onclick='getAlignment(\"" + protein_id + "\",\""+syntenic_data.protein_id+"\")'> 1 to 1 alignment</span>")
                 }else{
-                    jQuery('#1to1Link').html("<span disabled> 1 to 1 alignment </span>")
+                    jQuery('#1to1Link').html("<span style='color: lightgray; cursor: not-allowed;'> 1 to 1 alignment </span>")
                 }
 
 
