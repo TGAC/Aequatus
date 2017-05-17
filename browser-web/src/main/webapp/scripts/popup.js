@@ -31,13 +31,13 @@ function newpopup(member_id, protein_id) {
     jQuery('#ensemblLink').html("<a href='http://www.ensembl.org/id/" + stable_id + "'>Link to Ensembl</a>")
 
     if (mouseX + jQuery("#popup").width() > jQuery("#main1").width()) {
-        jQuery("#popup").css({"left": parseInt(mouseX+25)});
-        jQuery("#popup").css({"top": parseInt(mouseY)});
+        jQuery("#popup").css({"left": mouseX - jQuery("#popup").width() - 5});
+        jQuery("#popup").css({"top": (mouseY - jQuery("#popup").height() - 30)});
         jQuery("#popup").attr('class', 'bubbleright')
     }
     else {
-        jQuery("#popup").css({"left": parseInt(mouseX+25)});
-        jQuery("#popup").css({"top": parseInt(mouseY)});
+        jQuery("#popup").css({"left": (mouseX - 26)});
+        jQuery("#popup").css({"top": (mouseY - jQuery("#popup").height() - 30)});
         jQuery("#popup").attr('class', 'bubbleleft')
     }
 
@@ -65,9 +65,9 @@ function newpopup(member_id, protein_id) {
                 }
 
                 if(protein_id != syntenic_data.protein_id){
-                    jQuery('#makemetop_button').html("<span onclick='makeMeTop(\"" + member_id + "\",\""+protein_id+"\")'> Change guide gene</span>");
+                    jQuery('#makemetop_button').html("<button onclick='makeMeTop(\"" + member_id + "\",\""+protein_id+"\")' class='btn btn-default' type='button'> <i class='fa fa-random fa-1x'></i></button>");
                 }else{
-                    jQuery('#makemetop_button').html("<span style='color: lightgray; cursor: not-allowed;'> Change guide gene</span>");
+                    jQuery('#makemetop_button').html("<button disabled class='btn btn-default' type='button'> <i class='fa fa-random fa-1x'></i></button>");
                 }
 
                 jQuery('#ref_name').html("Chr " + json.info.name)
@@ -76,18 +76,16 @@ function newpopup(member_id, protein_id) {
 
                 jQuery('#gene_desc').html(stringTrim(desc, 200))
 
-                jQuery('#ensemblLink').html("<a target='_blank' href='http://www.ensembl.org/id/" + stable_id + "'><span style='color: gray;' onmouseover=\"this.style.color='black'\" onmouseout=\"this.style.color='gray'\"> Link to Ensembl (<i>e!</i>)</span></a>")
+                jQuery('#ensemblLink').html("<a target='_blank' href='http://www.ensembl.org/id/" + stable_id + "'><button type='button' class='btn btn-default'> <i class='fa fa-1x'><b><i>e!</i></b></button></a>")
 
-                jQuery('#exportAlignmentLink').html("<span onclick='exportAlignment(\""+protein_id+"\")'> Export Alignment</i></span>")
+                jQuery('#exportAlignmentLink').html("<button type='button' class='btn btn-default' onclick='exportAlignment(\""+protein_id+"\")'> <i class='fa fa-1x'>Aln</i></button>")
 
-                jQuery('#exportSequenceLink').html("<span onclick='exportSequence(\""+protein_id+"\")'> Export Sequence</span>")
-
-                jQuery('#runSMART').html("<span onclick='smart(\"" + member_id + "\",\""+protein_id+"\")'>Find Domains</span>")
+                jQuery('#exportSequenceLink').html("<button type='button' class='btn btn-default' onclick='exportSequence(\""+protein_id+"\")'> <i class='fa fa-1x'>Seq</i></button>")
 
                 if(json.orthology == true && protein_id != syntenic_data.protein_id){
-                    jQuery('#1to1Link').html("<span onclick='getAlignment(\"" + protein_id + "\",\""+syntenic_data.protein_id+"\")'> 1 to 1 alignment</span>")
+                    jQuery('#1to1Link').html("<button type='button' class='btn btn-default' onclick='getAlignment(\"" + protein_id + "\",\""+syntenic_data.protein_id+"\")'> <i class='fa fa-1x'>1:1</i></button>")
                 }else{
-                    jQuery('#1to1Link').html("<span style='color: lightgray; cursor: not-allowed;'> 1 to 1 alignment </span>")
+                    jQuery('#1to1Link').html("<button type='button' disabled class='btn btn-default'> <i class='fa fa-1x'>1;1</i></button>")
                 }
 
 
@@ -99,16 +97,10 @@ function newpopup(member_id, protein_id) {
 
 function removePopup() {
     jQuery("#popup").fadeOut()
-    jQuery("#smartDomainParams").css("display","none");
-
 }
 
 function removeInfoPopup(){
     jQuery("#info_popup_wrapper").fadeOut()
-}
-
-function removeDomainPopup(){
-    jQuery("#domain_popup_wrapper").fadeOut()
 }
 
 var sequence_list = {}

@@ -15,9 +15,5 @@
           class="uk.ac.bbsrc.earlham.browser.service.ajax.ComparaService">
     </bean>
 
-    <bean id="smartDomain"
-          class="uk.ac.bbsrc.earlham.browser.service.ajax.SmartDomain">
-    </bean>
-
 </beans>
 
