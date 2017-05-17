@@ -626,7 +626,7 @@
 
 <div id="domain_popup_wrapper" style="display: none;">
     <div style="background: darkgrey none repeat scroll 0% 0%; height: 100%; width: 100%; position: fixed; opacity: 0.8;z-index: 1999;"
-         onclick="removeInfoPopup()">
+         onclick="removeDomainPopup()">
     </div>
     <div id="domain-popup" class="popup"
          style="margin-left: auto; margin-right: auto; top: 100px; position: relative; background: white none repeat scroll 0% 0%; box-shadow: 5px 5px 5px gray; z-index: 2000; ">
