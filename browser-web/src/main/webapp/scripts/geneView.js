@@ -570,6 +570,7 @@ function makeMeTop(new_gene_id, new_protein_id) {
 }
 
 function exportGeneLabel(type) {
+    console.log("export gene label "+ type)
     var download_data = ""
 
     jQuery("#gridSystemModalLabel").html("Gene Labels")
@@ -584,6 +585,7 @@ function exportGeneLabel(type) {
     });
     text_html += "</tbody></table>"
     // text_html += "<button class='btn btn-default' onclick=dlText('" + download_data + "','Genes.csv')>Download</button>"
+    console.log(text_html)
 
     jQuery("#exportModal_content").append(text_html)
     jQuery("#downloadButton").html("<button class='btn btn-default' onclick=dlText('" + download_data + "','Genes.csv')>Download</button>")
@@ -677,7 +679,12 @@ function recursive_tree_Newick(tree, newick) {
  *
  */
 function exportAlignment(id) {
+    console.log("export alignment "+id)
     var download_data = ""
+    var text_html = "";
+    jQuery("#exportModal_content").html("")
+    jQuery("#gridSystemModalLabel").html("Alignment(s)")
+
     var data = {}
     var Protein_id = []
     jQuery(".protein_id").each(function (index) {
@@ -692,18 +699,32 @@ function exportAlignment(id) {
 
     jQuery.each(data, function (key, data) {
         if (Protein_id.indexOf(key) >= 0) {
-            download_data += key + "," + data + "\n"
+            text_html +=  ">"+key + "<br>" + data + "<br>"
+            download_data += ">" + key + "\n" + data + "\n"
         }
     })
 
 
-    if (jQuery('#exportModal').hasClass('in')) {
-        jQuery('#exportModal').modal('hide')
+    //if (jQuery('#exportModal').hasClass('in')) {
+    //    jQuery('#exportModal').modal('hide')
+    //}
+
+    console.log(text_html)
+    var download_btn = jQuery('<button/>')
+        .text('Download')
+        .addClass('btn btn-default')
+        .click(function () { dlText(download_data,'Alignment.fa') });
+
+    jQuery("#exportModal_content").append(text_html)
+
+    jQuery("#downloadButton").html(download_btn)
+
+    if (!jQuery('#exportModal').hasClass('in')) {
+        jQuery('#exportModal').modal()
     }
 
-    jQuery("#exportModal_content").html("")
-
-    dlText(download_data, 'CIGAR.csv')
+    console.log(download_data)
+    //dlText(download_data, 'CIGAR.csv')
 
 }
 
@@ -714,7 +735,11 @@ function exportSequence(id) {
 
     var download_data = ""
 
+    jQuery("#gridSystemModalLabel").html("Sequence(s)")
+
     var data = {}
+
+    jQuery("#exportModal_content").html("")
 
     var Protein_id = []
     jQuery(".protein_id").each(function (index) {
@@ -727,20 +752,30 @@ function exportSequence(id) {
         data[id] = syntenic_data.sequence[id]
     }
 
+    var text_html = "";
+
+
     jQuery.each(data, function (key, data) {
         if (Protein_id.indexOf(key) >= 0) {
-            download_data += key + "," + data + "\n"
+            text_html +=  ">"+key + "<br>" + data + "<br>"
+            download_data += ">"+key + "\n" + data + "\n"
         }
     })
 
-
-    if (jQuery('#exportModal').hasClass('in')) {
-        jQuery('#exportModal').modal('hide')
-    }
-
     jQuery("#exportModal_content").html("")
 
-    dlText(download_data, 'Sequence.csv')
+    var download_btn = jQuery('<button/>')
+        .text('Download')
+        .addClass('btn btn-default')
+        .click(function () { dlText(download_data,'Sequence.fa') });
+
+    jQuery("#exportModal_content").append(text_html)
+
+    jQuery("#downloadButton").html(download_btn)
+
+    if (!jQuery('#exportModal').hasClass('in')) {
+        jQuery('#exportModal').modal()
+    }
 
 }
 
