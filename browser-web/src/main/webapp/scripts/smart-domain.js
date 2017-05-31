@@ -61,6 +61,10 @@ function smart(gene_id, protein_id) {
                 var hidden_table_content = "<h3>Features NOT shown in the diagram: </h3> <table class='table table-condensed' width='100%'><tr><th>Name</th><th>Start</th><th>End</th><th>E-value</th><th>Type</th><th>Reason</th></tr>"
 
                 if (json.status == "finished") {
+                    jQuery(json.domains).each(function (index) {
+                        json.domains[index].id = index;
+                    })
+                    protein_domains = json.domains;
                     showDomainResult(json, gene_id, protein_id)
                 } else if (json.status == "queued") {
                     jQuery("#domainStructure").html(" <center> <img style='position: relative;' src='./images/browser/loading_big.gif' alt='Loading'> </center>")
@@ -85,19 +89,27 @@ function smart(gene_id, protein_id) {
 function showDomainResult(json, gene_id, protein_id) {
     jQuery("#domainStructure").html("")
 
-    domainTable(json.domains)
-    drawDomain(protein_id, json.domains)
+    domainTable(json.domains, protein_id)
+    var domains_to_draw = []
+    jQuery(json.domains).each(function (index) {
+        if (json.domains[index].STATUS.split("|")[0] == "visible") {
+            domains_to_draw.push(protein_domains[index])
+        }
+    })
+
+    drawDomain(protein_id, domains_to_draw)
 }
 
 /**
  * displays domains in DataTable format
  * @param domains
  */
-function domainTable(domains) {
+function domainTable(domains, protein_id) {
     var visible_table_content = "<h3>Confidently predicted domains, repeats, motifs and features from SMART</h3>" +
         "<table id='visibleDomainListTable' class='table table-condensed' width='100%'>" +
         "<thead>" +
         "<tr>" +
+        "<th>ID</th>" +
         "<th>Name</th>" +
         "<th>Start</th>" +
         "<th>End</th>" +
@@ -108,6 +120,7 @@ function domainTable(domains) {
 
     visible_table_content += "<tfoot>" +
         "<tr>" +
+        "<th>ID</th>" +
         "<th>Name</th>" +
         "<th>Start</th>" +
         "<th>End</th>" +
@@ -122,6 +135,7 @@ function domainTable(domains) {
         "<table id='hiddenDomainListTable' class='table table-condensed' width='100%'>" +
         "<thead>" +
         "<tr>" +
+        "<th>ID</th>" +
         "<th>Name</th>" +
         "<th>Start</th>" +
         "<th>End</th>" +
@@ -133,6 +147,7 @@ function domainTable(domains) {
 
     hidden_table_content += "<tfoot>" +
         "<tr>" +
+        "<th>ID</th>" +
         "<th>Name</th>" +
         "<th>Start</th>" +
         "<th>End</th>" +
@@ -149,11 +164,11 @@ function domainTable(domains) {
 
     for (var i = 0; i < domains.length; i++) {
         if (domains[i].STATUS.split("|")[0] == "visible") {
-            var col1 = ""
-            col1 = domains[i].DOMAIN
-            visible_table_content += "<tr><td>" + col1 + "</td><td>" + domains[i].START + "</td><td>" + domains[i].END + "</td><td>" + domains[i].EVALUE + "</td><td>" + domains[i].TYPE + "</td></tr>";
+            var col2 = ""
+            col2 = domains[i].DOMAIN
+            visible_table_content += "<tr><td>" + domains[i].id + "</td><td>" + col2 + "</td><td>" + domains[i].START + "</td><td>" + domains[i].END + "</td><td>" + domains[i].EVALUE + "</td><td>" + domains[i].TYPE + "</td></tr>";
         } else {
-            hidden_table_content += "<tr><td>" + domains[i].DOMAIN + "</td><td>" + domains[i].START + "</td><td>" + domains[i].END + "</td><td>" + domains[i].EVALUE + "</td><td>" + domains[i].TYPE + "</td><td>" + domains[i].STATUS.split("|")[1] + "</td></tr>";
+            hidden_table_content += "<tr><td>" + domains[i].id + "</td><td>" + domains[i].DOMAIN + "</td><td>" + domains[i].START + "</td><td>" + domains[i].END + "</td><td>" + domains[i].EVALUE + "</td><td>" + domains[i].TYPE + "</td><td>" + domains[i].STATUS.split("|")[1] + "</td></tr>";
         }
     }
 
@@ -163,10 +178,30 @@ function domainTable(domains) {
     jQuery("#visibleDomainList").html(visible_table_content)
     jQuery("#hiddenDomainList").html(hidden_table_content)
 
-    var yrtable = jQuery('#visibleDomainListTable').DataTable(
-        {
+    jQuery('#hiddenDomainListTable').DataTable({
+        "columnDefs": [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            }
+        ]
+    });
+
+    var yrtable = jQuery('#visibleDomainListTable').DataTable({
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            // } );
+
+            //  var yrtable = jQuery('#visibleDomainListTable').DataTable(
+            //     {
             initComplete: function () {
-                this.api().columns([4]).every(function () {
+                this.api().columns([5]).every(function () {
                     var column = this;
                     var select = jQuery('<select><option value="">Select Type</option></select>')
                         .appendTo(jQuery(column.footer()).empty())
@@ -184,7 +219,7 @@ function domainTable(domains) {
                         select.append('<option value="' + d + '">' + d + '</option>')
                     });
                 });
-                this.api().columns([3]).every(function () {
+                this.api().columns([4]).every(function () {
                     var column = this;
 
                     var select = jQuery('<select id="evalue_filter"><option value="">Select E-value</option></select>')
@@ -200,7 +235,7 @@ function domainTable(domains) {
             }
         }
     );
-    jQuery('#hiddenDomainListTable').DataTable();
+    // jQuery('#hiddenDomainListTable').DataTable();
 
     jQuery("#visibleDomainListTable").on('search.dt', function () {
         var filteredData = yrtable.rows({filter: 'applied'}).data().toArray();
@@ -208,7 +243,7 @@ function domainTable(domains) {
         jQuery.each(filteredData, function (i) {
             highlight[i] = filteredData[i][0];
         })
-        highlightDomain(highlight)
+        highlightDomain(highlight, protein_id)
     });
 }
 
@@ -249,8 +284,8 @@ function checkStatus(jobid, gene_id, protein_id) {
 jQuery.fn.dataTable.ext.search.push(
     function (settings, data, dataIndex) {
         var evalue_filter = jQuery('#evalue_filter').val() || null;
-        var evalue = parseFloat(data[3]);
-        if(evalue_filter == null || evalue <= evalue_filter) {
+        var evalue = parseFloat(data[4]);
+        if (evalue_filter == null || evalue <= evalue_filter) {
             return true;
         }
         return false;

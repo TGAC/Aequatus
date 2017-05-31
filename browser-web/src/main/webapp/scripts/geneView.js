@@ -23,6 +23,7 @@ var members = null;
 var members_overview = null;
 var chr_len = null;
 var chr_name = null;
+var protein_domains = null;
 
 
 function getChromosomes(member_id) {
