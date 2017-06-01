@@ -241,7 +241,7 @@ function domainTable(domains, protein_id) {
         var filteredData = yrtable.rows({filter: 'applied'}).data().toArray();
         var highlight = []
         jQuery.each(filteredData, function (i) {
-            highlight[i] = filteredData[i][0];
+            highlight[i] = parseInt(filteredData[i][0]);
         })
         highlightDomain(highlight, protein_id)
     });
