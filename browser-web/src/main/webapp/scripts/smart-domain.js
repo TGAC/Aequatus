@@ -243,7 +243,7 @@ function domainTable(domains, protein_id) {
         jQuery.each(filteredData, function (i) {
             highlight[i] = parseInt(filteredData[i][0]);
         })
-        highlightDomain(highlight, protein_id)
+        filterDomain(highlight, protein_id)
     });
 }
 

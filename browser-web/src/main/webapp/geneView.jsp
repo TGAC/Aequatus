@@ -594,7 +594,7 @@
                                 </div>
 
                             </div>
-                            <div id="domainStructure" style=" word-wrap: break-word;"></div>
+                            <div id="domainStructure" style=" word-wrap: break-word; overflow-y: scroll;height: 200px;"></div>
 
                         </td>
                     </tr>

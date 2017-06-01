@@ -56,6 +56,8 @@ function drawDomain(id, domains) {
  * @param max_len
  */
 function dispEachDomain(domains, max_len) {
+    console.log("dispEachDomain ")
+    console.log(domains)
 
     var width = jQuery("#domainStructure").width()
 
@@ -92,19 +94,30 @@ function dispEachDomain(domains, max_len) {
             }
         }
 
+        var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function (d) {
+                return d.START+":"+d.END;
+            })
+
         var linearScale = d3.scale.linear()
             .domain([0,max_len])
             .range([0,width]);
 
         var node = domainsvg.selectAll(".domain")
             .data(domains);
-        // .on("mouseover", function(d){
-        //     showDomainPosition(startposition , stopposition , domains[domain_len].START , domains[domain_len].END);
-        //     searchDomain("'"+domains[domain_len].DOMAIN+"'")
-        // });
 
-
-        node.enter().append("rect");
+        domainsvg.call(tip)
+        node.enter().append("rect")
+            .on('mouseover', function(d){
+                tip.show(d);
+                highlightDomain(d)
+            })
+            .on('mouseout',function(d){
+                tip.hide(d);
+                resetDomain()
+            })
 
 
         node.exit().transition()
@@ -261,7 +274,7 @@ function dispEachDomain(domains, max_len) {
  * @param start
  * @param stop
  */
-function showDomainPosition(startposition, stopposition, start, stop) {
+function showDomainPosition(d) {
 
     var svg = jQuery("#domainStructure").svg("get")
     svg.line(parseInt(startposition), 10, parseInt(startposition), 30, {
@@ -315,7 +328,36 @@ function searchDomain(domain) {
  * highlight selected domains from DataTable
  * @param domain
  */
-function highlightDomain(domain, id) {
+function highlightDomain(domain) {
+    var node = domainsvg.selectAll(".domain")
+
+    node.transition()
+        .duration(500)
+        .attr("opacity", function(d){
+            console.log(d)
+            if(d.DOMAIN == domain.DOMAIN){
+                return 1
+            }else{
+                return 0.3
+            }
+        });
+}
+
+/**
+ * reset domains from DataTable
+ */
+function resetDomain() {
+    var node = domainsvg.selectAll(".domain")
+    node.transition()
+        .duration(500)
+        .attr("opacity", 1);
+}
+
+/**
+ * highlight selected domains from DataTable
+ * @param domain
+ */
+function filterDomain(domain, id) {
     var domains = [];
     jQuery(protein_domains).each(function (index) {
         var dom_index = domain.indexOf(protein_domains[index].id)
@@ -323,6 +365,5 @@ function highlightDomain(domain, id) {
             domains[dom_index] = protein_domains[index]
         }
     })
-
     dispEachDomain(domains, syntenic_data.sequence[id].length)
 }
