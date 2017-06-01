@@ -59,6 +59,9 @@ function dispEachDomain(domains, max_len) {
 
     var width = jQuery("#domainStructure").width()
 
+
+
+
     if (domains.length > 0) {
 
         var domain_len = domains.length;
@@ -89,60 +92,19 @@ function dispEachDomain(domains, max_len) {
             }
         }
 
+        var linearScale = d3.scale.linear()
+            .domain([0,max_len])
+            .range([0,width]);
+
         var node = domainsvg.selectAll(".domain")
             .data(domains);
+        // .on("mouseover", function(d){
+        //     showDomainPosition(startposition , stopposition , domains[domain_len].START , domains[domain_len].END);
+        //     searchDomain("'"+domains[domain_len].DOMAIN+"'")
+        // });
 
 
-        node.enter().append("rect")
-            .attr("x", function (d, i) {
-                if (parseInt(d.START) < parseInt(d.END)) {
-                    domain_start = parseInt(d.START);
-                }
-                else {
-                    domain_start = parseInt(d.END);
-                }
-
-                return (domain_start) * parseFloat(width) / (max_len);
-            })
-            .attr("y", function (d, i) {
-                return parseInt(d.layer * 22) + parseInt(10);
-
-            })
-            .attr("width", function (d) {
-                if (parseInt(d.START) < parseInt(d.END)) {
-                    domain_start = parseInt(d.START);
-                    domain_stop = parseInt(d.END);
-                }
-                else {
-                    domain_start = parseInt(d.END);
-                    domain_stop = parseInt(d.START);
-                }
-
-                return ((domain_stop - domain_start) + 1) * parseFloat(width) / (max_len);
-
-            })
-            .attr("height", 20)
-            .attr("class", function (d) {
-                if (d.TYPE == "PROSPERO") {
-                    return "domain internal_repeat " + d.DOMAIN
-                } else if (d.TYPE == "INTRINSIC") {
-                    return "domain INTRINSIC " + d.DOMAIN
-                } else {
-                    return "domain " + d.TYPE
-                }
-            })
-            .attr("domain", function (d) {
-                return d.DOMAIN
-            })
-            .attr("domain_type", function (d) {
-                if (d.TYPE == "PROSPERO") {
-                    return "internal_repeat " + d.DOMAIN
-                } else if (d.TYPE == "INTRINSIC") {
-                    return "INTRINSIC " + d.DOMAIN
-                } else {
-                    return d.TYPE
-                }
-            });
+        node.enter().append("rect");
 
 
         node.exit().transition()
@@ -164,7 +126,7 @@ function dispEachDomain(domains, max_len) {
                     domain_start = parseInt(d.END);
                 }
 
-                return (domain_start) * parseFloat(width) / (max_len);
+                return linearScale(domain_start);
             })
             .attr("y", function (d, i) {
                 return parseInt(d.layer * 22) + parseInt(10);
@@ -180,7 +142,8 @@ function dispEachDomain(domains, max_len) {
                     domain_stop = parseInt(d.START);
                 }
 
-                return ((domain_stop - domain_start) + 1) * parseFloat(width) / (max_len);
+                return linearScale((domain_stop - domain_start) + 1);
+
 
             })
             .attr("height", 20)
@@ -343,8 +306,9 @@ function hideDomainPosition() {
  * @param domain
  */
 function searchDomain(domain) {
-    var table = jQuery("#visibleDomainListTable").DataTable()
-    table.search(domain).draw();
+    // var table = jQuery("#visibleDomainListTable").DataTable()
+    // table.search(domain).draw();
+    // Focus on it
 }
 
 /**
