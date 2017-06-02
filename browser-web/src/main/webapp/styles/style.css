@@ -509,6 +509,13 @@ div.tooltip {
     border: 1px solid gray;
 }
 
+.INTRINSIC {
+    stroke: blue;
+    fill: blue;
+    background: blue;
+    border: 1px solid blue;
+}
+
 .transmembrane_domain {
     stroke: blue;
     fill: steelblue;
@@ -530,12 +537,7 @@ div.tooltip {
     border: 1px solid blue;
 }
 
-.INTRINSIC {
-    stroke: blue;
-    fill: blue;
-    background: blue;
-    border: 1px solid blue;
-}
+
 
 .signal_peptide{
     stroke: red;

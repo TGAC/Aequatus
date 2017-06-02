@@ -11,17 +11,12 @@ var domainsvg;
 
 
 function drawDomain(id, domains) {
-    // jQuery("#domainStructure").svg()
     var margin = {top: 0, right: 0, bottom: 0, left: 0},
         width = jQuery(window).width() * 0.8,
         height = 500 - margin.top - margin.bottom;
 
-    var svg = ""//jQuery("#domainStructure").svg("get")
     var maxLentemp = jQuery("#domainStructure").width();
     var stopposition = maxLentemp;
-
-    var g = "";//svg.group({class: 'style1'});
-
 
     domainsvg = d3.select("#domainStructure").append("svg")
         .attr("width", width)
@@ -56,12 +51,10 @@ function drawDomain(id, domains) {
  * @param max_len
  */
 function dispEachDomain(domains, max_len) {
-    console.log("dispEachDomain ")
-    console.log(domains)
 
     var width = jQuery("#domainStructure").width()
 
-
+    var delta = (max_len * 5)/ width
 
 
     if (domains.length > 0) {
@@ -83,7 +76,7 @@ function dispEachDomain(domains, max_len) {
         for (var i = start; i < domain_len; i++) {
             if (domains[i].STATUS.split("|")[0] == "visible") {
 
-                if (parseInt(domains[i].START) < parseInt(end)) {
+                if (parseInt(domains[i].START) - parseInt(end) < delta) {
                     layer++;
                     domains[i].layer = layer;
                 } else {
@@ -143,7 +136,6 @@ function dispEachDomain(domains, max_len) {
             })
             .attr("y", function (d, i) {
                 return parseInt(d.layer * 22) + parseInt(10);
-
             })
             .attr("width", function (d) {
                 if (parseInt(d.START) < parseInt(d.END)) {
@@ -156,8 +148,6 @@ function dispEachDomain(domains, max_len) {
                 }
 
                 return linearScale((domain_stop - domain_start) + 1);
-
-
             })
             .attr("height", 20)
             .attr("class", function (d) {
@@ -182,136 +172,7 @@ function dispEachDomain(domains, max_len) {
                 }
             });
 
-        // while (domain_len--) {
-        //     var dom_class = domains[domain_len].TYPE;
-
-
-        //     if (dom_class == "PROSPERO") {
-        //         dom_class = "internal_repeat " + domains[domain_len].DOMAIN
-        //     } else if (dom_class == "INTRINSIC") {
-        //         //if (domains[domain_len].DOMAIN == "transmembrane_domain") {
-        //         dom_class = "INTRINSIC " + domains[domain_len].DOMAIN
-        //         //} else if (domains[domain_len].DOMAIN == "low_complexity_region") {
-        //         //    dom_class = "low_complexity_region"
-        //         //}
-        //     }
-
-        //     if (domains[domain_len].TYPE.split("|")[0]) {
-
-        //     }
-        //     if (domains[domain_len].STATUS.split("|")[0] == "visible") {
-        //         var domain_start;
-        //         var domain_stop;
-
-        //         if (parseInt(domains[domain_len].START) < parseInt(domains[domain_len].END)) {
-        //             domain_start = parseInt(domains[domain_len].START);
-        //             domain_stop = parseInt(domains[domain_len].END);
-        //         }
-        //         else {
-        //             domain_start = parseInt(domains[domain_len].END);
-        //             domain_stop = parseInt(domains[domain_len].START);
-        //         }
-
-        //         var startposition = (domain_start) * parseFloat(width) / (max_len);
-        //         var stopposition = ((domain_stop - domain_start) + 1) * parseFloat(width) / (max_len);
-
-        //         stopposition -= 1
-
-        //         if (stopposition < 1) {
-        //             stopposition = 1
-        //         }
-        //         startposition += 1
-
-        //         var top = parseInt(domains[domain_len].layer * 22) + parseInt(10);
-
-        //         var g = svg.group({
-        //             class: "domain " + dom_class,
-        //             domain: domains[domain_len].DOMAIN,
-        //             domain_type: dom_class
-        //         });
-
-        //         svg.rect(g, startposition, top, stopposition, (20), {
-        //             'id': "domain" + domains[domain_len].DOMAIN,
-        //             'class': dom_class,
-        //             'domain': domains[domain_len].DOMAIN,
-        //             'domain_type': dom_class,
-        //             'onmouseover': 'showDomainPosition("' + startposition + '","' + stopposition + '","' + domains[domain_len].START + '","' + domains[domain_len].END + '"); searchDomain("' + domains[domain_len].DOMAIN + '")',
-        //             'onmouseout': 'hideDomainPosition(); searchDomain("")',
-        //             strokeWidth: 1
-        //         });
-
-        //         var text = "";
-
-        //         if (dom_class == "PFAM") {
-        //             text = domains[domain_len].DOMAIN.split(":")[1]
-        //         }
-        //         else if (dom_class == "SMART") {
-        //             text = domains[domain_len].DOMAIN
-        //         }
-
-        //         var top = parseFloat(parseFloat(parseInt(domains[domain_len].layer) + parseFloat(0.5)) * 22) + 10;
-
-        //         var textPosition = startposition + (stopposition) / 2
-
-        //         svg.text(g, parseInt(textPosition), top, text, {
-        //             fontFamily: 'Verdana',
-        //             fontSize: 10,
-        //             textAnchor: 'middle',
-        //             fill: "white",
-        //             stroke: "white",
-        //             class: "label"
-
-        //         });
-        //     }
-        // }
     }
-}
-
-/**
- * highlights domain position
- * @param startposition
- * @param stopposition
- * @param start
- * @param stop
- */
-function showDomainPosition(d) {
-
-    var svg = jQuery("#domainStructure").svg("get")
-    svg.line(parseInt(startposition), 10, parseInt(startposition), 30, {
-        stroke: 'red',
-        strokeWidth: 1,
-        class: "domain_position"
-    });
-
-    svg.line(parseInt(parseInt(startposition) + parseInt(stopposition)), 10, parseInt(parseInt(startposition) + parseInt(stopposition)), 30, {
-        stroke: 'red',
-        strokeWidth: 1,
-        class: "domain_position"
-    });
-
-    svg.text(parseInt(startposition), 8, start, {
-        fontFamily: 'Verdana',
-        fontSize: 10,
-        textAnchor: 'middle',
-        fill: "black",
-        class: "domain_position"
-    });
-
-    svg.text(parseInt(parseInt(startposition) + parseInt(stopposition)), 8, stop, {
-        fontFamily: 'Verdana',
-        fontSize: 10,
-        textAnchor: 'middle',
-        fill: "black",
-        class: "domain_position"
-    });
-
-}
-
-/**
- * hides domain position
- */
-function hideDomainPosition() {
-    jQuery(".domain_position").remove()
 }
 
 /**
