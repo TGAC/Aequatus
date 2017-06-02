@@ -111,15 +111,39 @@ function dispEachDomain(domains, max_len) {
                 tip.hide(d);
                 resetDomain()
             })
+            .attr("x", function (d, i) {
+                if (parseInt(d.START) < parseInt(d.END)) {
+                    domain_start = parseInt(d.START);
+                }
+                else {
+                    domain_start = parseInt(d.END);
+                }
 
+                return linearScale(domain_start);
+            })
+            .attr("width", 0);
+
+
+
+         node.append("text")
+           .attr("x", 0)
+           .attr("y", 0)
+           .attr("dy", ".35em")
+           .text(function(d) { return "text" });
 
         node.exit().transition()
             .duration(500)
-            .attr("class", function (d) {
-                console.log(d.DOMAIN)
+            .attr("x", function (d, i) {
+                if (parseInt(d.START) < parseInt(d.END)) {
+                    domain_start = parseInt(d.START);
+                }
+                else {
+                    domain_start = parseInt(d.END);
+                }
 
-                return d.TYPE
+                return linearScale(domain_start);
             })
+            .attr("width", 0)
             .remove();
 
         node.transition()
@@ -195,7 +219,6 @@ function highlightDomain(domain) {
     node.transition()
         .duration(500)
         .attr("opacity", function(d){
-            console.log(d)
             if(d.DOMAIN == domain.DOMAIN){
                 return 1
             }else{
