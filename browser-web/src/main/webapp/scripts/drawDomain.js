@@ -91,7 +91,7 @@ function dispEachDomain(domains, max_len) {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                return d.START+":"+d.END;
+                return d.DOMAIN+":"+d.START+"-"+d.END;
             })
 
         var linearScale = d3.scale.linear()
@@ -111,6 +111,11 @@ function dispEachDomain(domains, max_len) {
                 tip.hide(d);
                 resetDomain()
             })
+            .on('click', function(d){
+                d3.select(this).on("mouseout", null);
+                tip.hide(d);
+                searchDomain(d)
+            })
             .attr("x", function (d, i) {
                 if (parseInt(d.START) < parseInt(d.END)) {
                     domain_start = parseInt(d.START);
@@ -125,11 +130,7 @@ function dispEachDomain(domains, max_len) {
 
 
 
-         node.append("text")
-           .attr("x", 0)
-           .attr("y", 0)
-           .attr("dy", ".35em")
-           .text(function(d) { return "text" });
+
 
         node.exit().transition()
             .duration(500)
@@ -204,9 +205,8 @@ function dispEachDomain(domains, max_len) {
  * @param domain
  */
 function searchDomain(domain) {
-    // var table = jQuery("#visibleDomainListTable").DataTable()
-    // table.search(domain).draw();
-    // Focus on it
+    var table = jQuery("#visibleDomainListTable").DataTable()
+    table.search(domain.DOMAIN).draw();
 }
 
 /**
