@@ -18,6 +18,7 @@ function drawDomain(id, domains) {
     var maxLentemp = jQuery("#domainStructure").width();
     var stopposition = maxLentemp;
 
+
     domainsvg = d3.select("#domainStructure").append("svg")
         .attr("width", width)
         .attr("height", height)
@@ -52,9 +53,10 @@ function drawDomain(id, domains) {
  */
 function dispEachDomain(domains, max_len) {
 
+    console.log("dispEachDomain")
     var width = jQuery("#domainStructure").width()
 
-    var delta = (max_len * 5)/ width
+    var delta = (max_len * 5) / width
 
 
     if (domains.length > 0) {
@@ -62,27 +64,59 @@ function dispEachDomain(domains, max_len) {
         var domain_len = domains.length;
 
         var end = 0;
-        var layer = 0
+        var layer = 0;
+        var order = 0;
+
+
+        for (var i = 0; i < domain_len; i++) {
+            if (domains[i].STATUS.split("|")[0] == "visible") {
+                domains[i].order = order;
+                order++;
+            }
+        }
+
+        domains.sort(sort_by('START', true, parseInt));
+        var group = 0
+
         var start = 0;
         for (var i = 0; i < domain_len; i++) {
             if (domains[i].STATUS.split("|")[0] == "visible") {
                 end = domains[i].END;
                 domains[i].layer = layer;
                 start = parseInt(i) + 1;
+                domains[i].group = group;
                 break;
             }
         }
-
         for (var i = start; i < domain_len; i++) {
             if (domains[i].STATUS.split("|")[0] == "visible") {
 
                 if (parseInt(domains[i].START) - parseInt(end) < delta) {
-                    layer++;
-                    domains[i].layer = layer;
+                    domains[i].group = group;
                 } else {
+                    domains[i].group = group;
+                    end = domains[i].END
+                    group++;
+
+                }
+            }
+        }
+        domains.sort(sort_by('order', true, parseInt));
+
+        var last_group = 0;
+
+        for (var i = 0; i < domain_len; i++) {
+
+            if (domains[i].STATUS.split("|")[0] == "visible") {
+                if (domains[i].group == last_group) {
+                    domains[i].layer = layer;
+                    layer++;
+                } else {
+
                     layer = 0;
                     domains[i].layer = layer;
-                    end = domains[i].END
+                    last_group = domains[i].group
+
                 }
             }
         }
@@ -91,27 +125,27 @@ function dispEachDomain(domains, max_len) {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                return d.DOMAIN+":"+d.START+"-"+d.END;
+                return d.DOMAIN + ":" + d.START + "-" + d.END;
             })
 
         var linearScale = d3.scale.linear()
-            .domain([0,max_len])
-            .range([0,width]);
+            .domain([0, max_len])
+            .range([0, width]);
 
         var node = domainsvg.selectAll(".domain")
             .data(domains);
 
         domainsvg.call(tip)
         node.enter().append("rect")
-            .on('mouseover', function(d){
+            .on('mouseover', function (d) {
                 tip.show(d);
                 highlightDomain(d)
             })
-            .on('mouseout',function(d){
+            .on('mouseout', function (d) {
                 tip.hide(d);
                 resetDomain()
             })
-            .on('click', function(d){
+            .on('click', function (d) {
                 d3.select(this).on("mouseout", null);
                 tip.hide(d);
                 searchDomain(d)
@@ -126,10 +160,13 @@ function dispEachDomain(domains, max_len) {
 
                 return linearScale(domain_start);
             })
-            .attr("width", 0);
-
-
-
+            .attr("width", 0)
+            .attr("group", function (d, i) {
+                return d.group;
+            })
+            .attr("layer", function (d, i) {
+                return d.layer;
+            });
 
 
         node.exit().transition()
@@ -218,10 +255,10 @@ function highlightDomain(domain) {
 
     node.transition()
         .duration(500)
-        .attr("opacity", function(d){
-            if(d.DOMAIN == domain.DOMAIN){
+        .attr("opacity", function (d) {
+            if (d.DOMAIN == domain.DOMAIN) {
                 return 1
-            }else{
+            } else {
                 return 0.3
             }
         });
