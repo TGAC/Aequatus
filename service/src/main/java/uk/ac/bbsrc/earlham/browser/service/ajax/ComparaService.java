@@ -369,6 +369,24 @@ public class ComparaService {
         return response;
     }
 
+    public JSONObject getOrthologyForMember(HttpSession session, JSONObject json) {
+        String query = json.getString("query");
+        JSONObject response = new JSONObject();
+
+        response.put("trackname", "orthology");
+        try {
+            response.put("ref", comparaStore.getRefStableID(query));
+            response.put("orthology", comparaStore.findHomology(query));
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return response;
+    }
+
     public JSONObject countForCoreMember(HttpSession session, JSONObject json) {
         String query = json.getString("query");
         JSONObject response = new JSONObject();

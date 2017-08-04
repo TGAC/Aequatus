@@ -29,11 +29,10 @@ package uk.ac.bbsrc.earlham.browser.store.ensemblDAO;
 import com.googlecode.ehcache.annotations.Cacheable;
 import com.googlecode.ehcache.annotations.KeyGenerator;
 import com.googlecode.ehcache.annotations.Property;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.CacheManager;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +41,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import uk.ac.bbsrc.earlham.browser.core.store.ComparaStore;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -783,6 +779,32 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     }
 
+    public Long[] getOrthologsforMember(String query) throws IOException {
+
+
+        List<Long> members = new ArrayList<>();
+
+        final String GET_GENE_TREE_FOR_REFERENCE = "select m1.stable_id AS Ref, m1.canonical_member_id AS peptide_id, m2.stable_id AS Ref_stable_id, m3.*, gam.cigar_line, gtr.method_link_species_set_id, m4.gene_member_id, m4.display_label as 'desc'  " +
+                "from gene_member m1 " +
+                "JOIN seq_member m2 ON (m1.canonical_member_id = m2.seq_member_id) " +
+                "JOIN gene_tree_node gtn1 ON (m2.seq_member_id = gtn1.seq_member_id) " +
+                "JOIN gene_tree_root gtr ON (gtr.root_id = gtn1.root_id) " +
+                "JOIN gene_align_member gam USING (gene_align_id) " +
+                "JOIN seq_member m3 ON (gam.seq_member_id = m3.seq_member_id) " +
+                "JOIN gene_member m4 on (m4.canonical_member_id = m3.seq_member_id) " +
+                "WHERE m1.gene_member_id = ? AND m3.genome_db_id in " + genome_ids + " and gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" ";
+
+        List<Map<String, Object>> homology_member_id = template.queryForList(GET_GENE_TREE_FOR_REFERENCE, new Object[]{query});
+
+        for (Map map_two : homology_member_id) {
+
+            members.add((Long) map_two.get("seq_member_id"));
+        }
+
+        return members.toArray(new Long[members.size()]);
+
+    }
+
     @Cacheable(cacheName = "countGeneTreeforMemberCache",
             keyGenerator = @KeyGenerator(
                     name = "HashCodeCacheKeyGenerator",
@@ -1090,6 +1112,65 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         }
 
         return homologouses;
+
+    }
+
+
+    public JSONObject findHomology(String query) throws Exception {
+
+//        Long ids[] = getOrthologsforMember(query);
+        List<Long> homology_ids = new ArrayList<>();
+
+        int seq_member_id = template.queryForInt(GET_SEQ_MEMBER_ID_FROM_GENE_MEMBER_ID, new Object[]{query});
+        JSONObject homologies = new JSONObject();
+
+        final String SEARCH_HOMOLOGY_IDs = "SELECT homology_id FROM homology_member WHERE seq_member_id = ?;";
+
+
+        List<Map<String, Object>> homology_id = template.queryForList(SEARCH_HOMOLOGY_IDs,  new Object[]{seq_member_id});
+
+        log.info(String.valueOf(homology_id));
+
+        for (Map map_two : homology_id) {
+            homology_ids.add((Long) map_two.get("homology_id"));
+        }
+
+        final String SEARCH_HOMOLOGY_INFO = "select h.*, hm.* " +
+                "from homology_member hm, homology h " +
+                "where h.homology_id = hm.homology_id  and h.homology_id in ("+StringUtils.join(homology_ids, ",")+");";
+//
+        List<Map<String, Object>> homology_member_id = template.queryForList(SEARCH_HOMOLOGY_INFO);
+
+        for (Map map_two : homology_member_id) {
+            String temp_homology_id = map_two.get("homology_id").toString();
+            int temp_seq_member_id = Integer.parseInt(map_two.get("seq_member_id").toString());
+
+            log.info("\ttemp_seq_member_id "+temp_seq_member_id + " \t "+seq_member_id);
+            if(!homologies.containsKey(temp_homology_id)){
+                log.info("\ttemp_seq_member_id if ");
+                homologies.put(temp_homology_id, new JSONObject());
+            }
+
+            if(temp_seq_member_id != seq_member_id)
+            {
+                log.info("\tif ");
+
+                homologies.getJSONObject(temp_homology_id).put("method_link_species_set_id", map_two.get("method_link_species_set_id"));
+                homologies.getJSONObject(temp_homology_id).put("description", map_two.get("description"));
+                homologies.getJSONObject(temp_homology_id).put("is_tree_compliant", map_two.get("is_tree_compliant"));
+                homologies.getJSONObject(temp_homology_id).put("seq_member_id", map_two.get("seq_member_id"));
+                homologies.getJSONObject(temp_homology_id).put("cigar_line", map_two.get("cigar_line"));
+
+            }
+            else{
+                log.info("\telse ");
+                homologies.getJSONObject(temp_homology_id).put("ref_seq_member_id", map_two.get("seq_member_id"));
+                homologies.getJSONObject(temp_homology_id).put("ref_cigar_line", map_two.get("cigar_line"));
+            }
+
+        }
+
+        return  homologies;
 
     }
 }

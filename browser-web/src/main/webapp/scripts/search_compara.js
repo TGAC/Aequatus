@@ -163,15 +163,15 @@ function changeGenome(genome, name) {
 }
 
 function URLgenomeName(genome_name, chr_name) {
-    window.history.pushState("ref=" + genome_name, "Title", "index.jsp?ref=" + genome_name + "&chr=" + chr_name);
+    window.history.pushState("ref=" + genome_name, "Title", "?ref=" + genome_name + "&chr=" + chr_name);
 }
 
 function URLMemberID(stable_id) {
-    window.history.pushState("query=" + stable_id, "Title", "index.jsp?query=" + stable_id);
+    window.history.pushState("query=" + stable_id, "Title", "?query=" + stable_id);
 }
 
 function URLSearch(search) {
-    window.history.pushState("search=" + search, "Title", "index.jsp?search=" + search);
+    window.history.pushState("search=" + search, "Title", "?search=" + search);
 }
 
 function search_redirect(json) {

@@ -77,6 +77,8 @@ public interface ComparaStore extends Store<String> {
     String getDnafragnamefromId(String query) throws IOException;
     String getRefStableID(String query) throws Exception;
     String getRefPtnStableID(String query) throws Exception;
+    JSONObject findHomology(String query) throws Exception;
+
 
     int getGeneMemberIDfromStableID(String query) throws Exception;
     int getSeqMemberIDfromGeneMemberID(int gene_member_id) throws Exception;
