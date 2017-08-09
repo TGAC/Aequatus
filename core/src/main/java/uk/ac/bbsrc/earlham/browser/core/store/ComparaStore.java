@@ -86,6 +86,8 @@ public interface ComparaStore extends Store<String> {
     int getGeneMemberIDfromSeqMemberID(int seq_member_id) throws Exception;
     String getSeqStableIDfromSeqMemberID(int seq_member_id) throws Exception;
     JSONObject getPairwiseAlignment(int ref, int query) throws Exception;
+    JSONObject getHomologyID(int ref, int query) throws Exception;
+    String getHomologyType(long homology_id) throws Exception;
     String getSeq(int seq_member_id)  throws Exception;
     String getGeneStableIDfromGeneMemberID(int gene_member_id) throws Exception;
     }

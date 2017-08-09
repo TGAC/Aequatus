@@ -503,6 +503,9 @@
         </div>
 
         <div style="overflow: hidden; left: 0px; position: relative; top: 10px; padding: 10px">
+            <div id="pairwiseModal_type" style=" word-wrap: break-word;"></div>
+        </div>
+        <div style="overflow: hidden; left: 0px; position: relative; top: 10px; padding: 10px">
             <div id="pairwiseModal_content" style=" word-wrap: break-word;"></div>
         </div>
 

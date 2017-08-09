@@ -581,6 +581,8 @@ public class ComparaService {
         hit_object.put("protein_id", hit);
         try {
             JSONObject alignment =  comparaStore.getPairwiseAlignment(ref_seq_member_id, hit_seq_member_id);
+            long homology_id = comparaStore.getHomologyID(ref_seq_member_id, hit_seq_member_id).getLong("homology_id");
+
             ref_object.put("alignment", alignment.get("ref"));
             hit_object.put("alignment", alignment.get("hit"));
 
@@ -589,6 +591,8 @@ public class ComparaService {
 
             response.put("ref", ref_object);
             response.put("hit", hit_object);
+
+            response.put("homology", comparaStore.getHomologyType(homology_id));
 
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

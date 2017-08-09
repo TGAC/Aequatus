@@ -151,6 +151,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_PAIRWISE_ALIGNMENT = "select hm1.cigar_line as ref, hm2.cigar_line as hit from homology_member hm1, homology_member hm2 where hm1.seq_member_id = ? and hm2.seq_member_id = ? and  hm1.homology_id = hm2.homology_id;";
 
+    public static final String GET_HOMOLOGY_ID = "select h.homology_id from homology h, homology_member hm1, homology_member hm2 where hm1.seq_member_id = ? and hm2.seq_member_id = ? and  hm1.homology_id = hm2.homology_id and hm1.homology_id = h.homology_id;";
+    public static final String GET_HOMOLOGY_TYPE = "select description from homology  where homology_id = ?;";
+
     public static final String IS_PAIRWISE_ALIGNMENT =  "select count(*) from homology_member hm1, homology_member hm2 where hm1.seq_member_id = ? and hm2.seq_member_id = ? and  hm1.homology_id = hm2.homology_id;";
     public static final String GET_SEQ_MEMBER_ID_FROM_STABLE_ID = "select seq_member_id from seq_member where stable_id = ?";
 
@@ -569,6 +572,22 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         alignment.put("ref", pairwise_alignemnt.get("ref"));
         alignment.put("hit", pairwise_alignemnt.get("hit"));
         return alignment;
+    }
+
+
+    public JSONObject getHomologyID(int ref, int query) throws Exception{
+        JSONObject homology_id = new JSONObject();
+
+        Map<String, Object> pairwise_alignemnt = template.queryForMap(GET_HOMOLOGY_ID, new Object[]{ref, query});
+        homology_id.put("homology_id", pairwise_alignemnt.get("homology_id"));
+        return homology_id;
+    }
+
+    public String getHomologyType(long homology_id) throws Exception{
+        String homology_type = null;
+
+        homology_type = template.queryForObject(GET_HOMOLOGY_TYPE, new Object[]{homology_id}, String.class);
+        return homology_type;
     }
 
     public int getSeqMemberIDfromStableID(String stableID) throws Exception{
