@@ -115,9 +115,9 @@ function drawOrthology(json) {
         "<th>Species</th>" +
         "<th>dn/ds</th>" +
         "<th>Description</th>" +
-        "<th>Percentage Coverage</th>" +
-        "<th>Percentage Pos</th>" +
-        "<th>Percentage Identity</th>" +
+        "<th>Coverage (%)</th>" +
+        "<th>Similarity (%)</th>" +
+        "<th>Identity (%)</th>" +
         "<th>Tree Compliant</th>" +
         "<th>source Gene</th>" +
         "<th>source Protein</th>" +
@@ -140,9 +140,9 @@ function drawOrthology(json) {
         "<th>Species</th>" +
         "<th>dn/ds</th>" +
         "<th>Description</th>" +
-        "<th>Percentage Coverage</th>" +
-        "<th>Percentage Pos</th>" +
-        "<th>Percentage Identity</th>" +
+        "<th>Coverage (%)</th>" +
+        "<th>Similarity  (%)</th>" +
+        "<th>Identity (%)</th>" +
         "<th>Tree Compliant</th>" +
         "<th>source Gene</th>" +
         "<th>source Protein</th>" +
@@ -158,6 +158,7 @@ function drawOrthology(json) {
 
     var json_key = Object.keys(ortho);
     for (var i = 0; i < json_key.length; i++) {
+        var tree = ortho[json_key[i]].tree ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em;' aria-hidden='true'></i>":"";
         orthology_table_content += "<tr> <td class='details-control'></td>" +
             "<td>" + json_key[i] + "</td>" +
             "<td>" + ortho[json_key[i]].target.id + "</td>" +
@@ -165,10 +166,10 @@ function drawOrthology(json) {
             "<td>" + ortho[json_key[i]].target.species + "</td>" +
             "<td>" + ortho[json_key[i]].dn_ds + "</td>" +
             "<td>" + ortho[json_key[i]].type + "</td>" +
-            "<td>" + ortho[json_key[i]].target.perc_cov + "</td>" +
-            "<td>" + ortho[json_key[i]].target.perc_pos + "</td>" +
-            "<td>" + ortho[json_key[i]].target.perc_id + "</td>" +
-            "<td>" + ortho[json_key[i]].tree + "</td>" +
+            "<td align='center'>" + ortho[json_key[i]].target.perc_cov + "</td>" +
+            "<td align='center'>" + ortho[json_key[i]].target.perc_pos + "</td>" +
+            "<td align='center'>" + ortho[json_key[i]].target.perc_id + "</td>" +
+            "<td align='center'>" + tree + "</td>" +
             "<td>" + ortho[json_key[i]].source.id + "</td>" +
             "<td>" + ortho[json_key[i]].source.protein_id + "</td>" +
             "<td>" + ortho[json_key[i]].source.species + "</td>" +
@@ -215,6 +216,11 @@ function drawOrthology(json) {
         }
         else {
             // Open this row
+            var temp_tr = jQuery('tr.shown');
+            var temp_row = table.row(temp_tr);
+            temp_row.child.hide();
+            jQuery('tr.shown').removeClass('shown');
+
             row.child(format(row.data())).show();
             tr.addClass('shown');
         }
