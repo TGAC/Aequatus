@@ -104,7 +104,7 @@ function getOrthologyForMember(query) {
 }
 
 function drawOrthology(json) {
-    var orthology_table_content = "<table><tr><td><h3>Confidently predicted Orthology for " + json.ref.display_label + "</h3></td><td valign=middle> (Gene: "+json.ref.stable_id+ ")</td></tr></table> <br>" +
+    var orthology_table_content = "<table><tr><td><h3>Confidently predicted Orthology for " + json.ref.display_label + "</h3></td><td valign=middle> (Gene: " + json.ref.stable_id + ")</td></tr></table> <br>" +
         "<table id='orthologyTable' class='table' width='100%'>" +
         "<thead>" +
         "<tr>" +
@@ -158,7 +158,7 @@ function drawOrthology(json) {
 
     var json_key = Object.keys(ortho);
     for (var i = 0; i < json_key.length; i++) {
-        var tree = ortho[json_key[i]].tree ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em;' aria-hidden='true'></i>":"";
+        var tree = ortho[json_key[i]].tree ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em;' aria-hidden='true'></i>" : "";
         orthology_table_content += "<tr> <td class='details-control'></td>" +
             "<td>" + json_key[i] + "</td>" +
             "<td>" + ortho[json_key[i]].target.id + "</td>" +
@@ -201,7 +201,46 @@ function drawOrthology(json) {
     }
 
     jQuery('#orthologyTable').DataTable({
-        "columnDefs": columnArray
+        "columnDefs": columnArray,
+        initComplete: function () {
+            this.api().columns([6]).every(function () {
+                var column = this;
+                var select = jQuery('<select><option value="">Select Type</option></select>')
+                    .appendTo(jQuery(column.footer()).empty())
+                    .on('change', function () {
+                        var val = jQuery.fn.dataTable.util.escapeRegex(
+                            jQuery(this).val()
+                        );
+
+                        column
+                            .search(val ? '^' + val + '$' : '', true, false)
+                            .draw();
+                    });
+
+                column.data().unique().sort().each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            });
+            this.api().columns([4]).every(function () {
+                var column = this;
+
+                var select = jQuery('<select id="species_filter"><option value="">Select Species</option></select>')
+                    .appendTo(jQuery(column.footer()).empty())
+                    .on('change', function () {
+                        var val = jQuery.fn.dataTable.util.escapeRegex(
+                            jQuery(this).val()
+                        );
+
+                        column
+                            .search(val ? '^' + val + '$' : '', true, false)
+                            .draw();
+                    });
+
+                column.data().unique().sort().each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            });
+        }
     })
 
     jQuery('#orthologyTable tbody').on('click', 'td.details-control', function () {
