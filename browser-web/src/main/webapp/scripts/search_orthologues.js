@@ -104,8 +104,8 @@ function getOrthologyForMember(query) {
 }
 
 function drawOrthology(json) {
-    var orthology_table_content = "<h3>Confidently predicted Orthology for " + json.ref + "</h3>" +
-        "<table id='orthologyTable' class='table table-condensed' width='100%'>" +
+    var orthology_table_content = "<table><tr><td><h3>Confidently predicted Orthology for " + json.ref.display_label + "</h3></td><td valign=middle> (Gene: "+json.ref.stable_id+ ")</td></tr></table> <br>" +
+        "<table id='orthologyTable' class='table' width='100%'>" +
         "<thead>" +
         "<tr>" +
         "<th>Detail</th>" +
@@ -139,8 +139,6 @@ function drawOrthology(json) {
         "<th>Protein ID</th>" +
         "<th>Species</th>" +
         "<th>dn/ds</th>" +
-            //"<th>cigar_line</th>" +
-            //"<th>Type</th>" +
         "<th>Description</th>" +
         "<th>Percentage Coverage</th>" +
         "<th>Percentage Pos</th>" +

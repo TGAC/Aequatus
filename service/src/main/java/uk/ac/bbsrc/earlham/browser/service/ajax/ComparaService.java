@@ -375,7 +375,7 @@ public class ComparaService {
 
         response.put("trackname", "orthology");
         try {
-            response.put("ref", comparaStore.getRefStableID(query));
+            response.put("ref", comparaStore.getGeneMemberInfofromID(query));
             response.put("orthology", comparaStore.findHomology(query));
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

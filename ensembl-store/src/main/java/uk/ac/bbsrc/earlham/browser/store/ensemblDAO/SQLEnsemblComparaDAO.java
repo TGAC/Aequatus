@@ -143,6 +143,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public static final String GET_SEQ_MEMBER_ID_FROM_GENE_MEMBER_ID = "select s.seq_member_id from gene_member g, seq_member s where s.gene_member_id = ? and s.gene_member_id = g.gene_member_id and s.seq_member_id = g.canonical_member_id";
     public static final String GET_CANONICAL_MEMBER_ID_FROM_GENE_MEMBER_ID = "select canonical_member_id from gene_member where gene_member_id = ?";
     public static final String GET_STABLE_ID_FROM_GENE_MEMBER_ID = "select stable_id from gene_member where gene_member_id = ?";
+    public static final String GET_GENE_MEMBER_INFO_FROM_GENE_MEMBER_ID = "select * from gene_member where gene_member_id = ?";
     public static final String GET_SOURCE_FROM_GENE_MEMBER_ID = "select source_name from gene_member where gene_member_id = ?";
 
     public static final String GET_CIGAR_LINE = "select cigar_line from gene_align_member where seq_member_id = ? and gene_align_id = ?";
@@ -541,6 +542,13 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public String getRefStableID(String query) throws Exception {
 
         return template.queryForObject(GET_STABLE_ID_FROM_GENE_MEMBER_ID, new Object[]{query}, String.class);
+
+    }
+
+
+    public Map<String, Object> getGeneMemberInfofromID(String query) throws Exception {
+
+        return template.queryForMap(GET_GENE_MEMBER_INFO_FROM_GENE_MEMBER_ID, new Object[]{query});
 
     }
 
