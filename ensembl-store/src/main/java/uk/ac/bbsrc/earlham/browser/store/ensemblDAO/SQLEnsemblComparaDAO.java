@@ -1189,9 +1189,10 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             homology_member.put("id", map_two.get("id")); //gene_id
 
             if (temp_seq_member_id != seq_member_id) {
-                float test = 0;
+                double test = 0;
                 if(map_two.get("dn") != null && map_two.get("ds") != null){
                     test = (float) map_two.get("dn")/(float) map_two.get("ds");
+                    test = Math.round(test * 100.0) / 100.0;
                 }
                 homologies.getJSONObject(temp_homology_id).put("dn_ds",test == 0 ? "n/a" : test);
                 homologies.getJSONObject(temp_homology_id).put("dn",map_two.get("dn"));
