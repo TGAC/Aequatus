@@ -60,15 +60,17 @@ function getReferences() {
 }
 
 
-function setGenomes(){
+function setGenomes(callback){
     Fluxion.doAjax(
         'comparaService',
         'setGenomes',
         {'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                console.log("genomeSet")
-                getUrlVariables()
+                if(callback)
+                {
+                    callback()
+                }
             }
         });
 }

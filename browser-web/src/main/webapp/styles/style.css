@@ -575,3 +575,28 @@ div.tooltip {
     top: 100%;
     left: 0;
 }
+/* Data Table in Orthology*/
+
+td.details-control {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("../images/datatable/details_open.png");
+    background-origin: padding-box;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    background-size: auto auto;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("../images/datatable/details_close.png");
+    background-origin: padding-box;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    background-size: auto auto;
+}

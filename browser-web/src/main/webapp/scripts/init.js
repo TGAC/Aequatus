@@ -5,8 +5,7 @@
 function setOff() {
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
 
-    setGenomes()
-
+    setGenomes(getUrlVariables);
     var name = arguments.callee.toString();
     var testTextBox = jQuery('#search');
     var code = null;
@@ -89,6 +88,44 @@ function setOff() {
         }
     }
 
+}
+
+
+function setOrthologuesEvents() {
+    ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
+    setGenomes()
+    var name = arguments.callee.toString();
+    var testTextBox = jQuery('#search');
+    var code = null;
+    testTextBox.keypress(function (e) {
+        code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
+            if (parseInt(jQuery("#control_panel").css("left")) < 0) {
+                openPanel('#search_div')
+            }
+            jQuery("#search_history").html(jQuery("#control_search").val());
+            jQuery("#control_search").val(jQuery('#search').val());
+            search_orthologues(jQuery('#search').val());
+        }
+    });
+
+    var testTextBox = jQuery('#control_search');
+    var code = null;
+    testTextBox.keypress(function (e) {
+        code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
+            jQuery("#search_history").html(jQuery("#search").val());
+            jQuery("#search").val(jQuery('#control_search').val());
+            search_orthologues(jQuery('#control_search').val());
+        }
+    });
+
+    jQuery("#control_panel").draggable(
+        {
+            axis: "y",
+            containment: "parent",
+            handle: "#control_panel_handle"
+        });
 }
 
 function getUrlVariables(chr) {

@@ -40,82 +40,13 @@
                                                             href="http://aequatus.tgac.ac.uk/aequatus-user-guide">
                                     User-guide </a></td>
                         </tr>
-                        <tr>
-                            <td align="left" colspan="2"><b> Tree and Gene Legends </b></td>
-                        </tr>
-                        <tr>
-                            <td align=right>
-                                <div class="circleBase type2" style="background: red;"></div>
-                            </td>
-                            <td align="left">
-                                Duplication
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align=right>
-                                <div class="circleBase type2" style="background: cyan;"></div>
-                            </td>
-                            <td align="left">
-                                Dubious
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align=right>
-                                <div class="circleBase type2" style="background: blue"></div>
-                            </td>
-                            <td align="left">
-                                Speciation
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align=right>
-                                <div class="circleBase type2" style="background: pink"></div>
-                            </td>
-                            <td align="left">
-                                Gene Split
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td align=right>
-                                <div class="circleBase type2" style="background: white; border: 2px solid blue;"></div>
-                            </td>
-                            <td align="left">
-                                Multiple events
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align=right>
-                                <svg version="1.1" width="55" height="14">
-                                    <line x1="0" y1="6" x2="55" y2="6" id="Examplegeneline" stroke="green"
-                                          stroke-width="1"/>
-                                    <g class="style2">
-                                        <rect x="2" y="1" width="51.087" height="10" rx="2" ry="2"
-                                              id="exampleExonstyle2" fill="white" stroke="green" stroke-width="2"/>
-                                    </g>
-
-                                    <g id="examplestyle2CIGAR" class="style2 CIGAR">
-                                        <rect x="2" y="1" width="33" height="10" rx="1" ry="1" fill="gray"
-                                              class="utr1"/>
-                                        <rect x="34.005102040816325" y="1" width="18.994897959183675" height="10" rx="1"
-                                              ry="1" fill="rgb(166,206,227)" class="match"/>
-                                    </g>
-                                </svg>
-                            </td>
-                            <td align="left">UTR
-                            </td>
-                        </tr>
                         </tbody>
                     </table>
                 </div>
                 <div style="display: none; background: none repeat scroll 0% 0% orange; padding: 10px; height: 296px; text-align: center; font-size: medium;"
                      id="filter_div">
-                    <b>Species list:</b>
+                    <b>Filter By:</b>
                     <div id="filter"></div>
-                    <div id="sliderfilter" style="text-align: left; margin-top: 10px">
-                    </div>
-
-
                 </div>
                 <div id="export_div"
                      style="display: block; height: 296px; background: none repeat scroll 0% 0% rebeccapurple; padding: 10px; color: white">
@@ -126,69 +57,6 @@
                             <h4> Export </h4>
                         </th>
                         </thead>
-                        <tr class="border_bottom">
-                            <td colspan="3">
-                                Tree
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Newick <br>
-                                <a class="btn btn-small" href="#" onclick="exportGeneTree('newick')"> <i
-                                        style="color: white " class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                            <td>
-                                JSON Format <br>
-                                <a class="btn btn-small" href="#" onclick="exportGeneTree('json')"> <i
-                                        style="color: white" class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr class="border_bottom">
-                            <td colspan="3">
-                                Genes:
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Gene IDs<br>
-                                <a class="btn btn-small" href="#" onclick="exportGeneLabel('.stable')"> <i
-                                        style="color: white" class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                            <td>
-                                Gene Name<br>
-                                <a class="btn btn-small" href="#" onclick="exportGeneLabel('.geneinfo')"> <i
-                                        style="color: white" class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                            <td>
-                                Protein IDs<br>
-                                <a class="btn btn-small" href="#" onclick="exportGeneLabel('.protein_id')"> <i
-                                        style="color: white" class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr class="border_bottom">
-                            <td colspan="3">
-                                Alignment
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                CIGAR format<br>
-                                <a class="btn btn-small" href="#" onclick="exportAlignment()"> <i style="color: white "
-                                                                                                  class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                            <td>
-                                Sequence<br>
-                                <a class="btn btn-small" href="#" onclick="exportSequence()"> <i style="color: white"
-                                                                                                 class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                        </tr>
                     </table>
                     <br>
                 </div>
@@ -300,7 +168,7 @@
 <%@ include file="footer.jsp" %>
 <script>
     jQuery(document).ready(function () {
-        setOff()
+        setOrthologuesEvents();
         kickOff();
     });
 </script>
