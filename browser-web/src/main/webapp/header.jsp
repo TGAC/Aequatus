@@ -19,6 +19,9 @@
     <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-migrate-1.2.1.min.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/toSource.js'/>"></script>
 
+    <%--jQuery DataTables--%>
+    <link rel="stylesheet" type="text/css" href="<c:url value='styles/DataTables/datatables.min.css' />">
+    <script type="text/javascript" src="<c:url value='/scripts/DataTables/datatables.min.js'/>"></script>
 
     <%--bootstrap--%>
     <script type="text/javascript" src="<c:url value='/styles/bootstrap-css/bootstrap.js'/>"></script>
@@ -52,7 +55,7 @@
     <link rel="stylesheet" href="<c:url value='aequatus-vis/styles/style.css'/>" type="text/css">
 
 
-<%--Aequatus Scripts--%>
+    <%--Aequatus Scripts--%>
     <script type="text/javascript" src="<c:url value='/scripts/search_compara.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/geneView.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/natural-sort.js'/>"></script>
@@ -60,6 +63,8 @@
     <script type="text/javascript" src="<c:url value='/scripts/popup.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/init.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/download.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='scripts/smart-domain.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='scripts/drawDomain.js'/>"></script>
 
 
     <%--Aequatus CSS--%>
@@ -70,6 +75,8 @@
     <%--jQuery SVG--%>
     <link rel="stylesheet" type="text/css" href="<c:url value='scripts/jquery/jquery.svg.css' />">
     <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.svg.js'/>"></script>
+
+
 
     <script type="text/javascript">jQuery.noConflict();</script>
 

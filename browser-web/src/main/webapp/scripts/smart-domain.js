@@ -291,4 +291,3 @@ jQuery.fn.dataTable.ext.search.push(
         return false;
     }
 );
-
