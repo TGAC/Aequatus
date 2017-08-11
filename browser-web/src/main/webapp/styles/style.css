@@ -87,10 +87,6 @@
     width: 100%;
 }
 
-#makemetop_button {
-    float: right;
-}
-
 #popup_header {
     left: 0;
     overflow: hidden;
@@ -116,23 +112,27 @@
     background-image: -moz-linear-gradient(center top, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
     border: 1px solid #888888;
     box-shadow: 10px 10px 35px #888888;
-    color: #333333;
+    color: gray;
     display: inline-block;
     position: absolute;
     text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
     width: 100%;
     z-index: 999;
-    font-family: fontawesome;
+    font-family: Verdana;
 }
 
 .bubbleright::after {
-    border-bottom: 25px solid transparent;
-    border-right: 25px solid white;
-    bottom: -25px;
+    border-bottom-color: transparent;
+    border-bottom-style: solid;
+    border-bottom-width: 25px;
+    border-right-color: darkcyan;
+    border-right-style: solid;
+    border-right-width: 25px;
     content: "";
-    left: 176px;
+    left: -15px;
     margin-left: -10px;
     position: absolute;
+    top: -1px;
     z-index: 999;
 }
 
@@ -470,4 +470,108 @@ div.tooltip {
     border: 1px solid lightgray;
     padding: 2px;
     display: none;
+}
+
+.popup_menu {
+    padding: 2px;
+    color: gray;
+    cursor: pointer;
+}
+
+.popup_menu:hover {
+    color: #333333;
+    background: lightgray;
+}
+
+#smartDomainParams {
+    left: 200px;
+    top:45px;
+    position: absolute;
+    width: 200px;
+    background: white none repeat scroll 0% 0%;
+    border: 1px solid gray;
+    box-shadow: 30px 5px 35px 5px rgb(136, 136, 136);
+}
+
+/*Domains*/
+
+.SMART {
+    stroke: green;
+    fill: green;
+    background: green;
+    border: 1px solid green;
+}
+
+.PFAM {
+    stroke: gray;
+    fill: gray;
+    background: gray;
+    border: 1px solid gray;
+}
+
+.INTRINSIC {
+    stroke: blue;
+    fill: blue;
+    background: blue;
+    border: 1px solid blue;
+}
+
+.transmembrane_domain {
+    stroke: blue;
+    fill: steelblue;
+    background: steelblue;
+    border: 1px solid blue;
+}
+
+.low_complexity_region {
+    stroke: blue;
+    fill: pink;
+    background: pink;
+    border: 1px solid blue;
+}
+
+.internal_repeat {
+    stroke: blue;
+    fill: steelblue;
+    background: steelblue;
+    border: 1px solid blue;
+}
+
+
+
+.signal_peptide{
+    stroke: red;
+    fill: red;
+    background: red;
+    border: 1px solid red;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
+    z-index: 3999;
+}
+
+.d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
 }

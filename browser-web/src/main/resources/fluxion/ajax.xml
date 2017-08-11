@@ -10,10 +10,13 @@
     <bean class="net.sourceforge.fluxion.ajax.controller.AjaxController">
         <property name="invalidSessionUrl" value="/index.jsp"/>
     </bean>
-    
+
     <bean id="comparaService"
           class="uk.ac.bbsrc.earlham.browser.service.ajax.ComparaService">
     </bean>
 
-</beans>
+    <bean id="smartDomain"
+          class="uk.ac.bbsrc.earlham.browser.service.ajax.SmartDomain">
+    </bean>
 
+</beans>

@@ -22,7 +22,7 @@
 ~ ***********************************************************************
 ~--%>
 
- </div>
+</div>
 <div id="footer">
     <br/>
     &copy; 2015-2017 <a href="http://www.earlham.ac.uk/" target="_blank">Earlham Institute</a> | Version: trio (III)

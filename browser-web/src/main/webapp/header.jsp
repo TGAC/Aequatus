@@ -34,6 +34,7 @@
 
     <%--D3--%>
     <script src="<c:url value='/scripts/d3.js/d3.v3.min.js'/>"></script>
+    <script src="<c:url value='/scripts/d3.js/d3.tip.v0.6.3.js'/>"></script>
 
     <%--jquery UI--%>
     <link rel="stylesheet" href="<c:url value='/scripts/jquery/css/smoothness/jquery-ui-1.11.2.css'/>" type="text/css">

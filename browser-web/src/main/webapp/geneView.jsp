@@ -1,5 +1,6 @@
 <%--<%@ include file="header.jsp" %>--%>
 
+<%--Control Panel Code--%>
 <div id="control_panel">
     <table cellspacing="0" cellpadding="0" border="0">
         <tbody>
@@ -189,11 +190,7 @@
                             </td>
                         </tr>
                     </table>
-
-                    <%--<input type="radio" name="output_selection" value="all"> All Genes--%>
-                    <%--<input type="radio" name="output_selection" value="selected" checked> Visible Genes--%>
                     <br>
-
                 </div>
             </td>
             <td width="50px">
@@ -231,11 +228,6 @@
                         style="color: white;"
                         class="fa fa-question fa-3x control-buttons"></i>
                 </div>
-                <%--<div onclick="openClosePanel('#settings_div')"--%>
-                <%--style="padding: 5px; text-align: center;  background: none repeat scroll 0% 0% gray;"><i--%>
-                <%--style="color: white;"--%>
-                <%--class="fa fa-exchange fa-3x control-buttons"> </i>--%>
-                <%--</div>--%>
             </td>
         </tr>
         <tr>
@@ -277,7 +269,7 @@
 
 </div>
 
-
+<%--Main Canvas Code--%>
 <div id="canvas">
 
     <div id="genome_name"
@@ -344,7 +336,7 @@
 
 </div>
 
-<div id="popup" class="bubbleleft" style="width:200px; height:130px;">
+<div id="popup" class="bubbleleft" style="width:200px; height:auto;">
     <div style="overflow: hidden; left: 0px; top: 0px; position: relative;">
         <table width="100%" cellspacing="0" border="0">
             <thead>
@@ -380,45 +372,87 @@
                     <div id="gene_desc"></div>
                 </td>
             </tr>
-            <tr align="right">
-                <td align="">
-                    <table>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <%--<div id="exportSequenceLink" style="float: right" title="Export Sequence"></div>--%>
-                            <%--</td>--%>
-                            <%--<td>--%>
-                                <%--<div id="exportAlignmentLink" style="float: right" title="Export Alignment"></div>--%>
-                                    <div class="btn-group open">
-                                        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-external-link fa-fw"></i> </a>
-                                        <ul class="dropdown-menu">
-                                            <li><a id="exportSequenceLink" href="#" title="Export Sequence"><i class="fa  fa-fw"></i> Seq </a></li>
-                                            <li class="divider"></li>
-                                            <li><a id="exportAlignmentLink" href="#" title="Export Alignment"><i class="fa  fa-fw"></i> Aln</a></li>
-                                        </ul>
-                                        <div id="makemetop_button" style="float: right" title="Change Reference to"></div>
-                                        <div id="ensemblLink" style="float: right" title="Link to Ensembl"></div>
-                                        <div id="1to1Link" style="float: right" title="1 to 1 Alignment"></div>
+            <tr>
+                <td>
 
-                                    </div>
-                            </td>
-                            <%--<td>--%>
-                                <%--<div id="makemetop_button" style="float: right" title="Change Reference to"></div>--%>
+                    <hr style="margin-bottom: 0px;margin-top: 0px;">
+            <tr>
+                <td>
 
-                            <%--</td>--%>
-                            <%--<td>--%>
-                                <%--<div id="ensemblLink" style="float: right" title="Link to Ensembl"></div>--%>
-                            <%--</td>--%>
-                            <%--<td>--%>
-                                <%--<div id="1to1Link" style="float: right" title="1 to 1 Alignment"></div>--%>
-                            <%--</td>--%>
-                        </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
+                    <%--<div class="btn-group open">--%>
+
+                    <div class="popup_menu" id="smartDomain"
+                         onclick="jQuery('#smartDomainParams').toggle()"><span>Protein Domains <i
+                            class="fa fa-caret-right" aria-hidden="true" style="float:right"></i></span></div>
+                    <div class="popup_menu" id="smartDomainParams" style="display: none;">
+                        <div class="popup_menu"
+                             style="text-align: center; font-weight: bold; color: gray; padding: 5px;">
+                            SMART parameters:
+                        </div>
+                        <hr style="margin-bottom: 0px;margin-top: 0px;">
+                        <div class="popup_menu">
+                            <label style="font-weight: normal;">
+                                <input name="SMARTParams" type="checkbox" value="pfam"> <span
+                                    title="Include Pfam">Pfam</span>
+                            </label>
+                        </div>
+                        <div class="popup_menu">
+                            <label style="font-weight: normal;">
+                                <input name="SMARTParams" type="checkbox" value="signal"> <span
+                                    title="Include signal peptide prediction">Signal peptide</span></label></div>
+                        <div class="popup_menu">
+                            <label style="font-weight: normal;">
+                                <input name="SMARTParams" type="checkbox" value="repeat"> <span
+                                    title="Include internal repeat predictions">Internal repeat</span>
+                            </label>
+                        </div>
+                        <div class="popup_menu">
+                            <label style="font-weight: normal;">
+                                <input name="SMARTParams" type="checkbox" value="protein_disorder"> <span
+                                    title="Include predictions of internal protein disorder">Internal protein disorder</span>
+                            </label>
+                        </div>
+                        <div class="popup_menu">
+                            <label style="font-weight: normal;">
+                                <input name="SMARTParams" type="checkbox" value="out_homologous"> <span
+                                    title="Include predictions of outlier homologues and homologues of known structures">Homologues</span>
+                            </label>
+                        </div>
+                        <hr style="margin-bottom: 0px;margin-top: 0px;">
+                        <div id="runSMART" style="text-align: center; font-weight: bold; color: gray; padding: 5px;">
+                        </div>
+                    </div>
+            <tr>
+                <td>
+
+            <tr>
+                <td>
+                    <div class="popup_menu" id="exportSequenceLink" href="#"><i
+                            class="fa  fa-fw"></i> Seq
+                    </div>
+            <tr>
+                <td>
+                    <div class="popup_menu" id="exportAlignmentLink" href="#"><i
+                            class="fa  fa-fw"></i> Aln
+                    </div>
+            <tr>
+                <td>
+
+                    <div class="popup_menu" id="makemetop_button"></div>
+            <tr>
+                <td>
+
+                    <div class="popup_menu" id="ensemblLink"></div>
+            <tr>
+                <td>
+
+                    <div class="popup_menu" id="1to1Link"></div>
+
             </tbody>
+        </table>
+        </td>
+        </tr>
+        </tbody>
         </table>
     </div>
 
@@ -446,22 +480,10 @@
 </div>
 <p id="besideMouse"></p>
 
-<%--<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="pairwiseModal" style=" z-index: 1999;">--%>
-<%--<div class="modal-dialog modal-lg" role="document">--%>
-<%--<div class="modal-content">--%>
-<%--<div class="modal-header">--%>
-<%--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span--%>
-<%--aria-hidden="true">&times;</span></button>--%>
-<%--<h4 class="modal-title"></h4>--%>
-<%--</div>--%>
-<%--<div class="modal-body">--%>
 
-<%--</div>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--</div>--%>
 <div id="info_popup_wrapper" style="display: none;">
-    <div style="background: darkgrey none repeat scroll 0% 0%; height: 100%; width: 100%; position: fixed; opacity: 0.8;z-index: 1999;" onclick="removeInfoPopup()">
+    <div style="background: darkgrey none repeat scroll 0% 0%; height: 100%; width: 100%; position: fixed; opacity: 0.8;z-index: 1999;"
+         onclick="removeInfoPopup()">
     </div>
     <div id="info-popup" class="popup"
          style="margin-left: auto; margin-right: auto; top: 100px; position: relative; background: white none repeat scroll 0% 0%; box-shadow: 5px 5px 5px gray; z-index: 2000; ">
@@ -469,7 +491,7 @@
             <table width="100%" cellspacing="0" border="0">
                 <thead>
                 <tr>
-                    <td  height="30px" bgcolor="darkcyan"><span style="color:white"> Pairwise Alignment </span>
+                    <td height="30px" bgcolor="darkcyan"><span style="color:white"> Pairwise Alignment </span>
                     </td>
                     <td width=20px bgcolor="darkcyan">
                         <i onclick="removeInfoPopup();" class="fa fa-close "
@@ -492,13 +514,111 @@
     </div>
 </div>
 
-</div>
 
-</div>
+<div id="domain_popup_wrapper" style="display: none;">
+    <div style="background: darkgrey none repeat scroll 0% 0%; height: 100%; width: 100%; position: fixed; opacity: 0.8;z-index: 1999;"
+         onclick="removeDomainPopup()">
+    </div>
+    <div id="domain-popup" class="popup"
+         style="margin-left: auto; margin-right: auto; top: 100px; position: relative; background: white none repeat scroll 0% 0%; box-shadow: 5px 5px 5px gray; z-index: 2000; ">
+        <div style="position: relative; left: 0px; top: 0px; width: 100%;">
+            <table width="100%" cellspacing="0" border="0">
+                <thead>
+                <tr>
+                    <td height="30px" bgcolor="darkcyan"><span style="color:white"> Protein Domains </span>
+                    </td>
+                    <td width=20px bgcolor="darkcyan">
+                        <i onclick="removeDomainPopup();" class="fa fa-close "
+                           style="color: white;  cursor: pointer; top: 3px;">&nbsp;</i>
+                    </td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div style="overflow: hidden; left: 0px; position: relative; top: 10px; padding: 10px">
+            <div id="domainModal_content" style=" word-wrap: break-word;">
+                <table width="100%">
+                    <tr>
+                        <td colspan="2">
+                            <div style=" left: 0px; position: relative; top: 0px; padding: 0px;">
+                                <div id="domainHeader" style=" word-wrap: break-word;"></div>
+                                <div id="domainLegends" style=" word-wrap: break-word;">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <b>Legends: </b>
+                                            </td>
+                                            <td>
+                                                <div class="PFAM" style="width:50px;height:10px;"></div>
+                                            </td>
+                                            <td>
+                                                PFAM domains
+                                            </td>
+
+                                            <td>
+                                                <div class="SMART" style="width:50px;height:10px;"></div>
+                                            </td>
+                                            <td>
+                                                SMART domains
+                                            </td>
+                                            <td>
+                                                <div class="low_complexity_region"
+                                                     style="width:50px;height:10px;"></div>
+                                            </td>
+                                            <td>
+                                                Low Complexity Region
+                                            </td>
+                                            <td>
+                                                <div class="internal_repeat" style="width:50px;height:10px;"></div>
+                                            </td>
+                                            <td>
+                                                Internal Repeats
+                                            </td>
+                                            <td>
+                                                <div class="signal_peptide" style="width:50px;height:10px;"></div>
+                                            </td>
+                                            <td>
+                                                Signal Peptide
+                                            </td>
+                                            <td>
+                                                <div class="INTRINSIC" style="width:50px;height:10px;"></div>
+                                            </td>
+                                            <td>
+                                                Other Intrinsic Region
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                            <div id="domainStructure" style=" word-wrap: break-word; overflow-y: scroll;height: 200px;"></div>
+
+                        </td>
+                    </tr>
+                    <tr valign="top">
+                        <td>
+                            <div style="overflow: hidden; left: 0px; position: relative; top: 10px; padding: 10px">
+                                <div id="visibleDomainList" style=" word-wrap: break-word;"></div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="overflow: hidden; left: 0px; position: relative; top: 10px; padding: 10px">
+                                <div id="hiddenDomainList" style=" word-wrap: break-word;"></div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
 </div>
 
 <p style="z-index:10; position:fixed;font-size: small;" id="besideMouse"></p>
-
 
 <span id="ruler"></span>
 
