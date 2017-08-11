@@ -12,7 +12,7 @@
                 </div>
 
                 <div id="search_div"
-                     style="display: block; height: 296px; background: none repeat scroll 0% 0% green; padding: 10px;">
+                     style="display: block; height: 248px; background: none repeat scroll 0% 0% green; padding: 10px;">
                     <input id="control_search" type="text"
                            style="border: 0px solid transparent; position: absolute; left: 0px; top: 75px; height: 45px; width: 298px; color: gray; font-size: 30px;">
                     <button onclick="jQuery('#search_history').html(jQuery('#search').val()); jQuery('#search').val(jQuery('#control_search').val()); search_orthologues(jQuery('#control_search').val());"
@@ -30,7 +30,7 @@
                         </span>
                     </div>
                 </div>
-                <div style="display: none; background: none repeat scroll 0% 0% peru; padding: 10px; height: 296px; text-align: center; font-size: 15px;"
+                <div style="display: none; background: none repeat scroll 0% 0% peru; padding: 10px; height: 248px; text-align: center; font-size: 15px;"
                      id="info_div">
                     <table width="100%" cellpadding="5px">
                         <tbody>
@@ -43,13 +43,13 @@
                         </tbody>
                     </table>
                 </div>
-                <div style="display: none; background: none repeat scroll 0% 0% orange; padding: 10px; height: 296px; text-align: center; font-size: medium;"
+                <div style="display: none; background: none repeat scroll 0% 0% orange; padding: 10px; height: 248px; text-align: center; font-size: medium;"
                      id="filter_div">
                     <b>Filter By:</b>
                     <div id="filter"></div>
                 </div>
                 <div id="export_div"
-                     style="display: block; height: 296px; background: none repeat scroll 0% 0% rebeccapurple; padding: 10px; color: white">
+                     style="display: block; height: 248px; background: none repeat scroll 0% 0% rebeccapurple; padding: 10px; color: white">
 
                     <table>
                         <thead>

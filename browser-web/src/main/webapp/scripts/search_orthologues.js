@@ -118,7 +118,7 @@ function drawOrthology(json) {
         "<th>Coverage (%)</th>" +
         "<th>Similarity (%)</th>" +
         "<th>Identity (%)</th>" +
-        "<th>Tree Compliant</th>" +
+        "<th>GeneTree</th>" +
         "<th>source Gene</th>" +
         "<th>source Protein</th>" +
         "<th>source Species</th>" +
@@ -143,7 +143,7 @@ function drawOrthology(json) {
         "<th>Coverage (%)</th>" +
         "<th>Similarity  (%)</th>" +
         "<th>Identity (%)</th>" +
-        "<th>Tree Compliant</th>" +
+        "<th>GeneTree</th>" +
         "<th>source Gene</th>" +
         "<th>source Protein</th>" +
         "<th>source Species</th>" +
@@ -224,7 +224,7 @@ function drawOrthology(json) {
             this.api().columns([4]).every(function () {
                 var column = this;
 
-                var select = jQuery('<select id="species_filter"><option value="">Select Species</option></select>')
+                var select = jQuery('<select id="species_filter"><option value="">All Species</option></select>')
                     .appendTo(jQuery(column.footer()).empty())
                     .on('change', function () {
                         var val = jQuery.fn.dataTable.util.escapeRegex(
