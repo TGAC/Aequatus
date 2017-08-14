@@ -10,7 +10,7 @@
     <bean class="net.sourceforge.fluxion.ajax.controller.AjaxController">
         <property name="invalidSessionUrl" value="/index.jsp"/>
     </bean>
-    
+
     <bean id="comparaService"
           class="uk.ac.bbsrc.earlham.browser.service.ajax.ComparaService">
     </bean>
@@ -20,4 +20,3 @@
     </bean>
 
 </beans>
-

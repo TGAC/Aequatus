@@ -37,7 +37,7 @@
                         <tr>
                             <td colspan="2" align="left"><b>Help</b> <br>
                                 &nbsp;&nbsp;&nbsp;&nbsp; <a target="_blank"
-                                                            href="http://aequatus.tgac.ac.uk/aequatus-user-guide">
+                                                            href="http://aequatus.earlham.ac.uk/aequatus-user-guide">
                                     User-guide </a></td>
                         </tr>
                         <tr>
@@ -190,7 +190,7 @@
                             </td>
                         </tr>
                     </table>
-                   <br>
+                    <br>
                 </div>
             </td>
             <td width="50px">

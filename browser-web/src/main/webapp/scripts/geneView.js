@@ -798,6 +798,17 @@ function getAlignment(hit, ref) {
         {
             'doOnSuccess': function (json) {
 
+                ////if (mouseX + jQuery("#info-popup").width() > jQuery("#main1").width()) {
+                //    jQuery("#info-popup").css({"left": mouseX - jQuery("#info-popup").width());
+                //    jQuery("#info-popup").css({"top": (mouseY - jQuery("#info-popup").height());
+                //    //jQuery("#info-popup").attr('class', 'bubbleright')
+                ////}
+                ////else {
+                ////    jQuery("#info-popup").css({"left": (mouseX - 26)});
+                ////    jQuery("#info-popup").css({"top": (mouseY - jQuery("#popup").height() - 30)});
+                ////    jQuery("#info-popup").attr('class', 'bubbleleft')
+                ////}
+
                 jQuery("#info_popup_wrapper").fadeIn();
 
                 jQuery("#info-popup").width(jQuery(window).width() * 0.8);

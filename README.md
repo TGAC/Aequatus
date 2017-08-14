@@ -1,5 +1,5 @@
- <img src="http://aequatus.tgac.ac.uk/aequatus-user-guide/img/aequatus-logo.png" alt="Aequatus" width="200px"/>
- 
+ <img src="http://aequatus.earlham.ac.uk/aequatus-user-guide/img/aequatus-logo.png" alt="Aequatus" width="200px"/>
+
 Aequatus 
 ================
 * [Description](#description)
@@ -21,14 +21,14 @@ Aequatus is distributed in the hope that it will be useful, but WITHOUT ANY WARR
 You should have received a copy of the GNU General Public License along with Aequatus. If not, see http://www.gnu.org/licenses/.
 
 # <a name="contacts"></a> Project contacts: 
+
 * Anil Thanki <Anil.Thanki@earlham.ac.uk>
 * Robert Davey <Robert.Davey@earlham.ac.uk>
- 
+
 
 # <a name="demo"></a> Demo:
 
 http://aequatus.earlham.ac.uk
-
 
 # <a name="Documentation"></a> Documentation:
 
