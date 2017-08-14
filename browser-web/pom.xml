@@ -42,19 +42,6 @@
 
         <finalName>${profile}</finalName>
         <plugins>
-            <!--<plugin>-->
-            <!--<groupId>org.apache.maven.plugins</groupId>-->
-            <!--<artifactId>maven-war-plugin</artifactId>-->
-            <!--<version>2.1.1</version>-->
-            <!--<configuration>-->
-            <!--<overlays>-->
-            <!--<overlay>-->
-            <!--<groupId>TGAC</groupId>-->
-            <!--<artifactId>browser-web-wheat</artifactId>-->
-            <!--</overlay>-->
-            <!--</overlays>-->
-            <!--</configuration>-->
-            <!--</plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>

@@ -1,4 +1,4 @@
- <img src="http://aequatus.tgac.ac.uk/aequatus-user-guide/img/aequatus-logo.png" alt="Aequatus" width="200px"/>
+ <img src="http://aequatus.earlham.ac.uk/aequatus-user-guide/img/aequatus-logo.png" alt="Aequatus" width="200px"/>
 
 Aequatus 
 ================
