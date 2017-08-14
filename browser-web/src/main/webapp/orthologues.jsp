@@ -67,9 +67,9 @@
                     <b> ... </b>
                 </div>
                 <%--<div onclick="toggleLeftInfo(jQuery('#Chrdiv_arrowclick'), 'chr_maps');"--%>
-                     <%--style="text-align: center; padding: 5px; background: none repeat scroll 0% 0% steelblue;"><i--%>
-                        <%--style="color: white;"--%>
-                        <%--class="fa fa-bars fa-3x control-buttons fa-rotate-90"></i>--%>
+                <%--style="text-align: center; padding: 5px; background: none repeat scroll 0% 0% steelblue;"><i--%>
+                <%--style="color: white;"--%>
+                <%--class="fa fa-bars fa-3x control-buttons fa-rotate-90"></i>--%>
                 <%--</div>--%>
                 <div onclick="openPanel('#search_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% green;"><i
@@ -140,7 +140,7 @@
 <%--Main Canvas Code--%>
 <div id="canvas">
 
-<div id="orthologies" style="width: 80%; left: 10%; position: absolute; top: 50px;">
+    <div id="orthologies" style="width: 80%; left: 10%; position: absolute; top: 50px;">
     </div>
 </div>
 
