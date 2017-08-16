@@ -27,6 +27,7 @@ var protein_domains = null;
 
 
 function getChromosomes(member_id) {
+    console.log("setCredentials")
     var color = jQuery("option:selected", jQuery("#genomes")).attr("background");
     jQuery(".headerbar").css("background", color);
     jQuery("#chr_maps").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
@@ -144,6 +145,7 @@ function drawChromosome() {
 }
 
 function setCredentials(chr_name, genome_id) {
+    console.log("setCredentials")
     chr = chr_name;
     genome_db_id = genome_id;
     select_chr();
@@ -151,6 +153,8 @@ function setCredentials(chr_name, genome_id) {
 }
 
 function getMember(member) {
+    console.log("getMember")
+
     jQuery(".selected").removeClass("selected")
     jQuery("#chr" + chr).addClass("selected")
 
@@ -164,6 +168,8 @@ function getMember(member) {
 
 
     if (chr != null) {
+        console.log("getMember chr if")
+
         Fluxion.doAjax(
             'comparaService',
             'getMember',
@@ -179,12 +185,14 @@ function getMember(member) {
                     if (member == undefined) {
                         drawSelected();
                     } else {
-                        setSelector()
+                        setSelector(syntenic_data.member[syntenic_data.ref].Transcript[0], syntenic_data.member[syntenic_data.ref].member_id)
                     }
 
                 }
             });
     } else {
+        console.log("getMember chr else")
+
         Fluxion.doAjax(
             'comparaService',
             'getMemberbyChrName',
@@ -201,7 +209,7 @@ function getMember(member) {
                     if (member == undefined) {
                         drawSelected();
                     } else {
-                        setSelector()
+                        setSelector(syntenic_data.member[syntenic_data.ref].Transcript[0], syntenic_data.member[syntenic_data.ref].member_id)
                     }
                 }
             });
@@ -210,6 +218,7 @@ function getMember(member) {
 }
 
 function drawMember() {
+    console.log("drawmember")
     jQuery("#bar_image_ref").html("")
     var width = parseInt(jQuery("#bar_image_selector").css("width"));
     var maxLentemp = parseInt(jQuery("#canvas").css("width"));
@@ -313,7 +322,7 @@ function getcoreMember(query, redrawn) {
                 //window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);
                 init(json, "#settings_div", "#filter", "#sliderfilter")
 
-                setSelector()
+                setSelector(syntenic_data.member[syntenic_data.ref].Transcript[0], syntenic_data.member[syntenic_data.ref].member_id)
 
                 URLMemberID(json.ref)
                 drawSynteny(redrawn);
@@ -519,10 +528,12 @@ function select_genome() {
 }
 
 
-function setSelector() {
+function setSelector(gene, member_id) {
+    console.log("setSelector")
+    console.log(gene+" , "+ member_id)
     var maxLentemp = parseInt(jQuery("#canvas").css("width"));
 
-    var start = syntenic_data.member[syntenic_data.ref].Transcript[0].start
+    var start = gene.start
 
     var left = start * maxLentemp / sequencelength;
 
@@ -534,8 +545,9 @@ function setSelector() {
         drawSelected();
         jQuery(".refMarkerShow").removeClass("selected")
 
-        jQuery("[seq_id=" + syntenic_data.member[syntenic_data.ref].member_id + "]").addClass("selected")
-        jQuery("#chr" + syntenic_data.member[syntenic_data.ref].reference).addClass("selected")
+        jQuery("[seq_id=" + member_id + "]").addClass("selected")
+        //console.log("reference "+syntenic_data.member[syntenic_data.ref].reference)
+        //jQuery("#chr" + syntenic_data.member[syntenic_data.ref].reference).addClass("selected")
     });
 }
 

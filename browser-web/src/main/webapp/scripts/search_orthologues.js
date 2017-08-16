@@ -88,7 +88,7 @@ function list_orthologues(json) {
 
 
 function getOrthologyForMember(query) {
-
+console.log("getOrthologyForMember")
     jQuery("#orthologies").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
 
     Fluxion.doAjax(
@@ -97,13 +97,14 @@ function getOrthologyForMember(query) {
         {'query': query, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                syntenic_data = json
+                setSelector(json.ref, json.ref.canonical_member_id)
                 drawOrthology(json)
             }
         });
 }
 
 function drawOrthology(json) {
+    console.log("drawOrthology")
     var orthology_table_content = "<table><tr><td><h3>Confidently predicted Orthology for " + json.ref.display_label + "</h3></td><td valign=middle> (Gene: " + json.ref.stable_id + ")</td></tr></table> <br>" +
         "<table id='orthologyTable' class='table' width='100%'>" +
         "<thead>" +
