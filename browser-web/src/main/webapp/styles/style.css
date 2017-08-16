@@ -600,3 +600,81 @@ tr.shown td.details-control {
     background-repeat: no-repeat;
     background-size: auto auto;
 }
+
+button.dt-button, div.dt-button, a.dt-button {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    -moz-user-select: none;
+    box-sizing: border-box;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 0.88em;
+    margin-right: 0.333em;
+    outline-color: -moz-use-text-color;
+    outline-style: none;
+    outline-width: medium;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    padding-bottom: 0.5em;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    padding-top: 0.5em;
+    position: relative;
+    text-align: center;
+    text-decoration-color: -moz-use-text-color;
+    text-decoration-line: none;
+    text-decoration-style: solid;
+    white-space: nowrap;
+    /*background-color: #e9e9e9;*/
+    /*background-image: linear-gradient(to bottom, #fff 0%, #e9e9e9 100%);*/
+    border-bottom-color: transparent;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-image-outset: 0 0 0 0;
+    border-image-repeat: stretch stretch;
+    border-image-slice: 100% 100% 100% 100%;
+    border-image-source: none;
+    border-image-width: 1 1 1 1;
+    border-left-color: transparent;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-color: transparent;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-top-color: transparent;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-top-style: solid;
+    border-top-width: 1px;
+}
+
+button.dt-button:hover:not(.disabled), div.dt-button:hover:not(.disabled), a.dt-button:hover:not(.disabled) {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    /*background-color: #e0e0e0;*/
+    /*background-image: linear-gradient(to bottom, #f9f9f9 0%, #e0e0e0 100%);*/
+    border-bottom-color: #666;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-image-outset: 0 0 0 0;
+    border-image-repeat: stretch stretch;
+    border-image-slice: 100% 100% 100% 100%;
+    border-image-source: none;
+    border-image-width: 1 1 1 1;
+    border-left-color: #666;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-color: #666;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-top-color: #666;
+    border-top-style: solid;
+    border-top-width: 1px;
+}

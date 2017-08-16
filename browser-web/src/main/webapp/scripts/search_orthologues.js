@@ -244,6 +244,17 @@ function drawOrthology(json) {
         }
     })
 
+    var table = jQuery('#orthologyTable').DataTable();
+
+    var buttons = new jQuery.fn.dataTable.Buttons(table, {
+        buttons: [
+            { extend: 'copyHtml5', text: "Copy <br> <i class='fa fa-download' style='color: white'></i>"},
+            { extend: 'excelHtml5', text: "Excel <br> <i class='fa fa-download' style='color: white'></i>" },
+            { extend: 'csvHtml5', text: "CSV <br> <i class='fa fa-download' style='color: white'></i>" },
+            { extend: 'pdfHtml5', text: "PDF <br> <i class='fa fa-download' style='color: white'></i>" }
+        ]
+    }).container().appendTo(jQuery('#export_params'));
+
     jQuery('#orthologyTable tbody').on('click', 'td.details-control', function () {
         var table = jQuery('#orthologyTable').DataTable();
         var tr = jQuery(this).closest('tr');

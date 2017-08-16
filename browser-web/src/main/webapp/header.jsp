@@ -21,7 +21,14 @@
 
     <%--jQuery DataTables--%>
     <link rel="stylesheet" type="text/css" href="<c:url value='styles/DataTables/datatables.min.css' />">
+    <%--<link rel="stylesheet" type="text/css" href="<c:url value='styles/DataTables/buttons.dataTables.min.css' />">--%>
     <script type="text/javascript" src="<c:url value='/scripts/DataTables/datatables.min.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/DataTables/dataTables.buttons.min.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/DataTables/buttons.html5.min.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/DataTables/pdfmake.min.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/DataTables/buttons.print.min.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/DataTables/jszip.min.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/DataTables/vfs_fonts.js'/>"></script>
 
     <%--bootstrap--%>
     <script type="text/javascript" src="<c:url value='/styles/bootstrap-css/bootstrap.js'/>"></script>
