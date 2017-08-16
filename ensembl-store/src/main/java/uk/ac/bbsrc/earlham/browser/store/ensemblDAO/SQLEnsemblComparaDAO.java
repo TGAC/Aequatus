@@ -548,8 +548,11 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public Map<String, Object> getGeneMemberInfofromID(String query) throws Exception {
 
-        return template.queryForMap(GET_GENE_MEMBER_INFO_FROM_GENE_MEMBER_ID, new Object[]{query});
-
+        Map<String, Object> gene;
+        gene = template.queryForMap(GET_GENE_MEMBER_INFO_FROM_GENE_MEMBER_ID, new Object[]{query});
+        gene.put("start", gene.get("dnafrag_start"));
+        gene.put("end", gene.get("dnafrag_end"));
+        return gene;
     }
 
 
