@@ -628,6 +628,10 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         return template.queryForInt(GET_GENE_MEMBER_ID_FROM_SEQ_MEMBER_ID, new Object[]{seq_member_id});
     }
 
+    public String getGenomefromSeqMemberID(int seq_member_id) throws Exception{
+        return template.queryForObject(GET_GENOME_NAME_FROM_SEQ_MEMBER_ID, new Object[]{seq_member_id}, String.class);
+    }
+
 
     public JSONArray getHomologyforMember(String query) throws IOException {
 
@@ -645,7 +649,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             homology_members.put("genome_name", template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{homologous.get("genome_db_id")}, String.class));
             homology_members.put("dnafrag", homologous.get("dnafrag_id"));
 
-            JSONObject gene = getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("seq_member_id").toString(), homologous.get("genome_db_id").toString(), homologous.get("desc").toString());
+            JSONObject gene = getGenefromCore(homologous.get("stable_id").toString(), homologous.get("genome_db_id").toString(), Integer.parseInt(homologous.get("seq_member_id").toString()), homologous.get("genome_db_id").toString(), homologous.get("desc").toString());
             homology_members.put("genes", gene);
             if (gene.getJSONObject("gene").containsKey("gene_id")) {
                 homologouses.add(homology_members);
@@ -753,7 +757,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         }
     }
 
-    public JSONObject getGenefromCore(String query, String genome, String member_id, String gene_stable_id, String desc) throws IOException {
+    public JSONObject getGenefromCore(String query, String genome, int member_id, String gene_stable_id, String desc) throws IOException {
         try {
 
             genome = template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{genome}, String.class);
@@ -801,7 +805,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             }
             String gene_member_id = template.queryForObject(GET_GENE_MEMBER_ID_FROM_SEQ_MEMBER_ID, new Object[]{map_two.get("seq_member_id")}, String.class);
             String gene_stable_id = template.queryForObject(GET_STABLE_ID_FROM_GENE_MEMBER_ID, new Object[]{gene_member_id}, String.class);
-            member.put(gene_stable_id, getGenefromCore(map_two.get("stable_id").toString(), map_two.get("genome_db_id").toString(), map_two.get("seq_member_id").toString(), gene_stable_id, map_two.get("desc").toString()));
+            member.put(gene_stable_id, getGenefromCore(map_two.get("stable_id").toString(), map_two.get("genome_db_id").toString(), Integer.parseInt(map_two.get("seq_member_id").toString()), gene_stable_id, map_two.get("desc").toString()));
 
         }
 
