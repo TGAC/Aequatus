@@ -303,7 +303,7 @@ function drawOrthology(json) {
             temp_row.child.hide();
             jQuery('tr.shown').removeClass('shown');
 
-            row.child("<div id='pairwise_align'></div>").show();
+            row.child("<div style='position:relative; left:100px;' id='pairwise_align'></div>").show();
             drawPairwise(row.data()[13], row.data()[4]);
             tr.addClass('shown');
             td.addClass('details_shown');
@@ -312,6 +312,8 @@ function drawOrthology(json) {
 }
 
 function drawPairwise(ref, hit) {
+    jQuery("#pairwise_align").html("<div><center><img src='./images/browser/loading_big.gif'></center></div>" )
+
     Fluxion.doAjax(
         'comparaService',
         'getPairwiseAlignmentWithGenes',
@@ -319,7 +321,7 @@ function drawPairwise(ref, hit) {
         {
             'doOnSuccess': function (json) {
 
-                jQuery("#pairwise_align").html("<div id = 'pairwise" + ref + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : " + jQuery(window).width() * 0.8 + "'></div>" +
+                jQuery("#pairwise_align").html("<div  id = 'pairwise" + ref + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : " + jQuery(window).width() * 0.8 + "'></div>" +
                     "<br>" +
                     "<div id = 'pairwise" + hit + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : " + jQuery(window).width() * 0.8 + ";'></div>")
                 jQuery("#pairwise" + hit).svg()
