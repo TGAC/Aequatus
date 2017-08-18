@@ -27,7 +27,6 @@ var protein_domains = null;
 
 
 function getChromosomes(member_id) {
-    console.log("setCredentials")
     var color = jQuery("option:selected", jQuery("#genomes")).attr("background");
     jQuery(".headerbar").css("background", color);
     jQuery("#chr_maps").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
@@ -145,7 +144,6 @@ function drawChromosome() {
 }
 
 function setCredentials(chr_name, genome_id) {
-    console.log("setCredentials")
     chr = chr_name;
     genome_db_id = genome_id;
     select_chr();
@@ -153,8 +151,6 @@ function setCredentials(chr_name, genome_id) {
 }
 
 function getMember(member) {
-    console.log("getMember")
-
     jQuery(".selected").removeClass("selected")
     jQuery("#chr" + chr).addClass("selected")
 
@@ -168,8 +164,6 @@ function getMember(member) {
 
 
     if (chr != null) {
-        console.log("getMember chr if")
-
         Fluxion.doAjax(
             'comparaService',
             'getMember',
@@ -191,8 +185,6 @@ function getMember(member) {
                 }
             });
     } else {
-        console.log("getMember chr else")
-
         Fluxion.doAjax(
             'comparaService',
             'getMemberbyChrName',
@@ -218,7 +210,6 @@ function getMember(member) {
 }
 
 function drawMember() {
-    console.log("drawmember")
     jQuery("#bar_image_ref").html("")
     var width = parseInt(jQuery("#bar_image_selector").css("width"));
     var maxLentemp = parseInt(jQuery("#canvas").css("width"));
@@ -529,8 +520,6 @@ function select_genome() {
 
 
 function setSelector(gene, member_id) {
-    console.log("setSelector")
-    console.log(gene+" , "+ member_id)
     var maxLentemp = parseInt(jQuery("#canvas").css("width"));
 
     var start = gene.start
@@ -583,7 +572,6 @@ function makeMeTop(new_gene_id, new_protein_id) {
 }
 
 function exportGeneLabel(type) {
-    console.log("export gene label " + type)
     var download_data = ""
 
     jQuery("#gridSystemModalLabel").html("Gene Labels")
@@ -598,7 +586,6 @@ function exportGeneLabel(type) {
     });
     text_html += "</tbody></table>"
     // text_html += "<button class='btn btn-default' onclick=dlText('" + download_data + "','Genes.csv')>Download</button>"
-    console.log(text_html)
 
     jQuery("#exportModal_content").append(text_html)
     jQuery("#downloadButton").html("<button class='btn btn-default' onclick=dlText('" + download_data + "','Genes.csv')>Download</button>")
@@ -692,7 +679,6 @@ function recursive_tree_Newick(tree, newick) {
  *
  */
 function exportAlignment(id) {
-    console.log("export alignment " + id)
     var download_data = ""
     var text_html = "";
     jQuery("#exportModal_content").html("")
@@ -722,7 +708,6 @@ function exportAlignment(id) {
     //    jQuery('#exportModal').modal('hide')
     //}
 
-    console.log(text_html)
     var download_btn = jQuery('<button/>')
         .text('Download')
         .addClass('btn btn-default')
@@ -738,7 +723,6 @@ function exportAlignment(id) {
         jQuery('#exportModal').modal()
     }
 
-    console.log(download_data)
     //dlText(download_data, 'CIGAR.csv')
 
 }
