@@ -577,7 +577,7 @@ div.tooltip {
 }
 /* Data Table in Orthology*/
 
-td.details-control {
+td.details_hidden {
     background-attachment: scroll;
     background-clip: border-box;
     background-color: rgba(0, 0, 0, 0);
@@ -589,7 +589,7 @@ td.details-control {
     background-size: auto auto;
     cursor: pointer;
 }
-tr.shown td.details-control {
+td.details_shown{
     background-attachment: scroll;
     background-clip: border-box;
     background-color: rgba(0, 0, 0, 0);

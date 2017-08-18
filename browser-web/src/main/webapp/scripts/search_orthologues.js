@@ -161,8 +161,8 @@ function drawOrthology(json) {
     for (var i = 0; i < json_key.length; i++) {
         var tree = ortho[json_key[i]].tree ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em;' aria-hidden='true'></i>" : "";
         orthology_table_content += "<tr> " +
-            "<td class='details-control detail-info'></td>" +
-            "<td class='details-control pairwise-align'></td>" +
+            "<td class='details-control detail-info details_hidden'></td>" +
+            "<td class='details-control pairwise-align details_hidden'></td>" +
             "<td>" + json_key[i] + "</td>" +
             "<td>" + ortho[json_key[i]].target.id + "</td>" +
             "<td>" + ortho[json_key[i]].target.protein_id + "</td>" +
@@ -206,7 +206,7 @@ function drawOrthology(json) {
     jQuery('#orthologyTable').DataTable({
         "columnDefs": columnArray,
         initComplete: function () {
-            this.api().columns([6]).every(function () {
+            this.api().columns([7]).every(function () {
                 var column = this;
                 var select = jQuery('<select><option value="">Select Type</option></select>')
                     .appendTo(jQuery(column.footer()).empty())
@@ -224,7 +224,7 @@ function drawOrthology(json) {
                     select.append('<option value="' + d + '">' + d + '</option>')
                 });
             });
-            this.api().columns([4]).every(function () {
+            this.api().columns([5]).every(function () {
                 var column = this;
 
                 var select = jQuery('<select id="species_filter"><option value="">All Species</option></select>')
@@ -261,14 +261,17 @@ function drawOrthology(json) {
         var table = jQuery('#orthologyTable').DataTable();
         var tr = jQuery(this).closest('tr');
         var row = table.row(tr);
+        var td = jQuery(this).closest('td');
 
-        if (row.child.isShown()) {
+        if (td.hasClass('details_shown')) {
             // This row is already open - close it
             row.child.hide();
-            tr.removeClass('shown');
+            td.removeClass('details_shown');
         }
         else {
             // Open this row
+            jQuery('.details_shown').removeClass('details_shown');
+
             var temp_tr = jQuery('tr.shown');
             var temp_row = table.row(temp_tr);
             temp_row.child.hide();
@@ -276,6 +279,7 @@ function drawOrthology(json) {
 
             row.child(format(row.data())).show();
             tr.addClass('shown');
+            td.addClass('details_shown');
         }
     });
 
@@ -283,14 +287,19 @@ function drawOrthology(json) {
         var table = jQuery('#orthologyTable').DataTable();
         var tr = jQuery(this).closest('tr');
         var row = table.row(tr);
+        var td = jQuery(this).closest('td');
 
-        if (row.child.isShown()) {
+        jQuery('tr.shown').hide()
+
+        if (td.hasClass('details_shown')) {
             // This row is already open - close it
             row.child.hide();
-            tr.removeClass('shown');
+            td.removeClass('details_shown');
         }
         else {
             // Open this row
+            jQuery('.details_shown').removeClass('details_shown');
+
             var temp_tr = jQuery('tr.shown');
             var temp_row = table.row(temp_tr);
             temp_row.child.hide();
@@ -299,6 +308,7 @@ function drawOrthology(json) {
             row.child("<div id='pairwise_align'></div>").show();
             drawPairwise(row.data()[13], row.data()[4]);
             tr.addClass('shown');
+            td.addClass('details_shown');
         }
     });
 }
