@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 function search_from_orthologues_box() {
-    if (parseInt(jQuery("#control_panel").css("left")) < 0) {
+    if (parseInt(jQuery("#§trol_panel").css("left")) < 0) {
         openPanel('#search_div')
     }
     jQuery("#search_history").html(jQuery("#control_search").val());
@@ -289,10 +289,8 @@ function drawOrthology(json) {
         var row = table.row(tr);
         var td = jQuery(this).closest('td');
 
-        jQuery('tr.shown').hide()
 
         if (td.hasClass('details_shown')) {
-            // This row is already open - close it
             row.child.hide();
             td.removeClass('details_shown');
         }
