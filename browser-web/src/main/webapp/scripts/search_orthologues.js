@@ -96,8 +96,10 @@ function getOrthologyForMember(query) {
         {'query': query, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                setSelector(json.ref, json.ref.canonical_member_id)
+                URLMemberID(json.ref.stable_id, "table")
+                jQuery("#gene_tree_nj").html("")
                 drawOrthology(json)
+                setSelector(json.ref, json.ref.canonical_member_id)
             }
         });
 }
@@ -172,7 +174,7 @@ function drawOrthology(json) {
             "<td align='center'>" + ortho[json_key[i]].target.perc_cov + "</td>" +
             "<td align='center'>" + ortho[json_key[i]].target.perc_pos + "</td>" +
             "<td align='center'>" + ortho[json_key[i]].target.perc_id + "</td>" +
-            "<td align='center'>" + tree + "</td>" +
+            "<td align='center' onclick='openTree(\""+ortho[json_key[i]].source.protein_id+"\")'>" + tree + "</td>" +
             "<td>" + ortho[json_key[i]].source.id + "</td>" +
             "<td>" + ortho[json_key[i]].source.protein_id + "</td>" +
             "<td>" + ortho[json_key[i]].source.species + "</td>" +
@@ -425,4 +427,9 @@ function format(d) {
         '<td>' + d[10] + '</td>' +
         '</tr>' +
         '</table>';
+}
+
+function openTree(id)
+{
+    getMemberfromURL(id, "tree")
 }

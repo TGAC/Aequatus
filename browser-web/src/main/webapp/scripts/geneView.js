@@ -309,13 +309,14 @@ function getcoreMember(query, redrawn) {
         {'query': query, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
+                jQuery("#orthologies").html("")
                 syntenic_data = json
                 //window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);
                 init(json, "#settings_div", "#filter", "#sliderfilter")
 
                 setSelector(syntenic_data.member[syntenic_data.ref].Transcript[0], syntenic_data.member[syntenic_data.ref].member_id)
 
-                URLMemberID(json.ref)
+                URLMemberID(json.ref, "tree")
                 drawSynteny(redrawn);
 
             }
@@ -535,8 +536,6 @@ function setSelector(gene, member_id) {
         jQuery(".refMarkerShow").removeClass("selected")
 
         jQuery("[seq_id=" + member_id + "]").addClass("selected")
-        //console.log("reference "+syntenic_data.member[syntenic_data.ref].reference)
-        //jQuery("#chr" + syntenic_data.member[syntenic_data.ref].reference).addClass("selected")
     });
 }
 
@@ -545,7 +544,7 @@ function makeMeTop(new_gene_id, new_protein_id) {
 
     if (new_gene_id != member_id || new_protein_id != protein_member_id) {
 
-        URLMemberID(new_gene_id)
+        URLMemberID(new_gene_id, "tree")
 
         changeReference(new_gene_id, new_protein_id)
 

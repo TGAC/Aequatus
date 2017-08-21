@@ -168,8 +168,8 @@ function URLgenomeName(genome_name, chr_name) {
     window.history.pushState("ref=" + genome_name, "Title", "?ref=" + genome_name + "&chr=" + chr_name);
 }
 
-function URLMemberID(stable_id) {
-    window.history.pushState("query=" + stable_id, "Title", "?query=" + stable_id);
+function URLMemberID(stable_id, view) {
+    window.history.pushState("query=" + stable_id, "Title", "?query=" + stable_id+"&&view="+view);
 }
 
 function URLSearch(search) {
@@ -177,7 +177,7 @@ function URLSearch(search) {
 }
 
 function search_redirect(json) {
-    URLMemberID(json.stable_id);
+    URLMemberID(json.stable_id, "tree");
     getcoreMember(json.gene_member_id, true);
     jQuery("#canvas").show();
     jQuery("#genome_name").html(json.genome);
