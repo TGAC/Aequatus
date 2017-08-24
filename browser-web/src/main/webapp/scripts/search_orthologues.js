@@ -48,6 +48,7 @@ function search_orthologues(query) {
 
 
 function list_orthologues(json) {
+    console.log("list_orthologues")
     var content = "";
 
     if (json.html.length > 0) {
@@ -105,6 +106,8 @@ function getOrthologyForMember(query) {
 }
 
 function drawOrthology(json) {
+    console.log("drawOrthology")
+    generate_sankey_JSON(json)
     var orthology_table_content = "<table><tr><td><h3>Confidently predicted Orthology for " + json.ref.display_label + "</h3></td><td valign=middle> (Gene: " + json.ref.stable_id + ")</td></tr></table> <br>" +
         "<table id='orthologyTable' class='table' width='100%'>" +
         "<thead>" +

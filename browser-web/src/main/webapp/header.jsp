@@ -45,6 +45,7 @@
     <%--D3--%>
     <script src="<c:url value='/scripts/d3.js/d3.v3.min.js'/>"></script>
     <script src="<c:url value='/scripts/d3.js/d3.tip.v0.6.3.js'/>"></script>
+    <script src="<c:url value='/scripts/d3.js/sankey.js'/>"></script>
 
     <%--jquery UI--%>
     <link rel="stylesheet" href="<c:url value='/scripts/jquery/css/smoothness/jquery-ui-1.11.2.css'/>" type="text/css">
@@ -73,6 +74,8 @@
     <script type="text/javascript" src="<c:url value='scripts/smart-domain.js'/>"></script>
     <script type="text/javascript" src="<c:url value='scripts/drawDomain.js'/>"></script>
     <script type="text/javascript" src="<c:url value='scripts/search_orthologues.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='scripts/prepare_sankey_json.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='scripts/draw_sankey.js'/>"></script>
 
 
     <%--Aequatus CSS--%>
