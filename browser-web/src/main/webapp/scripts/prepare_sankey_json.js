@@ -99,8 +99,16 @@ function generate_sankey_JSON(json) {
         "nodes": nodes,
         "links": links
     }
-    drawSankey(sankey_json, "#orthologies")
+    setSankeyExport();
+    drawSankey(sankey_json, "#sankey")
 
 }
 
+function setSankeyExport(){
+    jQuery("#export_params").html("")
+}
+
+function setSankeyFilter(){
+    jQuery("#export_params").html("")
+}
 

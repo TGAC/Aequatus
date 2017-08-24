@@ -224,7 +224,10 @@ function getMemberfromURL(query, view) {
                         getcoreMember(json.member_id, true);
                     }else if (view == "table") {
                         setTableExport();
-                        getOrthologyForMember(json.member_id);
+                        getOrthologyForMember(json.member_id, "table");
+                    }else if (view == "sankey") {
+                        setTableExport();
+                        getOrthologyForMember(json.member_id, "sankey");
                     }else{
                         if (parseInt(jQuery("#control_panel").css("left")) < 0) {
                             openPanel('#search_div')
@@ -324,7 +327,15 @@ function listResult(json) {
                 "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
                 "getChromosomes(); " +
                 "getMember();   " +
-                "getOrthologyForMember(" + json.html[i].gene_member_id + ",\"true\");'> </i>" +
+                "getOrthologyForMember(" + json.html[i].gene_member_id + ",\"table\");'> </i>" +
+                "</td>" +
+
+                "<td> <i style='color:grey' class='fa fa-1x fa-random' title='View Sankey Plot'  onclick='openClosePanel(); " +
+                "jQuery(\"#canvas\").show(); " +
+                "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
+                "getChromosomes(); " +
+                "getMember();   " +
+                "getOrthologyForMember(" + json.html[i].gene_member_id + ",\"sankey\");'> </i>" +
                 "</td>" +
 
                 "</tr>" +
@@ -362,4 +373,11 @@ function showGeneReference() {
     jQuery("#bar_image_selector").show()
     jQuery("#selected_region").show()
     jQuery("#bar_image_ref").show()
+}
+
+function resetView()
+{
+    jQuery(".mainview").each(function(i, div) {
+        jQuery(div).html("");
+    });
 }

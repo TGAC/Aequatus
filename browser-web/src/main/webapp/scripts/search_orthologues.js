@@ -64,7 +64,7 @@ function list_orthologues(json) {
             content += "<div class='search_div' " +
                 "onclick='openClosePanel(); " +
                 "jQuery(\"#canvas\").show(); " +
-                "getOrthologyForMember(" + json.html[i].gene_member_id + ",\"true\");'> " +
+                "getOrthologyForMember(" + json.html[i].gene_member_id + ",\"table\");'> " +
                 "<div class='search_header'> " + json.html[i].stable_id + " " +
                 "</div> " +
                 "<div class='search_info'> " + json.html[i].genome + " : " + json.html[i].coord_system_name + " " + json.html[i].name +
@@ -88,8 +88,16 @@ function list_orthologues(json) {
 }
 
 
-function getOrthologyForMember(query) {
-    jQuery("#orthologies").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
+function getOrthologyForMember(query, view) {
+    if( view == "table"){
+        jQuery("#orthologies").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
+    }else if( view == "sankey"){
+        setSankeyFilter()
+        jQuery("#sankey").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
+    }
+
+    resetView();
+
 
     Fluxion.doAjax(
         'comparaService',
@@ -97,9 +105,14 @@ function getOrthologyForMember(query) {
         {'query': query, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                URLMemberID(json.ref.stable_id, "table")
+                URLMemberID(json.ref.stable_id, view)
                 jQuery("#gene_tree_nj").html("")
-                drawOrthology(json)
+                if( view == "table"){
+                    drawOrthology(json)
+                }else if( view == "sankey"){
+                    generate_sankey_JSON(json)
+                }
+
                 setSelector(json.ref, json.ref.canonical_member_id)
             }
         });
@@ -107,7 +120,6 @@ function getOrthologyForMember(query) {
 
 function drawOrthology(json) {
     console.log("drawOrthology")
-    generate_sankey_JSON(json)
     var orthology_table_content = "<table><tr><td><h3>Confidently predicted Orthology for " + json.ref.display_label + "</h3></td><td valign=middle> (Gene: " + json.ref.stable_id + ")</td></tr></table> <br>" +
         "<table id='orthologyTable' class='table' width='100%'>" +
         "<thead>" +

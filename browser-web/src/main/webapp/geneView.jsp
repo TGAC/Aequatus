@@ -235,14 +235,17 @@
 
     </div>
 
-    <div id="gene_tree_nj" style=" overflow: visible;   position: relative; top: 50px; width: 100%;">
+    <div id="gene_tree_nj" style=" overflow: visible;   position: relative; top: 50px; width: 100%;" class="mainview">
 
     </div>
 
-    <div id="orthologies" style="width: 80%; left: 10%; position: relative; top: 50px;">
+    <div id="orthologies" style="width: 80%; left: 10%; position: relative; top: 50px;"  class="mainview">
     </div>
 
-    <div style="height: auto; margin-left: auto; margin-right: auto; z-index: 1999; position: fixed;">
+    <div id="sankey" style="width: 80%; left: 10%; position: relative; top: 50px;"  class="mainview">
+    </div>
+
+    <div style="height: auto; margin-left: auto; margin-right: auto; z-index: 1999; position: fixed;" >
 
 
     </div>

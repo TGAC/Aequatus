@@ -11,7 +11,7 @@ var units = "Widgets";
 
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
     width = 700 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    height = 1000 - margin.top - margin.bottom;
 
 var formatNumber = d3.format(",.0f"),    // zero decimal places
     format = function (d) {
@@ -25,14 +25,17 @@ var svg;
 // Set the sankey diagram properties
 
 function drawSankey(sankey_json, div) {
-    height = sankey_json.nodes.size() * 50
+    if(sankey_json.nodes.size() * 25 > height)
+    {
+        height = sankey_json.nodes.size() * 25
+    }
     var sankey = d3.sankey()
         .nodeWidth(36)
         .nodePadding(40)
         .size([width, height]);
 
     var path = sankey.link();
-
+    jQuery(div).html("")
     svg = d3.select(div).append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
