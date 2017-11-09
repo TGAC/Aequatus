@@ -7,7 +7,10 @@
  */
 function generate_sankey_JSON(json) {
     var ortho = json.orthology;
+    // ortho = ortho.slice(0,15);
+
     var json_key = Object.keys(ortho);
+    // json_key = json_key.slice(0, 15);
     var orthologs = [];
     var species = [];
     var types = [];
@@ -49,57 +52,85 @@ function generate_sankey_JSON(json) {
             "value": 2
         })
     }
-    for (var i = 0; i < species.length; i++, node++) {
-        nodes.push({
-            "node": node,
-            "type": "species",
-            "name": species[i]
-        })
-    }
+    // for (var i = 0; i < species.length; i++, node++) {
+    //     nodes.push({
+    //         "node": node,
+    //         "type": "species",
+    //         "name": species[i]
+    //     })
+    // }
 
 
     var item;
-
+    var first = [];
     for (var i = 0; i < types.length; i++) {
 
         var source =  0;
 
         var target =  nodes.find(item => item.name == types[i]
     )
-        links.push({
-            "source": source,
-            "target": target.node,
-            "value": 2
-        })
+
+        if(i%2 > 0){
+            console.log("if " +source +" => "+ target.node)
+            links.push({
+                "source": target.node,
+                "target": source,
+                "value": 2
+            })
+            first.push(types[i])
+        }else{
+            console.log("else "+target.node +" => "+ source)
+
+            links.push({
+                "source": source,
+                "target": target.node,
+                "value": 2
+            })
+        }
     }
+    console.log(first)
 
     for (var i = 0; i < json_key.length; i++) {
         var source = nodes.find(item => item.name == ortho[json_key[i]].type)
         var target = nodes.find(item => item.name == ortho[json_key[i]].target.id
     )
-        links.push({
-            "source": source.node,
-            "target": target.node,
-            "value": 2
-        })
+
+        if(first.indexOf(ortho[json_key[i]].type)>=0){
+            console.log(ortho[json_key[i]].type)
+            console.log(target.node+" => "+source.node)
+            console.log(ortho[json_key[i]].node)
+            links.push({
+                "source": target.node,
+                "target": source.node,
+                "value": 2
+            })
+        }else{
+            links.push({
+                "source": source.node,
+                "target": target.node,
+                "value": 2
+            })
+        }
+
     }
 
-    for (var i = 0; i < json_key.length; i++) {
-        var source = nodes.find(item => item.name == ortho[json_key[i]].target.id)
-        var target = nodes.find(item => item.name == ortho[json_key[i]].target.species
-    )
-        links.push({
-            "source": source.node,
-            "target": target.node,
-            "value": 2
-        })
-    }
+    // for (var i = 0; i < json_key.length; i++) {
+    //     var source = nodes.find(item => item.name == ortho[json_key[i]].target.id)
+    //     var target = nodes.find(item => item.name == ortho[json_key[i]].target.species
+    // )
+    //     links.push({
+    //         "source": source.node,
+    //         "target": target.node,
+    //         "value": 2
+    //     })
+    // }
 
     var sankey_json = {
         "nodes": nodes,
         "links": links
     }
     setSankeyExport();
+    console.log(JSON.stringify(sankey_json))
     drawSankey(sankey_json, "#sankey")
 
 }

@@ -10,8 +10,8 @@ var graph;
 var units = "Widgets";
 
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
-    width = 700 - margin.left - margin.right,
-    height = 1000 - margin.top - margin.bottom;
+    width = 1000 - margin.left - margin.right,
+    height = 700 - margin.top - margin.bottom;
 
 var formatNumber = d3.format(",.0f"),    // zero decimal places
     format = function (d) {
@@ -25,13 +25,13 @@ var svg;
 // Set the sankey diagram properties
 
 function drawSankey(sankey_json, div) {
-    if(sankey_json.nodes.size() * 25 > height)
+    if(sankey_json.nodes.size() * 5 > height)
     {
-        height = sankey_json.nodes.size() * 25
+        height = sankey_json.nodes.size() * 5
     }
     var sankey = d3.sankey()
         .nodeWidth(36)
-        .nodePadding(40)
+        .nodePadding(5)
         .size([width, height]);
 
     var path = sankey.link();
@@ -39,6 +39,7 @@ function drawSankey(sankey_json, div) {
     svg = d3.select(div).append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
+        .style("overflow", "visible")
         .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
@@ -49,7 +50,8 @@ function drawSankey(sankey_json, div) {
         sankey
             .nodes(graph.nodes)
             .links(graph.links)
-            .layout(64);
+
+            .layout(120);
 
 // add in the links
         var link = svg.append("g").selectAll(".link")
@@ -105,21 +107,31 @@ function drawSankey(sankey_json, div) {
 
 // add in the title for the nodes
         node.append("text")
-            .attr("x", -6)
-            .attr("y", function (d) {
-                return d.dy / 2;
+            .attr("x",  function (d) {
+                if(d.sourceLinks[0]){
+                    return -6;
+                }
+                else{
+                    return 6+sankey.nodeWidth();
+
+                }
             })
+            .attr("y", function(d) { return d.dy / 2; })
             .attr("dy", ".35em")
-            .attr("text-anchor", "end")
+            .attr("text-anchor", function (d) {
+                if(d.sourceLinks[0]){
+                    return "end";
+                }
+                else{
+                    return "begin";
+
+                }
+            })
             .attr("transform", null)
-            .text(function (d) {
-                return d.name;
-            })
-            .filter(function (d) {
-                return d.x < width / 2;
-            })
-            .attr("x", 6 + sankey.nodeWidth())
-            .attr("text-anchor", "start");
+            .text(function(d) { return d.name; })
+        // .filter(function(d) { return d.x < width / 2; })
+        //   .attr("x", 6 + sankey.nodeWidth())
+        //   .attr("text-anchor", "start");
 
 // the function for moving the nodes
         function dragmove(d) {
