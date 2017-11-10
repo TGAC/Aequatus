@@ -288,13 +288,12 @@ function drawOrthology(json) {
         else {
             // Open this row
             jQuery('.details_shown').removeClass('details_shown');
-
             var temp_tr = jQuery('tr.shown');
             var temp_row = table.row(temp_tr);
             temp_row.child.hide();
             jQuery('tr.shown').removeClass('shown');
-
-            row.child(format(row.data())).show();
+            var temp = formatRow(row.data())
+            row.child(temp).show();
             tr.addClass('shown');
             td.addClass('details_shown');
         }
@@ -399,45 +398,47 @@ function drawPairwise(ref, hit) {
             }
         });
 }
-function format(d) {
-    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+function formatRow(d) {
+    return '<table class="table dataTable" style="padding-left:50px; width:50%; float:left" cellpadding="5" cellspacing="0" border="0" >' +
+        '<thead>' +
         '<tr>' +
-        '<td>Description</td>' +
-        '<td>Source</td>' +
-        '<td>Target</td>' +
+        '<th>Description</th>' +
+        '<th>Source</th>' +
+        '<th>Target</th>' +
         '</tr>' +
+        '</thead>' +
         '<tr>' +
-        '<td>Gene ID</td>' +
+        '<th>Gene ID</th>' +
         '<td>' + d[12] + '</td>' +
         '<td>' + d[3] + '</td>' +
         '</tr>' +
         '<tr>' +
-        '<td>Protein ID</td>' +
+        '<th>Protein ID</th>' +
         '<td>' + d[13] + '</td>' +
         '<td>' + d[4] + '</td>' +
         '</tr>' +
         '<tr>' +
-        '<td>Species</td>' +
+        '<th>Species</th>' +
         '<td>' + d[14] + '</td>' +
         '<td>' + d[5] + '</td>' +
         '</tr>' +
         '<tr>' +
-        '<td>CIGAR</td>' +
+        '<th>CIGAR</th>' +
         '<td>' + d[15] + '</td>' +
         '<td>' + d[19] + '</td>' +
         '</tr>' +
         '<tr>' +
-        '<td>Percentage Coverage</td>' +
+        '<th>Percentage Coverage</th>' +
         '<td>' + d[16] + '</td>' +
         '<td>' + d[8] + '</td>' +
         '</tr>' +
         '<tr>' +
-        '<td>Percentage Positivity</td>' +
+        '<th>Percentage Positivity</th>' +
         '<td>' + d[17] + '</td>' +
         '<td>' + d[9] + '</td>' +
         '</tr>' +
         '<tr>' +
-        '<td>Percentage Identity</td>' +
+        '<th>Percentage Identity</th>' +
         '<td>' + d[18] + '</td>' +
         '<td>' + d[10] + '</td>' +
         '</tr>' +
