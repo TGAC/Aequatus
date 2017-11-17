@@ -89,9 +89,9 @@ function list_orthologues(json) {
 
 
 function getOrthologyForMember(query, view) {
-    if( view == "table"){
+    if (view == "table") {
         jQuery("#orthologies").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
-    }else if( view == "sankey"){
+    } else if (view == "sankey") {
         setSankeyFilter()
         jQuery("#sankey").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
     }
@@ -107,9 +107,9 @@ function getOrthologyForMember(query, view) {
             'doOnSuccess': function (json) {
                 URLMemberID(json.ref.stable_id, view)
                 jQuery("#gene_tree_nj").html("")
-                if( view == "table"){
+                if (view == "table") {
                     drawOrthology(json)
-                }else if( view == "sankey"){
+                } else if (view == "sankey") {
                     generate_sankey_JSON(json)
                 }
 
@@ -189,7 +189,7 @@ function drawOrthology(json) {
             "<td align='center'>" + ortho[json_key[i]].target.perc_cov + "</td>" +
             "<td align='center'>" + ortho[json_key[i]].target.perc_pos + "</td>" +
             "<td align='center'>" + ortho[json_key[i]].target.perc_id + "</td>" +
-            "<td align='center' onclick='openTree(\""+ortho[json_key[i]].source.protein_id+"\")'>" + tree + "</td>" +
+            "<td align='center' onclick='openTree(\"" + ortho[json_key[i]].source.protein_id + "\")'>" + tree + "</td>" +
             "<td>" + ortho[json_key[i]].source.id + "</td>" +
             "<td>" + ortho[json_key[i]].source.protein_id + "</td>" +
             "<td>" + ortho[json_key[i]].source.species + "</td>" +
@@ -267,10 +267,44 @@ function drawOrthology(json) {
 
     var buttons = new jQuery.fn.dataTable.Buttons(table, {
         buttons: [
-            {extend: 'copyHtml5', text: "Copy <br> <i class='fa fa-download' style='color: white'></i>"},
-            {extend: 'excelHtml5', text: "Excel <br> <i class='fa fa-download' style='color: white'></i>"},
-            {extend: 'csvHtml5', text: "CSV <br> <i class='fa fa-download' style='color: white'></i>"},
-            {extend: 'pdfHtml5', text: "PDF <br> <i class='fa fa-download' style='color: white'></i>"}
+            {
+                extend: 'copyHtml5',
+                exportOptions: {
+                    rows: [ ':visible' ]
+                },
+                text: "Copy <br> <i class='fa fa-download' style='color: white'></i>"},
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    rows: [ ':visible' ]
+                },
+                text: "Excel <br> <i class='fa fa-download' style='color: white'></i>"},
+            {
+                extend: 'csvHtml5',
+                exportOptions: {
+                    rows: [ ':visible' ]
+                },
+                text: "CSV <br> <i class='fa fa-download' style='color: white'></i>"},
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 3,4,5,6,7,8,9,10 ],
+                    rows: [ ':visible' ]
+                },
+                text: "PDF <br> <i class='fa fa-download' style='color: white'></i>",
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                title: "Aequatus - Orthology for gene "+json.ref.display_label+"",
+                messageTop: 'Confidently predicted Orthology for '+json.ref.display_label+' (Gene: ' + json.ref.stable_id + ')',
+                messageBottom: "\n Aequatus | 2015-2017 - Earlham Institute - http://aequatus.earlham.ac.uk"
+                //customize: function ( doc ) {
+                //    doc.content.splice( 1, 0, {
+                //        margin: [ 0, 0, 0, 12 ],
+                //        alignment: 'center',
+                //        image: 'https://camo.githubusercontent.com/960faff857e34ebebfe042d487de503ca9bcb5be/687474703a2f2f61657175617475732e6561726c68616d2e61632e756b2f61657175617475732d757365722d67756964652f696d672f61657175617475732d6c6f676f2e706e67'
+                //    } );
+                //}
+            }
         ]
     }).container().appendTo(jQuery('#export_params'));
 
@@ -328,7 +362,7 @@ function drawOrthology(json) {
 }
 
 function drawPairwise(ref, hit) {
-    jQuery("#pairwise_align").html("<div><center><img src='./images/browser/loading_big.gif'></center></div>" )
+    jQuery("#pairwise_align").html("<div><center><img src='./images/browser/loading_big.gif'></center></div>")
 
     Fluxion.doAjax(
         'comparaService',
@@ -445,7 +479,6 @@ function formatRow(d) {
         '</table>';
 }
 
-function openTree(id)
-{
+function openTree(id) {
     getMemberfromURL(id, "tree")
 }
