@@ -256,12 +256,15 @@ function drawOrthology(json) {
             this.api().columns([5]).every(function () {
                 var column = this;
 
-                var select = jQuery('<select id="species_filter"><option value="">All Species</option></select>')
+                var select = jQuery('<select id="species_filter" multiple=multiple><option value="">All Species</option></select>')
                     .appendTo(jQuery(column.footer()).empty())
                     .on('change', function () {
-                        var val = jQuery.fn.dataTable.util.escapeRegex(
-                            jQuery(this).val()
-                        );
+                        var val = []
+                        jQuery.each(jQuery(this).val(), function(index, value){
+                            val.push(jQuery.fn.dataTable.util.escapeRegex(value));
+
+                        })
+                        val = val.join("|")
 
                         column
                             .search(val ? '^' + val + '$' : '', true, false)
