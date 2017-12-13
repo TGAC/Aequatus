@@ -98,6 +98,17 @@ function getOrthologyForMember(query, view) {
 
     resetView();
 
+    Fluxion.doAjax(
+        'comparaService',
+        'getRefMember',
+        {'query': query, 'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+                sequencelength = json.chr_length;
+
+                setSelector(json.member[json.ref].Transcript[0], json.member[json.ref].member_id)
+            }
+        });
 
     Fluxion.doAjax(
         'comparaService',
@@ -106,6 +117,7 @@ function getOrthologyForMember(query, view) {
         {
             'doOnSuccess': function (json) {
                 URLMemberID(json.ref.stable_id, view)
+
                 jQuery("#gene_tree_nj").html("")
                 if (view == "table") {
                     drawOrthology(json)
@@ -113,7 +125,7 @@ function getOrthologyForMember(query, view) {
                     generate_sankey_JSON(json)
                 }
 
-                setSelector(json.ref, json.ref.canonical_member_id)
+                //setSelector(json.ref, json.ref.canonical_member_id)
             }
         });
 }
@@ -270,18 +282,21 @@ function drawOrthology(json) {
             {
                 extend: 'copyHtml5',
                 exportOptions: {
+                    columns: [ 3,4,5,6,7,8,9,10 ],
                     rows: [ ':visible' ]
                 },
                 text: "Copy <br> <i class='fa fa-download' style='color: white'></i>"},
             {
                 extend: 'excelHtml5',
                 exportOptions: {
+                    columns: [ 3,4,5,6,7,8,9,10 ],
                     rows: [ ':visible' ]
                 },
                 text: "Excel <br> <i class='fa fa-download' style='color: white'></i>"},
             {
                 extend: 'csvHtml5',
                 exportOptions: {
+                    columns: [ 3,4,5,6,7,8,9,10 ],
                     rows: [ ':visible' ]
                 },
                 text: "CSV <br> <i class='fa fa-download' style='color: white'></i>"},
