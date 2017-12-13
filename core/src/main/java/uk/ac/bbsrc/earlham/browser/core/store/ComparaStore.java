@@ -63,6 +63,7 @@ public interface ComparaStore extends Store<String> {
     JSONArray getAllChromosome(int query) throws IOException;
     int getChromosomeLength(int chr_id, int genome_id) throws IOException;
     JSONObject getGeneTreeforMember(String query) throws IOException;
+    JSONObject getRefMember(String query) throws IOException;
     JSONArray searchMember(String query) throws IOException;
     Map getGeneTree(String query) throws IOException;
     int countGeneTreeforMember(String query) throws IOException;
@@ -73,14 +74,19 @@ public interface ComparaStore extends Store<String> {
     int getGeneMemberId(String query) throws Exception;
     int getSeqMemberId(String query) throws Exception;
     String getReferencefromStableId(String query) throws IOException;
-    String getDnafragIdfromStableId(String query) throws IOException;
-    String getDnafragnamefromId(String query) throws IOException;
+    int getDnafragIdfromStableId(String query) throws IOException;
+    String getDnafragnamefromId(int query) throws IOException;
     String getRefStableID(String query) throws Exception;
     String getRefPtnStableID(String query) throws Exception;
 
     int getGeneMemberIDfromStableID(String query) throws Exception;
     int getSeqMemberIDfromGeneMemberID(int gene_member_id) throws Exception;
     int getSeqMemberIDfromStableID(String query) throws Exception;
+//<<<<<<< Updated upstream
+//=======
+    String getGenomefromSeqMemberID(int stable_id) throws Exception;
+    String getGenomefromGeneMemberID(int gene_member_id) throws Exception;
+//>>>>>>> Stashed changes
     int getGeneMemberIDfromSeqMemberID(int seq_member_id) throws Exception;
     String getSeqStableIDfromSeqMemberID(int seq_member_id) throws Exception;
     JSONObject getPairwiseAlignment(int ref, int query) throws Exception;

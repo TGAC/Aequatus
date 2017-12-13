@@ -81,7 +81,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
         this.template = template;
     }
 
-    public static JSONObject getGenebyStableid(String query, String genome, String member_id, String gene_stable_id) {
+    public static JSONObject getGenebyStableid(String query, String genome, int member_id, String gene_stable_id) {
         try {
 
             int length = 0;
