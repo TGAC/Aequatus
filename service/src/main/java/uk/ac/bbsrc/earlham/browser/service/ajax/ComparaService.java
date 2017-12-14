@@ -378,6 +378,41 @@ public class ComparaService {
         return response;
     }
 
+    public JSONObject getRefMember(HttpSession session, JSONObject json) {
+        String query = json.getString("query");
+        int query_int = json.getInt("query");
+        JSONObject response = new JSONObject();
+
+
+        response.put("trackname", "member");
+        try {
+
+
+
+            response.put("ref", comparaStore.getRefStableID(query));
+            response.put("chr_length", comparaStore.getRefStableID(query));
+
+            response.put("member", comparaStore.getRefMember(query));
+
+            String genome = comparaStore.getGenomefromGeneMemberID(query_int);
+            int seq_member_id = comparaStore.getSeqMemberIDfromGeneMemberID(query_int);
+            String stable_id = comparaStore.getSeqStableIDfromSeqMemberID(seq_member_id);
+            int chr_id = comparaStore.getDnafragIdfromStableId(stable_id);
+            int genome_id = comparaStore.getGenomeId(genome).getInt("ref");
+            response.put("chr_length", comparaStore.getChromosomeLength(chr_id, genome_id));
+
+            response.put("protein_id", comparaStore.getRefPtnStableID(query));
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return response;
+    }
+
     public JSONObject getOrthologyForMember(HttpSession session, JSONObject json) {
         String query = json.getString("query");
         JSONObject response = new JSONObject();
@@ -502,10 +537,12 @@ public class ComparaService {
                 }
                 log.info("\n\n\t after    else iff "+query);
                 String ref = comparaStore.getReferencefromStableId(query);
-                String dnafrag = comparaStore.getDnafragIdfromStableId(query);
+                int dnafrag = comparaStore.getDnafragIdfromStableId(query);
                 response.put("member_id", gene_member_id);
                 response.put("ref", ref);
                 response.put("dnafrag", dnafrag);
+                response.put("html", comparaStore.searchMember(query));
+
             }
 
         } catch (IOException e) {

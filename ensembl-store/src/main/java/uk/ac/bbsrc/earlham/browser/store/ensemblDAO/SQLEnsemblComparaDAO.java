@@ -149,6 +149,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public static final String GET_CIGAR_LINE = "select cigar_line from gene_align_member where seq_member_id = ? and gene_align_id = ?";
 
     public static final String GET_GENOME_NAME_FROM_SEQ_MEMBER_ID = "select name from genome_db where genome_db_id in (select genome_db_id from seq_member where seq_member_id = ?)";
+    public static final String GET_GENOME_NAME_FROM_GENE_MEMBER_ID = "select name from genome_db where genome_db_id in (select genome_db_id from gene_member where gene_member_id = ?)";
 
     public static final String GET_PAIRWISE_ALIGNMENT = "select hm1.cigar_line as ref, hm2.cigar_line as hit from homology_member hm1, homology_member hm2 where hm1.seq_member_id = ? and hm2.seq_member_id = ? and  hm1.homology_id = hm2.homology_id;";
 
@@ -628,8 +629,12 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         return template.queryForInt(GET_GENE_MEMBER_ID_FROM_SEQ_MEMBER_ID, new Object[]{seq_member_id});
     }
 
-    public String getGenomefromSeqMemberID(int seq_member_id) throws Exception{
+    public String getGenomefromSeqMemberID(int seq_member_id) throws Exception {
         return template.queryForObject(GET_GENOME_NAME_FROM_SEQ_MEMBER_ID, new Object[]{seq_member_id}, String.class);
+    }
+
+    public String getGenomefromGeneMemberID(int gene_member_id) throws Exception {
+        return template.queryForObject(GET_GENOME_NAME_FROM_GENE_MEMBER_ID, new Object[]{gene_member_id}, String.class);
     }
 
 
@@ -813,6 +818,32 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     }
 
+    public JSONObject getRefMember(String query) throws IOException {
+
+        JSONObject member = new JSONObject();
+
+        final String GET_GENE_TREE_FOR_REFERENCE = "select m1.stable_id AS Ref, m1.canonical_member_id AS peptide_id, m1.genome_db_id, m2.seq_member_id, m2.stable_id AS Ptn_stable_id, m1.display_label as 'desc' " +
+                "from gene_member m1 " +
+                "JOIN seq_member m2 ON (m1.canonical_member_id = m2.seq_member_id) " +
+                "WHERE m1.gene_member_id = ? AND m2.genome_db_id in " + genome_ids + " AND m1.source_name = \"ENSEMBLGENE\" ";
+
+        List<Map<String, Object>> homology_member_id = template.queryForList(GET_GENE_TREE_FOR_REFERENCE, new Object[]{query});
+
+        for (Map map_two : homology_member_id) {
+            if (map_two.get("desc") == null) {
+                map_two.put("desc", "");
+            }
+
+            member.put(map_two.get("Ref").toString(),
+                    getGenefromCore(map_two.get("Ptn_stable_id").toString(), map_two.get("genome_db_id").toString(), Integer.parseInt(map_two.get("seq_member_id").toString()), map_two.get("Ref").toString(), map_two.get("desc").toString())
+            );
+
+        }
+
+        return member;
+
+    }
+
     public Long[] getOrthologsforMember(String query) throws IOException {
 
 
@@ -946,9 +977,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     }
 
-    public String getDnafragIdfromStableId(String query) throws IOException {
+    public int getDnafragIdfromStableId(String query) throws IOException {
 
-        String dnafrag_id = template.queryForObject(GET_dnafrag_ID_FROM_STABLE_ID, new Object[]{query}, String.class);
+        int dnafrag_id = template.queryForInt(GET_dnafrag_ID_FROM_STABLE_ID, new Object[]{query});
         return dnafrag_id;
 
     }
@@ -1197,13 +1228,13 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
             if (temp_seq_member_id != seq_member_id) {
                 double test = 0;
-                if(map_two.get("dn") != null && map_two.get("ds") != null){
-                    test = (float) map_two.get("dn")/(float) map_two.get("ds");
+                if (map_two.get("dn") != null && map_two.get("ds") != null) {
+                    test = (float) map_two.get("dn") / (float) map_two.get("ds");
                     test = Math.round(test * 100.0) / 100.0;
                 }
-                homologies.getJSONObject(temp_homology_id).put("dn_ds",test == 0 ? "n/a" : test);
-                homologies.getJSONObject(temp_homology_id).put("dn",map_two.get("dn"));
-                homologies.getJSONObject(temp_homology_id).put("ds",map_two.get("ds"));
+                homologies.getJSONObject(temp_homology_id).put("dn_ds", test == 0 ? "n/a" : test);
+                homologies.getJSONObject(temp_homology_id).put("dn", map_two.get("dn"));
+                homologies.getJSONObject(temp_homology_id).put("ds", map_two.get("ds"));
                 homologies.getJSONObject(temp_homology_id).put("taxonomy_level", null);
                 homologies.getJSONObject(temp_homology_id).put("type", map_two.get("description"));
                 homologies.getJSONObject(temp_homology_id).put("method_link_type", map_two.get("type"));
