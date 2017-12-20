@@ -25,7 +25,11 @@ function generate_sankey_JSON(json) {
     })
 
     for (var i = 0; i < json_key.length; i++) {
-        orthologs.push(ortho[json_key[i]].target.id);
+        orthologs.push({
+            id : ortho[json_key[i]].target.id,
+            species : ortho[json_key[i]].target.species,
+            type :ortho[json_key[i]].type
+        });
         if (species.indexOf(ortho[json_key[i]].target.species) < 0) {
             species.push(ortho[json_key[i]].target.species);
         }
@@ -40,7 +44,7 @@ function generate_sankey_JSON(json) {
             "node": node,
             "type": "orthology",
             "name": types[i],
-            "value": 2
+            "value": orthologs.length
         })
     }
 
@@ -48,7 +52,9 @@ function generate_sankey_JSON(json) {
         nodes.push({
             "node": node,
             "type": "orthologs",
-            "name": orthologs[i],
+            "name": orthologs[i].id,
+            "species" : species.indexOf(orthologs[i].species),
+            "speciesName" : orthologs[i].species,
             "value": 2
         })
     }
@@ -69,13 +75,13 @@ function generate_sankey_JSON(json) {
 
         var target =  nodes.find(item => item.name == types[i]
     )
-
+        value = 2
         if(i%2 > 0){
             console.log("if " +source +" => "+ target.node)
             links.push({
                 "source": target.node,
                 "target": source,
-                "value": 2
+                "value": value
             })
             first.push(types[i])
         }else{
@@ -84,7 +90,7 @@ function generate_sankey_JSON(json) {
             links.push({
                 "source": source,
                 "target": target.node,
-                "value": 2
+                "value": value
             })
         }
     }
