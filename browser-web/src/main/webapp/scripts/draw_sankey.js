@@ -9,7 +9,7 @@
 var graph;
 var units = "Widgets";
 
-var margin = {top: 10, right: 10, bottom: 10, left: 10},
+var margin = {top: 10, right: 10, bottom: 10, left: 100},
     width = 1000 - margin.left - margin.right,
     height = 700 - margin.top - margin.bottom;
 
@@ -25,8 +25,7 @@ var svg;
 // Set the sankey diagram properties
 
 function drawSankey(sankey_json, div) {
-    if(sankey_json.nodes.size() * 5 > height)
-    {
+    if (sankey_json.nodes.size() * 5 > height) {
         height = sankey_json.nodes.size() * 5
     }
     var sankey = d3.sankey()
@@ -50,8 +49,7 @@ function drawSankey(sankey_json, div) {
         sankey
             .nodes(graph.nodes)
             .links(graph.links)
-
-            .layout(120);
+            .layout(32);
 
 // add in the links
         var link = svg.append("g").selectAll(".link")
@@ -70,7 +68,7 @@ function drawSankey(sankey_json, div) {
         link.append("title")
             .text(function (d) {
                 return d.source.type + " → " +
-                    d.target.type + "\n" + format(1);
+                    d.target.type + "\n" + d.value;
             });
 
 // add in the nodes
@@ -92,10 +90,16 @@ function drawSankey(sankey_json, div) {
 
 // add the rectangles for the nodes
         node.append("rect")
-            .attr("height", function(d) { return d.dy; })
+            .attr("height", function (d) {
+                return d.dy;
+            })
             .attr("width", sankey.nodeWidth())
             .style("fill", function (d) {
-                return d.color = color(d.name.replace(/ .*/, ""));
+                if (d.species) {
+                    return d.color = color(d.species)
+                } else {
+                    return d.color = color(d.name.replace(/ .*/, ""));
+                }
             })
             .style("stroke", function (d) {
                 return d3.rgb(d.color).darker(2);
@@ -107,28 +111,52 @@ function drawSankey(sankey_json, div) {
 
 // add in the title for the nodes
         node.append("text")
-            .attr("x",  function (d) {
-                if(d.sourceLinks[0]){
+            .attr("x", function (d) {
+                if (d.sourceLinks[0]) {
                     return -6;
                 }
-                else{
-                    return 6+sankey.nodeWidth();
+                else {
+                    return 6 + sankey.nodeWidth();
 
                 }
             })
-            .attr("y", function(d) { return d.dy / 2; })
+            .attr("y", function (d) {
+                return d.dy / 2;
+            })
             .attr("dy", ".35em")
             .attr("text-anchor", function (d) {
-                if(d.sourceLinks[0]){
+                if (d.sourceLinks[0] && d.targetLinks[0]) {
+                    return "middle";
+                }
+                if (d.sourceLinks[0]) {
                     return "end";
                 }
-                else{
+                else {
                     return "begin";
 
                 }
             })
-            .attr("transform", null)
-            .text(function(d) { return d.name; })
+            .attr("transform", function (d) {
+                if (d.sourceLinks[0] && d.targetLinks[0]) {
+                    return "rotate(-90) translate(" +
+                        (-d.dy / 2) +
+                        ", " +
+                        ((-d.dy / 2) + 15) +
+                        ")";
+                } else {
+                    return null
+                }
+
+            })
+            .text(function (d) {
+                if (d.sourceLinks[0] && d.targetLinks[0]) {
+                    return d.name;
+                }
+                else {
+                    return d.name + "-" + d.speciesName;
+                }
+            })
+
         // .filter(function(d) { return d.x < width / 2; })
         //   .attr("x", 6 + sankey.nodeWidth())
         //   .attr("text-anchor", "start");
