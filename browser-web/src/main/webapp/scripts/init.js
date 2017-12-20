@@ -219,6 +219,8 @@ function getMemberfromURL(query, view) {
                     getMember(json.member_id);
                     select_chr();
                     select_genome();
+                    listResult(json)
+
                     if (view == "tree") {
                         setTreeExport();
                         getcoreMember(json.member_id, true);
@@ -306,7 +308,7 @@ function listResult(json) {
             if (description == null) {
                 description = ""
             }
-            content += "<div class='search_div'> " +
+            content += "<div class='search_div' id='searchlist_"+json.html[i].stable_id+"'> " +
                 "<div class='search_header'>" +
                 "<table width='100%'>" +
                 "<tr>" +
@@ -315,6 +317,7 @@ function listResult(json) {
 
                 "<td> <i style='color:grey' class='fa fa-1x fa-sitemap fa-rotate-270' title='View GeneTree' onclick='openClosePanel(); " +
                 "jQuery(\"#canvas\").show(); " +
+                "setSearchList(\""+json.html[i].stable_id+"\"); " +
                 "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
                 "getChromosomes(); " +
                 "getMember();   " +
@@ -323,7 +326,7 @@ function listResult(json) {
                 "</td>" +
 
                 "<td> <i style='color:grey' class='fa fa-1x fa-table' title='List Orthology in Table'  onclick='openClosePanel(); " +
-                "jQuery(\"#canvas\").show(); " +
+                "setSearchList(\""+json.html[i].stable_id+"\"); " +
                 "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
                 "getChromosomes(); " +
                 "getMember();   " +
@@ -331,7 +334,7 @@ function listResult(json) {
                 "</td>" +
 
                 "<td> <i style='color:grey' class='fa fa-1x fa-random' title='View Sankey Plot'  onclick='openClosePanel(); " +
-                "jQuery(\"#canvas\").show(); " +
+                "setSearchList(\""+json.html[i].stable_id+"\"); " +
                 "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
                 "getChromosomes(); " +
                 "getMember();   " +
@@ -350,7 +353,6 @@ function listResult(json) {
                 content += "</p>";
                 jQuery("#search_result").html(content);
                 jQuery("#search_result").fadeIn();
-                jQuery("#search_hit").tablesorter();
             }
 
         }
@@ -359,6 +361,14 @@ function listResult(json) {
         jQuery("#search_result").html("<div style='width: 100%; text-align: center; padding-top: 15px; font-size: 15px;'>No Result found</div>");
 
     }
+}
+
+function setSearchList(stable_id){
+    jQuery(".search_div").removeClass("active");
+    jQuery("#searchlist_"+stable_id).addClass("active");
+    var clone =  jQuery("#searchlist_"+stable_id).clone();
+    jQuery("#searchlist_"+stable_id).remove();
+    jQuery("#search_result").prepend(clone);
 }
 
 function hideGeneReference() {
