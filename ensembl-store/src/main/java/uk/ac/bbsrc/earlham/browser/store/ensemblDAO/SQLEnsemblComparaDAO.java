@@ -1196,6 +1196,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             homology_ids.add((Long) map_two.get("homology_id"));
         }
 
+
         final String SEARCH_HOMOLOGY_INFO = "SELECT gm.stable_id as id, h.*, hm.*, s.stable_id as protein_id, g.name as species,g.taxon_id, ml.type " +
                 "from homology_member hm, homology h, seq_member s, genome_db g, method_link_species_set mlss, method_link ml, gene_member gm  " +
                 "where h.homology_id = hm.homology_id  " +
@@ -1208,10 +1209,26 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
         List<Map<String, Object>> homology_member_id = template.queryForList(SEARCH_HOMOLOGY_INFO);
 
+
+        String[] temp_genome_ids = genome_ids.replaceAll("\\(", "").replaceAll("\\)", "").replaceAll("\\s", "").split(",");
+
+        int[] int_genome_ids = new int[temp_genome_ids.length];
+
+        for (int i = 0; i < temp_genome_ids.length; i++) {
+            try {
+                int_genome_ids[i] = Integer.parseInt(temp_genome_ids[i]);
+                log.info("\t-"+int_genome_ids[i]+"-");
+
+            } catch (NumberFormatException nfe) {
+                //NOTE: write something here if you need to recover from formatting errors
+            };
+        }
+
         for (Map map_two : homology_member_id) {
             JSONObject homology_member = new JSONObject();
             String temp_homology_id = map_two.get("homology_id").toString();
             int temp_seq_member_id = Integer.parseInt(map_two.get("seq_member_id").toString());
+
 
             if (!homologies.containsKey(temp_homology_id)) {
                 homologies.put(temp_homology_id, new JSONObject());
@@ -1227,6 +1244,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             homology_member.put("id", map_two.get("id")); //gene_id
 
             if (temp_seq_member_id != seq_member_id) {
+                String genome_name = template.queryForObject(GET_GENOME_NAME_FROM_SEQ_MEMBER_ID, new Object[]{temp_seq_member_id}, String.class);
+                int genome_db_id = template.queryForInt(GET_GENOME_ID_FROM_NAME, new Object[]{genome_name});
+
                 double test = 0;
                 if (map_two.get("dn") != null && map_two.get("ds") != null) {
                     test = (float) map_two.get("dn") / (float) map_two.get("ds");
@@ -1238,7 +1258,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                 homologies.getJSONObject(temp_homology_id).put("taxonomy_level", null);
                 homologies.getJSONObject(temp_homology_id).put("type", map_two.get("description"));
                 homologies.getJSONObject(temp_homology_id).put("method_link_type", map_two.get("type"));
-                homologies.getJSONObject(temp_homology_id).put("tree", map_two.get("is_tree_compliant"));
+                homologies.getJSONObject(temp_homology_id).put("tree", Arrays.binarySearch(int_genome_ids, genome_db_id));
+
                 homologies.getJSONObject(temp_homology_id).put("target", homology_member);
             } else {
                 homologies.getJSONObject(temp_homology_id).put("source", homology_member);

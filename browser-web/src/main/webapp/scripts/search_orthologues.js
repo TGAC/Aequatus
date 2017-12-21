@@ -188,10 +188,11 @@ function drawOrthology(json) {
 
     var json_key = Object.keys(ortho);
     for (var i = 0; i < json_key.length; i++) {
-        var tree = ortho[json_key[i]].tree ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em;' aria-hidden='true'></i>" : "";
+        var tree = ortho[json_key[i]].tree >= 0 ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em; cursor: pointer' aria-hidden='true' onclick='openTree(\"" + ortho[json_key[i]].source.protein_id + "\")'></i>" : "";
+        var pairwise = ortho[json_key[i]].tree >= 0 ? "<td class='details-control pairwise-align details_hidden'></td>" : "<td></td>";
         orthology_table_content += "<tr> " +
             "<td class='details-control detail-info details_hidden'></td>" +
-            "<td class='details-control pairwise-align details_hidden'></td>" +
+            pairwise +
             "<td>" + json_key[i] + "</td>" +
             "<td>" + ortho[json_key[i]].target.id + "</td>" +
             "<td>" + ortho[json_key[i]].target.protein_id + "</td>" +
@@ -201,7 +202,7 @@ function drawOrthology(json) {
             "<td align='center'>" + ortho[json_key[i]].target.perc_cov + "</td>" +
             "<td align='center'>" + ortho[json_key[i]].target.perc_pos + "</td>" +
             "<td align='center'>" + ortho[json_key[i]].target.perc_id + "</td>" +
-            "<td align='center' onclick='openTree(\"" + ortho[json_key[i]].source.protein_id + "\")'>" + tree + "</td>" +
+            "<td align='center'>" + tree + "</td>" +
             "<td>" + ortho[json_key[i]].source.id + "</td>" +
             "<td>" + ortho[json_key[i]].source.protein_id + "</td>" +
             "<td>" + ortho[json_key[i]].source.species + "</td>" +
