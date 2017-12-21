@@ -220,7 +220,7 @@ function getMemberfromURL(query, view) {
                     select_chr();
                     select_genome();
                     listResult(json)
-
+                    setSearchList(json.html[0].stable_id)
                     if (view == "tree") {
                         setTreeExport();
                         getcoreMember(json.member_id, true);
