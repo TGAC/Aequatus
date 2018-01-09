@@ -36,7 +36,7 @@ public class BrowserAppListener implements ServletContextListener {
     //resolve property file configuration placeholders
     //MisoPropertyExporter exporter = (MisoPropertyExporter) context.getBean("propertyConfigurer");
     //Map<String, String> misoProperties = exporter.getResolvedProperties();
-      EnsemblCoreStore ss = (EnsemblCoreStore) context.getBean("sequenceStore");
+      EnsemblCoreStore ss = (EnsemblCoreStore) context.getBean("ensemblCoreStore");
 
     try {
 //      JSONArray reference_list = ss.getSeqRegionIdSearch("");

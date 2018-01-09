@@ -114,6 +114,7 @@ function removeDomainPopup(){
 var sequence_list = {}
 var cigar_json = {}
 var align_list = {}
+var homology_type = {}
 
 function separateSeq(json){
 
@@ -121,11 +122,15 @@ function separateSeq(json){
     cigar_json = {}
     align_list = {}
 
-    console.log("separateSeq")
 
     for (var id in json){
-        sequence_list[json[id].protein_id] = json[id].sequence;
-        cigar_json[json[id].protein_id] = json[id].alignment;
+        if(json[id].protein_id){
+            sequence_list[json[id].protein_id] = json[id].sequence;
+            cigar_json[json[id].protein_id] = json[id].alignment;
+
+        }else if(id =="homology"){
+            homology_type =  json[id]
+        }
 
     }
 
@@ -135,8 +140,6 @@ function separateSeq(json){
 }
 
 function printAlignment(){
-    console.log("printAlignment")
-
     var first = ""
     for (var id in align_list){
         first = id;
@@ -154,6 +157,9 @@ function printAlignment(){
     }
 
     jQuery("#pairwise_alignment").html(formatted_seq)
+
+    jQuery("#pairwiseModal_type").html("<h2>"+homology_type+"</h2>")
+
 
 
 }
@@ -191,5 +197,6 @@ function joinAlignment(){
 
         }
         align_list[id] = seq
+
     }
 }

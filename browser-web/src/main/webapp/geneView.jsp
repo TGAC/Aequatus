@@ -119,78 +119,11 @@
                 </div>
                 <div id="export_div"
                      style="display: block; height: 296px; background: none repeat scroll 0% 0% rebeccapurple; padding: 10px; color: white">
+                        <h4> Export </h4>
+                    <div id="export_params"
+                         style="color: white">
 
-                    <table>
-                        <thead>
-                        <th colspan="3">
-                            <h4> Export </h4>
-                        </th>
-                        </thead>
-                        <tr class="border_bottom">
-                            <td colspan="3">
-                                Tree
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Newick <br>
-                                <a class="btn btn-small" href="#" onclick="exportGeneTree('newick')"> <i
-                                        style="color: white " class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                            <td>
-                                JSON Format <br>
-                                <a class="btn btn-small" href="#" onclick="exportGeneTree('json')"> <i
-                                        style="color: white" class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr class="border_bottom">
-                            <td colspan="3">
-                                Genes:
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Gene IDs<br>
-                                <a class="btn btn-small" href="#" onclick="exportGeneLabel('.stable')"> <i
-                                        style="color: white" class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                            <td>
-                                Gene Name<br>
-                                <a class="btn btn-small" href="#" onclick="exportGeneLabel('.geneinfo')"> <i
-                                        style="color: white" class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                            <td>
-                                Protein IDs<br>
-                                <a class="btn btn-small" href="#" onclick="exportGeneLabel('.protein_id')"> <i
-                                        style="color: white" class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr class="border_bottom">
-                            <td colspan="3">
-                                Alignment
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                CIGAR format<br>
-                                <a class="btn btn-small" href="#" onclick="exportAlignment()"> <i style="color: white "
-                                                                                                  class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                            <td>
-                                Sequence<br>
-                                <a class="btn btn-small" href="#" onclick="exportSequence()"> <i style="color: white"
-                                                                                                 class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                        </tr>
-                    </table>
-                    <br>
+                    </div>
                 </div>
             </td>
             <td width="50px">
@@ -302,10 +235,17 @@
 
     </div>
 
-    <div id="gene_tree_nj" style=" overflow: visible;   position: relative; top: 50px; width: 100%;">
+    <div id="gene_tree_nj" style=" overflow: visible;   position: relative; top: 50px; width: 100%;" class="mainview">
 
     </div>
-    <div style="height: auto; margin-left: auto; margin-right: auto; z-index: 1999; position: fixed;">
+
+    <div id="orthologies" style="width: 80%; left: 10%; position: relative; top: 50px;"  class="mainview">
+    </div>
+
+    <div id="sankey" style="width: 80%; left: 10%; position: relative; top: 50px;"  class="mainview">
+    </div>
+
+    <div style="height: auto; margin-left: auto; margin-right: auto; z-index: 1999; position: fixed;" >
 
 
     </div>
@@ -503,6 +443,9 @@
         </div>
 
         <div style="overflow: hidden; left: 0px; position: relative; top: 10px; padding: 10px">
+            <div id="pairwiseModal_type" style=" word-wrap: break-word;"></div>
+        </div>
+        <div style="overflow: hidden; left: 0px; position: relative; top: 10px; padding: 10px">
             <div id="pairwiseModal_content" style=" word-wrap: break-word;"></div>
         </div>
 
@@ -594,7 +537,8 @@
                                 </div>
 
                             </div>
-                            <div id="domainStructure" style=" word-wrap: break-word; overflow-y: scroll;height: 200px;"></div>
+                            <div id="domainStructure"
+                                 style=" word-wrap: break-word; overflow-y: scroll;height: 200px;"></div>
 
                         </td>
                     </tr>

@@ -5,8 +5,7 @@
 function setOff() {
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
 
-    setGenomes()
-
+    setGenomes(getUrlVariables);
     var name = arguments.callee.toString();
     var testTextBox = jQuery('#search');
     var code = null;
@@ -91,6 +90,44 @@ function setOff() {
 
 }
 
+
+function setOrthologuesEvents() {
+    ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
+    setGenomes()
+    var name = arguments.callee.toString();
+    var testTextBox = jQuery('#search');
+    var code = null;
+    testTextBox.keypress(function (e) {
+        code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
+            if (parseInt(jQuery("#control_panel").css("left")) < 0) {
+                openPanel('#search_div')
+            }
+            jQuery("#search_history").html(jQuery("#control_search").val());
+            jQuery("#control_search").val(jQuery('#search').val());
+            search_orthologues(jQuery('#search').val());
+        }
+    });
+
+    var testTextBox = jQuery('#control_search');
+    var code = null;
+    testTextBox.keypress(function (e) {
+        code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
+            jQuery("#search_history").html(jQuery("#search").val());
+            jQuery("#search").val(jQuery('#control_search').val());
+            search_orthologues(jQuery('#control_search').val());
+        }
+    });
+
+    jQuery("#control_panel").draggable(
+        {
+            axis: "y",
+            containment: "parent",
+            handle: "#control_panel_handle"
+        });
+}
+
 function getUrlVariables(chr) {
 
     jQuery.urlParam = function (name) {
@@ -125,15 +162,15 @@ function processURL(urlParam) {
     else if (jQuery.urlParam("ref") != null) {
         getGenomeId(urlParam("ref"))
     }
-    else if (jQuery.urlParam("query") != null){//} && jQuery.urlParam("ref") != null && jQuery.urlParam("chr") != null) {
-        getMemberfromURL(urlParam("query"));
+    else if (jQuery.urlParam("query") != null) {//} && jQuery.urlParam("ref") != null && jQuery.urlParam("chr") != null) {
+        getMemberfromURL(urlParam("query"), urlParam("view"));
     }
     else {
         getReferences();
     }
 }
 
-function getGenomeId(ref){
+function getGenomeId(ref) {
     Fluxion.doAjax(
         'comparaService',
         'getGenomeId',
@@ -147,7 +184,7 @@ function getGenomeId(ref){
         });
 }
 
-function getChrId(chr, ref){
+function getChrId(chr, ref) {
     Fluxion.doAjax(
         'comparaService',
         'getChrId',
@@ -166,14 +203,14 @@ function getChrId(chr, ref){
 }
 
 
-function getMemberfromURL(query){
+function getMemberfromURL(query, view) {
     Fluxion.doAjax(
         'comparaService',
         'getMemberfromURL',
-        {'query': query, 'url': ajaxurl},
+        {'query': query, 'view': view, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                if(json.member_id){
+                if (json.member_id) {
                     member_id = json.member_id;
                     chr = json.dnafrag;
                     genome_db_id = json.ref;
@@ -182,8 +219,29 @@ function getMemberfromURL(query){
                     getMember(json.member_id);
                     select_chr();
                     select_genome();
-                    getcoreMember(json.member_id, true);
-                }else{
+                    listResult(json)
+                    setSearchList(json.html[0].stable_id)
+                    if (view == "tree") {
+                        setTreeExport();
+                        getcoreMember(json.member_id, true);
+                    }else if (view == "table") {
+                        setTableExport();
+                        getOrthologyForMember(json.member_id, "table");
+                    }else if (view == "sankey") {
+                        setTableExport();
+                        getOrthologyForMember(json.member_id, "sankey");
+                    }else{
+                        if (parseInt(jQuery("#control_panel").css("left")) < 0) {
+                            openPanel('#search_div')
+                        }
+
+                        jQuery('#search').val(query);
+                        jQuery('#control_search').val(query)
+                        getReferences();
+
+                        search_member(query)
+                    }
+                } else {
                     getReferences()
 
                     if (parseInt(jQuery("#control_panel").css("left")) < 0) {
@@ -203,7 +261,7 @@ function getMemberfromURL(query){
         });
 }
 
-function search_from_box(){
+function search_from_box() {
     if (parseInt(jQuery("#control_panel").css("left")) < 0) {
         openPanel('#search_div')
     }
@@ -233,10 +291,10 @@ function resize() {
     }
 }
 
-function listResult(json){
+function listResult(json) {
     var content = "";
 
-    if(json.html.length > 0){
+    if (json.html.length > 0) {
         for (var i = 0; i < json.html.length; i++) {
             if (i == 0) {
                 content += "<p id='search_hit' style='background: white;'>";
@@ -247,49 +305,89 @@ function listResult(json){
 
             var description = json.html[i].description
 
-            if(description == null){
+            if (description == null) {
                 description = ""
             }
-            content += "<div class='search_div' " +
-                "onclick='openClosePanel(); " +
+            content += "<div class='search_div' id='searchlist_"+json.html[i].stable_id+"'> " +
+                "<div class='search_header'>" +
+                "<table width='100%'>" +
+                "<tr>" +
+                "<td>" + json.html[i].stable_id + " <span class='badge' title='" + json.html[i].homologous + " Homologous'>" + json.html[i].homologous + "</span> " +
+                "</td>" +
+
+                "<td> <i style='color:grey' class='fa fa-1x fa-sitemap fa-rotate-270' title='View GeneTree' onclick='openClosePanel(); " +
                 "jQuery(\"#canvas\").show(); " +
+                "setSearchList(\""+json.html[i].stable_id+"\"); " +
                 "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
                 "getChromosomes(); " +
                 "getMember();   " +
-                "getcoreMember(" + json.html[i].gene_member_id + ",\"true\");'> " +
-                "<div class='search_header'> "+ json.html[i].stable_id + " " +
-                "<span class='badge' title='"+json.html[i].homologous+" Homologous'>"+json.html[i].homologous+"</span> " +
-                "</div> " +
-                "<div class='search_info'> " + json.html[i].genome + " : " + json.html[i].coord_system_name + " "+ json.html[i].name +
+                "setTreeExport();   " +
+                "getcoreMember(" + json.html[i].gene_member_id + ",\"true\");'> </i>" +
+                "</td>" +
+
+                "<td> <i style='color:grey' class='fa fa-1x fa-table' title='List Orthology in Table'  onclick='openClosePanel(); " +
+                "setSearchList(\""+json.html[i].stable_id+"\"); " +
+                "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
+                "getChromosomes(); " +
+                "getMember();   " +
+                "getOrthologyForMember(" + json.html[i].gene_member_id + ",\"table\");'> </i>" +
+                "</td>" +
+
+                "<td> <i style='color:grey' class='fa fa-1x fa-random' title='View Sankey Plot'  onclick='openClosePanel(); " +
+                "setSearchList(\""+json.html[i].stable_id+"\"); " +
+                "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
+                "getChromosomes(); " +
+                "getMember();   " +
+                "getOrthologyForMember(" + json.html[i].gene_member_id + ",\"sankey\");'> </i>" +
+                "</td>" +
+
+                "</tr>" +
+                "</table>" +
+                "</div>" +
+                "<div class='search_info'> " + json.html[i].genome + " : " + json.html[i].coord_system_name + " " + json.html[i].name +
                 " <br> " +
-                description   + "</div>" +
+                description + "</div>" +
                 "</div>";
 
             if (i == json.html.length - 1) {
                 content += "</p>";
                 jQuery("#search_result").html(content);
                 jQuery("#search_result").fadeIn();
-                jQuery("#search_hit").tablesorter();
             }
 
         }
     }
-    else{
+    else {
         jQuery("#search_result").html("<div style='width: 100%; text-align: center; padding-top: 15px; font-size: 15px;'>No Result found</div>");
 
     }
 }
 
-function hideGeneReference(){
+function setSearchList(stable_id){
+    jQuery(".search_div").removeClass("active");
+    jQuery("#searchlist_"+stable_id).addClass("active");
+    var clone =  jQuery("#searchlist_"+stable_id).clone();
+    jQuery("#searchlist_"+stable_id).remove();
+    jQuery("#search_result").prepend(clone);
+}
+
+function hideGeneReference() {
     jQuery("#chr_maps").hide()
     jQuery("#bar_image_selector").hide()
     jQuery("#selected_region").hide()
     jQuery("#bar_image_ref").hide()
 }
 
-function showGeneReference(){
+function showGeneReference() {
     jQuery("#chr_maps").show()
     jQuery("#bar_image_selector").show()
     jQuery("#selected_region").show()
     jQuery("#bar_image_ref").show()
+}
+
+function resetView()
+{
+    jQuery(".mainview").each(function(i, div) {
+        jQuery(div).html("");
+    });
 }

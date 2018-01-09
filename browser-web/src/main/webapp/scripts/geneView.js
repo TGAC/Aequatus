@@ -179,7 +179,7 @@ function getMember(member) {
                     if (member == undefined) {
                         drawSelected();
                     } else {
-                        setSelector()
+                        setSelector(syntenic_data.member[syntenic_data.ref].Transcript[0], syntenic_data.member[syntenic_data.ref].member_id)
                     }
 
                 }
@@ -201,7 +201,7 @@ function getMember(member) {
                     if (member == undefined) {
                         drawSelected();
                     } else {
-                        setSelector()
+                        setSelector(syntenic_data.member[syntenic_data.ref].Transcript[0], syntenic_data.member[syntenic_data.ref].member_id)
                     }
                 }
             });
@@ -309,13 +309,15 @@ function getcoreMember(query, redrawn) {
         {'query': query, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
+                jQuery("#orthologies").html("")
+                jQuery("#sankey").html("")
                 syntenic_data = json
                 //window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);
                 init(json, "#settings_div", "#filter", "#sliderfilter")
 
-                setSelector()
+                setSelector(syntenic_data.member[syntenic_data.ref].Transcript[0], syntenic_data.member[syntenic_data.ref].member_id)
 
-                URLMemberID(json.ref)
+                URLMemberID(json.ref, "tree")
                 drawSynteny(redrawn);
 
             }
@@ -333,7 +335,7 @@ function countcoreMember(query) {
         {'query': query, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                jQuery("#besideMouse").html(json.member+" homologous found.")
+                jQuery("#besideMouse").html(json.member + " homologous found.")
             }
         });
 }
@@ -519,10 +521,10 @@ function select_genome() {
 }
 
 
-function setSelector() {
+function setSelector(gene, member_id) {
     var maxLentemp = parseInt(jQuery("#canvas").css("width"));
 
-    var start = syntenic_data.member[syntenic_data.ref].Transcript[0].start
+    var start = gene.start
 
     var left = start * maxLentemp / sequencelength;
 
@@ -534,8 +536,7 @@ function setSelector() {
         drawSelected();
         jQuery(".refMarkerShow").removeClass("selected")
 
-        jQuery("[seq_id=" + syntenic_data.member[syntenic_data.ref].member_id + "]").addClass("selected")
-        jQuery("#chr" + syntenic_data.member[syntenic_data.ref].reference).addClass("selected")
+        jQuery("[seq_id=" + member_id + "]").addClass("selected")
     });
 }
 
@@ -544,7 +545,7 @@ function makeMeTop(new_gene_id, new_protein_id) {
 
     if (new_gene_id != member_id || new_protein_id != protein_member_id) {
 
-        URLMemberID(new_gene_id)
+        URLMemberID(new_gene_id, "tree")
 
         changeReference(new_gene_id, new_protein_id)
 
@@ -571,7 +572,6 @@ function makeMeTop(new_gene_id, new_protein_id) {
 }
 
 function exportGeneLabel(type) {
-    console.log("export gene label "+ type)
     var download_data = ""
 
     jQuery("#gridSystemModalLabel").html("Gene Labels")
@@ -586,7 +586,6 @@ function exportGeneLabel(type) {
     });
     text_html += "</tbody></table>"
     // text_html += "<button class='btn btn-default' onclick=dlText('" + download_data + "','Genes.csv')>Download</button>"
-    console.log(text_html)
 
     jQuery("#exportModal_content").append(text_html)
     jQuery("#downloadButton").html("<button class='btn btn-default' onclick=dlText('" + download_data + "','Genes.csv')>Download</button>")
@@ -680,7 +679,6 @@ function recursive_tree_Newick(tree, newick) {
  *
  */
 function exportAlignment(id) {
-    console.log("export alignment "+id)
     var download_data = ""
     var text_html = "";
     jQuery("#exportModal_content").html("")
@@ -700,7 +698,7 @@ function exportAlignment(id) {
 
     jQuery.each(data, function (key, data) {
         if (Protein_id.indexOf(key) >= 0) {
-            text_html +=  ">"+key + "<br>" + data + "<br>"
+            text_html += ">" + key + "<br>" + data + "<br>"
             download_data += ">" + key + "\n" + data + "\n"
         }
     })
@@ -710,11 +708,12 @@ function exportAlignment(id) {
     //    jQuery('#exportModal').modal('hide')
     //}
 
-    console.log(text_html)
     var download_btn = jQuery('<button/>')
         .text('Download')
         .addClass('btn btn-default')
-        .click(function () { dlText(download_data,'Alignment.fa') });
+        .click(function () {
+            dlText(download_data, 'Alignment.fa')
+        });
 
     jQuery("#exportModal_content").append(text_html)
 
@@ -724,7 +723,6 @@ function exportAlignment(id) {
         jQuery('#exportModal').modal()
     }
 
-    console.log(download_data)
     //dlText(download_data, 'CIGAR.csv')
 
 }
@@ -758,8 +756,8 @@ function exportSequence(id) {
 
     jQuery.each(data, function (key, data) {
         if (Protein_id.indexOf(key) >= 0) {
-            text_html +=  ">"+key + "<br>" + data + "<br>"
-            download_data += ">"+key + "\n" + data + "\n"
+            text_html += ">" + key + "<br>" + data + "<br>"
+            download_data += ">" + key + "\n" + data + "\n"
         }
     })
 
@@ -768,7 +766,9 @@ function exportSequence(id) {
     var download_btn = jQuery('<button/>')
         .text('Download')
         .addClass('btn btn-default')
-        .click(function () { dlText(download_data,'Sequence.fa') });
+        .click(function () {
+            dlText(download_data, 'Sequence.fa')
+        });
 
     jQuery("#exportModal_content").append(text_html)
 
@@ -815,12 +815,11 @@ function getAlignment(hit, ref) {
 
                 jQuery("#pairwiseModal_content").width(jQuery(window).width() * 0.8);
 
-                jQuery("#pairwiseModal_content").html("<div id = 'pairwise" + ref + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : "+jQuery(window).width() * 0.8+"'></div>" +
+                jQuery("#pairwiseModal_content").html("<div id = 'pairwise" + ref + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : " + jQuery(window).width() * 0.8 + "'></div>" +
                     "<br>" +
-                    "<div id = 'pairwise" + hit + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : "+jQuery(window).width() * 0.8+";'></div>")
+                    "<div id = 'pairwise" + hit + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : " + jQuery(window).width() * 0.8 + ";'></div>")
                 jQuery("#pairwise" + hit).svg()
                 jQuery("#pairwise" + ref).svg()
-
 
 
                 svg = jQuery("#pairwise" + ref).svg("get")
@@ -860,4 +859,87 @@ function getAlignment(hit, ref) {
             }
         });
 
+}
+
+function setTreeExport() {
+    jQuery("#export_params").html("")
+
+    var table = jQuery("<table cellpadding='2px'></table>");
+
+    var row_spacing = jQuery("<tr class='border_bottom'></tr>");
+    var column_spanning = jQuery("<td colspan=3></td>");
+    column_spanning.html("Tree")
+    row_spacing.append(column_spanning)
+
+    table.append(row_spacing)
+
+
+    var row1 = jQuery("<tr></tr>");
+    var column1 = jQuery("<td></td>");
+
+
+    column1.html("Newick <br> <a class='btn btn-small' href='#' onclick='exportGeneTree(\"newick\")'>  <i class='fa fa-download' style='color: white'></i> </a>")
+    row1.append(column1)
+
+    var column2 = jQuery("<td></td>");
+    column2.html("JSON Format <br> <a class='btn btn-small' href='#' onclick='exportGeneTree(\"json\")'>  <i class='fa fa-download' style='color: white'></i> </a>")
+    row1.append(column2)
+    table.append(row1)
+
+    var row2 = jQuery("<tr class='border_bottom'></tr>");
+    var column1 = jQuery("<td colspan=3></td>");
+
+
+    column1.html("Genes:")
+    row2.append(column1)
+
+    table.append(row2)
+
+    var row3 = jQuery("<tr></tr>");
+    var column1 = jQuery("<td></td>");
+    column1.html("Gene IDs <br> <a class='btn btn-small' href='#' onclick='exportGeneLabel(\".stable\")'>  <i class='fa fa-download' style='color: white'></i> </a>")
+    row3.append(column1)
+
+    var column2 = jQuery("<td></td>");
+
+    column2.html("Gene Names <br> <a class='btn btn-small' href='#' onclick='exportGeneLabel(\".geneinfo\")'>  <i class='fa fa-download' style='color: white'></i> </a>")
+    row3.append(column2)
+
+    var column3 = jQuery("<td></td>");
+
+    column3.html("Protein IDs <br> <a class='btn btn-small' href='#' onclick='exportGeneLabel(\".protein_id\")'>  <i class='fa fa-download' style='color: white'></i> </a>")
+    row3.append(column3)
+
+
+    table.append(row3)
+
+
+    var row_spacing = jQuery("<tr class='border_bottom'></tr>");
+    var column_spanning = jQuery("<td colspan=3></td>");
+    column_spanning.html("Alignment")
+    row_spacing.append(column_spanning)
+
+    table.append(row_spacing)
+
+
+    var row4 = jQuery("<tr></tr>");
+    var column1 = jQuery("<td></td>");
+
+    column1.html("CIGAR format <br> <a class='btn btn-small' href='#' onclick='exportAlignment()'>  <i class='fa fa-download' style='color: white'></i> </a>")
+    row4.append(column1)
+
+    var column2 = jQuery("<td></td>");
+
+    column2.html("Sequence <br> <a class='btn btn-small' href='#' onclick='exportSequence()'>  <i class='fa fa-download' style='color: white'></i> </a>")
+    row4.append(column2)
+
+    table.append(row4)
+
+
+    jQuery("#export_params").html(table)
+
+}
+
+function setTableExport() {
+    jQuery("#export_params").html("")
 }

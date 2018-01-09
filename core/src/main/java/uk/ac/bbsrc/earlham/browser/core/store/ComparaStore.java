@@ -74,22 +74,24 @@ public interface ComparaStore extends Store<String> {
     int getGeneMemberId(String query) throws Exception;
     int getSeqMemberId(String query) throws Exception;
     String getReferencefromStableId(String query) throws IOException;
-    int getDnafragIdfromStableId(String query) throws IOException;
-    String getDnafragnamefromId(int query) throws IOException;
+    String getDnafragIdfromStableId(String query) throws IOException;
+    String getDnafragnamefromId(String query) throws IOException;
     String getRefStableID(String query) throws Exception;
+    Map<String, Object> getGeneMemberInfofromID(String query) throws Exception;
     String getRefPtnStableID(String query) throws Exception;
+    JSONObject findHomology(String query) throws Exception;
+    JSONObject getRefMember(String query) throws IOException;
 
     int getGeneMemberIDfromStableID(String query) throws Exception;
     int getSeqMemberIDfromGeneMemberID(int gene_member_id) throws Exception;
     int getSeqMemberIDfromStableID(String query) throws Exception;
-//<<<<<<< Updated upstream
-//=======
     String getGenomefromSeqMemberID(int stable_id) throws Exception;
     String getGenomefromGeneMemberID(int gene_member_id) throws Exception;
-//>>>>>>> Stashed changes
     int getGeneMemberIDfromSeqMemberID(int seq_member_id) throws Exception;
     String getSeqStableIDfromSeqMemberID(int seq_member_id) throws Exception;
     JSONObject getPairwiseAlignment(int ref, int query) throws Exception;
+    JSONObject getHomologyID(int ref, int query) throws Exception;
+    String getHomologyType(long homology_id) throws Exception;
     String getSeq(int seq_member_id)  throws Exception;
     String getGeneStableIDfromGeneMemberID(int gene_member_id) throws Exception;
     }
