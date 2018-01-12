@@ -41,10 +41,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import uk.ac.bbsrc.earlham.browser.core.store.ComparaStore;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -975,9 +972,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         }
     }
 
-    public String getReferencefromStableId(String query) throws IOException {
+    public int getReferencefromStableId(String query) throws IOException {
 
-        String ref_id = template.queryForObject(GET_Referece_ID_FROM_STABLE_ID, new Object[]{query}, String.class);
+        int ref_id = template.queryForInt(GET_Referece_ID_FROM_STABLE_ID, new Object[]{query});
         return ref_id;
 
     }
@@ -989,7 +986,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     }
 
-    public String getDnafragnamefromId(String query) throws IOException {
+    public String getDnafragnamefromId(int query) throws IOException {
 
         String dnafrag_id = template.queryForObject(GET_dnafrag_Name_FROM_ID, new Object[]{query}, String.class);
         return dnafrag_id;
