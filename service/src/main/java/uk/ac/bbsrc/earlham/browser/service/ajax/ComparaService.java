@@ -536,7 +536,7 @@ public class ComparaService {
 
                 }
                 log.info("\n\n\t after    else iff "+query);
-                String ref = comparaStore.getReferencefromStableId(query);
+                int ref = comparaStore.getReferencefromStableId(query);
                 int dnafrag = comparaStore.getDnafragIdfromStableId(query);
                 response.put("member_id", gene_member_id);
                 response.put("ref", ref);
