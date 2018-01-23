@@ -237,8 +237,6 @@ function getMemberfromURL(query, view) {
 
                         jQuery('#search').val(query);
                         jQuery('#control_search').val(query)
-                        getReferences();
-
                         search_member(query)
                     }
                 } else {
