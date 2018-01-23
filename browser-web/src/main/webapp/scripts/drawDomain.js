@@ -10,13 +10,15 @@
 var domainsvg;
 
 
-function drawDomain(gene_id, protein_member_id, domains) {
+function drawDomain(id, domains) {
+
     var margin = {top: 0, right: 0, bottom: 0, left: 0},
         width = jQuery(window).width() * 0.8,
         height = 500 - margin.top - margin.bottom;
 
     var maxLentemp = jQuery("#domainStructure").width();
     var stopposition = maxLentemp;
+
 
     domainsvg = d3.select("#domainStructure").append("svg")
         .attr("width", width)
@@ -41,38 +43,7 @@ function drawDomain(gene_id, protein_member_id, domains) {
         .attr("id", "domainline");
 
 
-    var i = 0;
-    jQuery.map(syntenic_data.member[gene_id].Transcript, function (obj) {
-        if (obj.Translation && (obj.Translation.id == protein_member_id)) {
-            i = syntenic_data.member[syntenic_data.ref].Transcript.indexOf(obj)
-        }
-    });
-
-    var exon_length = [0];
-    jQuery.each( syntenic_data.member[gene_id].Transcript[i].Exon, function( key, value ) {
-        console.log(syntenic_data.member[gene_id].Transcript[i].Exon[key].length)
-
-        exon_length.push(exon_length[key] + syntenic_data.member[gene_id].Transcript[i].Exon[key].length)
-    });
-
-    var linearScale = d3.scale.linear()
-        .domain([0, exon_length[exon_length.length-1]])
-        .range([0, maxLentemp]);
-
-    var node = domainsvg.selectAll("rect")
-        .data(exon_length);
-
-    node.enter().append("rect")
-        .attr("x", function (d, i) {
-            return linearScale(d);
-        })
-        .attr("width", 1)
-        .attr("height", 200)
-        .attr("y", 10)
-        .attr("title", "Exon Boundry")
-        .attr("fill", "#ff9999");
-
-    dispEachDomain(domains, syntenic_data.sequence[protein_member_id].length);
+    dispEachDomain(domains, syntenic_data.sequence[id].length);
 }
 
 
@@ -83,7 +54,6 @@ function drawDomain(gene_id, protein_member_id, domains) {
  */
 function dispEachDomain(domains, max_len) {
 
-    console.log("dispEachDomain")
     var width = jQuery("#domainStructure").width()
 
     var delta = (max_len * 5) / width
