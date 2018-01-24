@@ -46,16 +46,21 @@ function drawDomain(gene_id, protein_member_id, domains) {
     var i = 0;
     jQuery.map(syntenic_data.member[gene_id].Transcript, function (obj) {
         if (obj.Translation && (obj.Translation.id == protein_member_id)) {
-            i = syntenic_data.member[syntenic_data.ref].Transcript.indexOf(obj)
+            i = syntenic_data.member[gene_id].Transcript.indexOf(obj)
         }
     });
 
-    var exon_length = [0];
-    jQuery.each(syntenic_data.member[gene_id].Transcript[i].Exon, function (key, value) {
-        console.log(syntenic_data.member[gene_id].Transcript[i].Exon[key].length)
+    var exons = syntenic_data.member[gene_id].Transcript[i].Exon
 
-        exon_length.push(exon_length[key] + syntenic_data.member[gene_id].Transcript[i].Exon[key].length)
-    });
+    if(syntenic_data.member[gene_id].Transcript[i].strand == "-1"){
+        exons = exons.reverse()
+    }
+
+    var exon_length = [0];
+    for(var exon=0; exon < syntenic_data.member[gene_id].Transcript[i].Exon.length; exon++){
+        exon_length.push(exon_length[exon] + syntenic_data.member[gene_id].Transcript[i].Exon[exon].length)
+    }
+
 
     var linearScale = d3.scale.linear()
         .domain([0, exon_length[exon_length.length - 1]])
@@ -71,7 +76,7 @@ function drawDomain(gene_id, protein_member_id, domains) {
         .attr("width", 1)
         .attr("height", 200)
         .attr("y", 10)
-        .attr("title", "Exon Boundry")
+        .attr("title", "Exon Boundry ")
         .attr("fill", "#ff9999");
 
     dispEachDomain(domains, syntenic_data.sequence[protein_member_id].length);
