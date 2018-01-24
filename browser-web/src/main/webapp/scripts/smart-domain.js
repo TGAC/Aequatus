@@ -98,7 +98,7 @@ function showDomainResult(json, gene_id, protein_id) {
     })
 
 
-    drawDomain(protein_id, domains_to_draw)
+    drawDomain(gene_id, protein_id, domains_to_draw)
 }
 
 /**
