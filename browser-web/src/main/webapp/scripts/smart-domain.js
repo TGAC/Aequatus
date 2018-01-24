@@ -190,6 +190,10 @@ function domainTable(domains, protein_id) {
     });
 
     var yrtable = jQuery('#visibleDomainListTable').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'csvHtml5'
+            ],
             "columnDefs": [
                 {
                     "targets": [0],

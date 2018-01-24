@@ -589,6 +589,11 @@ div.tooltip {
 }
 /* Data Table in Orthology*/
 
+div.dt-buttons {
+    float: left;
+    position: relative;
+}
+
 td.details_hidden {
     background-attachment: scroll;
     background-clip: border-box;
@@ -620,7 +625,7 @@ button.dt-button, div.dt-button, a.dt-button {
     -moz-border-top-colors: none;
     -moz-user-select: none;
     box-sizing: border-box;
-    color: white;
+    color: black;
     cursor: pointer;
     display: inline-block;
     font-size: 0.88em;
@@ -642,7 +647,7 @@ button.dt-button, div.dt-button, a.dt-button {
     white-space: nowrap;
     /*background-color: #e9e9e9;*/
     /*background-image: linear-gradient(to bottom, #fff 0%, #e9e9e9 100%);*/
-    border-bottom-color: transparent;
+    border-bottom-color: gray;
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
     border-bottom-style: solid;
@@ -652,13 +657,13 @@ button.dt-button, div.dt-button, a.dt-button {
     border-image-slice: 100% 100% 100% 100%;
     border-image-source: none;
     border-image-width: 1 1 1 1;
-    border-left-color: transparent;
+    border-left-color: gray;
     border-left-style: solid;
     border-left-width: 1px;
-    border-right-color: transparent;
+    border-right-color: gray;
     border-right-style: solid;
     border-right-width: 1px;
-    border-top-color: transparent;
+    border-top-color: gray;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
     border-top-style: solid;
