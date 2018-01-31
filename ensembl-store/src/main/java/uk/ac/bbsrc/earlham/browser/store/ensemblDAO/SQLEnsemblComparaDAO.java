@@ -1165,10 +1165,14 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public JSONArray searchMember(String query) throws IOException {
 
+        String[] queries = query.split("\\s");
+        query = StringUtils.join(queries, "|");
+
+
         final String SEARCH_MEMBER = "SELECT m1.*, df.*, g.name " +
                 "FROM gene_member m1, dnafrag df, genome_db g " +
                 "where m1.genome_db_id in " + genome_ids + " and " +
-                "(m1.display_label like ? OR m1.stable_id like ? or m1.description like ?) and  " +
+                "(m1.display_label REGEXP ? OR m1.stable_id REGEXP ? or m1.description REGEXP ?) and  " +
                 "g.genome_db_id = m1.genome_db_id and " +
                 "df.dnafrag_id = m1.dnafrag_id limit 100";
 
@@ -1176,15 +1180,15 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         final String SEARCH_SEQ_MEMBER = "SELECT s1.*, df.*, g.name " +
                 "FROM  seq_member s1, dnafrag df, genome_db g " +
                 "where s1.genome_db_id in " + genome_ids + " and " +
-                "(s1.display_label like ? OR s1.stable_id like ? OR s1.description like ?) and " +
+                "(s1.display_label REGEXP ? OR s1.stable_id REGEXP ? OR s1.description REGEXP ?) and " +
                 "g.genome_db_id = s1.genome_db_id and " +
                 "df.dnafrag_id = s1.dnafrag_id limit 100;";
 
         JSONArray homologouses = new JSONArray();
-        List<Map<String, Object>> homology_member_id = template.queryForList(SEARCH_MEMBER, new Object[]{"%" + query + "%", "%" + query + "%", "%" + query + "%"});
+        List<Map<String, Object>> homology_member_id = template.queryForList(SEARCH_MEMBER, new Object[]{ query, query,query });
 
         if (homology_member_id.size() == 0) {
-            homology_member_id = template.queryForList(SEARCH_SEQ_MEMBER, new Object[]{"%" + query + "%", "%" + query + "%", "%" + query + "%"});
+            homology_member_id = template.queryForList(SEARCH_SEQ_MEMBER, new Object[]{query , query, query});
         }
 
         for (Map map_two : homology_member_id) {
