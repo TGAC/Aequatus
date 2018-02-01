@@ -49,7 +49,7 @@ function drawSankey(sankey_json, div) {
         sankey
             .nodes(graph.nodes)
             .links(graph.links)
-            .layout(32);
+            .layout(64);
 
 // add in the links
         var link = svg.append("g").selectAll(".link")
@@ -136,18 +136,7 @@ function drawSankey(sankey_json, div) {
 
                 }
             })
-            .attr("transform", function (d) {
-                if (d.sourceLinks[0] && d.targetLinks[0]) {
-                    return "rotate(-90) translate(" +
-                        (-d.dy / 2) +
-                        ", " +
-                        ((-d.dy / 2) + 15) +
-                        ")";
-                } else {
-                    return null
-                }
 
-            })
             .text(function (d) {
                 if (d.sourceLinks[0] && d.targetLinks[0]) {
                     return d.name;
@@ -157,9 +146,6 @@ function drawSankey(sankey_json, div) {
                 }
             })
 
-        // .filter(function(d) { return d.x < width / 2; })
-        //   .attr("x", 6 + sankey.nodeWidth())
-        //   .attr("text-anchor", "start");
 
 // the function for moving the nodes
         function dragmove(d) {

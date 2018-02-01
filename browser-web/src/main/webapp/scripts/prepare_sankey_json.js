@@ -7,15 +7,13 @@
  */
 function generate_sankey_JSON(json) {
     var ortho = json.orthology;
-    // ortho = ortho.slice(0,15);
-
     var json_key = Object.keys(ortho);
-    // json_key = json_key.slice(0, 15);
     var orthologs = [];
     var species = [];
     var types = [];
     var nodes = [];
     var links = [];
+    var type_size = {}
 
     nodes.push({
         "node": 0,
@@ -35,8 +33,12 @@ function generate_sankey_JSON(json) {
         }
         if (types.indexOf(ortho[json_key[i]].type) < 0) {
             types.push(ortho[json_key[i]].type);
+            type_size[ortho[json_key[i]].type] = 1;
+        }else{
+            type_size[ortho[json_key[i]].type] = type_size[ortho[json_key[i]].type]+1;
         }
     }
+
     var node = 1
 
     for (var i = 0; i < types.length; i++, node++) {
@@ -54,9 +56,9 @@ function generate_sankey_JSON(json) {
             "type": "orthologs",
             "name": orthologs[i].id,
             "species" : species.indexOf(orthologs[i].species),
-            "speciesName" : orthologs[i].species,
-            "value": 2
+            "speciesName" : orthologs[i].species
         })
+
     }
     // for (var i = 0; i < species.length; i++, node++) {
     //     nodes.push({
@@ -75,26 +77,13 @@ function generate_sankey_JSON(json) {
 
         var target =  nodes.find(item => item.name == types[i]
     )
-        value = 2
-        if(i%2 > 0){
-            console.log("if " +source +" => "+ target.node)
-            links.push({
-                "source": target.node,
-                "target": source,
-                "value": value
-            })
-            first.push(types[i])
-        }else{
-            console.log("else "+target.node +" => "+ source)
 
-            links.push({
-                "source": source,
-                "target": target.node,
-                "value": value
-            })
-        }
+        links.push({
+            "source": source,
+            "target": target.node,
+            "value": type_size[target.name]
+        })
     }
-    console.log(first)
 
     for (var i = 0; i < json_key.length; i++) {
         var source = nodes.find(item => item.name == ortho[json_key[i]].type)
@@ -102,19 +91,16 @@ function generate_sankey_JSON(json) {
     )
 
         if(first.indexOf(ortho[json_key[i]].type)>=0){
-            console.log(ortho[json_key[i]].type)
-            console.log(target.node+" => "+source.node)
-            console.log(ortho[json_key[i]].node)
             links.push({
                 "source": target.node,
                 "target": source.node,
-                "value": 2
+                "value": 1
             })
         }else{
             links.push({
                 "source": source.node,
                 "target": target.node,
-                "value": 2
+                "value": 1
             })
         }
 
