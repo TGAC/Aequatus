@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 function generate_sankey_JSON(json) {
+
     var ortho = json.orthology;
     var json_key = Object.keys(ortho);
     var orthologs = [];
@@ -75,30 +76,30 @@ function generate_sankey_JSON(json) {
 
         var source = 0;
 
-        var target = nodes.find(item => item.name == types[i]
+        var target = nodes.find(item = > item.name == types[i]
     )
 
         value = 2
-        if (i % 2 > 0) {
-            links.push({
-                "source": target.node,
-                "target": source,
-                "value": type_size[target.name]
-            })
-            first.push(types[i])
-        } else {
-            links.push({
-                "source": source,
-                "target": target.node,
-                "value": type_size[target.name]
-            })
-        }
+        //if (i % 2 > 0) {
+        //    links.push({
+        //        "source": target.node,
+        //        "target": source,
+        //        "value": type_size[target.name]
+        //    })
+        //    first.push(types[i])
+        //} else {
+        links.push({
+            "source": source,
+            "target": target.node,
+            "value": type_size[target.name]
+        })
+        //}
     }
 
     for (var i = 0; i < json_key.length; i++) {
-        var source = nodes.find(item => item.name == ortho[json_key[i]].type
+        var source = nodes.find(item = > item.name == ortho[json_key[i]].type
     )
-        var target = nodes.find(item => item.name == ortho[json_key[i]].target.id
+        var target = nodes.find(item = > item.name == ortho[json_key[i]].target.id
     )
 
         if (first.indexOf(ortho[json_key[i]].type) >= 0) {
@@ -133,7 +134,7 @@ function generate_sankey_JSON(json) {
         "links": links
     }
     setSankeyExport();
-    setSankeyFilter();
+    setSankeyFilter(types);
     drawSankey(sankey_json, "#sankey")
 
 }
@@ -142,12 +143,25 @@ function setSankeyExport() {
     jQuery("#export_params").html("")
 }
 
-function setSankeyFilter() {
-    jQuery("#settings_div").html(
-        "<input type='radio' name='type_homology' class='sankey-label first' id='one2one-button'>1-1</input> " +
-        "<input type='radio' name='type_homology' class='sankey-label' id='one2many-button'>1-many</input> " +
-        "<input type='radio' name='type_homology' class='sankey-label' id='paralogs-button'>Paralogs</input>" +
-        "<input type='radio' name='type_homology' class='sankey-label last clicked' selected id='showall-button'>All</input>"
+function setSankeyFilter(types) {
+
+    jQuery("#settings_div").html("Show Homology Type : <p>")
+
+    var radios = "<input type='radio' name='type_homology' class='sankey-label last clicked' checked value='all'> All</input> <p>"
+    for (var i = 0; i < types.length; i++) {
+        radios += "<input type='radio' name='type_homology' class='sankey-label last clicked' value='" + types[i] + "'> " + types[i] + "</input> <p>"
+    }
+
+    jQuery("#settings_div").append(radios)
+
+    jQuery("#settings_div").append("<p>")
+
+    jQuery("#settings_div").append("Colour Homology By : <p>" +
+        "<input type='radio' name='colour_homology' class='sankey-label last clicked' checked id='species-colour-button'> Species</input> <p>" +
+        "<input type='radio' name='colour_homology' class='sankey-label' id='homology-colour-button'> Homology Type</input> <p>" +
+        "<input type='radio' name='colour_homology' class='sankey-label' id='coverage-colour-button'> Coverage</input> <p>" +
+        "<input type='radio' name='colour_homology' class='sankey-label' id='positivity-colour-button'> Positivity</input> <p>" +
+        "<input type='radio' name='colour_homology' class='sankey-label' id='identity-colour-button'> Identity</input>"
     )
 }
 

@@ -81,9 +81,8 @@ function drawSankey(data, div) {
 
             path = sankey.link();
 
-// add in the links
             // add in the links
-            link = svg.append("g").selectAll(".link")
+            var link = svg.append("g").selectAll(".link")
                 .data(myLinks)
                 .enter().append("path")
                 .attr("class", "link")
@@ -180,89 +179,38 @@ function drawSankey(data, div) {
 
         }
 
-        d3.select('#one2one-button').on('click', function () {
-            d3.selectAll(".sankey-label").classed("clicked", false);
-            d3.select(this).classed("clicked", true);
-            graph.nodes = data.nodes
-            currentData.nodes = graph.nodes.filter(function (d) {
-                if (d.type == "ortholog_one2one" || d.name == "ortholog_one2one")// || d.name == "reference")
-                {
-                    return d;
-                }
-            });
+        d3.selectAll("input[name='type_homology']").on("change", function () {
+            var val = this.value
+            if (val == "all") {
+                graph.nodes = data.nodes
+                currentData.nodes = graph.nodes;
 
-            graph.links = data.links
-            currentData.links = graph.links.filter(function (d) {
-                if (d.target.type == "ortholog_one2one")// || d.target.name == "ortholog_one2one")// || d.name == "reference")
-                {
-                    return d;
-                }
+                graph.links = data.links
+                currentData.links = graph.links;
 
-                // }
-            });
+            } else {
+                graph.nodes = data.nodes
+                currentData.nodes = graph.nodes.filter(function (d) {
+                    if (d.type == val || d.name == val || d.name == "reference") {
+                        return d;
+                    }
+                });
 
+                graph.links = data.links
+                currentData.links = graph.links.filter(function (d) {
+                    if (d.target.type == val || d.target.name == val)// || d.name == "reference")
+                    {
+                        return d;
+                    }
+
+                })
+            }
             renderSankey();
+
         });
-        d3.select('#one2many-button').on('click', function () {
-            d3.selectAll(".sankey-label").classed("clicked", false);
-            d3.select(this).classed("clicked", true);
-            graph.nodes = data.nodes
-            currentData.nodes = graph.nodes.filter(function (d) {
-                if (d.type == "ortholog_one2many" || d.name == "ortholog_one2many")// || d.name == "reference")
-                {
-                    return d;
-                }
-            });
-
-            graph.links = data.links
-            currentData.links = graph.links.filter(function (d) {
-                if (d.target.type == "ortholog_one2many" || d.target.name == "ortholog_one2many")// || d.name == "reference")
-                {
-                    return d;
-                }
-
-                // }
-            });
-
-            renderSankey();
-        });
-        d3.select('#paralogs-button').on('click', function () {
-            d3.selectAll(".sankey-label").classed("clicked", false);
-            d3.select(this).classed("clicked", true);
-            graph.nodes = data.nodes
-            currentData.nodes = graph.nodes.filter(function (d) {
-                if (d.type == "within_species_paralog" || d.name == "within_species_paralog")// || d.name == "reference")
-                {
-                    return d;
-                }
-            });
-
-            graph.links = data.links
-            currentData.links = graph.links.filter(function (d) {
-                if (d.target.type == "within_species_paralog")// || d.target.name == "within_species_paralog")// || d.name == "reference")
-                {
-                    return d;
-                }
-
-                // }
-            });
-
-            renderSankey();
-        });
-        d3.select('#showall-button').on('click', function () {
-            d3.selectAll(".sankey-label").classed("clicked", false);
-            d3.select(this).classed("clicked", true);
-            graph.nodes = data.nodes
-            currentData.nodes = graph.nodes;
-
-            graph.links = data.links
-            currentData.links = graph.links;
-
-            renderSankey();
-        })
 
 
-// the function for moving the nodes
+        // the function for moving the nodes
         function dragmove(d) {
             d3.select(this).attr("transform",
                 "translate(" + d.x + "," + (

@@ -92,7 +92,6 @@ function getOrthologyForMember(query, view) {
     if (view == "table") {
         jQuery("#orthologies").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
     } else if (view == "sankey") {
-        setSankeyFilter()
         jQuery("#sankey").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
     }
 
@@ -261,7 +260,7 @@ function drawOrthology(json) {
                     .appendTo(jQuery(column.footer()).empty())
                     .on('change', function () {
                         var val = []
-                        jQuery.each(jQuery(this).val(), function(index, value){
+                        jQuery.each(jQuery(this).val(), function (index, value) {
                             val.push(jQuery.fn.dataTable.util.escapeRegex(value));
 
                         })
@@ -286,35 +285,38 @@ function drawOrthology(json) {
             {
                 extend: 'copyHtml5',
                 exportOptions: {
-                    columns: [ 3,4,5,6,7,8,9,10 ],
-                    rows: [ ':visible' ]
+                    columns: [3, 4, 5, 6, 7, 8, 9, 10],
+                    rows: [':visible']
                 },
-                text: "Copy <br> <i class='fa fa-download' style='color: white'></i>"},
+                text: "Copy <br> <i class='fa fa-download' style='color: white'></i>"
+            },
             {
                 extend: 'excelHtml5',
                 exportOptions: {
-                    columns: [ 3,4,5,6,7,8,9,10 ],
-                    rows: [ ':visible' ]
+                    columns: [3, 4, 5, 6, 7, 8, 9, 10],
+                    rows: [':visible']
                 },
-                text: "Excel <br> <i class='fa fa-download' style='color: white'></i>"},
+                text: "Excel <br> <i class='fa fa-download' style='color: white'></i>"
+            },
             {
                 extend: 'csvHtml5',
                 exportOptions: {
-                    columns: [ 3,4,5,6,7,8,9,10 ],
-                    rows: [ ':visible' ]
+                    columns: [3, 4, 5, 6, 7, 8, 9, 10],
+                    rows: [':visible']
                 },
-                text: "CSV <br> <i class='fa fa-download' style='color: white'></i>"},
+                text: "CSV <br> <i class='fa fa-download' style='color: white'></i>"
+            },
             {
                 extend: 'pdfHtml5',
                 exportOptions: {
-                    columns: [ 3,4,5,6,7,8,9,10 ],
-                    rows: [ ':visible' ]
+                    columns: [3, 4, 5, 6, 7, 8, 9, 10],
+                    rows: [':visible']
                 },
                 text: "PDF <br> <i class='fa fa-download' style='color: white'></i>",
                 orientation: 'landscape',
                 pageSize: 'LEGAL',
-                title: "Aequatus - Orthology for gene "+json.ref.display_label+"",
-                messageTop: 'Confidently predicted Orthology for '+json.ref.display_label+' (Gene: ' + json.ref.stable_id + ')',
+                title: "Aequatus - Orthology for gene " + json.ref.display_label + "",
+                messageTop: 'Confidently predicted Orthology for ' + json.ref.display_label + ' (Gene: ' + json.ref.stable_id + ')',
                 messageBottom: "\n Aequatus | 2015-2017 - Earlham Institute - http://aequatus.earlham.ac.uk"
                 //customize: function ( doc ) {
                 //    doc.content.splice( 1, 0, {
