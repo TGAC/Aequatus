@@ -718,3 +718,21 @@ button.dt-button:hover:not(.disabled), div.dt-button:hover:not(.disabled), a.dt-
 #sankey .link:hover {
     stroke-opacity: .5;
 }
+
+.sankey_info {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: white;
+    background-image: none;
+    background-origin: padding-box;
+    background-position-x: 0;
+    background-position-y: 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    position: fixed;
+    right: 0;
+    top: 300px;
+    z-index: 1999;
+    border:1px solid black;
+    display: none;
+}

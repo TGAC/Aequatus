@@ -276,6 +276,26 @@
 
 </div>
 
+<div id="sankey_info_wrapper" class="sankey_info">
+    <div id="sankey_info_header">
+        <table width="100%" cellspacing="0" border="0">
+            <thead>
+            <tr>
+                <td bgcolor="darkcyan">
+                    <div style="color: white; padding: 2px; width: 100%; text-align: center" id="homology_type_header"><span
+                            id="homology_type"></span>
+                        <i onclick="removeSankeyPopup();" class="fa fa-close "
+                           style="color: white; position: absolute; right: 5px; cursor: pointer; "></i>
+                    </div>
+                </td>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div id="sankey_info" style="margin: 10px">
+    </div>
+</div>
+
 <div id="popup" class="bubbleleft" style="width:200px; height:auto;">
     <div style="overflow: hidden; left: 0px; top: 0px; position: relative;">
         <table width="100%" cellspacing="0" border="0">

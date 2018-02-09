@@ -9,7 +9,7 @@
 var graph;
 var units = "Widgets";
 
-var margin = {top: 10, right: 10, bottom: 10, left: 100},
+var margin = {top: 10, right: 10, bottom: 10, left: 10},
     width = 1000 - margin.left - margin.right,
     height = 700 - margin.top - margin.bottom;
 
@@ -71,7 +71,7 @@ function drawSankey(data, div) {
                 .style("overflow", "visible")
                 .append("g")
                 .attr("transform",
-                    "translate(200," + margin.top + ")");
+                    "translate(" + margin.left + "," + margin.top + ")");
 
             sankey = d3.sankey()
                 .size([width, height])
@@ -107,6 +107,14 @@ function drawSankey(data, div) {
                 .attr("class", "node")
                 .attr("transform", function (d) {
                     return "translate(" + d.x + "," + d.y + ")";
+                })
+                .on("click", function (d) {
+                    if (d.sourceLinks[0]) {
+                        removeSankeyPopup()
+                    }
+                    else {
+                        sankey_info(d)
+                    }
                 })
                 .call(d3.behavior.drag()
                     .origin(function (d) {
@@ -167,9 +175,8 @@ function drawSankey(data, div) {
 
                     }
                 })
-
                 .text(function (d) {
-                    if (d.sourceLinks[0] && d.targetLinks[0]) {
+                    if (d.sourceLinks[0]) {
                         return d.name;
                     }
                     else {
@@ -219,5 +226,35 @@ function drawSankey(data, div) {
             sankey.relayout();
             link.attr("d", path);
         }
+
+        function sankey_info(d){
+
+            jQuery("#sankey_info_wrapper").fadeIn()
+            jQuery("#homology_type").html(d.type)
+
+            var first = true;
+            var info = ""
+            for(var i in d.source){
+                var key = i;
+                var source = d.source[i];
+                var target = d.target[i];
+                if(first){
+                    info += "<table id='sankey_info_table'><thead><tr><th>Attribute</th><th>Source</th><th>Target</th></tr></thead><tbody>";
+                }
+                first = false;
+
+                info += "<tr><td>"+i+"</td><td>"+source+"</td><td>"+target+"</td></tr>";
+            }
+            info += "</tbody></table>";
+
+            jQuery("#sankey_info").html(info)
+            jQuery("#sankey_info_table").DataTable();
+
+
+        }
     })
+}
+
+function removeSankeyPopup(){
+    jQuery("#sankey_info_wrapper").fadeOut()
 }

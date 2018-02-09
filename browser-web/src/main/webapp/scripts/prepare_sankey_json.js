@@ -24,10 +24,13 @@ function generate_sankey_JSON(json) {
     })
 
     for (var i = 0; i < json_key.length; i++) {
+
         orthologs.push({
             id: ortho[json_key[i]].target.id,
             species: ortho[json_key[i]].target.species,
-            type: ortho[json_key[i]].type
+            type: ortho[json_key[i]].type,
+            source: ortho[json_key[i]].source,
+            target: ortho[json_key[i]].target
         });
         if (species.indexOf(ortho[json_key[i]].target.species) < 0) {
             species.push(ortho[json_key[i]].target.species);
@@ -57,7 +60,9 @@ function generate_sankey_JSON(json) {
             "type": ortho[json_key[i]].type,
             "name": orthologs[i].id,
             "species": species.indexOf(orthologs[i].species),
-            "speciesName": orthologs[i].species
+            "speciesName": orthologs[i].species,
+            "source": orthologs[i].source,
+            "target": orthologs[i].target
         })
 
     }
@@ -76,7 +81,7 @@ function generate_sankey_JSON(json) {
 
         var source = 0;
 
-        var target = nodes.find(item = > item.name == types[i]
+        var target = nodes.find(item => item.name == types[i]
     )
 
         value = 2
@@ -97,9 +102,9 @@ function generate_sankey_JSON(json) {
     }
 
     for (var i = 0; i < json_key.length; i++) {
-        var source = nodes.find(item = > item.name == ortho[json_key[i]].type
+        var source = nodes.find(item => item.name == ortho[json_key[i]].type
     )
-        var target = nodes.find(item = > item.name == ortho[json_key[i]].target.id
+        var target = nodes.find(item => item.name == ortho[json_key[i]].target.id
     )
 
         if (first.indexOf(ortho[json_key[i]].type) >= 0) {
@@ -147,21 +152,21 @@ function setSankeyFilter(types) {
 
     jQuery("#settings_div").html("Show Homology Type : <p>")
 
-    var radios = "<input type='radio' name='type_homology' class='sankey-label last clicked' checked value='all'> All</input> <p>"
+    var radios = "<p><input type='radio' name='type_homology' class='sankey-label last clicked' checked value='all'> All</input> </p>"
     for (var i = 0; i < types.length; i++) {
-        radios += "<input type='radio' name='type_homology' class='sankey-label last clicked' value='" + types[i] + "'> " + types[i] + "</input> <p>"
+        radios += "<p><input type='radio' name='type_homology' class='sankey-label last clicked' value='" + types[i] + "'> " + types[i] + "</input> </p>"
     }
 
     jQuery("#settings_div").append(radios)
 
-    jQuery("#settings_div").append("<p>")
-
-    jQuery("#settings_div").append("Colour Homology By : <p>" +
-        "<input type='radio' name='colour_homology' class='sankey-label last clicked' checked id='species-colour-button'> Species</input> <p>" +
-        "<input type='radio' name='colour_homology' class='sankey-label' id='homology-colour-button'> Homology Type</input> <p>" +
-        "<input type='radio' name='colour_homology' class='sankey-label' id='coverage-colour-button'> Coverage</input> <p>" +
-        "<input type='radio' name='colour_homology' class='sankey-label' id='positivity-colour-button'> Positivity</input> <p>" +
-        "<input type='radio' name='colour_homology' class='sankey-label' id='identity-colour-button'> Identity</input>"
-    )
+    //jQuery("#settings_div").append("<p>")
+    //
+    //jQuery("#settings_div").append("Colour Homology By : <p>" +
+    //    "<input type='radio' name='colour_homology' class='sankey-label last clicked' checked id='species-colour-button'> Species</input> <p>" +
+    //    "<input type='radio' name='colour_homology' class='sankey-label' id='homology-colour-button'> Homology Type</input> <p>" +
+    //    "<input type='radio' name='colour_homology' class='sankey-label' id='coverage-colour-button'> Coverage</input> <p>" +
+    //    "<input type='radio' name='colour_homology' class='sankey-label' id='positivity-colour-button'> Positivity</input> <p>" +
+    //    "<input type='radio' name='colour_homology' class='sankey-label' id='identity-colour-button'> Identity</input>"
+    //)
 }
 
