@@ -108,7 +108,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div style="display: none; background: none repeat scroll 0% 0% orange; padding: 10px; height: 296px; text-align: center; font-size: medium;"
+                <div style="display: none; background: none repeat scroll 0% 0% orange; padding: 10px; height: 296px; text-align: left; font-size: medium;"
                      id="filter_div">
                     <b>Species list:</b>
                     <div id="filter"></div>
