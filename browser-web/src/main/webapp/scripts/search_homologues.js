@@ -5,16 +5,16 @@
  * Time: 11:17
  * To change this template use File | Settings | File Templates.
  */
-function search_from_orthologues_box() {
+function search_from_homologues_box() {
     if (parseInt(jQuery("#§trol_panel").css("left")) < 0) {
         openPanel('#search_div')
     }
     jQuery("#search_history").html(jQuery("#control_search").val());
     jQuery("#control_search").val(jQuery('#search').val());
-    search_orthologues(jQuery('#search').val());
+    search_homologues(jQuery('#search').val());
 }
 
-function search_orthologues(query) {
+function search_homologues(query) {
     //window.history.pushState("search=" + query, "Title", "index.jsp?search=" + query);
 
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
@@ -40,15 +40,15 @@ function search_orthologues(query) {
         {
             'doOnSuccess': function (json) {
 
-                list_orthologues(json)
+                list_homologues(json)
 
             }
         });
 }
 
 
-function list_orthologues(json) {
-    console.log("list_orthologues")
+function list_homologues(json) {
+    console.log("list_homologues")
     var content = "";
 
     if (json.html.length > 0) {
@@ -64,7 +64,7 @@ function list_orthologues(json) {
             content += "<div class='search_div' " +
                 "onclick='openClosePanel(); " +
                 "jQuery(\"#canvas\").show(); " +
-                "getOrthologyForMember(" + json.html[i].gene_member_id + ",\"table\");'> " +
+                "getHomologyForMember(" + json.html[i].gene_member_id + ",\"table\");'> " +
                 "<div class='search_header'> " + json.html[i].stable_id + " " +
                 "</div> " +
                 "<div class='search_info'> " + json.html[i].genome + " : " + json.html[i].coord_system_name + " " + json.html[i].name +
@@ -88,9 +88,9 @@ function list_orthologues(json) {
 }
 
 
-function getOrthologyForMember(query, view) {
+function getHomologyForMember(query, view) {
     if (view == "table") {
-        jQuery("#orthologies").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
+        jQuery("#homologies").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
     } else if (view == "sankey") {
         jQuery("#sankey").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
     }
@@ -111,7 +111,7 @@ function getOrthologyForMember(query, view) {
 
     Fluxion.doAjax(
         'comparaService',
-        'getOrthologyForMember',
+        'getHomologyForMember',
         {'query': query, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
@@ -119,7 +119,7 @@ function getOrthologyForMember(query, view) {
 
                 jQuery("#gene_tree_nj").html("")
                 if (view == "table") {
-                    drawOrthology(json)
+                    drawHomology(json)
                 } else if (view == "sankey") {
                     generate_sankey_JSON(json)
                 }
@@ -129,10 +129,10 @@ function getOrthologyForMember(query, view) {
         });
 }
 
-function drawOrthology(json) {
-    console.log("drawOrthology")
-    var orthology_table_content = "<table><tr><td><h3>Confidently predicted Orthology for " + json.ref.display_label + "</h3></td><td valign=middle> (Gene: " + json.ref.stable_id + ")</td></tr></table> <br>" +
-        "<table id='orthologyTable' class='table' width='100%'>" +
+function drawHomology(json) {
+    console.log("drawHomology")
+    var homology_table_content = "<table><tr><td><h3>Confidently predicted Homology for " + json.ref.display_label + "</h3></td><td valign=middle> (Gene: " + json.ref.stable_id + ")</td></tr></table> <br>" +
+        "<table id='homologyTable' class='table' width='100%'>" +
         "<thead>" +
         "<tr>" +
         "<th>Detail</th>" +
@@ -157,9 +157,9 @@ function drawOrthology(json) {
         "<th>target cigar_line</th>" +
         "</tr>" +
         "</thead>";
-    var ortho = json.orthology;
+    var homology = json.homology;
 
-    orthology_table_content += "<tfoot>" +
+    homology_table_content += "<tfoot>" +
         "<tr>" +
         "<th>Detail</th>" +
         "<th>Pairwise</th>" +
@@ -185,37 +185,37 @@ function drawOrthology(json) {
         "</tfoot>" +
         "<tbody";
 
-    var json_key = Object.keys(ortho);
+    var json_key = Object.keys(homology);
     for (var i = 0; i < json_key.length; i++) {
-        var tree = ortho[json_key[i]].tree >= 0 ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em; cursor: pointer' aria-hidden='true' onclick='openTree(\"" + ortho[json_key[i]].source.protein_id + "\")'></i>" : "";
-        var pairwise = ortho[json_key[i]].tree >= 0 ? "<td class='details-control pairwise-align details_hidden'></td>" : "<td></td>";
-        orthology_table_content += "<tr> " +
+        var tree = homology[json_key[i]].tree >= 0 ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em; cursor: pointer' aria-hidden='true' onclick='openTree(\"" + homology[json_key[i]].source.protein_id + "\")'></i>" : "";
+        var pairwise = homology[json_key[i]].tree >= 0 ? "<td class='details-control pairwise-align details_hidden'></td>" : "<td></td>";
+        homology_table_content += "<tr> " +
             "<td class='details-control detail-info details_hidden'></td>" +
             pairwise +
             "<td>" + json_key[i] + "</td>" +
-            "<td>" + ortho[json_key[i]].target.id + "</td>" +
-            "<td>" + ortho[json_key[i]].target.protein_id + "</td>" +
-            "<td>" + ortho[json_key[i]].target.species + "</td>" +
-            "<td>" + ortho[json_key[i]].dn_ds + "</td>" +
-            "<td>" + ortho[json_key[i]].type + "</td>" +
-            "<td align='center'>" + ortho[json_key[i]].target.perc_cov + "</td>" +
-            "<td align='center'>" + ortho[json_key[i]].target.perc_pos + "</td>" +
-            "<td align='center'>" + ortho[json_key[i]].target.perc_id + "</td>" +
+            "<td>" + homology[json_key[i]].target.id + "</td>" +
+            "<td>" + homology[json_key[i]].target.protein_id + "</td>" +
+            "<td>" + homology[json_key[i]].target.species + "</td>" +
+            "<td>" + homology[json_key[i]].dn_ds + "</td>" +
+            "<td>" + homology[json_key[i]].type + "</td>" +
+            "<td align='center'>" + homology[json_key[i]].target.perc_cov + "</td>" +
+            "<td align='center'>" + homology[json_key[i]].target.perc_pos + "</td>" +
+            "<td align='center'>" + homology[json_key[i]].target.perc_id + "</td>" +
             "<td align='center'>" + tree + "</td>" +
-            "<td>" + ortho[json_key[i]].source.id + "</td>" +
-            "<td>" + ortho[json_key[i]].source.protein_id + "</td>" +
-            "<td>" + ortho[json_key[i]].source.species + "</td>" +
-            "<td>" + ortho[json_key[i]].source.cigar_line + "</td>" +
-            "<td>" + ortho[json_key[i]].source.perc_cov + "</td>" +
-            "<td>" + ortho[json_key[i]].source.perc_pos + "</td>" +
-            "<td>" + ortho[json_key[i]].source.perc_id + "</td>" +
-            "<td>" + ortho[json_key[i]].target.cigar_line + "</td>" +
+            "<td>" + homology[json_key[i]].source.id + "</td>" +
+            "<td>" + homology[json_key[i]].source.protein_id + "</td>" +
+            "<td>" + homology[json_key[i]].source.species + "</td>" +
+            "<td>" + homology[json_key[i]].source.cigar_line + "</td>" +
+            "<td>" + homology[json_key[i]].source.perc_cov + "</td>" +
+            "<td>" + homology[json_key[i]].source.perc_pos + "</td>" +
+            "<td>" + homology[json_key[i]].source.perc_id + "</td>" +
+            "<td>" + homology[json_key[i]].target.cigar_line + "</td>" +
             "</tr>";
     }
 
-    orthology_table_content += "</tbody></table>"
+    homology_table_content += "</tbody></table>"
 
-    jQuery("#orthologies").html(orthology_table_content)
+    jQuery("#homologies").html(homology_table_content)
 
 
     var columnArray = [{
@@ -232,7 +232,7 @@ function drawOrthology(json) {
         });
     }
 
-    jQuery('#orthologyTable').DataTable({
+    jQuery('#homologyTable').DataTable({
         "columnDefs": columnArray,
         initComplete: function () {
             this.api().columns([7]).every(function () {
@@ -278,7 +278,7 @@ function drawOrthology(json) {
         }
     })
 
-    var table = jQuery('#orthologyTable').DataTable();
+    var table = jQuery('#homologyTable').DataTable();
 
     var buttons = new jQuery.fn.dataTable.Buttons(table, {
         buttons: [
@@ -315,8 +315,8 @@ function drawOrthology(json) {
                 text: "PDF <br> <i class='fa fa-download' style='color: white'></i>",
                 orientation: 'landscape',
                 pageSize: 'LEGAL',
-                title: "Aequatus - Orthology for gene " + json.ref.display_label + "",
-                messageTop: 'Confidently predicted Orthology for ' + json.ref.display_label + ' (Gene: ' + json.ref.stable_id + ')',
+                title: "Aequatus - Homology for gene " + json.ref.display_label + "",
+                messageTop: 'Confidently predicted Homology for ' + json.ref.display_label + ' (Gene: ' + json.ref.stable_id + ')',
                 messageBottom: "\n Aequatus | 2015-2017 - Earlham Institute - http://aequatus.earlham.ac.uk"
                 //customize: function ( doc ) {
                 //    doc.content.splice( 1, 0, {
@@ -329,8 +329,8 @@ function drawOrthology(json) {
         ]
     }).container().appendTo(jQuery('#export_params'));
 
-    jQuery('#orthologyTable tbody').on('click', 'td.detail-info', function () {
-        var table = jQuery('#orthologyTable').DataTable();
+    jQuery('#homologyTable tbody').on('click', 'td.detail-info', function () {
+        var table = jQuery('#homologyTable').DataTable();
         var tr = jQuery(this).closest('tr');
         var row = table.row(tr);
         var td = jQuery(this).closest('td');
@@ -354,8 +354,8 @@ function drawOrthology(json) {
         }
     });
 
-    jQuery('#orthologyTable tbody').on('click', 'td.pairwise-align', function () {
-        var table = jQuery('#orthologyTable').DataTable();
+    jQuery('#homologyTable tbody').on('click', 'td.pairwise-align', function () {
+        var table = jQuery('#homologyTable').DataTable();
         var tr = jQuery(this).closest('tr');
         var row = table.row(tr);
         var td = jQuery(this).closest('td');

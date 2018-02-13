@@ -7,9 +7,9 @@
  */
 function generate_sankey_JSON(json) {
 
-    var ortho = json.orthology;
-    var json_key = Object.keys(ortho);
-    var orthologs = [];
+    var homology = json.homology;
+    var json_key = Object.keys(homology);
+    var homologs = [];
     var species = [];
     var types = [];
     var nodes = [];
@@ -18,28 +18,28 @@ function generate_sankey_JSON(json) {
 
     nodes.push({
         "node": 0,
-        "type": "orthologs",
+        "type": "homology",
         "name": "reference",
         "value": 2
     })
 
     for (var i = 0; i < json_key.length; i++) {
 
-        orthologs.push({
-            id: ortho[json_key[i]].target.id,
-            species: ortho[json_key[i]].target.species,
-            type: ortho[json_key[i]].type,
-            source: ortho[json_key[i]].source,
-            target: ortho[json_key[i]].target
+        homologs.push({
+            id: homology[json_key[i]].target.id,
+            species: homology[json_key[i]].target.species,
+            type: homology[json_key[i]].type,
+            source: homology[json_key[i]].source,
+            target: homology[json_key[i]].target
         });
-        if (species.indexOf(ortho[json_key[i]].target.species) < 0) {
-            species.push(ortho[json_key[i]].target.species);
+        if (species.indexOf(homology[json_key[i]].target.species) < 0) {
+            species.push(homology[json_key[i]].target.species);
         }
-        if (types.indexOf(ortho[json_key[i]].type) < 0) {
-            types.push(ortho[json_key[i]].type);
-            type_size[ortho[json_key[i]].type] = 1;
+        if (types.indexOf(homology[json_key[i]].type) < 0) {
+            types.push(homology[json_key[i]].type);
+            type_size[homology[json_key[i]].type] = 1;
         } else {
-            type_size[ortho[json_key[i]].type] = type_size[ortho[json_key[i]].type] + 1;
+            type_size[homology[json_key[i]].type] = type_size[homology[json_key[i]].type] + 1;
         }
     }
 
@@ -48,21 +48,21 @@ function generate_sankey_JSON(json) {
     for (var i = 0; i < types.length; i++, node++) {
         nodes.push({
             "node": node,
-            "type": "orthology",
+            "type": "homology",
             "name": types[i],
-            "value": orthologs.length
+            "value": homologs.length
         })
     }
 
-    for (var i = 0; i < orthologs.length; i++, node++) {
+    for (var i = 0; i < homologs.length; i++, node++) {
         nodes.push({
             "node": node,
-            "type": ortho[json_key[i]].type,
-            "name": orthologs[i].id,
-            "species": species.indexOf(orthologs[i].species),
-            "speciesName": orthologs[i].species,
-            "source": orthologs[i].source,
-            "target": orthologs[i].target
+            "type": homology[json_key[i]].type,
+            "name": homologs[i].id,
+            "species": species.indexOf(homologs[i].species),
+            "speciesName": homologs[i].species,
+            "source": homhologs[i].source,
+            "target": homologs[i].target
         })
 
     }
@@ -102,12 +102,12 @@ function generate_sankey_JSON(json) {
     }
 
     for (var i = 0; i < json_key.length; i++) {
-        var source = nodes.find(item => item.name == ortho[json_key[i]].type
+        var source = nodes.find(item => item.name == homology[json_key[i]].type
     )
-        var target = nodes.find(item => item.name == ortho[json_key[i]].target.id
+        var target = nodes.find(item => item.name == homology[json_key[i]].target.id
     )
 
-        if (first.indexOf(ortho[json_key[i]].type) >= 0) {
+        if (first.indexOf(homology[json_key[i]].type) >= 0) {
             links.push({
                 "source": target.node,
                 "target": source.node,
@@ -124,8 +124,8 @@ function generate_sankey_JSON(json) {
     }
 
     // for (var i = 0; i < json_key.length; i++) {
-    //     var source = nodes.find(item => item.name == ortho[json_key[i]].target.id)
-    //     var target = nodes.find(item => item.name == ortho[json_key[i]].target.species
+    //     var source = nodes.find(item => item.name == homology[json_key[i]].target.id)
+    //     var target = nodes.find(item => item.name == homology[json_key[i]].target.species
     // )
     //     links.push({
     //         "source": source.node,

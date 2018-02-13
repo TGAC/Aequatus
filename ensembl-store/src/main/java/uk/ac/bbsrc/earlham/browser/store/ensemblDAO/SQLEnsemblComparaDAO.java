@@ -862,7 +862,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     }
 
-    public Long[] getOrthologsforMember(String query) throws IOException {
+    public Long[] getHomologsforMember(String query) throws IOException {
 
 
         List<Long> members = new ArrayList<>();
@@ -927,7 +927,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     }
 
-    public boolean getInfoforOrtholog(int ref, int hit) throws IOException {
+    public boolean getInfoforHomolog(int ref, int hit) throws IOException {
         boolean response = false;
 
         int pairwise_alignemnt = template.queryForInt(IS_PAIRWISE_ALIGNMENT, new Object[]{ref, hit});

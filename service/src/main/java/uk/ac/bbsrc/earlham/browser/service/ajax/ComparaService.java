@@ -413,14 +413,14 @@ public class ComparaService {
         return response;
     }
 
-    public JSONObject getOrthologyForMember(HttpSession session, JSONObject json) {
+    public JSONObject getHomologyForMember(HttpSession session, JSONObject json) {
         String query = json.getString("query");
         JSONObject response = new JSONObject();
 
-        response.put("trackname", "orthology");
+        response.put("trackname", "homology");
         try {
             response.put("ref", comparaStore.getGeneMemberInfofromID(query));
-            response.put("orthology", comparaStore.findHomology(query));
+            response.put("homology", comparaStore.findHomology(query));
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             return JSONUtils.SimpleJSONError(e.getMessage());
@@ -464,7 +464,7 @@ public class ComparaService {
             int hit_seq_member_id = comparaStore.getSeqMemberIDfromStableID(protein_id);
 
             response.put("info", comparaStore.getInfoforMember(query).get("info"));
-            response.put("orthology", comparaStore.getInfoforOrtholog(hit_seq_member_id, ref_seq_member_id));
+            response.put("homology", comparaStore.getInfoforHomolog(hit_seq_member_id, ref_seq_member_id));
 
             return response;
         } catch (IOException e) {

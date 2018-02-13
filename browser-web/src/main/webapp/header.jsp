@@ -73,7 +73,7 @@
     <script type="text/javascript" src="<c:url value='/scripts/download.js'/>"></script>
     <script type="text/javascript" src="<c:url value='scripts/smart-domain.js'/>"></script>
     <script type="text/javascript" src="<c:url value='scripts/drawDomain.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='scripts/search_orthologues.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='scripts/search_homologues.js'/>"></script>
     <script type="text/javascript" src="<c:url value='scripts/prepare_sankey_json.js'/>"></script>
     <script type="text/javascript" src="<c:url value='scripts/draw_sankey.js'/>"></script>
 

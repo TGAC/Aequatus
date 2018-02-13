@@ -309,7 +309,7 @@ function getcoreMember(query, redrawn) {
         {'query': query, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                jQuery("#orthologies").html("")
+                jQuery("#homogies").html("")
                 jQuery("#sankey").html("")
                 syntenic_data = json
                 //window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);

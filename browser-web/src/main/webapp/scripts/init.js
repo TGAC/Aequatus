@@ -91,7 +91,7 @@ function setOff() {
 }
 
 
-function setOrthologuesEvents() {
+function sethomologousEvents() {
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
     setGenomes()
     var name = arguments.callee.toString();
@@ -105,7 +105,7 @@ function setOrthologuesEvents() {
             }
             jQuery("#search_history").html(jQuery("#control_search").val());
             jQuery("#control_search").val(jQuery('#search').val());
-            search_orthologues(jQuery('#search').val());
+            search_homologous(jQuery('#search').val());
         }
     });
 
@@ -116,7 +116,7 @@ function setOrthologuesEvents() {
         if (code == 13) {
             jQuery("#search_history").html(jQuery("#search").val());
             jQuery("#search").val(jQuery('#control_search').val());
-            search_orthologues(jQuery('#control_search').val());
+            search_homologous(jQuery('#control_search').val());
         }
     });
 
@@ -226,10 +226,10 @@ function getMemberfromURL(query, view) {
                         getcoreMember(json.member_id, true);
                     }else if (view == "table") {
                         setTableExport();
-                        getOrthologyForMember(json.member_id, "table");
+                        getHomologyForMember(json.member_id, "table");
                     }else if (view == "sankey") {
                         setTableExport();
-                        getOrthologyForMember(json.member_id, "sankey");
+                        getHomologyForMember(json.member_id, "sankey");
                     }else{
                         if (parseInt(jQuery("#control_panel").css("left")) < 0) {
                             openPanel('#search_div')
@@ -323,12 +323,12 @@ function listResult(json) {
                 "getcoreMember(" + json.html[i].gene_member_id + ",\"true\");'> </i>" +
                 "</td>" +
 
-                "<td> <i style='color:grey' class='fa fa-1x fa-table' title='List Orthology in Table'  onclick='openClosePanel(); " +
+                "<td> <i style='color:grey' class='fa fa-1x fa-table' title='List Homogy in Table'  onclick='openClosePanel(); " +
                 "setSearchList(\""+json.html[i].stable_id+"\"); " +
                 "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
                 "getChromosomes(); " +
                 "getMember();   " +
-                "getOrthologyForMember(" + json.html[i].gene_member_id + ",\"table\");'> </i>" +
+                "getHomologyForMember(" + json.html[i].gene_member_id + ",\"table\");'> </i>" +
                 "</td>" +
 
                 "<td> <i style='color:grey' class='fa fa-1x fa-random' title='View Sankey Plot'  onclick='openClosePanel(); " +
@@ -336,7 +336,7 @@ function listResult(json) {
                 "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
                 "getChromosomes(); " +
                 "getMember();   " +
-                "getOrthologyForMember(" + json.html[i].gene_member_id + ",\"sankey\");'> </i>" +
+                "getHomologyForMember(" + json.html[i].gene_member_id + ",\"sankey\");'> </i>" +
                 "</td>" +
 
                 "</tr>" +

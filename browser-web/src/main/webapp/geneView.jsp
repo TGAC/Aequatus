@@ -239,7 +239,7 @@
 
     </div>
 
-    <div id="orthologies" style="width: 80%; left: 10%; position: relative; top: 50px;"  class="mainview">
+    <div id="homologies" style="width: 80%; left: 10%; position: relative; top: 50px;"  class="mainview">
     </div>
 
     <div id="sankey" style="width: 80%; left: 10%; position: relative; top: 50px;"  class="mainview">
