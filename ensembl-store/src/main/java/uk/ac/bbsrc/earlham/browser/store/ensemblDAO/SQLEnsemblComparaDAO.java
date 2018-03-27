@@ -713,7 +713,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                 "and s.genome_db_id = g.genome_db_id " +
                 "and h.method_link_species_set_id = mlss.method_link_species_set_id " +
                 "and mlss.method_link_id = ml.method_link_id " +
-                "and h.description like '%ortho%' " +
+//                "and h.description like '%ortho%' " +
                 "GROUP BY hm.homology_id " +
                 "having count(hm.homology_id) > 1;";
 
@@ -761,7 +761,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                     "and s.genome_db_id = g.genome_db_id " +
                     "and h.method_link_species_set_id = mlss.method_link_species_set_id " +
                     "and mlss.method_link_id = ml.method_link_id " +
-                    "and h.description like '%ortho%' " +
+//                    "and h.description like '%ortho%' " +
                     "GROUP BY hm.homology_id " +
                     "having count(hm.homology_id) > 1;";
 
