@@ -119,7 +119,7 @@
                 </div>
                 <div id="export_div"
                      style="display: block; height: 296px; background: none repeat scroll 0% 0% rebeccapurple; padding: 10px; color: white">
-                        <h4> Export </h4>
+                    <h4> Export </h4>
                     <div id="export_params"
                          style="color: white">
 
@@ -230,22 +230,39 @@
 
     </div>
 
-    <div id="selected_region"
-         style=" background-color: #FFFFFF; border: 1px solid #000000;  height: 20px;  left: 1px;  position: relative; text-align: center; top: 10px; vertical-align: middle; width: 100%; z-index: 999;">
+    <div id="selected_region_wrapper"
+         style=" background-color: #FFFFFF; border: 1px solid #000000;  height: 20px;  left: 0px;  position: relative; text-align: center; top: 10px; vertical-align: middle; width: 100%; z-index: 999;">
+        <div id="synteny_handle" style="position: absolute; right: 10px; z-index: 1999;"
+             onClick="toggleLeftInfo(jQuery('#synteny_wrapper'), 'synteny_wrapper');">
+            Toggle Synteny
+        </div>
+        <div id="selected_region">
+
+        </div>
 
     </div>
+
+    <div id="synteny_wrapper"
+         style="width: 100%; left: 0%; position: relative; top: 20px; overflow: hidden;text-align: center; border: 1px solid transparent"
+         class="">
+        <div id="synteny" style="width: 100%; left: 0%; position: relative; top: 0px;" class="">
+
+        </div>
+    </div>
+
 
     <div id="gene_tree_nj" style=" overflow: visible;   position: relative; top: 50px; width: 100%;" class="mainview">
 
     </div>
 
-    <div id="homologies" style="width: 80%; left: 10%; position: relative; top: 50px;"  class="mainview">
+    <div id="homologies" style="width: 80%; left: 10%; position: relative; top: 50px;" class="mainview">
     </div>
 
-    <div id="sankey" style="width: 80%; left: 10%; position: relative; top: 50px;"  class="mainview">
+    <div id="sankey" style="width: 80%; left: 10%; position: relative; top: 50px;" class="mainview">
     </div>
 
-    <div style="height: auto; margin-left: auto; margin-right: auto; z-index: 1999; position: fixed;" >
+
+    <div style="height: auto; margin-left: auto; margin-right: auto; z-index: 1999; position: fixed;">
 
 
     </div>
@@ -282,7 +299,8 @@
             <thead>
             <tr>
                 <td bgcolor="darkcyan">
-                    <div style="color: white; padding: 2px; width: 100%; text-align: center" id="homology_type_header"><span
+                    <div style="color: white; padding: 2px; width: 100%; text-align: center"
+                         id="homology_type_header"><span
                             id="homology_type"></span>
                         <i onclick="removeSankeyPopup();" class="fa fa-close "
                            style="color: white; position: absolute; right: 5px; cursor: pointer; "></i>
