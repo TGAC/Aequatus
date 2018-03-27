@@ -34,9 +34,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import uk.ac.bbsrc.earlham.browser.core.store.EnsemblCoreStore;
-import uk.ac.bbsrc.earlham.browser.core.store.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -46,7 +46,11 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 
+
 public class SQLSequenceDAO implements EnsemblCoreStore {
+
+    private static SQLEnsemblComparaDAO ensemblComparaDAO;
+
     protected static final Logger log = LoggerFactory.getLogger(SQLSequenceDAO.class);
 
     @Autowired
@@ -67,13 +71,16 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
     public static final String GET_CDS_start_per_Gene = "SELECT start_exon_id, seq_start FROM translation where transcript_id =?";
     public static final String GET_CDS_end_per_Gene = "SELECT end_exon_id, seq_end FROM translation where transcript_id =?";
 
-    public static final String GET_Gene_by_Gene_ID = "SELECT gene_id,seq_region_id, seq_region_start,seq_region_end, description,seq_region_strand FROM gene where gene_id =?";//AND ((seq_region_start > ? AND seq_region_end < ?) OR (seq_region_start < ? AND seq_region_end > ?) OR (seq_region_end > ? AND seq_region_end < ?) OR (seq_region_start > ? AND seq_region_start < ?))";
+    public static final String GET_Gene_by_Gene_ID = "SELECT * FROM gene where gene_id =?";//AND ((seq_region_start > ? AND seq_region_end < ?) OR (seq_region_start < ? AND seq_region_end > ?) OR (seq_region_end > ? AND seq_region_end < ?) OR (seq_region_start > ? AND seq_region_start < ?))";
     public static final String GET_EXON_BY_ID = "SELECT seq_region_start,seq_region_end,seq_region_strand FROM exon where exon_id =?";
 
     public static final String GET_Transcript_by_stable_id = "select transcript_id from translation where stable_id = ?;";//"select * from gene_view where seq_region_id = ? and analysis_id = ?;";//
     public static final String GET_Transcript_by_Transcript_ID = "SELECT transcript_id,seq_region_id, seq_region_start,seq_region_end, description,seq_region_strand FROM transcript where transcript_id =?";//AND ((seq_region_start > ? AND seq_region_end < ?) OR (seq_region_start < ? AND seq_region_end > ?) OR (seq_region_end > ? AND seq_region_end < ?) OR (seq_region_start > ? AND seq_region_start < ?))";
     public static final String GET_Gene_by_transcript_id = "select gene_id from transcript where transcript_id = ?;";
 
+    public static final String GET_Following_Gene_by_position = "select * from gene where seq_region_id = ? and seq_region_start > ? and biotype = 'protein_coding' order by seq_region_start asc limit 15;";
+
+    public static final String GET_Previous_Gene_by_position = "select * from gene where seq_region_id = ? and seq_region_end < ? and biotype = 'protein_coding' order by seq_region_start desc limit 15;";
 
     private static JdbcTemplate template;
 
@@ -81,7 +88,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
         this.template = template;
     }
 
-    public JSONObject getGene(String query, String genome, int member_id, String gene_stable_id){
+    public JSONObject getGene(String query, String genome, int member_id, String gene_stable_id) {
         return getGenebyStableid(query, genome, member_id, gene_stable_id);
     }
 
@@ -137,7 +144,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             translation_start = new_Template.queryForList(GET_CDS_start_per_Gene, new Object[]{transcript_id});
             translation_end = new_Template.queryForList(GET_CDS_end_per_Gene, new Object[]{transcript_id});
             JSONObject translation = new JSONObject();
-            translation.put("id" ,query);
+            translation.put("id", query);
 
 
             for (Map start_seq : translation_start) {
@@ -146,10 +153,10 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
 
                 if (gene_info.get("seq_region_strand").toString().equals("-1")) {
 //                    transcript.put("transcript_start", exon_end - (Integer.parseInt(start_seq.get("seq_start").toString())-1));
-                    translation.put("start" , exon_end - (Integer.parseInt(start_seq.get("seq_start").toString())-1));
+                    translation.put("start", exon_end - (Integer.parseInt(start_seq.get("seq_start").toString()) - 1));
                 } else {
 //                    transcript.put("transcript_start", exon_start + (Integer.parseInt(start_seq.get("seq_start").toString())-1));
-                    translation.put("start" , exon_start + (Integer.parseInt(start_seq.get("seq_start").toString())-1));
+                    translation.put("start", exon_start + (Integer.parseInt(start_seq.get("seq_start").toString()) - 1));
 
                 }
             }
@@ -161,11 +168,11 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
 
                 if (gene_info.get("seq_region_strand").toString().equals("-1")) {
 //                    transcript.put("transcript_end", exon_end - (Integer.parseInt(end_seq.get("seq_end").toString())-1));
-                    translation.put("end" , exon_end - (Integer.parseInt(end_seq.get("seq_end").toString())-1));
+                    translation.put("end", exon_end - (Integer.parseInt(end_seq.get("seq_end").toString()) - 1));
 
                 } else {
 //                    transcript.put("transcript_end", exon_start + (Integer.parseInt(end_seq.get("seq_end").toString())-1));
-                    translation.put("end" ,  exon_start + (Integer.parseInt(end_seq.get("seq_end").toString())-1));
+                    translation.put("end", exon_start + (Integer.parseInt(end_seq.get("seq_end").toString()) - 1));
 
                 }
             }
@@ -175,7 +182,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
 //                transcript.put("transcript_start", transcript.getInt("transcript_end"));
 //                transcript.put("transcript_end", temp);
                 translation.put("start", translation.getInt("end"));
-                        translation.put("end" , temp);
+                translation.put("end", temp);
 
 
             }
@@ -195,7 +202,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
                 exon.put("end", end);
                 exon.put("length", end - start + 1);
 
-                length += (end - start +1);
+                length += (end - start + 1);
                 exon.put("strand", map_temp.get("seq_region_strand"));
 
                 exons_array.add(exon);
@@ -211,11 +218,61 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             return gene;
         } catch (Exception e) {
             e.printStackTrace();
-            log.info("Gene not found: " + e.getMessage()+ " "+genome+" "+query+ " "+gene_stable_id);
+            log.info("Gene not found: " + e.getMessage() + " " + genome + " " + query + " " + gene_stable_id);
             return null;
         }
     }
 
+    public static Map<String, Object> getCondensedGenebyStableid(String query, String genome, long member_id, String gene_stable_id) {
+        try {
+
+            JSONObject gene = new JSONObject();
+
+            JdbcTemplate new_Template = DatabaseSchemaSelector.getConnection(genome);
+
+            int transcript_id = new_Template.queryForObject(GET_Transcript_by_stable_id, new Object[]{query}, Integer.class);
+
+            int gene_id = new_Template.queryForObject(GET_Gene_by_transcript_id, new Object[]{transcript_id}, Integer.class);
+
+            Map<String, Object> gene_info = new_Template.queryForMap(GET_Gene_by_Gene_ID, new Object[]{gene_id});
+
+            return  gene_info;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("Gene not found: " + e.getMessage() + " " + genome + " " + query + " " + gene_stable_id);
+            return null;
+        }
+    }
+
+
+    public static JSONObject getOrderedGenebyStableid(String query, String genome, long member_id, String gene_stable_id) {
+        try {
+
+            JSONObject genes = new JSONObject();
+
+            JdbcTemplate new_Template = DatabaseSchemaSelector.getConnection(genome);
+
+            int transcript_id = new_Template.queryForObject(GET_Transcript_by_stable_id, new Object[]{query}, Integer.class);
+            int gene_id = new_Template.queryForObject(GET_Gene_by_transcript_id, new Object[]{transcript_id}, Integer.class);
+
+            Map<String, Object> gene_info = new_Template.queryForMap(GET_Gene_by_Gene_ID, new Object[]{gene_id});
+            long start = (long) gene_info.get("seq_region_start");
+            long end = (long) gene_info.get("seq_region_end");
+            long id = (long) gene_info.get("seq_region_id");
+
+            List<Map<String, Object>> following_gene_id = new_Template.queryForList(GET_Following_Gene_by_position, new Object[]{id, end});
+            List<Map<String, Object>> previous_gene_id = new_Template.queryForList(GET_Previous_Gene_by_position, new Object[]{id, start});
+
+            genes.put("before", previous_gene_id);
+            genes.put("after", following_gene_id);
+
+            return genes;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("Gene not found: " + e.getMessage() + " " + genome + " " + query + " " + gene_stable_id);
+            return null;
+        }
+    }
 
 
 }

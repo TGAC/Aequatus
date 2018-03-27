@@ -36,4 +36,4 @@ import net.sf.json.JSONObject;
  */
 public interface EnsemblCoreStore extends Store<String> {
     JSONObject getGene(String query, String genome, int member_id, String gene_stable_id);
-}
+    }

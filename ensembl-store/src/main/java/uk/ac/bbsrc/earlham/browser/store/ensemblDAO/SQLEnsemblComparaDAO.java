@@ -52,6 +52,7 @@ import java.util.*;
  */
 
 public class SQLEnsemblComparaDAO implements ComparaStore {
+
     protected static final Logger log = LoggerFactory.getLogger(SQLEnsemblComparaDAO.class);
 
     private static String genome_ids = "(";
@@ -59,145 +60,149 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public static final String TABLE = "";
 
     //    Genome DB
-    public static final String GET_ALL_GENOMES = "select * from genome_db where name like ?";
+    public static final String GET_ALL_GENOMES = "SELECT * FROM genome_db WHERE name LIKE ?";
 
-    public static final String GET_ALL_GENOMES_EXCEPT_ONE = "select * from genome_db where genome_db_id <> ?";
+    public static final String GET_ALL_GENOMES_EXCEPT_ONE = "SELECT * FROM genome_db WHERE genome_db_id <> ?";
 
-    public static final String GET_GENOME_NAME_FROM_ID = "select name from genome_db where genome_db_id = ?";
+    public static final String GET_GENOME_NAME_FROM_ID = "SELECT name FROM genome_db WHERE genome_db_id = ?";
 
-    public static final String GET_DNAFRAG_FROM_GENOMEID = "select * from dnafrag where genome_db_id = ?";
+    public static final String GET_DNAFRAG_FROM_GENOMEID = "SELECT * FROM dnafrag WHERE genome_db_id = ?";
 
-    public static final String GET_GENOME_ID_FROM_NAME = "select genome_db_id from genome_db where name = ?";
+    public static final String GET_GENOME_ID_FROM_NAME = "SELECT genome_db_id FROM genome_db WHERE name = ?";
 
     public static final String GET_GENOME_NAME_FROM_TAXON_ID = "select name from genome_db where taxon_id = ?";
 
-    public static final String GET_GENOME_NAME_FROM_SEQ_MEMBER_ID = "select name from genome_db where genome_db_id in (select genome_db_id from seq_member where seq_member_id = ?)";
+    public static final String GET_GENOME_NAME_FROM_SEQ_MEMBER_ID = "SELECT name FROM genome_db WHERE genome_db_id IN (SELECT genome_db_id FROM seq_member WHERE seq_member_id = ?)";
 
     public static final String GET_LOCATION_FOR_GENOME = "select locator from genome_db where genome_db_id = ?";
 
-    public static final String GET_GENOME_NAME_FROM_GENE_MEMBER_ID = "select name from genome_db where genome_db_id in (select genome_db_id from gene_member where gene_member_id = ?)";
+    public static final String GET_GENOME_NAME_FROM_GENE_MEMBER_ID = "SELECT name FROM genome_db WHERE genome_db_id IN (SELECT genome_db_id FROM gene_member WHERE gene_member_id = ?)";
 
 
     //    DNA frag
-    public static final String GET_REFERENCE_LENGTH = "select length from dnafrag where dnafrag_id = ?";
+    public static final String GET_REFERENCE_LENGTH = "SELECT length FROM dnafrag WHERE dnafrag_id = ?";
 
-    public static final String GET_REFERENCE_NAME = "select name from dnafrag where dnafrag_id = ?";
+    public static final String GET_REFERENCE_NAME = "SELECT name FROM dnafrag WHERE dnafrag_id = ?";
 
-    public static final String GET_DNAFRAG_ID_SEARCH = "select dnafrag_id from dnafrag where name = ? and genome_db_id = ?";
+    public static final String GET_DNAFRAG_ID_SEARCH = "SELECT dnafrag_id FROM dnafrag WHERE name = ? AND genome_db_id = ?";
 
-    public static final String GET_DNAFRAGS_ID_SEARCH = "select dnafrag_id from dnafrag where name like ? and genome_db_id = ?";
+    public static final String GET_DNAFRAGS_ID_SEARCH = "SELECT dnafrag_id FROM dnafrag WHERE name LIKE ? AND genome_db_id = ?";
 
-    public static final String GET_DNAFRAG_BY_NAME = "select * from dnafrag where name = ? and genome_db_id = ?";
+    public static final String GET_DNAFRAG_BY_NAME = "SELECT * FROM dnafrag WHERE name = ? AND genome_db_id = ?";
 
-    public static final String GET_DNAFRAG_BY_ID = "select * from dnafrag where dnafrag_id = ? and genome_db_id = ?";
+    public static final String GET_DNAFRAG_BY_ID = "SELECT * FROM dnafrag WHERE dnafrag_id = ? AND genome_db_id = ?";
 
-    public static final String GET_CHR_DNAFRAG_BY_NAME = "select * from dnafrag where dnafrag_id = ? and genome_db_id = ? and coord_system_name like \"%chr%\"";
+    public static final String GET_CHR_DNAFRAG_BY_NAME = "SELECT * FROM dnafrag WHERE dnafrag_id = ? AND genome_db_id = ? AND coord_system_name LIKE \"%chr%\"";
 
-    public static final String COUNT_CHR_DNAFRAG_BY_NAME = "select count(*) from dnafrag where dnafrag_id = ? and genome_db_id = ? and coord_system_name like \"%chr%\"";
+    public static final String COUNT_CHR_DNAFRAG_BY_NAME = "SELECT count(*) FROM dnafrag WHERE dnafrag_id = ? AND genome_db_id = ? AND coord_system_name LIKE \"%chr%\"";
 
-    public static final String GET_CHROMOSOME_BY_GENOME_ID = "select *  from dnafrag where genome_db_id = ? and coord_system_name like '%chr%'";
+    public static final String GET_CHROMOSOME_BY_GENOME_ID = "SELECT *  FROM dnafrag WHERE genome_db_id = ? AND coord_system_name LIKE '%chr%'";
 
-    public static final String GET_dnafrag_Name_FROM_ID = "select name from dnafrag where dnafrag_id = ?";
+    public static final String GET_dnafrag_Name_FROM_ID = "SELECT name FROM dnafrag WHERE dnafrag_id = ?";
 
 
     //    Gene member
-    public static final String GET_MEMBER_BY_CHROMOSOME_NAME = "select gene_member_id as id, dnafrag_start as start, dnafrag_end as end, dnafrag_strand as strand, dnafrag_id, genome_db_id from gene_member where dnafrag_id = ? and ((dnafrag_start > ? AND dnafrag_end < ?) OR (dnafrag_start < ? AND dnafrag_end > ?) OR (dnafrag_end > ? AND dnafrag_end < ?) OR (dnafrag_start > ? AND dnafrag_start < ?))";
+    public static final String GET_MEMBER_BY_CHROMOSOME_NAME = "SELECT gene_member_id AS id, dnafrag_start AS start, dnafrag_end AS end, dnafrag_strand AS strand, dnafrag_id, genome_db_id FROM gene_member WHERE dnafrag_id = ? AND ((dnafrag_start > ? AND dnafrag_end < ?) OR (dnafrag_start < ? AND dnafrag_end > ?) OR (dnafrag_end > ? AND dnafrag_end < ?) OR (dnafrag_start > ? AND dnafrag_start < ?))";
 
-    public static final String GET_ALL_MEMBER_BY_CHROMOSOME_NAME = "select s.seq_member_id, g.gene_member_id as id, g.stable_id, g.dnafrag_start as start, g.dnafrag_end as end from gene_member g, seq_member s where g.gene_member_id = s.gene_member_id and g.genome_db_id = ? and g.dnafrag_id = ?";
+    public static final String GET_ALL_MEMBER_BY_CHROMOSOME_NAME = "SELECT s.seq_member_id, g.gene_member_id AS id, g.stable_id, g.dnafrag_start AS start, g.dnafrag_end AS end FROM gene_member g, seq_member s WHERE g.gene_member_id = s.gene_member_id AND g.genome_db_id = ? AND g.dnafrag_id = ?";
 
-    public static final String GET_ALL_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE = "select count(gene_member_id) from gene_member where genome_db_id = ? AND dnafrag_id = ? and dnafrag_start >= ? and dnafrag_end <= ?";
+    public static final String GET_ALL_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE = "SELECT count(gene_member_id) FROM gene_member WHERE genome_db_id = ? AND dnafrag_id = ? AND dnafrag_start >= ? AND dnafrag_end <= ?";
 
-    public static final String GET_MEMBER_BY_MEMBER_ID = "select gene_member_id as id, dnafrag_start as start, dnafrag_end as end, dnafrag_strand as strand, dnafrag_id, genome_db_id, display_label as 'desc', stable_id from gene_member where gene_member_id = ?";
+    public static final String GET_MEMBER_BY_MEMBER_ID = "SELECT gene_member_id AS id, dnafrag_start AS start, dnafrag_end AS end, dnafrag_strand AS strand, dnafrag_id, genome_db_id, display_label AS 'desc', stable_id FROM gene_member WHERE gene_member_id = ?";
 
-    public static final String COUNT_GENE_MEMBER_FOR_DNAFRAG = "select count(*) from gene_member where dnafrag_id = ?;";
+    public static final String COUNT_GENE_MEMBER_FOR_DNAFRAG = "SELECT count(*) FROM gene_member WHERE dnafrag_id = ?;";
 
-    public static final String GET_GENOME_ID_FROM_DNAFRAG = "select genome_db_id from dnafrag where dnafrag_id = ?";
+    public static final String GET_GENOME_ID_FROM_DNAFRAG = "SELECT genome_db_id FROM dnafrag WHERE dnafrag_id = ?";
 
-    public static final String GET_GENE_STABLE_ID_FROM_GENE_MEMBER_ID = "select stable_id from gene_member where gene_member_id = ?";
+    public static final String GET_GENE_STABLE_ID_FROM_GENE_MEMBER_ID = "SELECT stable_id FROM gene_member WHERE gene_member_id = ?";
 
     public static final String GET_MEMBER_FROM_ID = "SELECT * FROM gene_member where gene_member_id = ?";
 
+    public static final String GET_GENOME_ID_FROM_GENE_MEMBER_ID = "SELECT genome_db_id FROM gene_member where gene_member_id = ?";
+
 
     //    Seq Member
-    public static final String GET_CANONICAL_MEMBER_ID_FROM_GENE_MEMBER_ID = "select canonical_member_id from gene_member where gene_member_id = ?";
+    public static final String GET_CANONICAL_MEMBER_ID_FROM_GENE_MEMBER_ID = "SELECT canonical_member_id FROM gene_member WHERE gene_member_id = ?";
 
-    public static final String GET_STABLE_ID_FROM_GENE_MEMBER_ID = "select stable_id from gene_member where gene_member_id = ?";
+    public static final String GET_STABLE_ID_FROM_GENE_MEMBER_ID = "SELECT stable_id FROM gene_member WHERE gene_member_id = ?";
 
-    public static final String GET_GENE_MEMBER_INFO_FROM_GENE_MEMBER_ID = "select * from gene_member where gene_member_id = ?";
+    public static final String GET_GENE_MEMBER_INFO_FROM_GENE_MEMBER_ID = "SELECT * FROM gene_member WHERE gene_member_id = ?";
 
-    public static final String GET_SOURCE_FROM_GENE_MEMBER_ID = "select source_name from gene_member where gene_member_id = ?";
+    public static final String GET_SOURCE_FROM_GENE_MEMBER_ID = "SELECT source_name FROM gene_member WHERE gene_member_id = ?";
 
-    public static final String GET_GENE_MEMBER_ID_FROM_STABLE_ID = "select gene_member_id from gene_member where stable_id = ?";
+    public static final String GET_GENE_MEMBER_ID_FROM_STABLE_ID = "SELECT gene_member_id FROM gene_member WHERE stable_id = ?";
 
-    public static final String GET_SEQ_MEMBER_ID_FROM_GENE_MEMBER_ID = "select s.seq_member_id from gene_member g, seq_member s where s.gene_member_id = ? and s.gene_member_id = g.gene_member_id and s.seq_member_id = g.canonical_member_id";
+    public static final String GET_SEQ_MEMBER_ID_FROM_GENE_MEMBER_ID = "SELECT s.seq_member_id FROM gene_member g, seq_member s WHERE s.gene_member_id = ? AND s.gene_member_id = g.gene_member_id AND s.seq_member_id = g.canonical_member_id";
 
-    public static final String GET_Referece_ID_FROM_STABLE_ID = "select genome_db_id from seq_member where stable_id = ?";
+    public static final String GET_Referece_ID_FROM_STABLE_ID = "SELECT genome_db_id FROM seq_member WHERE stable_id = ?";
 
-    public static final String GET_dnafrag_ID_FROM_STABLE_ID = "select dnafrag_id from seq_member where stable_id = ?";
+    public static final String GET_dnafrag_ID_FROM_STABLE_ID = "SELECT dnafrag_id FROM seq_member WHERE stable_id = ?";
 
-    public static final String GET_STABLE_ID_FROM_SEQ_MEMBER_ID = "select stable_id from seq_member where seq_member_id = ?";
+    public static final String GET_STABLE_ID_FROM_SEQ_MEMBER_ID = "SELECT stable_id FROM seq_member WHERE seq_member_id = ?";
 
-    public static final String GET_SOURCE_FROM_SEQ_MEMBER_ID = "select source_name from seq_member where seq_member_id = ?";
+    public static final String GET_SOURCE_FROM_SEQ_MEMBER_ID = "SELECT source_name FROM seq_member WHERE seq_member_id = ?";
 
-    public static final String GET_TAXON_FROM_SEQ_MEMBER_ID = "select taxon_id from seq_member where seq_member_id = ?";
+    public static final String GET_TAXON_FROM_SEQ_MEMBER_ID = "SELECT taxon_id FROM seq_member WHERE seq_member_id = ?";
 
     public static final String GET_GENE_LABEL_WITH_MEMBER = "select display_label from seq_member where seq_member_id = ?";
 
-    public static final String GET_GENE_MEMBER_ID_FROM_SEQ_MEMBER_ID = "select gene_member_id from seq_member where seq_member_id = ?";
+    public static final String GET_GENE_MEMBER_ID_FROM_SEQ_MEMBER_ID = "SELECT gene_member_id FROM seq_member WHERE seq_member_id = ?";
 
-    public static final String GET_SEQ_MEMBER_ID_FROM_STABLE_ID = "select seq_member_id from seq_member where stable_id = ?";
+    public static final String GET_SEQ_MEMBER_ID_FROM_STABLE_ID = "SELECT seq_member_id FROM seq_member WHERE stable_id = ?";
 
-    public static final String GET_SEQUENCE_ID = "SELECT sequence_id FROM seq_member where seq_member_id = ?";
+    public static final String GET_SEQUENCE_ID = "SELECT sequence_id FROM seq_member WHERE seq_member_id = ?";
+
+    public static final String GET_SEQ_MEMBER_FROM_SEQ_MEMBER_ID = "SELECT * FROM seq_member WHERE seq_member_id = ?";
 
 
     //    Genomic Align Block
-    public static final String GET_GENOMIC_ALIGN_BLOCK_BY_ID = "select * from genomic_align_block where genomic_align_block_id = ?";
+    public static final String GET_GENOMIC_ALIGN_BLOCK_BY_ID = "SELECT * FROM genomic_align_block WHERE genomic_align_block_id = ?";
 
-    public static final String GET_GENOMIC_ALIGN_BLOCK_BY_DNAFRAG_ID = "select genomic_align_id as id, genomic_align_block_id, dnafrag_id as ref_id, dnafrag_start as start, dnafrag_end as end, dnafrag_strand as strand, cigar_line from genomic_align where dnafrag_id = ? AND method_link_species_set_id = ? AND ((dnafrag_start > ? AND dnafrag_end < ?) OR (dnafrag_start < ? AND dnafrag_end > ?) OR (dnafrag_end > ? AND dnafrag_end < ?) OR (dnafrag_start > ? AND dnafrag_start < ?))";
+    public static final String GET_GENOMIC_ALIGN_BLOCK_BY_DNAFRAG_ID = "SELECT genomic_align_id AS id, genomic_align_block_id, dnafrag_id AS ref_id, dnafrag_start AS start, dnafrag_end AS end, dnafrag_strand AS strand, cigar_line FROM genomic_align WHERE dnafrag_id = ? AND method_link_species_set_id = ? AND ((dnafrag_start > ? AND dnafrag_end < ?) OR (dnafrag_start < ? AND dnafrag_end > ?) OR (dnafrag_end > ? AND dnafrag_end < ?) OR (dnafrag_start > ? AND dnafrag_start < ?))";
 
-    public static final String GET_GENOMIC_ALIGN_BY_DNAFRAG_ID = "select * from genomic_align where dnafrag_id = ? AND method_link_species_set_id = ? AND ((dnafrag_start > ? AND dnafrag_end < ?) OR (dnafrag_start < ? AND dnafrag_end > ?) OR (dnafrag_end > ? AND dnafrag_end < ?) OR (dnafrag_start > ? AND dnafrag_start < ?))";
+    public static final String GET_GENOMIC_ALIGN_BY_DNAFRAG_ID = "SELECT * FROM genomic_align WHERE dnafrag_id = ? AND method_link_species_set_id = ? AND ((dnafrag_start > ? AND dnafrag_end < ?) OR (dnafrag_start < ? AND dnafrag_end > ?) OR (dnafrag_end > ? AND dnafrag_end < ?) OR (dnafrag_start > ? AND dnafrag_start < ?))";
 
-    public static final String COUNT_GENOMIC_ALIGN_BY_DNAFRAG_ID = "select count(*) from genomic_align where dnafrag_id = ? AND method_link_species_set_id = ? AND (dnafrag_start >= ? AND dnafrag_end <= ?)";
+    public static final String COUNT_GENOMIC_ALIGN_BY_DNAFRAG_ID = "SELECT count(*) FROM genomic_align WHERE dnafrag_id = ? AND method_link_species_set_id = ? AND (dnafrag_start >= ? AND dnafrag_end <= ?)";
 
-    public static final String GET_GENOMIC_ALIGN_BLOCK_BY_GENOMIC_ALIGN_BLOCK_ID = "select genomic_align_id as id, genomic_align_block_id, dnafrag_id as ref_id, dnafrag_start as start, dnafrag_end as end, dnafrag_strand as strand, cigar_line  from genomic_align where genomic_align_block_id = ? AND dnafrag_id <> ?";
+    public static final String GET_GENOMIC_ALIGN_BLOCK_BY_GENOMIC_ALIGN_BLOCK_ID = "SELECT genomic_align_id AS id, genomic_align_block_id, dnafrag_id AS ref_id, dnafrag_start AS start, dnafrag_end AS end, dnafrag_strand AS strand, cigar_line  FROM genomic_align WHERE genomic_align_block_id = ? AND dnafrag_id <> ?";
 
-    public static final String GET_MLSSID_PER_GENOMIC_ALIGN = "select count(method_link_species_set_id) from genomic_align where method_link_species_set_id = ?";
+    public static final String GET_MLSSID_PER_GENOMIC_ALIGN = "SELECT count(method_link_species_set_id) FROM genomic_align WHERE method_link_species_set_id = ?";
 
 
     //    Method Link Species set
-    public static final String GET_METHOD_LINK_SPECIES_SET_BY_GENOME_ID = "select * from method_link_species_set ms, species_set ss where ss.species_set_id = ms.species_set_id and ss.genome_db_id = ?";
+    public static final String GET_METHOD_LINK_SPECIES_SET_BY_GENOME_ID = "SELECT * FROM method_link_species_set ms, species_set ss WHERE ss.species_set_id = ms.species_set_id AND ss.genome_db_id = ?";
 
 
     //    Homology Member
-    public static final String GET_HOMOLOGY_MEMBER_BY_HOMOLOGY_MEMBER_ID = "select gene_member_id from homology_member where homology_id = ? AND gene_member_id <> ?";
+    public static final String GET_HOMOLOGY_MEMBER_BY_HOMOLOGY_MEMBER_ID = "SELECT gene_member_id FROM homology_member WHERE homology_id = ? AND gene_member_id <> ?";
 
-    public static final String GET_HOMOLOGY_ID_BY_MEMBER_ID = "select homology_id from homology_member where member_id = ?";
+    public static final String GET_HOMOLOGY_ID_BY_MEMBER_ID = "SELECT homology_id FROM homology_member WHERE member_id = ?";
 
-    public static final String GET_HOMOLOGY_MEMBER_CIGAR_BY_MEMBER_ID = "select cigar_line from homology_member where member_id = ? and homology_id = ?";
+    public static final String GET_HOMOLOGY_MEMBER_CIGAR_BY_MEMBER_ID = "SELECT cigar_line FROM homology_member WHERE member_id = ? AND homology_id = ?";
 
-    public static final String GET_HOMOLOGY_MEMBER_BY_HOMOLOGY_ID = "select * from homology_member where homology_id = ?";
+    public static final String GET_HOMOLOGY_MEMBER_BY_HOMOLOGY_ID = "SELECT * FROM homology_member WHERE homology_id = ?";
 
-    public static final String GET_PAIRWISE_ALIGNMENT = "select hm1.cigar_line as ref, hm2.cigar_line as hit from homology_member hm1, homology_member hm2 where hm1.seq_member_id = ? and hm2.seq_member_id = ? and  hm1.homology_id = hm2.homology_id;";
+    public static final String GET_PAIRWISE_ALIGNMENT = "SELECT hm1.cigar_line AS ref, hm2.cigar_line AS hit FROM homology_member hm1, homology_member hm2 WHERE hm1.seq_member_id = ? AND hm2.seq_member_id = ? AND  hm1.homology_id = hm2.homology_id;";
 
-    public static final String GET_HOMOLOGY_ID = "select h.homology_id from homology h, homology_member hm1, homology_member hm2 where hm1.seq_member_id = ? and hm2.seq_member_id = ? and  hm1.homology_id = hm2.homology_id and hm1.homology_id = h.homology_id;";
+    public static final String GET_HOMOLOGY_ID = "SELECT h.homology_id FROM homology h, homology_member hm1, homology_member hm2 WHERE hm1.seq_member_id = ? AND hm2.seq_member_id = ? AND  hm1.homology_id = hm2.homology_id AND hm1.homology_id = h.homology_id;";
 
-    public static final String IS_PAIRWISE_ALIGNMENT = "select count(*) from homology_member hm1, homology_member hm2 where hm1.seq_member_id = ? and hm2.seq_member_id = ? and  hm1.homology_id = hm2.homology_id;";
+    public static final String IS_PAIRWISE_ALIGNMENT = "SELECT count(*) FROM homology_member hm1, homology_member hm2 WHERE hm1.seq_member_id = ? AND hm2.seq_member_id = ? AND  hm1.homology_id = hm2.homology_id;";
 
 
     //    Homology
-    public static final String GET_MLSSID_PER_HOMOLOGY = "select count(method_link_species_set_id) from homology where method_link_species_set_id = ?";
+    public static final String GET_MLSSID_PER_HOMOLOGY = "SELECT count(method_link_species_set_id) FROM homology WHERE method_link_species_set_id = ?";
 
     public static final String GET_MLSSID_PER_TABLE = "select count(method_link_species_set_id) from homology where method_link_species_set_id = ?";
 
-    public static final String GET_HOMOLOGY_ID_BY_MLSSI = "select homology_id from homology where method_link_species_set_id = ?";
+    public static final String GET_HOMOLOGY_ID_BY_MLSSI = "SELECT homology_id FROM homology WHERE method_link_species_set_id = ?";
 
-    public static final String GET_MLSSID_FOR_HOMOLOGY = "select method_link_species_set_id from homology where homology_id = ?";
+    public static final String GET_MLSSID_FOR_HOMOLOGY = "SELECT method_link_species_set_id FROM homology WHERE homology_id = ?";
 
-    public static final String GET_HOMOLOGY_TYPE = "select description from homology  where homology_id = ?;";
+    public static final String GET_HOMOLOGY_TYPE = "SELECT description FROM homology  WHERE homology_id = ?;";
 
 
     //    Gene Align Member
-    public static final String GET_CIGAR_LINE = "select cigar_line from gene_align_member where seq_member_id = ? and gene_align_id = ?";
+    public static final String GET_CIGAR_LINE = "SELECT cigar_line FROM gene_align_member WHERE seq_member_id = ? AND gene_align_id = ?";
 
 
     //    Gene Tree Node
@@ -217,10 +222,13 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
 
     //    Sequence
-    public static final String GET_SEQUENCE = "SELECT sequence FROM sequence where sequence_id = ?";
+    public static final String GET_SEQUENCE = "SELECT sequence FROM sequence WHERE sequence_id = ?";
 
     public static final String SEQUENCE_FROM_ID = "SELECT sequence from sequence where sequence_id = ?";
 
+    public static final String GET_GENEFAMILYID_FROM_GENEIS = "SELECT * from gene_tree_node where seq_member_id = ?";
+
+    public static final String GET_GENETREE_ROOT_ID_BY_GENE_STABLEID = "SELECT DISTINCT h.gene_tree_root_id FROM homology h, homology_member hm, gene_member gm WHERE hm.gene_member_id = gm.gene_member_id AND h.homology_id = hm.homology_id AND gm.stable_id = ?;";
 
     @Autowired
     private CacheManager cacheManager;
@@ -239,6 +247,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public void setJdbcTemplate(JdbcTemplate template) {
         this.template = template;
     }
+
 
     public String getAllDnafragByGenomedbId(int query) throws IOException {
         try {
@@ -574,6 +583,208 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         return gene;
     }
 
+    public JSONObject findSynteny(int query) throws Exception {
+
+        List<Long> homology_ids = new ArrayList<>();
+
+        JSONObject synteny = new JSONObject();
+
+        String gene_stable_id = template.queryForObject(GET_STABLE_ID_FROM_GENE_MEMBER_ID, new Object[]{query}, String.class);
+
+        int seq_member_id = template.queryForInt(GET_SEQ_MEMBER_ID_FROM_GENE_MEMBER_ID, new Object[]{query});
+
+        Map<String, Object> seq_member = template.queryForMap(GET_SEQ_MEMBER_FROM_SEQ_MEMBER_ID, new Object[]{seq_member_id});
+
+        long genome_db_id = (long) seq_member.get("genome_db_id");
+
+        String stable_id = (String) seq_member.get("stable_id");
+
+        String genome = template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{genome_db_id}, String.class);
+
+        JSONObject ref_synteny = new JSONObject();
+
+        Map<String, Object> ref = SQLSequenceDAO.getCondensedGenebyStableid(stable_id, genome, seq_member_id, gene_stable_id);
+
+        JSONObject orderedGene = SQLSequenceDAO.getOrderedGenebyStableid(stable_id, genome, seq_member_id, gene_stable_id);
+
+        orderedGene.put("before", getHomologyid((List<Map<String, Object>>) orderedGene.get("before")));
+
+        orderedGene.put("after", getHomologyid((List<Map<String, Object>>) orderedGene.get("after")));
+
+        final String SEARCH_HOMOLOGY_IDs = "SELECT homology_id FROM homology_member WHERE seq_member_id = ?;";
+
+        ref_synteny.put("genes", orderedGene);
+
+        ref.put("homology", getHomologyid(seq_member_id));
+        ref.put("ref", true);
+
+
+        ref_synteny.put("ref", ref);
+
+
+        List<Map<String, Object>> homology_id = template.queryForList(SEARCH_HOMOLOGY_IDs, new Object[]{seq_member_id});
+
+        for (Map map_two : homology_id) {
+            homology_ids.add((Long) map_two.get("homology_id"));
+
+        }
+
+        synteny.put(genome, ref_synteny);
+
+        final String SEARCH_HOMOLOGY_INFO = "SELECT hm.homology_id " +
+                "from homology_member hm, homology h, seq_member s, genome_db g, method_link_species_set mlss, method_link ml, gene_member gm  " +
+                "where h.homology_id = hm.homology_id  " +
+                "and h.homology_id in (" + StringUtils.join(homology_ids, ",") + ") " +
+                "and hm.seq_member_id = s.seq_member_id " +
+                "and hm.gene_member_id = gm.gene_member_id " +
+                "and s.genome_db_id in " + genome_ids + " " +
+                "and s.genome_db_id = g.genome_db_id " +
+                "and h.method_link_species_set_id = mlss.method_link_species_set_id " +
+                "and mlss.method_link_id = ml.method_link_id " +
+                "and h.description like '%ortho%' " +
+                "GROUP BY hm.homology_id " +
+                "having count(hm.homology_id) > 1;";
+
+        List<Map<String, Object>> homology_member_id = template.queryForList(SEARCH_HOMOLOGY_INFO);
+
+        final String GET_HOMOLOG_STABLE_ID_FROM_SEQ_MEMBER = "SELECT * FROM seq_member WHERE seq_member_id = (SELECT seq_member_id FROM homology_member WHERE homology_id = ? AND seq_member_id <> ?);";
+
+        for (Map map_two : homology_member_id) {
+
+            long tmp_homology_id = (long) map_two.get("homology_id");
+
+
+            Map<String, Object> tmp_seq_member = template.queryForMap(GET_HOMOLOG_STABLE_ID_FROM_SEQ_MEMBER, new Object[]{tmp_homology_id, seq_member_id});
+
+            String tmp_gene_stable_id = template.queryForObject(GET_STABLE_ID_FROM_GENE_MEMBER_ID, new Object[]{tmp_seq_member.get("gene_member_id")}, String.class);
+
+            long tmp_seq_member_id = (long) tmp_seq_member.get("seq_member_id");
+
+            long tmp_genome_db_id = (long) tmp_seq_member.get("genome_db_id");
+
+            String tmp_stable_id = (String) tmp_seq_member.get("stable_id");
+
+            String tmp_genome = template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{tmp_genome_db_id}, String.class);
+
+            JSONObject tmp_synteny = new JSONObject();
+
+            Map<String, Object> ref_gene = SQLSequenceDAO.getCondensedGenebyStableid(tmp_stable_id, tmp_genome, tmp_seq_member_id, tmp_gene_stable_id);
+
+
+            orderedGene = SQLSequenceDAO.getOrderedGenebyStableid(tmp_stable_id, tmp_genome, tmp_seq_member_id, tmp_gene_stable_id);
+            orderedGene.put("before", getHomologyid((List<Map<String, Object>>) orderedGene.get("before")));
+            orderedGene.put("after", getHomologyid((List<Map<String, Object>>) orderedGene.get("after")));
+
+            ref_gene.put("homology", getHomologyid(tmp_seq_member_id));
+            ref_gene.put("ref", true);
+
+            tmp_synteny.put("ref", ref_gene);
+
+            tmp_synteny.put("genes", orderedGene);
+
+            synteny.put(tmp_genome, tmp_synteny);
+
+        }
+
+        return synteny;
+    }
+
+
+    public List<Long> getHomologyid(long seq_member_id) throws Exception {
+        List<Long> homology_ids = new ArrayList<>();
+        final String SEARCH_HOMOLOGY_IDs = "SELECT homology_id FROM homology_member WHERE seq_member_id = ?;";
+
+        List<Map<String, Object>> homology_id = template.queryForList(SEARCH_HOMOLOGY_IDs, new Object[]{seq_member_id});
+        List<Long> homology_ids_list = new ArrayList<>();
+
+
+        for (Map map_two : homology_id) {
+            homology_ids_list.add((Long) map_two.get("homology_id"));
+
+        }
+
+        final String SEARCH_HOMOLOGY_INFO = "SELECT hm.homology_id " +
+                "from homology_member hm, homology h, seq_member s, genome_db g, method_link_species_set mlss, method_link ml, gene_member gm  " +
+                "where h.homology_id = hm.homology_id  " +
+                "and h.homology_id in (" + StringUtils.join(homology_ids_list, ",") + ") " +
+                "and hm.seq_member_id = s.seq_member_id " +
+                "and hm.gene_member_id = gm.gene_member_id " +
+                "and s.genome_db_id in " + genome_ids + " " +
+                "and s.genome_db_id = g.genome_db_id " +
+                "and h.method_link_species_set_id = mlss.method_link_species_set_id " +
+                "and mlss.method_link_id = ml.method_link_id " +
+                "and h.description like '%ortho%' " +
+                "GROUP BY hm.homology_id " +
+                "having count(hm.homology_id) > 1;";
+
+        List<Long> homology_ids_array = new ArrayList<>();
+        if (homology_ids_list.size() > 0) {
+            List<Map<String, Object>> tmp_homology_member_id = template.queryForList(SEARCH_HOMOLOGY_INFO);
+
+            for (Map map_two : tmp_homology_member_id) {
+                homology_ids_array.add((Long) map_two.get("homology_id"));
+
+            }
+        }
+
+        return homology_ids_array;
+    }
+
+
+    public List<Map<String, Object>> getHomologyid(List<Map<String, Object>> before) throws Exception {
+        List<Map<String, Object>> genelist = new ArrayList<>();
+
+        final String SEARCH_HOMOLOGY_IDs = "SELECT homology_id FROM homology_member WHERE seq_member_id = ?;";
+
+        for (Map gene : before) {
+            List<Long> homology_ids_list = new ArrayList<>();
+
+
+            int gene_member_id = template.queryForInt(GET_GENE_MEMBER_ID_FROM_STABLE_ID, new Object[]{gene.get("stable_id")});
+
+            int seq_member_id = template.queryForInt(GET_SEQ_MEMBER_ID_FROM_GENE_MEMBER_ID, new Object[]{gene_member_id});
+
+            List<Map<String, Object>> homology_id = template.queryForList(SEARCH_HOMOLOGY_IDs, new Object[]{seq_member_id});
+
+            for (Map map_two : homology_id) {
+                homology_ids_list.add((Long) map_two.get("homology_id"));
+
+            }
+
+            final String SEARCH_HOMOLOGY_INFO = "SELECT hm.homology_id " +
+                    "from homology_member hm, homology h, seq_member s, genome_db g, method_link_species_set mlss, method_link ml, gene_member gm  " +
+                    "where h.homology_id = hm.homology_id  " +
+                    "and h.homology_id in (" + StringUtils.join(homology_ids_list, ",") + ") " +
+                    "and hm.seq_member_id = s.seq_member_id " +
+                    "and hm.gene_member_id = gm.gene_member_id " +
+                    "and s.genome_db_id in " + genome_ids + " " +
+                    "and s.genome_db_id = g.genome_db_id " +
+                    "and h.method_link_species_set_id = mlss.method_link_species_set_id " +
+                    "and mlss.method_link_id = ml.method_link_id " +
+                    "and h.description like '%ortho%' " +
+                    "GROUP BY hm.homology_id " +
+                    "having count(hm.homology_id) > 1;";
+
+            List<Long> homology_ids_array = new ArrayList<>();
+            if (homology_ids_list.size() > 0) {
+                List<Map<String, Object>> tmp_homology_member_id = template.queryForList(SEARCH_HOMOLOGY_INFO);
+
+
+                for (Map map_two : tmp_homology_member_id) {
+                    homology_ids_array.add((Long) map_two.get("homology_id"));
+
+                }
+
+            }
+            gene.put("homology", homology_ids_array);
+
+
+            genelist.add(gene);
+        }
+
+        log.info("\n\n\n\n sizeeee " + genelist.size());
+        return genelist;
+    }
 
     public int getGeneMemberIDfromStableID(String query) throws Exception {
         int gene_member_id = template.queryForInt(GET_GENE_MEMBER_ID_FROM_STABLE_ID, new Object[]{query});
@@ -1185,10 +1396,10 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                 "df.dnafrag_id = s1.dnafrag_id limit 100;";
 
         JSONArray homologouses = new JSONArray();
-        List<Map<String, Object>> homology_member_id = template.queryForList(SEARCH_MEMBER, new Object[]{ query, query,query });
+        List<Map<String, Object>> homology_member_id = template.queryForList(SEARCH_MEMBER, new Object[]{query, query, query});
 
         if (homology_member_id.size() == 0) {
-            homology_member_id = template.queryForList(SEARCH_SEQ_MEMBER, new Object[]{query , query, query});
+            homology_member_id = template.queryForList(SEARCH_SEQ_MEMBER, new Object[]{query, query, query});
         }
 
         for (Map map_two : homology_member_id) {

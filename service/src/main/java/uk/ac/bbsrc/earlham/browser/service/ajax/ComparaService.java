@@ -420,7 +420,28 @@ public class ComparaService {
         response.put("trackname", "homology");
         try {
             response.put("ref", comparaStore.getGeneMemberInfofromID(query));
+            response.put("refSpecies", comparaStore.getGeneMemberInfofromID(query));
             response.put("homology", comparaStore.findHomology(query));
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return response;
+    }
+
+
+    public JSONObject getSyntenyForMember(HttpSession session, JSONObject json) {
+        int query = json.getInt("query");
+        JSONObject response = new JSONObject();
+
+        response.put("trackname", "synteny");
+        try {
+            response.put("ref", comparaStore.getGeneStableIDfromGeneMemberID(query));
+            response.put("refSpecies", comparaStore.getGenomefromGeneMemberID(query));
+            response.put("synteny", comparaStore.findSynteny(query));
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             return JSONUtils.SimpleJSONError(e.getMessage());
