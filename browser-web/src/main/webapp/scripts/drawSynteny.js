@@ -10,6 +10,12 @@ var colours = ['#8c510a','#bf812d','#dfc27d','#80cdc1','#35978f','#01665e','#c51
 
 function drawSynteny(json) {
 
+    jQuery("#redraw_buttons").hide()
+    jQuery("#selected_region").show()
+    jQuery("#synteny").show()
+    jQuery("#synteny").html("")
+    jQuery("#selected_region").html("")
+
     var synteny = json.synteny;
     var ref_species = json.refSpecies;
     var top = 0;
@@ -112,6 +118,7 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species) {
                             homology: all_genes[gene].homology.join(" "),
                             onmouseover: 'highlightSynteny("#exon' + +gene + '_' + species + '","' + ref_species + '")',
                             onmouseout: 'defaultSynteny()',
+                            onclick: 'clickSynteny("' + all_genes[gene].stable_id + '")',
                             title: all_genes[gene].description,
                             fill: bg_colour, stroke: stroke, strokeWidth: strokeWidth
                         });
@@ -129,6 +136,7 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species) {
                             homology: all_genes[gene].homology.join(" "),
                             onmouseover: 'highlightSynteny("#exon' + gene + '_' + species + '","' + ref_species + '")',
                             onmouseout: 'defaultSynteny()',
+                            onclick: 'clickSynteny("' + all_genes[gene].stable_id + '")',
                             title: all_genes[gene].description,
                             fill: bg_colour, stroke: stroke, strokeWidth: strokeWidth
                         });
@@ -146,6 +154,8 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species) {
     }
 
 
+    console.log("dispGeneinSynteny 2")
+
 }
 
 function highlightSynteny(id, ref_species) {
@@ -161,6 +171,13 @@ function highlightSynteny(id, ref_species) {
 
 function defaultSynteny() {
     jQuery(".syntenyGene").attr( "stroke-width", 2 )
+}
+
+
+function clickSynteny(query) {
+    search_member(query)
+    setSearchList(query)
+    openPanel('#search_div')
 }
 
 function getColour(cssClass, ref_species) {
@@ -223,6 +240,7 @@ function dispGenesForSpecies(div, species, genes, ref_species) {
     var g = svg.group({class: 'style1'});
 
     dispGeneinSynteny(g, svg, genes, species, ref_species);
+    console.log("dispGenesForSpecies 2")
 
 }
 
