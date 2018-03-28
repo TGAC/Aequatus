@@ -7,7 +7,7 @@
  */
 function search_from_homologues_box() {
     if (parseInt(jQuery("#§trol_panel").css("left")) < 0) {
-        openPanel('#search_div')
+        togglePanel('#search_div')
     }
     jQuery("#search_history").html(jQuery("#control_search").val());
     jQuery("#control_search").val(jQuery('#search').val());
@@ -86,6 +86,20 @@ function list_homologues(json) {
 
     }
 }
+
+function getSyntenyForMember(query) {
+
+    Fluxion.doAjax(
+        'comparaService',
+        'getSyntenyForMember',
+        {'query': query, 'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+                drawSynteny(json)
+            }
+        });
+}
+
 
 
 function getHomologyForMember(query, view) {
