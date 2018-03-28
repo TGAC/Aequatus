@@ -7,7 +7,7 @@
  */
 
 var last_opened = null;
-function openPanel(div_id) {
+function togglePanel(div_id) {
     removePopup();
     if(div_id == last_opened){
         openClosePanel();
@@ -23,6 +23,17 @@ function openPanel(div_id) {
         last_opened = div_id
     }
 }
+function openPanel(div_id) {
+    removePopup();
+    jQuery("#control_panel").animate({left: 0});
+    toogleControlDivs(div_id)
+    if (div_id.indexOf("search_div") >= 0) {
+        jQuery("#search_result").animate({width: '100%'})
+    } else{
+        jQuery("#search_result").animate({width: 0});
+    }
+}
+
 
 function toogleControlDivs(div_id) {
     jQuery("#control_divs").children().hide();

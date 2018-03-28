@@ -136,27 +136,27 @@
                         style="color: white;"
                         class="fa fa-bars fa-3x control-buttons fa-rotate-90"></i>
                 </div>
-                <div onclick="openPanel('#search_div')"
+                <div onclick="togglePanel('#search_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% green;"><i
                         style="color: white;"
                         class="fa fa-search fa-3x control-buttons"></i>
                 </div>
-                <div onclick="openPanel('#settings_div')"
+                <div onclick="togglePanel('#settings_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% darkcyan;"><i
                         style="color: white;"
                         class="fa fa-cogs fa-3x control-buttons"></i>
                 </div>
-                <div onclick="openPanel('#filter_div')"
+                <div onclick="togglePanel('#filter_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% orange;"><i
                         style="color: white;"
                         class="fa fa-filter fa-3x control-buttons"></i>
                 </div>
-                <div onclick="openPanel('#export_div')"
+                <div onclick="togglePanel('#export_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% rebeccapurple;"><i
                         style="color: white;"
                         class="fa fa-external-link fa-3x control-buttons"></i>
                 </div>
-                <div onclick="openPanel('#info_div')"
+                <div onclick="togglePanel('#info_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% peru;"><i
                         style="color: white;"
                         class="fa fa-question fa-3x control-buttons"></i>
