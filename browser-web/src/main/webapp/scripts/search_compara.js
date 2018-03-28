@@ -60,15 +60,14 @@ function getReferences() {
 }
 
 
-function setGenomes(callback){
+function setGenomes(callback) {
     Fluxion.doAjax(
         'comparaService',
         'setGenomes',
         {'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                if(callback)
-                {
+                if (callback) {
                     callback()
                 }
             }
@@ -123,14 +122,14 @@ function search_member(query) {
     jQuery('#sessioninput').fadeOut();
     jQuery("#sessionid").html("");
     minWidth = null;
-    jQuery("#chr_maps").html("");
-    jQuery("#bar_image_ref").html("")
-    jQuery("#selected_region").html("")
-    jQuery("#gene_tree_nj").html("")
-    jQuery("#gene_tree_upgma").html("")
-    jQuery("#gene_widget_exons").html("")
-    jQuery('#canvas').hide();
-    jQuery("#search_result").html("");
+    //jQuery("#chr_maps").html("");
+    //jQuery("#bar_image_ref").html("")
+    //jQuery("#selected_region").html("")
+    //jQuery("#gene_tree_nj").html("")
+    //jQuery("#gene_tree_upgma").html("")
+    //jQuery("#gene_widget_exons").html("")
+    //jQuery('#canvas').hide();
+    //jQuery("#search_result").html("");
 
     jQuery("#searchresultHead").html("<br> <span style='color: grey; font-size: large;'>Searching...<span> " +
         "<br><br>" +
@@ -169,7 +168,7 @@ function URLgenomeName(genome_name, chr_name) {
 }
 
 function URLMemberID(stable_id, view) {
-    window.history.pushState("query=" + stable_id, "Title", "?query=" + stable_id+"&&view="+view);
+    window.history.pushState("query=" + stable_id, "Title", "?query=" + stable_id + "&&view=" + view);
 }
 
 function URLSearch(search) {
