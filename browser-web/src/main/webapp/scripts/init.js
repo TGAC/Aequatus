@@ -285,11 +285,13 @@ function resize() {
         }
         rearrange_selector(member_id, start, chr);
         drawSelected();
-        drawSynteny(true);
+        prepareTree(true);
     }
 }
 
 function listResult(json) {
+    jQuery("#search_result").html("");
+
     var content = "";
 
     if (json.html.length > 0) {
@@ -319,8 +321,10 @@ function listResult(json) {
                 "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
                 "getChromosomes(); " +
                 "getMember();   " +
+                "getSyntenyForMember(" + json.html[i].gene_member_id + ");" +
                 "setTreeExport();   " +
-                "getcoreMember(" + json.html[i].gene_member_id + ",\"true\");'> </i>" +
+                "getcoreMember(" + json.html[i].gene_member_id + ",\"true\");'" +
+                "> </i>" +
                 "</td>" +
 
                 "<td> <i style='color:grey' class='fa fa-1x fa-table' title='List Homogy in Table'  onclick='openClosePanel(); " +
@@ -328,6 +332,7 @@ function listResult(json) {
                 "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
                 "getChromosomes(); " +
                 "getMember();   " +
+                "getSyntenyForMember(" + json.html[i].gene_member_id + ");" +
                 "getHomologyForMember(" + json.html[i].gene_member_id + ",\"table\");'> </i>" +
                 "</td>" +
 
@@ -336,6 +341,7 @@ function listResult(json) {
                 "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
                 "getChromosomes(); " +
                 "getMember();   " +
+                "getSyntenyForMember(" + json.html[i].gene_member_id + ");" +
                 "getHomologyForMember(" + json.html[i].gene_member_id + ",\"sankey\");'> </i>" +
                 "</td>" +
 
