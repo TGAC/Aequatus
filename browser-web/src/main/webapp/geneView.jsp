@@ -236,8 +236,11 @@
              onClick="toggleLeftInfo(jQuery('#synteny_wrapper'), 'synteny_wrapper');">
             Toggle Synteny
         </div>
-        <div id="selected_region">
+        <div id="selected_region"></div>
 
+        <div id="redraw_buttons" style="display: none;">
+            <button onclick="loadSyntenyfromSelector()">Load Synteny</button>
+            <button onclick="setSelector()"> Reset Selector</button>
         </div>
 
     </div>
