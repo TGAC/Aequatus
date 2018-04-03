@@ -434,7 +434,7 @@ public class ComparaService {
 
 
     public JSONObject getSyntenyForMember(HttpSession session, JSONObject json) {
-        int query = json.getInt("query");
+        long query = json.getLong("query");
         JSONObject response = new JSONObject();
 
         response.put("trackname", "synteny");
@@ -442,6 +442,29 @@ public class ComparaService {
             response.put("ref", comparaStore.getGeneStableIDfromGeneMemberID(query));
             response.put("refSpecies", comparaStore.getGenomefromGeneMemberID(query));
             response.put("synteny", comparaStore.findSynteny(query));
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return response;
+    }
+
+    public JSONObject loadSyntenyfromSelector(HttpSession session, JSONObject json) {
+        int start = json.getInt("start");
+        int end = json.getInt("end");
+        int genome_db_id = json.getInt("genome_db_id");
+        String chr = json.getString("chr");
+        JSONObject response = new JSONObject();
+
+        response.put("trackname", "synteny");
+        try {
+            long gene_member_id = comparaStore.getCenralGeneMemberID(genome_db_id, chr,start,end);
+            response.put("ref", comparaStore.getGeneStableIDfromGeneMemberID(gene_member_id));
+            response.put("refSpecies", comparaStore.getGenomefromGeneMemberID(gene_member_id));
+            response.put("synteny", comparaStore.findSynteny(gene_member_id));
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             return JSONUtils.SimpleJSONError(e.getMessage());

@@ -100,13 +100,14 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_dnafrag_Name_FROM_ID = "SELECT name FROM dnafrag WHERE dnafrag_id = ?";
 
-
     //    Gene member
     public static final String GET_MEMBER_BY_CHROMOSOME_NAME = "SELECT gene_member_id AS id, dnafrag_start AS start, dnafrag_end AS end, dnafrag_strand AS strand, dnafrag_id, genome_db_id FROM gene_member WHERE dnafrag_id = ? AND ((dnafrag_start > ? AND dnafrag_end < ?) OR (dnafrag_start < ? AND dnafrag_end > ?) OR (dnafrag_end > ? AND dnafrag_end < ?) OR (dnafrag_start > ? AND dnafrag_start < ?))";
 
     public static final String GET_ALL_MEMBER_BY_CHROMOSOME_NAME = "SELECT s.seq_member_id, g.gene_member_id AS id, g.stable_id, g.dnafrag_start AS start, g.dnafrag_end AS end FROM gene_member g, seq_member s WHERE g.gene_member_id = s.gene_member_id AND g.genome_db_id = ? AND g.dnafrag_id = ?";
 
-    public static final String GET_ALL_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE = "SELECT count(gene_member_id) FROM gene_member WHERE genome_db_id = ? AND dnafrag_id = ? AND dnafrag_start >= ? AND dnafrag_end <= ?";
+    public static final String COUNT_ALL_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE = "SELECT count(gene_member_id) FROM gene_member WHERE genome_db_id = ? AND dnafrag_id = ? AND dnafrag_start >= ? AND dnafrag_end <= ?";
+
+    public static final String GET_ALL_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE = "SELECT gene_member_id FROM gene_member WHERE genome_db_id = ? AND dnafrag_id = ? AND dnafrag_start >= ? AND dnafrag_end <= ? order by dnafrag_start asc ";
 
     public static final String GET_MEMBER_BY_MEMBER_ID = "SELECT gene_member_id AS id, dnafrag_start AS start, dnafrag_end AS end, dnafrag_strand AS strand, dnafrag_id, genome_db_id, display_label AS 'desc', stable_id FROM gene_member WHERE gene_member_id = ?";
 
@@ -583,7 +584,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         return gene;
     }
 
-    public JSONObject findSynteny(int query) throws Exception {
+    public JSONObject findSynteny(long query) throws Exception {
 
         List<Long> homology_ids = new ArrayList<>();
 
@@ -850,9 +851,35 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         return sequence;
     }
 
-    public String getGeneStableIDfromGeneMemberID(int gene_member_id) throws Exception {
+    public String getGeneStableIDfromGeneMemberID(long gene_member_id) throws Exception {
         return template.queryForObject(GET_GENE_STABLE_ID_FROM_GENE_MEMBER_ID, new Object[]{gene_member_id}, String.class);
     }
+
+    public long getCenralGeneMemberID(int genome_db_id, String chr, int start, int end) throws Exception {
+        long gene_member_id = 0;
+
+        int chr_id = template.queryForInt(GET_DNAFRAG_ID_SEARCH, new Object[]{chr, genome_db_id});
+
+        List<Map<String, Object>> gene_members = template.queryForList(GET_ALL_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE, new Object[]{genome_db_id, chr_id, start, end});
+
+        int length = gene_members.size();
+
+        log.info("\n\n\n\t lengttth "+length);
+
+        if(length%2 != 0)
+        {
+            log.info("\n\n\n\t iff lengttth "+length);
+            gene_member_id = (long) gene_members.get((length/2)+1).get("gene_member_id");
+            log.info("\n\n\n\t gene_membersss "+gene_members.get((length/2)+1));
+        } else{
+            log.info("\n\n\n\t else lengttth "+length);
+            gene_member_id = (long) gene_members.get((length/2)).get("gene_member_id");
+            log.info("\n\n\n\t gene_membersss "+gene_members.get((length/2)));
+        }
+
+        return gene_member_id;
+    }
+
 
     public int getGeneMemberIDfromSeqMemberID(int seq_member_id) throws Exception {
         return template.queryForInt(GET_GENE_MEMBER_ID_FROM_SEQ_MEMBER_ID, new Object[]{seq_member_id});
@@ -862,7 +889,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         return template.queryForObject(GET_GENOME_NAME_FROM_SEQ_MEMBER_ID, new Object[]{seq_member_id}, String.class);
     }
 
-    public String getGenomefromGeneMemberID(int gene_member_id) throws Exception {
+    public String getGenomefromGeneMemberID(long gene_member_id) throws Exception {
         return template.queryForObject(GET_GENOME_NAME_FROM_GENE_MEMBER_ID, new Object[]{gene_member_id}, String.class);
     }
 
@@ -934,7 +961,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                 for (int i = 1; i <= 200; i++) {
                     JSONObject eachTrack = new JSONObject();
                     to = (i * Math.round(length / 200));
-                    int no_of_tracks = template.queryForObject(GET_ALL_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE, new Object[]{genome_db, query, from, to}, Integer.class);
+                    int no_of_tracks = template.queryForObject(COUNT_ALL_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE, new Object[]{genome_db, query, from, to}, Integer.class);
                     eachTrack.put("start", from);
                     eachTrack.put("end", to);
                     eachTrack.put("graph", no_of_tracks);

@@ -78,19 +78,20 @@ public interface ComparaStore extends Store<String> {
     String getDnafragnamefromId(int query) throws IOException;
     String getRefStableID(String query) throws Exception;
     Map<String, Object> getGeneMemberInfofromID(String query) throws Exception;
-    JSONObject findSynteny (int query) throws Exception;
+    JSONObject findSynteny (long query) throws Exception;
     String getRefPtnStableID(String query) throws Exception;
     JSONObject findHomology(String query) throws Exception;
     int getGeneMemberIDfromStableID(String query) throws Exception;
     int getSeqMemberIDfromGeneMemberID(int gene_member_id) throws Exception;
     int getSeqMemberIDfromStableID(String query) throws Exception;
     String getGenomefromSeqMemberID(int stable_id) throws Exception;
-    String getGenomefromGeneMemberID(int gene_member_id) throws Exception;
+    String getGenomefromGeneMemberID(long gene_member_id) throws Exception;
     int getGeneMemberIDfromSeqMemberID(int seq_member_id) throws Exception;
     String getSeqStableIDfromSeqMemberID(int seq_member_id) throws Exception;
     JSONObject getPairwiseAlignment(int ref, int query) throws Exception;
     JSONObject getHomologyID(int ref, int query) throws Exception;
     String getHomologyType(long homology_id) throws Exception;
     String getSeq(int seq_member_id)  throws Exception;
-    String getGeneStableIDfromGeneMemberID(int gene_member_id) throws Exception;
+    String getGeneStableIDfromGeneMemberID(long gene_member_id) throws Exception;
+    long getCenralGeneMemberID(int genome_db_id, String chr,int start, int end) throws Exception;
     }
