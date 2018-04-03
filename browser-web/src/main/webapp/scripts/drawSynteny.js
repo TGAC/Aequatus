@@ -113,10 +113,10 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species) {
                     var gene_svg = svg.polygon(g,
                         [[startposition, strokeWidth], [startposition, height], [breakingPoint, height], [rectWidth, height / 2], [breakingPoint, strokeWidth]],
                         {
-                            id: "exon" + gene + "_" + species,
+                            id: "synteny" + gene + "_" + species,
                             class: syntenic_class+" " + all_genes[gene].gene_id + " " + all_genes[gene].homology.join(" "),
                             homology: all_genes[gene].homology.join(" "),
-                            onmouseover: 'highlightSynteny("#exon' + +gene + '_' + species + '","' + ref_species + '")',
+                            onmouseover: 'highlightSynteny("#synteny' + +gene + '_' + species + '","' + ref_species + '")',
                             onmouseout: 'defaultSynteny()',
                             onclick: 'clickSynteny("' + all_genes[gene].stable_id + '")',
                             title: all_genes[gene].description,
@@ -131,10 +131,10 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species) {
                     var gene_svg = svg.polygon(g,
                         [[startposition, height / 2], [(startposition + height / 2), strokeWidth], [rectWidth, strokeWidth], [rectWidth, height], [(startposition + height / 2), height]],
                         {
-                            id: "exon" + gene + "_" + species,
+                            id: "synteny" + gene + "_" + species,
                             class: syntenic_class+" " + all_genes[gene].gene_id + " " + all_genes[gene].homology.join(" "),
                             homology: all_genes[gene].homology.join(" "),
-                            onmouseover: 'highlightSynteny("#exon' + gene + '_' + species + '","' + ref_species + '")',
+                            onmouseover: 'highlightSynteny("#synteny' + gene + '_' + species + '","' + ref_species + '")',
                             onmouseout: 'defaultSynteny()',
                             onclick: 'clickSynteny("' + all_genes[gene].stable_id + '")',
                             title: all_genes[gene].description,
@@ -226,7 +226,7 @@ function dispGenesForSpecies(div, species, genes, ref_species) {
         fontSize: 10,
         // textAnchor: baseColour,
         fill: baseColour,
-        class: "geneinfo genelabel genetext"
+        class: "synteny specieslabel"
     });
 
 
@@ -237,7 +237,7 @@ function dispGenesForSpecies(div, species, genes, ref_species) {
     });
 
 
-    var g = svg.group({class: 'style1'});
+    var g = svg.group({class: 'synteny'});
 
     dispGeneinSynteny(g, svg, genes, species, ref_species);
     console.log("dispGenesForSpecies 2")
