@@ -61,7 +61,7 @@ function generate_sankey_JSON(json) {
             "name": homologs[i].id,
             "species": species.indexOf(homologs[i].species),
             "speciesName": homologs[i].species,
-            "source": homhologs[i].source,
+            "source": homologs[i].source,
             "target": homologs[i].target
         })
 
@@ -81,8 +81,7 @@ function generate_sankey_JSON(json) {
 
         var source = 0;
 
-        var target = nodes.find(item => item.name == types[i]
-    )
+        var target = nodes.find(item => item.name == types[i])
 
         value = 2
         //if (i % 2 > 0) {
@@ -102,10 +101,8 @@ function generate_sankey_JSON(json) {
     }
 
     for (var i = 0; i < json_key.length; i++) {
-        var source = nodes.find(item => item.name == homology[json_key[i]].type
-    )
-        var target = nodes.find(item => item.name == homology[json_key[i]].target.id
-    )
+        var source = nodes.find(item => item.name == homology[json_key[i]].type)
+        var target = nodes.find(item => item.name == homology[json_key[i]].target.id)
 
         if (first.indexOf(homology[json_key[i]].type) >= 0) {
             links.push({
