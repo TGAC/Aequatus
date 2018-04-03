@@ -6,7 +6,7 @@
  * @param json
  */
 
-var colours = ['#8c510a','#bf812d','#dfc27d','#80cdc1','#35978f','#01665e','#c51b7d','#de77ae','#f1b6da','#b8e186','#7fbc41','#4d9221','#762a83','#9970ab','#c2a5cf','#a6dba0','#5aae61','#1b7837','#b35806','#e08214','#fdb863','#b2abd2','#8073ac','#542788','#b2182b','#d6604d','#f4a582','#92c5de','#4393c3','#2166ac','#b2182b','#d6604d','#f4a582','#d73027','#f46d43','#fdae61','#abd9e9','#74add1','#4575b4','#d73027','#f46d43','#fdae61','#fee08b','#a6d96a','#66bd63','#1a9850','#d53e4f','#f46d43','#fdae61','#abdda4','#66c2a5','#3288bd']
+var colours = ['#8c510a', '#bf812d', '#dfc27d', '#80cdc1', '#35978f', '#01665e', '#c51b7d', '#de77ae', '#f1b6da', '#b8e186', '#7fbc41', '#4d9221', '#762a83', '#9970ab', '#c2a5cf', '#a6dba0', '#5aae61', '#1b7837', '#b35806', '#e08214', '#fdb863', '#b2abd2', '#8073ac', '#542788', '#b2182b', '#d6604d', '#f4a582', '#92c5de', '#4393c3', '#2166ac', '#b2182b', '#d6604d', '#f4a582', '#d73027', '#f46d43', '#fdae61', '#abd9e9', '#74add1', '#4575b4', '#d73027', '#f46d43', '#fdae61', '#fee08b', '#a6d96a', '#66bd63', '#1a9850', '#d53e4f', '#f46d43', '#fdae61', '#abdda4', '#66c2a5', '#3288bd']
 
 function drawSynteny(json) {
 
@@ -22,10 +22,10 @@ function drawSynteny(json) {
 
     for (var species in synteny) {
         var val = synteny[species];
-        if(species == ref_species){
+        if (species == ref_species) {
             jQuery("#selected_region").append("<div id = '" + species + "_synteny' style='position:relative;  cursor:pointer; height: 20px; top: 0px; LEFT: 0px; width :100%;'></div>");
-        }else{
-            jQuery("#synteny").append("<div id = '" + species + "_synteny' style='position:relative;  cursor:pointer; height: 20px; top: "+ top+"px;  LEFT: 0px; width :100%;'></div>");
+        } else {
+            jQuery("#synteny").append("<div id = '" + species + "_synteny' style='position:relative;  cursor:pointer; height: 20px; top: " + top + "px;  LEFT: 0px; width :100%;'></div>");
         }
         jQuery("#" + species + "_synteny").svg();
         dispGenesForSpecies("#" + species + "_synteny", species, val, ref_species);
@@ -69,7 +69,7 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species) {
         all_genes.sort(sort_by('seq_region_start', true, parseInt));
         if (genes.ref.seq_region_strand == 1) {
 
-        }else{
+        } else {
             all_genes.reverse();
         }
 
@@ -79,7 +79,7 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species) {
 
                 var stroke = "black"
 
-                if(all_genes[gene].gene_id == genes.ref.gene_id){
+                if (all_genes[gene].gene_id == genes.ref.gene_id) {
                     stroke = "red"
                 }
 
@@ -109,42 +109,52 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species) {
 
                 if (all_genes[gene].seq_region_strand == genes.ref.seq_region_strand) {
 
-
+                    svg.polygon(g,
+                        [[startposition, strokeWidth], [startposition, height], [breakingPoint, height], [rectWidth, height / 2], [breakingPoint, strokeWidth]],
+                        {
+                            fill: "white", stroke: "white", strokeWidth: strokeWidth
+                        });
                     var gene_svg = svg.polygon(g,
                         [[startposition, strokeWidth], [startposition, height], [breakingPoint, height], [rectWidth, height / 2], [breakingPoint, strokeWidth]],
                         {
                             id: "synteny" + gene + "_" + species,
-                            class: syntenic_class+" " + all_genes[gene].gene_id + " " + all_genes[gene].homology.join(" "),
+                            class: syntenic_class + " " + all_genes[gene].gene_id + " " + all_genes[gene].homology.join(" "),
                             homology: all_genes[gene].homology.join(" "),
                             onmouseover: 'highlightSynteny("#synteny' + +gene + '_' + species + '","' + ref_species + '")',
                             onmouseout: 'defaultSynteny()',
                             onclick: 'clickSynteny("' + all_genes[gene].stable_id + '")',
                             title: all_genes[gene].description,
-                            fill: bg_colour, stroke: stroke, strokeWidth: strokeWidth
+                            fill: bg_colour, stroke: stroke, strokeWidth: strokeWidth,
+                            opacity: 0.7
                         });
                     svg.title(gene_svg, all_genes[gene].description);
 
                 }
                 else {
                     var rectWidth = (startposition + stopposition)
+                    svg.polygon(g,
+                        [[startposition, height / 2], [(startposition + height / 2), strokeWidth], [rectWidth, strokeWidth], [rectWidth, height], [(startposition + height / 2), height]],
+                        {
+                            fill: "white", stroke: "white", strokeWidth: strokeWidth
+
+                        });
 
                     var gene_svg = svg.polygon(g,
                         [[startposition, height / 2], [(startposition + height / 2), strokeWidth], [rectWidth, strokeWidth], [rectWidth, height], [(startposition + height / 2), height]],
                         {
                             id: "synteny" + gene + "_" + species,
-                            class: syntenic_class+" " + all_genes[gene].gene_id + " " + all_genes[gene].homology.join(" "),
+                            class: syntenic_class + " " + all_genes[gene].gene_id + " " + all_genes[gene].homology.join(" "),
                             homology: all_genes[gene].homology.join(" "),
                             onmouseover: 'highlightSynteny("#synteny' + gene + '_' + species + '","' + ref_species + '")',
                             onmouseout: 'defaultSynteny()',
                             onclick: 'clickSynteny("' + all_genes[gene].stable_id + '")',
                             title: all_genes[gene].description,
-                            fill: bg_colour, stroke: stroke, strokeWidth: strokeWidth
+                            fill: bg_colour, stroke: stroke, strokeWidth: strokeWidth,
+                            opacity: 0.7
                         });
                     svg.title(gene_svg, all_genes[gene].description);
 
                 }
-
-
 
 
             }
@@ -160,17 +170,17 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species) {
 
 function highlightSynteny(id, ref_species) {
     var cssClass = jQuery(id).attr('class').split(" ");
-    if(cssClass[0] == "syntenyGene"){
+    if (cssClass[0] == "syntenyGene") {
         cssClass.shift()
 
         for (var i = 0; i < cssClass.length; i++) {
-            jQuery("." + cssClass[i]).attr( "stroke-width", 3 )
+            jQuery("." + cssClass[i]).attr("stroke-width", 3)
         }
     }
 }
 
 function defaultSynteny() {
-    jQuery(".syntenyGene").attr( "stroke-width", 2 )
+    jQuery(".syntenyGene").attr("stroke-width", 2)
 }
 
 
@@ -217,7 +227,7 @@ function dispGenesForSpecies(div, species, genes, ref_species) {
 
     var baseColour = "gray"
 
-    if(species == ref_species){
+    if (species == ref_species) {
         baseColour = "red"
     }
 
