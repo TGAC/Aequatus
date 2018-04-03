@@ -88,6 +88,8 @@ function list_homologues(json) {
 }
 
 function getSyntenyForMember(query) {
+    jQuery("#selected_region").html("<img style='position: relative; left: 0px; ' src='./images/browser/loading_big.gif' alt='Loading' height=20px>")
+    jQuery("#synteny").html("<img style='position: relative; left: 0px; ' src='./images/browser/loading_big.gif' alt='Loading'>")
 
     Fluxion.doAjax(
         'comparaService',
@@ -95,6 +97,8 @@ function getSyntenyForMember(query) {
         {'query': query, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
+                syntenic_data.synteny = json.synteny
+                syntenic_data.refSpecies = json.refSpecies;
                 drawSynteny(json)
             }
         });
