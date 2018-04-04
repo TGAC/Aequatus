@@ -243,57 +243,14 @@ function drawMember() {
 
 function drawSelected(member) {
 
-    jQuery("#selected_region").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
-    if (member == undefined) {
-        jQuery("#gene_widget").html("")
-        jQuery("#gene_info").html("")
-    }
-    var left = parseInt(jQuery("#bar_image_selector").position().left)
-    var width = parseInt(jQuery("#bar_image_selector").css("width"));
-    var maxLentemp = parseInt(jQuery("#canvas").css("width"));
-    var newLeft = left * maxLentemp / sequencelength;
-    var newWidth = parseInt(newLeft) + parseFloat(width)
-    var start = left * sequencelength / maxLentemp
+    jQuery("#redraw_buttons").show()
+    jQuery("#selected_region").hide()
+    jQuery("#synteny").hide()
 
-    var end = parseInt(start) + parseInt(width * sequencelength / maxLentemp)
-
-
-    var new_data = jQuery.grep(members, function (element, index) {
-        //return (element.start >= start && element.end <= end) or (element.start <= start && element.end >= end) ; // retain appropriate elements
-        return (element.start >= start && element.end <= end) || (element.start <= start && element.end >= end) || (element.end >= end && element.start <= end) || (element.start <= start && element.end >= start);
-    });
-
-    var data_length = new_data.length;
-
-    var maxLentemp = jQuery("#canvas").css("width");
-    jQuery("#selected_region").html("")
-
-    while (data_length--) {
-        var newStart = new_data[data_length].start
-        var newEnd = new_data[data_length].end
-        var id = "ref" + new_data[data_length].id;
-        var startposition = (newStart - start) * parseFloat(maxLentemp) / parseFloat(end - start);
-        var stopposition = (newEnd - newStart + 1) * parseFloat(maxLentemp) / parseFloat(end - start);
-        if (stopposition < 1) {
-            stopposition = 1;
-        }
-        jQuery("<div>").attr({
-            'id': id,
-            'seq_id': new_data[data_length].seq_member_id,
-            'start': new_data[data_length].start,
-            'end': new_data[data_length].end,
-            'class': "refMarkerShow",
-            'style': "LEFT:" + startposition + "px; width :" + stopposition + "px;",
-            'onMouseOver': "countcoreMember(\"" + new_data[data_length].id + "\")",
-            'onMouseOut': "jQuery('#besideMouse').hide()",
-            'onClick': "getcoreMember(\"" + new_data[data_length].id + "\")"
-        }).appendTo("#selected_region");
-
-
-    }
 }
 
 function getcoreMember(query, redrawn) {
+    console.log("getcoreMember "+query)
     jQuery(".refMarkerShow").removeClass("selected")
     jQuery("#ref" + query).addClass("selected")
     jQuery("#gene_widget").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
@@ -309,16 +266,15 @@ function getcoreMember(query, redrawn) {
         {'query': query, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                jQuery("#homogies").html("")
+
+                jQuery("#homologies").html("")
                 jQuery("#sankey").html("")
                 syntenic_data = json
-                //window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);
+
                 init(json, "#settings_div", "#filter", "#sliderfilter")
 
-                setSelector(syntenic_data.member[syntenic_data.ref].Transcript[0], syntenic_data.member[syntenic_data.ref].member_id)
-
                 URLMemberID(json.ref, "tree")
-                drawSynteny(redrawn);
+                prepareTree(redrawn);
 
             }
         });
@@ -474,7 +430,7 @@ function reverse_compliment(sequence) {
 }
 
 
-function drawSynteny(redrawn) {
+function prepareTree(redrawn) {
     jQuery("#gene_widget").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
     jQuery("#gene_tree_nj").html("")
     jQuery("#gene_tree_upgma").html("")
@@ -518,26 +474,6 @@ function select_genome() {
                 genome_name = json.genome_name
             }
         });
-}
-
-
-function setSelector(gene, member_id) {
-    var maxLentemp = parseInt(jQuery("#canvas").css("width"));
-
-    var start = gene.start
-
-    var left = start * maxLentemp / sequencelength;
-
-    var width = parseInt(jQuery("#bar_image_selector").css("width"));
-
-    left = left - width / 2
-
-    jQuery("#bar_image_selector").animate({left: left + 'px'}, function () {
-        drawSelected();
-        jQuery(".refMarkerShow").removeClass("selected")
-
-        jQuery("[seq_id=" + member_id + "]").addClass("selected")
-    });
 }
 
 
@@ -942,4 +878,52 @@ function setTreeExport() {
 
 function setTableExport() {
     jQuery("#export_params").html("")
+}
+
+function setSelector(){
+    jQuery("#redraw_buttons").hide()
+    jQuery("#selected_region").show()
+    jQuery("#synteny").show()
+
+    var maxLentemp = parseInt(jQuery("#canvas").css("width"));
+
+    var ref_sp =  syntenic_data.refSpecies
+
+    var start = syntenic_data.synteny[ref_sp].ref.seq_region_start
+
+
+    var left = start * maxLentemp / sequencelength;
+
+    var width = parseInt(jQuery("#bar_image_selector").css("width"));
+
+    left = left - width / 2
+
+    jQuery("#bar_image_selector").animate({left: left + 'px'});
+}
+
+function loadSyntenyfromSelector(){
+
+
+    var left = parseInt(jQuery("#bar_image_selector").position().left)
+    var width = parseInt(jQuery("#bar_image_selector").css("width"));
+    var maxLentemp = parseInt(jQuery("#canvas").css("width"));
+    var newLeft = left * maxLentemp / sequencelength;
+    var newWidth = parseInt(newLeft) + parseFloat(width)
+    var start = parseInt(left * sequencelength / maxLentemp)
+
+    var end = parseInt(start) + parseInt(width * sequencelength / maxLentemp)
+
+    Fluxion.doAjax(
+        'comparaService',
+        'loadSyntenyfromSelector',
+        {'url': ajaxurl, 'start': start, 'end':end, 'genome_db_id': genome_db_id, 'chr':chr_name},
+        {
+            'doOnSuccess': function (json) {
+                jQuery("#redraw_buttons").hide()
+                jQuery("#selected_region").show()
+                drawSynteny(json)
+            }
+        })
+    jQuery("#synteny").show()
+
 }
