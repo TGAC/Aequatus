@@ -99,6 +99,7 @@ function getSyntenyForMember(query) {
             'doOnSuccess': function (json) {
                 syntenic_data.synteny = json.synteny
                 syntenic_data.refSpecies = json.refSpecies;
+                setSelector()
                 drawSynteny(json)
             }
         });
