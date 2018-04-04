@@ -884,6 +884,8 @@ function setSelector(){
     jQuery("#redraw_buttons").hide()
     jQuery("#selected_region").show()
     jQuery("#synteny").show()
+    jQuery("#tempSynteny").hide()
+
 
     var maxLentemp = parseInt(jQuery("#canvas").css("width"));
 
@@ -912,6 +914,10 @@ function loadSyntenyfromSelector(){
     var start = parseInt(left * sequencelength / maxLentemp)
 
     var end = parseInt(start) + parseInt(width * sequencelength / maxLentemp)
+    jQuery("#selected_region").hide()
+    jQuery("#synteny").hide()
+    jQuery("#tempSynteny").show()
+    jQuery("#tempSynteny").html("<img style='position: relative; left: 0px; ' src='./images/browser/loading_big.gif' alt='Loading'>")
 
     Fluxion.doAjax(
         'comparaService',
@@ -919,11 +925,7 @@ function loadSyntenyfromSelector(){
         {'url': ajaxurl, 'start': start, 'end':end, 'genome_db_id': genome_db_id, 'chr':chr_name},
         {
             'doOnSuccess': function (json) {
-                jQuery("#redraw_buttons").hide()
-                jQuery("#selected_region").show()
-                drawSynteny(json)
+                drawSynteny(json, true)
             }
         })
-    jQuery("#synteny").show()
-
 }

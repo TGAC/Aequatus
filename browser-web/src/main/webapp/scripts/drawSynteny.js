@@ -8,13 +8,28 @@
 
 var colours = ['#8c510a', '#bf812d', '#dfc27d', '#80cdc1', '#35978f', '#01665e', '#c51b7d', '#de77ae', '#f1b6da', '#b8e186', '#7fbc41', '#4d9221', '#762a83', '#9970ab', '#c2a5cf', '#a6dba0', '#5aae61', '#1b7837', '#b35806', '#e08214', '#fdb863', '#b2abd2', '#8073ac', '#542788', '#b2182b', '#d6604d', '#f4a582', '#92c5de', '#4393c3', '#2166ac', '#b2182b', '#d6604d', '#f4a582', '#d73027', '#f46d43', '#fdae61', '#abd9e9', '#74add1', '#4575b4', '#d73027', '#f46d43', '#fdae61', '#fee08b', '#a6d96a', '#66bd63', '#1a9850', '#d53e4f', '#f46d43', '#fdae61', '#abdda4', '#66c2a5', '#3288bd']
 
-function drawSynteny(json) {
+function drawSynteny(json, temp) {
 
-    jQuery("#redraw_buttons").hide()
-    jQuery("#selected_region").show()
-    jQuery("#synteny").show()
-    jQuery("#synteny").html("")
-    jQuery("#selected_region").html("")
+
+    var selected_region = "#selected_region";
+    var synteny_div = "#synteny";
+    var prefix = "";
+
+    if (temp) {
+        selected_region = "#tempSynteny";
+        synteny_div = "#tempSynteny";
+        prefix = "temp";
+    }else{
+        jQuery("#redraw_buttons").hide()
+    }
+
+    jQuery(synteny_div).html("")
+    jQuery(selected_region).html("")
+    jQuery(selected_region).show()
+    jQuery(synteny_div).show()
+
+    console.log(selected_region)
+    console.log(synteny_div)
 
     var synteny = json.synteny;
     var ref_species = json.refSpecies;
@@ -23,24 +38,32 @@ function drawSynteny(json) {
     for (var species in synteny) {
         var val = synteny[species];
         if (species == ref_species) {
-            jQuery("#selected_region").append("<div id = '" + species + "_synteny' style='position:relative;  cursor:pointer; height: 20px; top: 0px; LEFT: 0px; width :100%;'></div>");
+            jQuery(selected_region).append("<div id = '" + species + "_" + prefix + "synteny' style='position:relative;  cursor:pointer; height: 20px; top: 0px; LEFT: 0px; width :100%;'></div>");
         } else {
-            jQuery("#synteny").append("<div id = '" + species + "_synteny' style='position:relative;  cursor:pointer; height: 20px; top: " + top + "px;  LEFT: 0px; width :100%;'></div>");
+            jQuery(synteny_div).append("<div id = '" + species + "_" + prefix + "synteny' style='position:relative;  cursor:pointer; height: 20px; top: " + top + "px;  LEFT: 0px; width :100%;'></div>");
         }
-        jQuery("#" + species + "_synteny").svg();
-        dispGenesForSpecies("#" + species + "_synteny", species, val, ref_species);
+        jQuery("#" + species + "_" + prefix + "synteny").svg();
+        dispGenesForSpecies("#" + species + "_" + prefix + "synteny", species, val, ref_species, temp);
     }
 
 }
 
-function dispGeneinSynteny(g, svg, genes, species, ref_species) {
+function dispGeneinSynteny(g, svg, genes, species, ref_species, temp) {
+
+
+    var prefix = "";
+
+    if (temp) {
+        prefix = "temp";
+    }
+
     var strokeWidth = 2;
 
     var marginTop = strokeWidth * 2
 
     var marginLeft = strokeWidth
 
-    var height = jQuery("#" + species + "_synteny").height() - marginTop;
+    var height = jQuery("#" + species + "_" + prefix + "synteny").height() - marginTop;
 
 
     var all_genes = genes.genes.before
@@ -166,6 +189,23 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species) {
 
     console.log("dispGeneinSynteny 2")
 
+
+
+    function getColour(cssClass, ref_species) {
+        cssClass = cssClass.split(" ")
+        var colour = undefined;
+
+        for (i = 0; i < cssClass.length; i++) {
+            colour = jQuery("#" + ref_species + "_" + prefix + "synteny ." + cssClass[i]).attr("fill")
+            if (colour != undefined) {
+                break;
+            }
+        }
+
+        return colour;
+
+    }
+
 }
 
 function highlightSynteny(id, ref_species) {
@@ -190,20 +230,6 @@ function clickSynteny(query) {
     openPanel('#search_div')
 }
 
-function getColour(cssClass, ref_species) {
-    cssClass = cssClass.split(" ")
-    var colour = undefined;
-
-    for (i = 0; i < cssClass.length; i++) {
-        colour = jQuery("#" + ref_species + "_synteny ." + cssClass[i]).attr("fill")
-        if (colour != undefined) {
-            break;
-        }
-    }
-
-    return colour;
-
-}
 /**
  * draw gene base line for specified species
  * @param div base div for genes
@@ -212,7 +238,7 @@ function getColour(cssClass, ref_species) {
  * @param ref_species reference species name
  */
 
-function dispGenesForSpecies(div, species, genes, ref_species) {
+function dispGenesForSpecies(div, species, genes, ref_species, temp) {
     var strokeWidth = 2;
 
     var lineHeight = (jQuery(div).height() - strokeWidth) / 2;
@@ -249,7 +275,7 @@ function dispGenesForSpecies(div, species, genes, ref_species) {
 
     var g = svg.group({class: 'synteny'});
 
-    dispGeneinSynteny(g, svg, genes, species, ref_species);
+    dispGeneinSynteny(g, svg, genes, species, ref_species, temp);
     console.log("dispGenesForSpecies 2")
 
 }

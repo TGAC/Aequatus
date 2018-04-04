@@ -183,11 +183,11 @@
                     <input type="text" class="form-control" placeholder="Search for..." id="search"
                            style="box-sizing: border-box; height: 35px;">
                     <span class="input-group-btn">
-                            <button onclick="search_from_box()"
-                                    style="background: none repeat scroll 0% 0% green; height: 35px; top: 0px; border: 0px solid transparent;"
-                                    class="btn btn-default" type="button"><i class="fa fa-search fa-1x"
-                                                                             style="color: white;"></i></button>
-                        </span>
+                    <button onclick="search_from_box()"
+                            style="background: none repeat scroll 0% 0% green; height: 35px; top: 0px; border: 0px solid transparent;"
+                            class="btn btn-default" type="button"><i class="fa fa-search fa-1x"
+                                                                     style="color: white;"></i></button>
+                    </span>
                 </div>
             </td>
             <td>
@@ -240,9 +240,15 @@
 
         <div id="redraw_buttons" style="display: none;">
             <button onclick="loadSyntenyfromSelector()">Load Synteny</button>
+
             <button onclick="setSelector()"> Reset Selector</button>
         </div>
 
+    </div>
+    <div id="tempSynteny_wrapper"
+         style="width: 100%; left: 0%; position: relative; top: 20px; overflow: hidden;text-align: center; border: 1px solid transparent">
+        <div id="tempSynteny" style="width: 100%; left: 0%; position: relative; top: 0px;" class="">
+        </div>
     </div>
 
     <div id="synteny_wrapper"
