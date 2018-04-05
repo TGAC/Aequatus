@@ -38,9 +38,9 @@ function drawSynteny(json, temp) {
     for (var species in synteny) {
         var val = synteny[species];
         if (species == ref_species) {
-            jQuery(selected_region).append("<div id = '" + species + "_" + prefix + "synteny' style='position:relative;  cursor:pointer; height: 20px; top: 0px; LEFT: 0px; width :100%;'></div>");
+            jQuery(selected_region).append("<div id = '" + species + "_" + prefix + "synteny' style='position:relative;  cursor:pointer; height: 20px; top: 0px; LEFT: 5%; width :90%;'></div>");
         } else {
-            jQuery(synteny_div).append("<div id = '" + species + "_" + prefix + "synteny' style='position:relative;  cursor:pointer; height: 20px; top: " + top + "px;  LEFT: 0px; width :100%;'></div>");
+            jQuery(synteny_div).append("<div id = '" + species + "_" + prefix + "synteny' style='position:relative;  cursor:pointer; height: 20px; top: " + top + "px;  LEFT: 5%; width :90%;'></div>");
         }
         jQuery("#" + species + "_" + prefix + "synteny").svg();
         dispGenesForSpecies("#" + species + "_" + prefix + "synteny", species, val, ref_species, temp);
