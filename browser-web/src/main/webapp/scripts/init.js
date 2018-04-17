@@ -328,7 +328,7 @@ function listResult(json) {
                 "> </i>" +
                 "</td>" +
 
-                "<td> <i style='color:grey' class='fa fa-1x fa-table' title='List Homogy in Table'  onclick='openClosePanel(); " +
+                "<td> <i style='color:grey' class='fa fa-1x fa-table' title='List Homology in Table'  onclick='openClosePanel(); " +
                 "setSearchList(\""+json.html[i].stable_id+"\"); " +
                 "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
                 "getChromosomes(); " +
@@ -337,7 +337,7 @@ function listResult(json) {
                 "getHomologyForMember(" + json.html[i].gene_member_id + ",\"table\");'> </i>" +
                 "</td>" +
 
-                "<td> <i style='color:grey' class='fa fa-1x fa-random' title='View Sankey Plot'  onclick='openClosePanel(); " +
+                "<td> <i style='color:grey' class='fa fa-1x fa-random' title='View Homology as Sankey Plot'  onclick='openClosePanel(); " +
                 "setSearchList(\""+json.html[i].stable_id+"\"); " +
                 "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
                 "getChromosomes(); " +
