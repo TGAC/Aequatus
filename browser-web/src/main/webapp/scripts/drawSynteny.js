@@ -19,7 +19,7 @@ function drawSynteny(json, temp) {
         selected_region = "#tempSynteny";
         synteny_div = "#tempSynteny";
         prefix = "temp";
-    }else{
+    } else {
         jQuery("#redraw_buttons").hide()
     }
 
@@ -28,8 +28,6 @@ function drawSynteny(json, temp) {
     jQuery(selected_region).show()
     jQuery(synteny_div).show()
 
-    console.log(selected_region)
-    console.log(synteny_div)
 
     var synteny = json.synteny;
     var ref_species = json.refSpecies;
@@ -74,12 +72,16 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species, temp) {
 
     var margin = 10;
 
-    var space = margin * (all_genes.length)
 
     var maxLentemp = (jQuery(window).width() * 0.9);
 
 
-    var width = (maxLentemp - space) / (all_genes.length)
+    var no_of_genes = 31;//genes.genes.no_of_genes
+    var space = margin * no_of_genes
+
+    var width = (maxLentemp - space) / no_of_genes
+
+    var emptyGeneMargin = 0;
 
     if (all_genes.length > 0) {
 
@@ -90,11 +92,19 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species, temp) {
 
 
         all_genes.sort(sort_by('seq_region_start', true, parseInt));
-        if (genes.ref.seq_region_strand == 1) {
-
-        } else {
+        if (genes.ref.seq_region_strand != 1) {
+            if (all_genes.length < no_of_genes) {
+                var missingGene = (parseInt(no_of_genes / 2) - genes.genes.after.length);
+                emptyGeneMargin = (missingGene * (width + margin))//+((missingGene-1) * strokeWidth);
+            }
             all_genes.reverse();
+        } else {
+            if (all_genes.length < no_of_genes) {
+                var missingGene = (parseInt(no_of_genes / 2) - genes.genes.before.length);
+                emptyGeneMargin = (missingGene * (width + margin))//+((missingGene-1) * strokeWidth);
+            }
         }
+
 
         for (var gene = 0; gene < all_genes.length; gene++) {
 
@@ -106,7 +116,10 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species, temp) {
                     stroke = "red"
                 }
 
-                startposition = (gene * (width + margin)) + marginLeft
+                startposition = (gene * (width + margin)) + marginLeft;
+
+                startposition += emptyGeneMargin;
+
                 stopposition = width;
 
                 var syntenic_class = "syntenyGene"
@@ -126,6 +139,7 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species, temp) {
                         syntenic_class = "nomatch"
                     }
                 }
+
                 var rectWidth = (startposition + stopposition)
 
                 var breakingPoint = (startposition + stopposition) - (height / 2)
@@ -188,7 +202,6 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species, temp) {
 
 
     console.log("dispGeneinSynteny 2")
-
 
 
     function getColour(cssClass, ref_species) {
