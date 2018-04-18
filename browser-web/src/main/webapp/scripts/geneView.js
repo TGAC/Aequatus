@@ -230,7 +230,7 @@ function drawMember() {
             jQuery("<div>").attr({
                 'class': "refMarkerShow",
                 'style': "LEFT:" + startposition + "px; width :" + stopposition + "px; background: rgba(0,128,0," + (overview[overview_len].graph / max) + "); height: 10px;",
-                'title': "Available homologous : "+overview[overview_len].graph
+                'title': overview[overview_len].graph + " Gene in region"
             }).appendTo("#bar_image_ref");
         }
     } else {
@@ -241,7 +241,8 @@ function drawMember() {
         var stopposition = (overview[0].end - overview[0].start) * parseFloat(maxLentemp) / sequencelength;
         jQuery("<div>").attr({
             'class': "refMarkerShow",
-            'style': "LEFT:" + startposition + "px; width :" + stopposition + "px; background: rgba(0,128,0," + (overview[0].graph) + "); height: 10px;"
+            'style': "LEFT:" + startposition + "px; width :" + stopposition + "px; background: rgba(0,128,0," + (overview[0].graph) + "); height: 10px;",
+            'title': overview[overview_len].graph + " Gene in region"
         }).appendTo("#bar_image_ref");
     }
 
