@@ -217,16 +217,16 @@
          style="border-left: 1px solid #000000; border-right: 1px solid #000000; height: 10px; left: 0; position: relative; top: 25px; vertical-align: middle; width: 100%; z-index: 999; text-align:center">
     </div>
     <div class="ui-draggable" id="bar_image_selector"
-         style="left: 0px; position: relative; font-family: Lucida Console; vertical-align: middle; z-index: 1999; color: green; -moz-user-select: none; font-size: 30pt; font-weight: lighter; width: 100px;">
+         style="left: 0px; position: relative; font-family: Lucida Console; vertical-align: middle; z-index: 1999; height: 35px; border: 4px solid green; ;color: green; -moz-user-select: none; font-size: 30pt; font-weight: lighter; width: 104px;">
 
-        <table cellspacing="0" cellpadding="0" width="100%" border="0">
-            <tbody>
-            <tr>
-                <td align="left">[</td>
-                <td align="right">]</td>
-            </tr>
-            </tbody>
-        </table>
+        <%--<table cellspacing="0" cellpadding="0" width="100%" border="0">--%>
+            <%--<tbody>--%>
+            <%--<tr>--%>
+                <%--<td align="left">[</td>--%>
+                <%--<td align="right">]</td>--%>
+            <%--</tr>--%>
+            <%--</tbody>--%>
+        <%--</table>--%>
 
     </div>
 

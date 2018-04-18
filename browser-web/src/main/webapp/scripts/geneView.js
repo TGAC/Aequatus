@@ -220,20 +220,28 @@ function drawMember() {
         return o.graph;
     }));
     if (overview_len > 1) {
+        var grid_size = (overview[0].end - overview[0].start) * parseFloat(maxLentemp) / sequencelength;
+
+        jQuery( "#bar_image_selector" ).draggable({ grid: [ grid_size, grid_size ] });
+
         while (overview_len--) {
             var startposition = (overview[overview_len].start) * parseFloat(maxLentemp) / sequencelength;
             var stopposition = (overview[overview_len].end - overview[overview_len].start) * parseFloat(maxLentemp) / sequencelength;
             jQuery("<div>").attr({
                 'class': "refMarkerShow",
-                'style': "LEFT:" + startposition + "px; width :" + stopposition + "px; opacity: " + (overview[overview_len].graph / max) + "; height: 10px;"
+                'style': "LEFT:" + startposition + "px; width :" + stopposition + "px; background: rgba(0,128,0," + (overview[overview_len].graph / max) + "); height: 10px;",
+                'title': "Available homologous : "+overview[overview_len].graph
             }).appendTo("#bar_image_ref");
         }
     } else {
+        var grid_size = (overview[0].end - overview[0].start) * parseFloat(maxLentemp) / sequencelength;
+
+        jQuery( "#bar_image_selector" ).draggable({ grid: [ grid_size, grid_size ] });
         var startposition = (overview[0].start) * parseFloat(maxLentemp) / sequencelength;
         var stopposition = (overview[0].end - overview[0].start) * parseFloat(maxLentemp) / sequencelength;
         jQuery("<div>").attr({
             'class': "refMarkerShow",
-            'style': "LEFT:" + startposition + "px; width :" + stopposition + "px; opacity: " + (overview[0].graph) + "; height: 10px;"
+            'style': "LEFT:" + startposition + "px; width :" + stopposition + "px; background: rgba(0,128,0," + (overview[0].graph) + "); height: 10px;"
         }).appendTo("#bar_image_ref");
     }
 
