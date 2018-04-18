@@ -78,9 +78,9 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
     public static final String GET_Transcript_by_Transcript_ID = "SELECT transcript_id,seq_region_id, seq_region_start,seq_region_end, description,seq_region_strand FROM transcript where transcript_id =?";//AND ((seq_region_start > ? AND seq_region_end < ?) OR (seq_region_start < ? AND seq_region_end > ?) OR (seq_region_end > ? AND seq_region_end < ?) OR (seq_region_start > ? AND seq_region_start < ?))";
     public static final String GET_Gene_by_transcript_id = "select gene_id from transcript where transcript_id = ?;";
 
-    public static final String GET_Following_Gene_by_position = "select * from gene where seq_region_id = ? and seq_region_start > ? and biotype = 'protein_coding' order by seq_region_start asc limit 15;";
+    public static final String GET_Following_Gene_by_position = "select * from gene where seq_region_id = ? and seq_region_start > ? and biotype = 'protein_coding' order by seq_region_start asc limit ?;";
 
-    public static final String GET_Previous_Gene_by_position = "select * from gene where seq_region_id = ? and seq_region_end < ? and biotype = 'protein_coding' order by seq_region_start desc limit 15;";
+    public static final String GET_Previous_Gene_by_position = "select * from gene where seq_region_id = ? and seq_region_end < ? and biotype = 'protein_coding' order by seq_region_start desc limit ?;";
 
     private static JdbcTemplate template;
 
@@ -245,7 +245,7 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
     }
 
 
-    public static JSONObject getOrderedGenebyStableid(String query, String genome, long member_id, String gene_stable_id) {
+    public static JSONObject getOrderedGenebyStableid(String query, String genome, long member_id, String gene_stable_id, int delta) {
         try {
 
             JSONObject genes = new JSONObject();
@@ -260,8 +260,8 @@ public class SQLSequenceDAO implements EnsemblCoreStore {
             long end = (long) gene_info.get("seq_region_end");
             long id = (long) gene_info.get("seq_region_id");
 
-            List<Map<String, Object>> following_gene_id = new_Template.queryForList(GET_Following_Gene_by_position, new Object[]{id, end});
-            List<Map<String, Object>> previous_gene_id = new_Template.queryForList(GET_Previous_Gene_by_position, new Object[]{id, start});
+            List<Map<String, Object>> following_gene_id = new_Template.queryForList(GET_Following_Gene_by_position, new Object[]{id, end, delta});
+            List<Map<String, Object>> previous_gene_id = new_Template.queryForList(GET_Previous_Gene_by_position, new Object[]{id, start, delta});
 
             genes.put("before", previous_gene_id);
             genes.put("after", following_gene_id);

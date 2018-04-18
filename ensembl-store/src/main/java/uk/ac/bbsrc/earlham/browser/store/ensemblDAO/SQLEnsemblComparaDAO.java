@@ -588,6 +588,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
         List<Long> homology_ids = new ArrayList<>();
 
+        int delta = 15;
+
         JSONObject synteny = new JSONObject();
 
         String gene_stable_id = template.queryForObject(GET_STABLE_ID_FROM_GENE_MEMBER_ID, new Object[]{query}, String.class);
@@ -606,11 +608,14 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
         Map<String, Object> ref = SQLSequenceDAO.getCondensedGenebyStableid(stable_id, genome, seq_member_id, gene_stable_id);
 
-        JSONObject orderedGene = SQLSequenceDAO.getOrderedGenebyStableid(stable_id, genome, seq_member_id, gene_stable_id);
+        JSONObject orderedGene = SQLSequenceDAO.getOrderedGenebyStableid(stable_id, genome, seq_member_id, gene_stable_id, delta);
 
         orderedGene.put("before", getHomologyid((List<Map<String, Object>>) orderedGene.get("before")));
 
         orderedGene.put("after", getHomologyid((List<Map<String, Object>>) orderedGene.get("after")));
+
+        orderedGene.put("no_of_genes", (delta*2)+1);
+
 
         final String SEARCH_HOMOLOGY_IDs = "SELECT homology_id FROM homology_member WHERE seq_member_id = ?;";
 
@@ -672,9 +677,11 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             Map<String, Object> ref_gene = SQLSequenceDAO.getCondensedGenebyStableid(tmp_stable_id, tmp_genome, tmp_seq_member_id, tmp_gene_stable_id);
 
 
-            orderedGene = SQLSequenceDAO.getOrderedGenebyStableid(tmp_stable_id, tmp_genome, tmp_seq_member_id, tmp_gene_stable_id);
+            orderedGene = SQLSequenceDAO.getOrderedGenebyStableid(tmp_stable_id, tmp_genome, tmp_seq_member_id, tmp_gene_stable_id, delta);
+
             orderedGene.put("before", getHomologyid((List<Map<String, Object>>) orderedGene.get("before")));
             orderedGene.put("after", getHomologyid((List<Map<String, Object>>) orderedGene.get("after")));
+            orderedGene.put("no_of_genes", (delta*2)+1);
 
             ref_gene.put("homology", getHomologyid(tmp_seq_member_id));
             ref_gene.put("ref", true);

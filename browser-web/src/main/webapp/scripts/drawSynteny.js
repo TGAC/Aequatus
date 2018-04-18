@@ -19,7 +19,7 @@ function drawSynteny(json, temp) {
         selected_region = "#tempSynteny";
         synteny_div = "#tempSynteny";
         prefix = "temp";
-    }else{
+    } else {
         jQuery("#redraw_buttons").hide()
     }
 
@@ -62,7 +62,7 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species, temp) {
 
     var height = jQuery("#" + species + "_" + prefix + "synteny").height() - marginTop;
 
-    var all_genes = genes.genes.before
+    var all_genes = genes.genes.before.slice(0);
 
     all_genes.push(genes.ref)
 
@@ -74,7 +74,8 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species, temp) {
     var maxLentemp = (jQuery(window).width() * 0.9);
 
 
-    var no_of_genes = 31;//genes.genes.no_of_genes
+    var no_of_genes = genes.genes.no_of_genes;
+
     var space = margin * no_of_genes
 
     var width = (maxLentemp - space) / no_of_genes
@@ -83,7 +84,7 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species, temp) {
 
     if (all_genes.length > 0) {
 
-
+        console.log(species + " " + all_genes.length)
         var genes_len = all_genes.length;
         var startposition = 0;
         var stopposition = 0;
@@ -91,14 +92,14 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species, temp) {
 
         all_genes.sort(sort_by('seq_region_start', true, parseInt));
         if (genes.ref.seq_region_strand != 1) {
-            if(all_genes.length < no_of_genes){
-                var missingGene = (parseInt(no_of_genes/2) - genes.genes.after.length);
+            if (all_genes.length < no_of_genes) {
+                var missingGene = (parseInt(no_of_genes / 2) - genes.genes.after.length);
                 emptyGeneMargin = (missingGene * (width + margin))//+((missingGene-1) * strokeWidth);
             }
             all_genes.reverse();
-        }else{
-            if(all_genes.length < no_of_genes){
-                var missingGene = (parseInt(no_of_genes/2) - genes.genes.before.length);
+        } else {
+            if (all_genes.length < no_of_genes) {
+                var missingGene = (parseInt(no_of_genes / 2) - genes.genes.before.length);
                 emptyGeneMargin = (missingGene * (width + margin))//+((missingGene-1) * strokeWidth);
             }
         }
