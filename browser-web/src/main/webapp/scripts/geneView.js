@@ -177,7 +177,7 @@ function getMember(member) {
                     members_overview = json.overview;
                     drawMember()
                     if (member == undefined) {
-                        drawSelected();
+                        initiateSynteny();
                     } else {
                         setSelector(syntenic_data.member[syntenic_data.ref].Transcript[0], syntenic_data.member[syntenic_data.ref].member_id)
                     }
@@ -199,7 +199,7 @@ function getMember(member) {
                     members_overview = json.overview;
                     drawMember()
                     if (member == undefined) {
-                        drawSelected();
+                        initiateSynteny();
                     } else {
                         setSelector(syntenic_data.member[syntenic_data.ref].Transcript[0], syntenic_data.member[syntenic_data.ref].member_id)
                     }
@@ -246,11 +246,19 @@ function drawSelected(member) {
     jQuery("#redraw_buttons").show()
     jQuery("#selected_region").hide()
     jQuery("#synteny").hide()
+    // loadSyntenyfromSelector(true)
+}
 
+function initiateSynteny(member) {
+
+    // jQuery("#redraw_buttons").show()
+    // jQuery("#selected_region").hide()
+    // jQuery("#synteny").hide()
+    loadSyntenyfromSelector(true)
 }
 
 function getcoreMember(query, redrawn) {
-    console.log("getcoreMember "+query)
+    console.log("getcoreMember " + query)
     jQuery(".refMarkerShow").removeClass("selected")
     jQuery("#ref" + query).addClass("selected")
     jQuery("#gene_widget").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
@@ -880,7 +888,7 @@ function setTableExport() {
     jQuery("#export_params").html("")
 }
 
-function setSelector(){
+function setSelector() {
     jQuery("#redraw_buttons").hide()
     jQuery("#selected_region").show()
     jQuery("#synteny").show()
@@ -889,7 +897,7 @@ function setSelector(){
 
     var maxLentemp = parseInt(jQuery("#canvas").css("width"));
 
-    var ref_sp =  syntenic_data.refSpecies
+    var ref_sp = syntenic_data.refSpecies
 
     var start = syntenic_data.synteny[ref_sp].ref.seq_region_start
 
@@ -903,7 +911,7 @@ function setSelector(){
     jQuery("#bar_image_selector").animate({left: left + 'px'});
 }
 
-function loadSyntenyfromSelector(){
+function loadSyntenyfromSelector(first) {
 
 
     var left = parseInt(jQuery("#bar_image_selector").position().left)
@@ -914,18 +922,28 @@ function loadSyntenyfromSelector(){
     var start = parseInt(left * sequencelength / maxLentemp)
 
     var end = parseInt(start) + parseInt(width * sequencelength / maxLentemp)
-    jQuery("#selected_region").hide()
-    jQuery("#synteny").hide()
-    jQuery("#tempSynteny").show()
-    jQuery("#tempSynteny").html("<img style='position: relative; left: 0px; ' src='./images/browser/loading_big.gif' alt='Loading'>")
 
+    if (first) {
+        jQuery("#selected_region").show()
+        jQuery("#synteny").show()
+        jQuery("#tempSynteny").hide()
+        jQuery("#synteny").html("<img style='position: relative; left: 0px; ' src='./images/browser/loading_big.gif' alt='Loading'>")
+    }
+    else {
+        jQuery("#selected_region").hide()
+        jQuery("#synteny").hide()
+        jQuery("#tempSynteny").show()
+        jQuery("#tempSynteny").html("<img style='position: relative; left: 0px; ' src='./images/browser/loading_big.gif' alt='Loading'>")
+        console.log(first)
+
+    }
     Fluxion.doAjax(
         'comparaService',
         'loadSyntenyfromSelector',
-        {'url': ajaxurl, 'start': start, 'end':end, 'genome_db_id': genome_db_id, 'chr':chr_name},
+        {'url': ajaxurl, 'start': start, 'end': end, 'genome_db_id': genome_db_id, 'chr': chr_name},
         {
             'doOnSuccess': function (json) {
-                drawSynteny(json, true)
+                drawSynteny(json, first)
             }
         })
 }

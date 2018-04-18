@@ -15,11 +15,11 @@ function drawSynteny(json, temp) {
     var synteny_div = "#synteny";
     var prefix = "";
 
-    if (temp) {
+    if (temp && temp != true) {
         selected_region = "#tempSynteny";
         synteny_div = "#tempSynteny";
         prefix = "temp";
-    } else {
+    }else{
         jQuery("#redraw_buttons").hide()
     }
 
@@ -27,7 +27,6 @@ function drawSynteny(json, temp) {
     jQuery(selected_region).html("")
     jQuery(selected_region).show()
     jQuery(synteny_div).show()
-
 
     var synteny = json.synteny;
     var ref_species = json.refSpecies;
@@ -51,7 +50,7 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species, temp) {
 
     var prefix = "";
 
-    if (temp) {
+    if (temp && temp != true) {
         prefix = "temp";
     }
 
@@ -62,7 +61,6 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species, temp) {
     var marginLeft = strokeWidth
 
     var height = jQuery("#" + species + "_" + prefix + "synteny").height() - marginTop;
-
 
     var all_genes = genes.genes.before
 
@@ -93,14 +91,14 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species, temp) {
 
         all_genes.sort(sort_by('seq_region_start', true, parseInt));
         if (genes.ref.seq_region_strand != 1) {
-            if (all_genes.length < no_of_genes) {
-                var missingGene = (parseInt(no_of_genes / 2) - genes.genes.after.length);
+            if(all_genes.length < no_of_genes){
+                var missingGene = (parseInt(no_of_genes/2) - genes.genes.after.length);
                 emptyGeneMargin = (missingGene * (width + margin))//+((missingGene-1) * strokeWidth);
             }
             all_genes.reverse();
-        } else {
-            if (all_genes.length < no_of_genes) {
-                var missingGene = (parseInt(no_of_genes / 2) - genes.genes.before.length);
+        }else{
+            if(all_genes.length < no_of_genes){
+                var missingGene = (parseInt(no_of_genes/2) - genes.genes.before.length);
                 emptyGeneMargin = (missingGene * (width + margin))//+((missingGene-1) * strokeWidth);
             }
         }
@@ -201,9 +199,6 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species, temp) {
     }
 
 
-    console.log("dispGeneinSynteny 2")
-
-
     function getColour(cssClass, ref_species) {
         cssClass = cssClass.split(" ")
         var colour = undefined;
@@ -289,7 +284,6 @@ function dispGenesForSpecies(div, species, genes, ref_species, temp) {
     var g = svg.group({class: 'synteny'});
 
     dispGeneinSynteny(g, svg, genes, species, ref_species, temp);
-    console.log("dispGenesForSpecies 2")
 
 }
 
