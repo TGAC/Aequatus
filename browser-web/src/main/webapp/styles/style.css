@@ -281,12 +281,19 @@
 }
 
 .refMarkerShow {
-    background: #008000 none repeat scroll 0 0;
+    background: rgba(0,128,0, 0.5);
     cursor: pointer;
     height: 20px;
     position: absolute;
     top: 0;
     z-index: 999;
+    border-image-outset: 0 0 0 0;
+    border-image-repeat: stretch stretch;
+    border-image-slice: 100% 100% 100% 100%;
+    border-image-source: none;
+    border-image-width: 1 1 1 1;
+    border: 1px solid gray;
+    border-right: 0 transparent;
 }
 
 .selected {
