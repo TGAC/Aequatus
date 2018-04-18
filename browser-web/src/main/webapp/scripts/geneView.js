@@ -944,7 +944,7 @@ function loadSyntenyfromSelector(first) {
         jQuery("#tempSynteny").show()
         jQuery("#tempSynteny").html("<img style='position: relative; left: 0px; ' src='./images/browser/loading_big.gif' alt='Loading'>")
         console.log(first)
-
+        first = false;
     }
     Fluxion.doAjax(
         'comparaService',

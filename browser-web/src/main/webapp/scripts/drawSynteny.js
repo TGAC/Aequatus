@@ -15,7 +15,7 @@ function drawSynteny(json, temp) {
     var synteny_div = "#synteny";
     var prefix = "";
 
-    if (temp && temp != true) {
+    if (temp != undefined && temp != true) {
         selected_region = "#tempSynteny";
         synteny_div = "#tempSynteny";
         prefix = "temp";
@@ -50,7 +50,7 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species, temp) {
 
     var prefix = "";
 
-    if (temp && temp != true) {
+    if (temp != undefined && temp != true) {
         prefix = "temp";
     }
 
@@ -84,7 +84,6 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species, temp) {
 
     if (all_genes.length > 0) {
 
-        console.log(species + " " + all_genes.length)
         var genes_len = all_genes.length;
         var startposition = 0;
         var stopposition = 0;
