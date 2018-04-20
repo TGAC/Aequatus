@@ -41,6 +41,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import uk.ac.bbsrc.earlham.browser.core.store.ComparaStore;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -155,6 +156,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_SEQ_MEMBER_FROM_SEQ_MEMBER_ID = "SELECT * FROM seq_member WHERE seq_member_id = ?";
 
+    public static final String GET_ALL_GENE_MEMBER_FROM_SEQ_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE = "SELECT gene_member_id FROM seq_member WHERE genome_db_id = ? AND dnafrag_id = ? AND dnafrag_start >= ? AND dnafrag_end <= ? AND source_name = 'ENSEMBLPEP' order by dnafrag_start asc ";
 
     //    Genomic Align Block
     public static final String GET_GENOMIC_ALIGN_BLOCK_BY_ID = "SELECT * FROM genomic_align_block WHERE genomic_align_block_id = ?";
@@ -586,6 +588,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public JSONObject findSynteny(long query) throws Exception {
 
+        log.info("\n\n\n\tfindsynteny 1 "+ new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()) );
+
         List<Long> homology_ids = new ArrayList<>();
 
         int delta = 15;
@@ -867,7 +871,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
         int chr_id = template.queryForInt(GET_DNAFRAG_ID_SEARCH, new Object[]{chr, genome_db_id});
 
-        List<Map<String, Object>> gene_members = template.queryForList(GET_ALL_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE, new Object[]{genome_db_id, chr_id, start, end});
+        List<Map<String, Object>> gene_members = template.queryForList(GET_ALL_GENE_MEMBER_FROM_SEQ_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE, new Object[]{genome_db_id, chr_id, start, end});
 
         int length = gene_members.size();
 
