@@ -203,7 +203,7 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species, temp) {
         cssClass = cssClass.split(" ")
         var colour = undefined;
 
-        for (i = 0; i < cssClass.length; i++) {
+        for (var i = 0; i < cssClass.length; i++) {
             colour = jQuery("#" + ref_species + "_" + prefix + "synteny ." + cssClass[i]).attr("fill")
             if (colour != undefined) {
                 break;
