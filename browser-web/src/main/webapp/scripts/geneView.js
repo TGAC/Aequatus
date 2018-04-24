@@ -13,7 +13,7 @@ var colours = ['rgb(166,206,227)', 'rgb(31,120,180)', 'rgb(178,223,138)', 'rgb(5
 
 
 var ref_member = null
-var syntenic_data = null;
+var syntenic_data = {};
 var chromosomes = null;
 var genome_db_id = null;
 var genome_name = null;
@@ -27,6 +27,8 @@ var protein_domains = null;
 
 
 function getChromosomes(member_id) {
+    console.log("getChromosomes")
+
     var color = jQuery("option:selected", jQuery("#genomes")).attr("background");
     jQuery(".headerbar").css("background", color);
     jQuery("#chr_maps").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
@@ -151,6 +153,7 @@ function setCredentials(chr_name, genome_id) {
 }
 
 function getMember(member) {
+    console.log("getMember")
     jQuery(".selected").removeClass("selected")
     jQuery("#chr" + chr).addClass("selected")
 
@@ -222,7 +225,7 @@ function drawMember() {
     if (overview_len > 1) {
         var grid_size = (overview[0].end - overview[0].start) * parseFloat(maxLentemp) / sequencelength;
 
-        jQuery( "#bar_image_selector" ).draggable({ grid: [ grid_size, grid_size ] });
+        jQuery("#bar_image_selector").draggable({grid: [grid_size, grid_size]});
 
         while (overview_len--) {
             var startposition = (overview[overview_len].start) * parseFloat(maxLentemp) / sequencelength;
@@ -236,7 +239,7 @@ function drawMember() {
     } else {
         var grid_size = (overview[0].end - overview[0].start) * parseFloat(maxLentemp) / sequencelength;
 
-        jQuery( "#bar_image_selector" ).draggable({ grid: [ grid_size, grid_size ] });
+        jQuery("#bar_image_selector").draggable({grid: [grid_size, grid_size]});
         var startposition = (overview[0].start) * parseFloat(maxLentemp) / sequencelength;
         var stopposition = (overview[0].end - overview[0].start) * parseFloat(maxLentemp) / sequencelength;
         jQuery("<div>").attr({
@@ -263,6 +266,7 @@ function initiateSynteny(member) {
     // jQuery("#redraw_buttons").show()
     // jQuery("#selected_region").hide()
     // jQuery("#synteny").hide()
+    console.log("initiateSynteny")
     loadSyntenyfromSelector(true)
 }
 
@@ -286,7 +290,8 @@ function getcoreMember(query, redrawn) {
 
                 jQuery("#homologies").html("")
                 jQuery("#sankey").html("")
-                syntenic_data = json
+                syntenic_data.tree = json.tree
+                syntenic_data.member = json.member
 
                 init(json, "#settings_div", "#filter", "#sliderfilter")
 
@@ -495,6 +500,8 @@ function select_genome() {
 
 
 function makeMeTop(new_gene_id, new_protein_id) {
+
+    console.log("makeMeTop")
 
     if (new_gene_id != member_id || new_protein_id != protein_member_id) {
 
@@ -921,7 +928,7 @@ function setSelector() {
 }
 
 function loadSyntenyfromSelector(first) {
-
+    console.log("loadSyntenyfromSelector")
 
     var left = parseInt(jQuery("#bar_image_selector").position().left)
     var width = parseInt(jQuery("#bar_image_selector").css("width"));
@@ -952,6 +959,10 @@ function loadSyntenyfromSelector(first) {
         {'url': ajaxurl, 'start': start, 'end': end, 'genome_db_id': genome_db_id, 'chr': chr_name},
         {
             'doOnSuccess': function (json) {
+                if (first) {
+                    syntenic_data.synteny = json.synteny
+                    syntenic_data.refSpecies = json.refSpecies;
+                }
                 drawSynteny(json, first)
             }
         })

@@ -3,6 +3,7 @@
  */
 
 function setOff() {
+    console.log("setOff")
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
 
     setGenomes(getUrlVariables);
@@ -92,6 +93,8 @@ function setOff() {
 
 
 function sethomologousEvents() {
+    console.log("sethomologousEvents")
+
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
     setGenomes()
     var name = arguments.callee.toString();
@@ -129,7 +132,7 @@ function sethomologousEvents() {
 }
 
 function getUrlVariables(chr) {
-
+    console.log("getUrlVariables")
     jQuery.urlParam = function (name) {
         var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
         if (results == null) {
@@ -145,6 +148,7 @@ function getUrlVariables(chr) {
 }
 
 function processURL(urlParam) {
+    console.log("processURL")
 
     if (jQuery.urlParam("search") != null) {
         if (parseInt(jQuery("#control_panel").css("left")) < 0) {
@@ -171,6 +175,7 @@ function processURL(urlParam) {
 }
 
 function getGenomeId(ref) {
+    console.log("getGenomeId")
     Fluxion.doAjax(
         'comparaService',
         'getGenomeId',
@@ -185,6 +190,7 @@ function getGenomeId(ref) {
 }
 
 function getChrId(chr, ref) {
+    console.log("getChrId")
     Fluxion.doAjax(
         'comparaService',
         'getChrId',
@@ -204,6 +210,8 @@ function getChrId(chr, ref) {
 
 
 function getMemberfromURL(query, view) {
+
+    console.log("getMemberfromURL")
     Fluxion.doAjax(
         'comparaService',
         'getMemberfromURL',
@@ -225,13 +233,13 @@ function getMemberfromURL(query, view) {
                     if (view == "tree") {
                         setTreeExport();
                         getcoreMember(json.member_id, true);
-                    }else if (view == "table") {
+                    } else if (view == "table") {
                         setTableExport();
                         getHomologyForMember(json.member_id, "table");
-                    }else if (view == "sankey") {
+                    } else if (view == "sankey") {
                         setTableExport();
                         getHomologyForMember(json.member_id, "sankey");
-                    }else{
+                    } else {
                         if (parseInt(jQuery("#control_panel").css("left")) < 0) {
                             openPanel('#search_div')
                         }
@@ -261,6 +269,8 @@ function getMemberfromURL(query, view) {
 }
 
 function search_from_box() {
+    console.log("search_from_box")
+
     if (parseInt(jQuery("#control_panel").css("left")) < 0) {
         openPanel('#search_div')
     }
@@ -270,6 +280,8 @@ function search_from_box() {
 }
 
 function resize() {
+    console.log("resize")
+
     drawChromosome();
     drawMember();
     select_chr();
@@ -291,6 +303,8 @@ function resize() {
 }
 
 function listResult(json) {
+    console.log("listResult")
+
     jQuery("#search_result").html("");
 
     var content = "";
@@ -309,7 +323,7 @@ function listResult(json) {
             if (description == null) {
                 description = ""
             }
-            content += "<div class='search_div' id='searchlist_"+json.html[i].stable_id+"'> " +
+            content += "<div class='search_div' id='searchlist_" + json.html[i].stable_id + "'> " +
                 "<div class='search_header'>" +
                 "<table width='100%'>" +
                 "<tr>" +
@@ -318,7 +332,7 @@ function listResult(json) {
 
                 "<td> <i style='color:grey' class='fa fa-1x fa-sitemap fa-rotate-270' title='View GeneTree' onclick='openClosePanel(); " +
                 "jQuery(\"#canvas\").show(); " +
-                "setSearchList(\""+json.html[i].stable_id+"\"); " +
+                "setSearchList(\"" + json.html[i].stable_id + "\"); " +
                 "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
                 "getChromosomes(); " +
                 "getMember();   " +
@@ -329,7 +343,7 @@ function listResult(json) {
                 "</td>" +
 
                 "<td> <i style='color:grey' class='fa fa-1x fa-table' title='List Homology in Table'  onclick='openClosePanel(); " +
-                "setSearchList(\""+json.html[i].stable_id+"\"); " +
+                "setSearchList(\"" + json.html[i].stable_id + "\"); " +
                 "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
                 "getChromosomes(); " +
                 "getMember();   " +
@@ -338,7 +352,7 @@ function listResult(json) {
                 "</td>" +
 
                 "<td> <i style='color:grey' class='fa fa-1x fa-random' title='View Homology as Sankey Plot'  onclick='openClosePanel(); " +
-                "setSearchList(\""+json.html[i].stable_id+"\"); " +
+                "setSearchList(\"" + json.html[i].stable_id + "\"); " +
                 "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
                 "getChromosomes(); " +
                 "getMember();   " +
@@ -368,11 +382,11 @@ function listResult(json) {
     }
 }
 
-function setSearchList(stable_id){
+function setSearchList(stable_id) {
     jQuery(".search_div").removeClass("active");
-    jQuery("#searchlist_"+stable_id).addClass("active");
-    var clone =  jQuery("#searchlist_"+stable_id).clone();
-    jQuery("#searchlist_"+stable_id).remove();
+    jQuery("#searchlist_" + stable_id).addClass("active");
+    var clone = jQuery("#searchlist_" + stable_id).clone();
+    jQuery("#searchlist_" + stable_id).remove();
     jQuery("#search_result").prepend(clone);
 }
 
@@ -390,9 +404,8 @@ function showGeneReference() {
     jQuery("#bar_image_ref").show()
 }
 
-function resetView()
-{
-    jQuery(".mainview").each(function(i, div) {
+function resetView() {
+    jQuery(".mainview").each(function (i, div) {
         jQuery(div).html("");
     });
 }
