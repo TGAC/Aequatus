@@ -451,8 +451,23 @@ function reverse_compliment(sequence) {
     return complimentry;
 }
 
+function resizeView() {
+    console.log("resizeView")
+
+    if (syntenic_data.view == "tree") {
+        jQuery("#gene_tree_nj").html("")
+        console.log(syntenic_data)
+        drawTree(syntenic_data.tree, "#gene_tree_nj", newpopup)
+    } else if (syntenic_data.view == "sankey") {
+
+    } else if (syntenic_data.view == "tree") {
+
+    }
+}
 
 function prepareTree(redrawn) {
+    console.log("prepareTree")
+    syntenic_data.view = "tree"
     jQuery("#gene_widget").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
     jQuery("#gene_tree_nj").html("")
     jQuery("#gene_tree_upgma").html("")

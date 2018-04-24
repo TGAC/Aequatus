@@ -138,8 +138,10 @@ function getHomologyForMember(query, view) {
 
                 jQuery("#gene_tree_nj").html("")
                 if (view == "table") {
+                    syntenic_data.view = "table"
                     drawHomology(json)
                 } else if (view == "sankey") {
+                    syntenic_data.view = "sankey"
                     generate_sankey_JSON(json)
                 }
 

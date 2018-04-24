@@ -283,23 +283,30 @@ function resize() {
     console.log("resize")
 
     drawChromosome();
+    console.log("resize 1")
     drawMember();
+    console.log("resize 2")
     select_chr();
-    if (member_id == undefined) {
-        select_member();
-        drawSelected();
-    } else {
+    console.log("resize 3")
+    resizeView()
+    console.log("resize 4")
 
-        var start = 0;
-        for (var i = 0; i < members.length; i++) {
-            if (members[i].id == member_id) {
-                start = members[i].start;
-            }
-        }
-        rearrange_selector(member_id, start, chr);
-        drawSelected();
-        prepareTree(true);
-    }
+    // if (member_id == undefined) {
+    //     // select_member();
+    //     // drawSelected();
+    // } else {
+
+    //     var start = 0;
+    //     for (var i = 0; i < members.length; i++) {
+    //         if (members[i].id == member_id) {
+    //             start = members[i].start;
+    //         }
+    //     }
+    //     // rearrange_selector(member_id, start, chr);
+    //     // drawSelected();
+    //     // prepareTree(true);
+    //     resetView()
+    // }
 }
 
 function listResult(json) {
