@@ -156,7 +156,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String GET_SEQ_MEMBER_FROM_SEQ_MEMBER_ID = "SELECT * FROM seq_member WHERE seq_member_id = ?";
 
-    public static final String GET_ALL_GENE_MEMBER_FROM_SEQ_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE = "SELECT gene_member_id FROM seq_member WHERE genome_db_id = ? AND dnafrag_id = ? AND dnafrag_start >= ? AND dnafrag_end <= ? AND source_name = 'ENSEMBLPEP' order by dnafrag_start asc ";
+    public static final String GET_ALL_GENE_MEMBER_FROM_SEQ_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE = "SELECT gene_member_id FROM seq_member WHERE genome_db_id = ? AND dnafrag_id = ? AND dnafrag_start >= ? AND dnafrag_end <= ? AND source_name = 'ENSEMBLPEP' ORDER BY dnafrag_start ASC ";
 
     //    Genomic Align Block
     public static final String GET_GENOMIC_ALIGN_BLOCK_BY_ID = "SELECT * FROM genomic_align_block WHERE genomic_align_block_id = ?";
@@ -588,8 +588,6 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public JSONObject findSynteny(long query) throws Exception {
 
-        log.info("\n\n\n\tfindsynteny 1 "+ new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()) );
-
         List<Long> homology_ids = new ArrayList<>();
 
         int delta = 15;
@@ -618,8 +616,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
         orderedGene.put("after", getHomologyid((List<Map<String, Object>>) orderedGene.get("after")));
 
-        orderedGene.put("no_of_genes", (delta*2)+1);
-
+        orderedGene.put("no_of_genes", (delta * 2) + 1);
 
         final String SEARCH_HOMOLOGY_IDs = "SELECT homology_id FROM homology_member WHERE seq_member_id = ?;";
 
@@ -630,7 +627,6 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
 
         ref_synteny.put("ref", ref);
-
 
         List<Map<String, Object>> homology_id = template.queryForList(SEARCH_HOMOLOGY_IDs, new Object[]{seq_member_id});
 
@@ -663,9 +659,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
             long tmp_homology_id = (long) map_two.get("homology_id");
 
-
             Map<String, Object> tmp_seq_member = template.queryForMap(GET_HOMOLOG_STABLE_ID_FROM_SEQ_MEMBER, new Object[]{tmp_homology_id, seq_member_id});
-
             String tmp_gene_stable_id = template.queryForObject(GET_STABLE_ID_FROM_GENE_MEMBER_ID, new Object[]{tmp_seq_member.get("gene_member_id")}, String.class);
 
             long tmp_seq_member_id = (long) tmp_seq_member.get("seq_member_id");
@@ -685,7 +679,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
             orderedGene.put("before", getHomologyid((List<Map<String, Object>>) orderedGene.get("before")));
             orderedGene.put("after", getHomologyid((List<Map<String, Object>>) orderedGene.get("after")));
-            orderedGene.put("no_of_genes", (delta*2)+1);
+            orderedGene.put("no_of_genes", (delta * 2) + 1);
 
             ref_gene.put("homology", getHomologyid(tmp_seq_member_id));
             ref_gene.put("ref", true);
@@ -715,19 +709,11 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
         }
 
-        final String SEARCH_HOMOLOGY_INFO = "SELECT hm.homology_id " +
-                "from homology_member hm, homology h, seq_member s, genome_db g, method_link_species_set mlss, method_link ml, gene_member gm  " +
-                "where h.homology_id = hm.homology_id  " +
-                "and h.homology_id in (" + StringUtils.join(homology_ids_list, ",") + ") " +
-                "and hm.seq_member_id = s.seq_member_id " +
-                "and hm.gene_member_id = gm.gene_member_id " +
-                "and s.genome_db_id in " + genome_ids + " " +
-                "and s.genome_db_id = g.genome_db_id " +
-                "and h.method_link_species_set_id = mlss.method_link_species_set_id " +
-                "and mlss.method_link_id = ml.method_link_id " +
-//                "and h.description like '%ortho%' " +
-                "GROUP BY hm.homology_id " +
-                "having count(hm.homology_id) > 1;";
+        final String SEARCH_HOMOLOGY_INFO = "select hm.homology_id " +
+                "from homology_member hm, seq_member s " +
+                "where hm.homology_id in (" + StringUtils.join(homology_ids_list, ",") + ") " +
+                "and hm.seq_member_id = s.seq_member_id and s.genome_db_id in " + genome_ids + " GROUP BY hm.homology_id having count(hm.homology_id) > 1;";
+
 
         List<Long> homology_ids_array = new ArrayList<>();
         if (homology_ids_list.size() > 0) {
@@ -744,6 +730,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
 
     public List<Map<String, Object>> getHomologyid(List<Map<String, Object>> before) throws Exception {
+
         List<Map<String, Object>> genelist = new ArrayList<>();
 
         final String SEARCH_HOMOLOGY_IDs = "SELECT homology_id FROM homology_member WHERE seq_member_id = ?;";
@@ -763,24 +750,14 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
             }
 
-            final String SEARCH_HOMOLOGY_INFO = "SELECT hm.homology_id " +
-                    "from homology_member hm, homology h, seq_member s, genome_db g, method_link_species_set mlss, method_link ml, gene_member gm  " +
-                    "where h.homology_id = hm.homology_id  " +
-                    "and h.homology_id in (" + StringUtils.join(homology_ids_list, ",") + ") " +
-                    "and hm.seq_member_id = s.seq_member_id " +
-                    "and hm.gene_member_id = gm.gene_member_id " +
-                    "and s.genome_db_id in " + genome_ids + " " +
-                    "and s.genome_db_id = g.genome_db_id " +
-                    "and h.method_link_species_set_id = mlss.method_link_species_set_id " +
-                    "and mlss.method_link_id = ml.method_link_id " +
-//                    "and h.description like '%ortho%' " +
-                    "GROUP BY hm.homology_id " +
-                    "having count(hm.homology_id) > 1;";
+            final String SEARCH_HOMOLOGY_INFO = "select hm.homology_id " +
+                    "from homology_member hm, seq_member s " +
+                    "where hm.homology_id in (" + StringUtils.join(homology_ids_list, ",") + ") " +
+                    "and hm.seq_member_id = s.seq_member_id and s.genome_db_id in " + genome_ids + " GROUP BY hm.homology_id having count(hm.homology_id) > 1;";
 
             List<Long> homology_ids_array = new ArrayList<>();
             if (homology_ids_list.size() > 0) {
                 List<Map<String, Object>> tmp_homology_member_id = template.queryForList(SEARCH_HOMOLOGY_INFO);
-
 
                 for (Map map_two : tmp_homology_member_id) {
                     homology_ids_array.add((Long) map_two.get("homology_id"));
@@ -790,11 +767,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             }
             gene.put("homology", homology_ids_array);
 
-
             genelist.add(gene);
         }
 
-        log.info("\n\n\n\n sizeeee " + genelist.size());
         return genelist;
     }
 
@@ -875,17 +850,11 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
         int length = gene_members.size();
 
-        log.info("\n\n\n\t lengttth "+length);
 
-        if(length%2 != 0)
-        {
-            log.info("\n\n\n\t iff lengttth "+length);
-            gene_member_id = (long) gene_members.get((length/2)+1).get("gene_member_id");
-            log.info("\n\n\n\t gene_membersss "+gene_members.get((length/2)+1));
-        } else{
-            log.info("\n\n\n\t else lengttth "+length);
-            gene_member_id = (long) gene_members.get((length/2)).get("gene_member_id");
-            log.info("\n\n\n\t gene_membersss "+gene_members.get((length/2)));
+        if (length % 2 != 0) {
+            gene_member_id = (long) gene_members.get((length / 2) + 1).get("gene_member_id");
+        } else {
+            gene_member_id = (long) gene_members.get((length / 2)).get("gene_member_id");
         }
 
         return gene_member_id;
@@ -1488,12 +1457,10 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         for (int i = 0; i < temp_genome_ids.length; i++) {
             try {
                 int_genome_ids[i] = Integer.parseInt(temp_genome_ids[i]);
-                log.info("\t-" + int_genome_ids[i] + "-");
-
             } catch (NumberFormatException nfe) {
                 //NOTE: write something here if you need to recover from formatting errors
             }
-            ;
+
         }
 
         for (Map map_two : homology_member_id) {
