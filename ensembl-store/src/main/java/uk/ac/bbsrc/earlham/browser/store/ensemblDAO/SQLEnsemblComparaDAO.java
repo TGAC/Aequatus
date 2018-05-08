@@ -41,7 +41,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import uk.ac.bbsrc.earlham.browser.core.store.ComparaStore;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -586,11 +585,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         return gene;
     }
 
-    public JSONObject findSynteny(long query) throws Exception {
+    public JSONObject findSynteny(long query, int delta) throws Exception {
 
         List<Long> homology_ids = new ArrayList<>();
-
-        int delta = 15;
 
         JSONObject synteny = new JSONObject();
 
@@ -700,36 +697,31 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         List<Long> homology_ids = new ArrayList<>();
         final String SEARCH_HOMOLOGY_IDs = "SELECT homology_id FROM homology_member WHERE seq_member_id = ?;";
 
-        List<Map<String, Object>> homology_id = template.queryForList(SEARCH_HOMOLOGY_IDs, new Object[]{seq_member_id});
         List<Long> homology_ids_list = new ArrayList<>();
 
-
-        for (Map map_two : homology_id) {
-            homology_ids_list.add((Long) map_two.get("homology_id"));
-
-        }
-
-        final String SEARCH_HOMOLOGY_INFO = "select hm.homology_id " +
-                "from homology_member hm, seq_member s " +
-                "where hm.homology_id in (" + StringUtils.join(homology_ids_list, ",") + ") " +
-                "and hm.seq_member_id = s.seq_member_id and s.genome_db_id in " + genome_ids + " GROUP BY hm.homology_id having count(hm.homology_id) > 1;";
-
+        final String SEARCH_HOMOLOGY_FOR_SEQ_MEMBER_ID_IN_GENOMES = "SELECT hm.*, hm2.* " +
+                "FROM homology_member hm, homology_member hm2, seq_member s " +
+                "WHERE hm.seq_member_id = ? " +
+                "and hm.homology_id = hm2.homology_id " +
+                "and hm.seq_member_id <> hm2.seq_member_id " +
+                "and hm2.seq_member_id = s.seq_member_id " +
+                "and s.genome_db_id in " + genome_ids + ";";
 
         List<Long> homology_ids_array = new ArrayList<>();
-        if (homology_ids_list.size() > 0) {
-            List<Map<String, Object>> tmp_homology_member_id = template.queryForList(SEARCH_HOMOLOGY_INFO);
+        List<Map<String, Object>> tmp_homology_member_id = template.queryForList(SEARCH_HOMOLOGY_FOR_SEQ_MEMBER_ID_IN_GENOMES, new Object[]{seq_member_id});
 
-            for (Map map_two : tmp_homology_member_id) {
-                homology_ids_array.add((Long) map_two.get("homology_id"));
+        for (Map map_two : tmp_homology_member_id) {
+            homology_ids_array.add((Long) map_two.get("homology_id"));
 
-            }
         }
+//        }
 
         return homology_ids_array;
     }
 
 
     public List<Map<String, Object>> getHomologyid(List<Map<String, Object>> before) throws Exception {
+
 
         List<Map<String, Object>> genelist = new ArrayList<>();
 
@@ -743,26 +735,21 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
             int seq_member_id = template.queryForInt(GET_SEQ_MEMBER_ID_FROM_GENE_MEMBER_ID, new Object[]{gene_member_id});
 
-            List<Map<String, Object>> homology_id = template.queryForList(SEARCH_HOMOLOGY_IDs, new Object[]{seq_member_id});
+            final String SEARCH_HOMOLOGY_FOR_SEQ_MEMBER_ID_IN_GENOMES = "SELECT hm.*, hm2.* " +
+                    "FROM homology_member hm, homology_member hm2, seq_member s " +
+                    "WHERE hm.seq_member_id = ? " +
+                    "and hm.homology_id = hm2.homology_id " +
+                    "and hm.seq_member_id <> hm2.seq_member_id " +
+                    "and hm2.seq_member_id = s.seq_member_id " +
+                    "and s.genome_db_id in " + genome_ids + ";";
 
-            for (Map map_two : homology_id) {
-                homology_ids_list.add((Long) map_two.get("homology_id"));
-
-            }
-
-            final String SEARCH_HOMOLOGY_INFO = "select hm.homology_id " +
-                    "from homology_member hm, seq_member s " +
-                    "where hm.homology_id in (" + StringUtils.join(homology_ids_list, ",") + ") " +
-                    "and hm.seq_member_id = s.seq_member_id and s.genome_db_id in " + genome_ids + " GROUP BY hm.homology_id having count(hm.homology_id) > 1;";
 
             List<Long> homology_ids_array = new ArrayList<>();
-            if (homology_ids_list.size() > 0) {
-                List<Map<String, Object>> tmp_homology_member_id = template.queryForList(SEARCH_HOMOLOGY_INFO);
+            List<Map<String, Object>> tmp_homology_member_id = template.queryForList(SEARCH_HOMOLOGY_FOR_SEQ_MEMBER_ID_IN_GENOMES, new Object[]{seq_member_id});
 
-                for (Map map_two : tmp_homology_member_id) {
-                    homology_ids_array.add((Long) map_two.get("homology_id"));
 
-                }
+            for (Map map_two : tmp_homology_member_id) {
+                homology_ids_array.add((Long) map_two.get("homology_id"));
 
             }
             gene.put("homology", homology_ids_array);
@@ -842,6 +829,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     }
 
     public long getCenralGeneMemberID(int genome_db_id, String chr, int start, int end) throws Exception {
+
         long gene_member_id = 0;
 
         int chr_id = template.queryForInt(GET_DNAFRAG_ID_SEARCH, new Object[]{chr, genome_db_id});
@@ -849,7 +837,6 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         List<Map<String, Object>> gene_members = template.queryForList(GET_ALL_GENE_MEMBER_FROM_SEQ_MEMBER_BY_CHROMOSOME_NAME_AND_SLICE, new Object[]{genome_db_id, chr_id, start, end});
 
         int length = gene_members.size();
-
 
         if (length % 2 != 0) {
             gene_member_id = (long) gene_members.get((length / 2) + 1).get("gene_member_id");

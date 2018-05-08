@@ -72,7 +72,6 @@ public class ComparaService {
      */
 
     public JSONObject searchGenomeid(HttpSession session, JSONObject json) {
-        log.info("search_genome_id");
         String query = json.getString("query");
         JSONObject response = new JSONObject();
         try {
@@ -108,20 +107,13 @@ public class ComparaService {
 
             Integer queryid = comparaStore.getDnafragearchsize(query, reference);
 
-//      if more than one results
             if (queryid > 1) {
                 response.put("html", "genomes");
                 response.put("genomes", comparaStore.getAllDnafragByName(query, reference));
             }
-//      if no result from seq_region
             else if (queryid == 0) {
                 response.put("html", "gene");
-//                response.put("gene", sequenceStore.getGenesSearch(seqName));
-//                response.put("transcript", sequenceStore.getTranscriptSearch(seqName));
-//                response.put("GO", sequenceStore.getGOSearch(seqName));
-//                response.put("chromosome", sequenceStore.checkChromosome());
             }
-//      if only one result from seq_region
             else {
                 Integer query_id = comparaStore.getDnafragId(query, reference);
                 String seqRegName = comparaStore.getReferenceName(query_id);
@@ -293,8 +285,6 @@ public class ComparaService {
             response.put("chr_id", chr_id);
 
             response.put("trackname", "member");
-            int count;
-            log.info(" \n\n\n " + genome_id + "\t " + chr_id);
             response.put("chr_length", comparaStore.getChromosomeLength(chr_id, genome_id));
             response.put("member", comparaStore.getAllMember(chr_id, genome_id));
             response.put("overview", comparaStore.getOverviewAllMember(chr_id, genome_id));
@@ -438,10 +428,12 @@ public class ComparaService {
         JSONObject response = new JSONObject();
 
         response.put("trackname", "synteny");
+        int delta = 15;
+
         try {
             response.put("ref", comparaStore.getGeneStableIDfromGeneMemberID(query));
             response.put("refSpecies", comparaStore.getGenomefromGeneMemberID(query));
-            response.put("synteny", comparaStore.findSynteny(query));
+            response.put("synteny", comparaStore.findSynteny(query, delta));
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             return JSONUtils.SimpleJSONError(e.getMessage());
@@ -458,13 +450,18 @@ public class ComparaService {
         int genome_db_id = json.getInt("genome_db_id");
         String chr = json.getString("chr");
         JSONObject response = new JSONObject();
+        int delta =  json.getInt("delta");
 
         response.put("trackname", "synteny");
         try {
             long gene_member_id = comparaStore.getCenralGeneMemberID(genome_db_id, chr,start,end);
+
             response.put("ref", comparaStore.getGeneStableIDfromGeneMemberID(gene_member_id));
+
             response.put("refSpecies", comparaStore.getGenomefromGeneMemberID(gene_member_id));
-            response.put("synteny", comparaStore.findSynteny(gene_member_id));
+
+            response.put("synteny", comparaStore.findSynteny(gene_member_id, delta));
+
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             return JSONUtils.SimpleJSONError(e.getMessage());
@@ -579,7 +576,7 @@ public class ComparaService {
                     gene_member_id = comparaStore.getGeneMemberIDfromSeqMemberID(seq_member_id);
 
                 }
-                log.info("\n\n\t after    else iff "+query);
+
                 int ref = comparaStore.getReferencefromStableId(query);
                 int dnafrag = comparaStore.getDnafragIdfromStableId(query);
                 response.put("member_id", gene_member_id);
@@ -754,6 +751,5 @@ public class ComparaService {
 
         return response;
     }
-
 
 }
