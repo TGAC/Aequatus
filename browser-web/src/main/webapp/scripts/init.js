@@ -34,18 +34,18 @@ function setOff() {
     });
 
 
-    jQuery("#bar_image_ref").click(function (e) {
-        dragtohere(e);
-    });
-
-    jQuery("#bar_image_selector").draggable(
-        {
-            axis: "x",
-            containment: "parent",
-            stop: function () {
-                drawSelected();
-            }
-        });
+    //jQuery("#bar_image_ref").click(function (e) {
+    //    dragtohere(e);
+    //});
+    //
+    //jQuery("#bar_image_selector").draggable(
+    //    {
+    //        axis: "x",
+    //        containment: "parent",
+    //        stop: function () {
+    //            drawSelected();
+    //        }
+    //    });
 
 
     jQuery("#control_panel").draggable(
