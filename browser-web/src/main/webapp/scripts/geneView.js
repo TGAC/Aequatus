@@ -73,6 +73,7 @@ function getChromosomes(member_id) {
 
 
                     if (member_id == undefined) {
+                        console.log("calling getMember")
                         getMember();
                     } else if (chr_name == null) {
                         select_chr()
@@ -101,6 +102,7 @@ function getChromosomes(member_id) {
                     }
 
                     if (member_id == undefined) {
+                        console.log("calling getMember")
                         getMember();
                     } else if (chr_name == null) {
                         select_chr()
@@ -225,14 +227,17 @@ function drawMember() {
     if (overview_len > 1) {
         var grid_size = (overview[0].end - overview[0].start) * parseFloat(maxLentemp) / sequencelength;
 
-        jQuery("#bar_image_selector").draggable({grid: [grid_size, grid_size]});
+        jQuery("#bar_image_selector").css("width", grid_size)
+        // jQuery("#bar_image_selector").draggable({grid: [grid_size, grid_size]});
 
         while (overview_len--) {
             var startposition = (overview[overview_len].start) * parseFloat(maxLentemp) / sequencelength;
             var stopposition = (overview[overview_len].end - overview[overview_len].start) * parseFloat(maxLentemp) / sequencelength;
             jQuery("<div>").attr({
                 'class': "refMarkerShow",
+                'homologs':overview[overview_len].graph,
                 'style': "LEFT:" + startposition + "px; width :" + stopposition + "px; background: rgba(0,128,0," + (overview[overview_len].graph / max) + "); height: 10px;",
+                'onclick': 'moveDraggable("' + startposition + '")',
                 'title': overview[overview_len].graph + " Gene in region"
             }).appendTo("#bar_image_ref");
         }
@@ -244,6 +249,7 @@ function drawMember() {
         var stopposition = (overview[0].end - overview[0].start) * parseFloat(maxLentemp) / sequencelength;
         jQuery("<div>").attr({
             'class': "refMarkerShow",
+            'homologs':overview[overview_len].graph,
             'style': "LEFT:" + startposition + "px; width :" + stopposition + "px; background: rgba(0,128,0," + (overview[0].graph) + "); height: 10px;",
             'title': overview[overview_len].graph + " Gene in region"
         }).appendTo("#bar_image_ref");
@@ -252,6 +258,10 @@ function drawMember() {
 
 }
 
+function moveDraggable(startposition){
+    jQuery("#bar_image_selector").animate({left: startposition})
+    drawSelected()
+}
 
 function drawSelected(member) {
 
@@ -371,6 +381,8 @@ function onClicked(desc, stable_id, member_id) {
 
 
 function rearrange_selector(query, start, chr_name) {
+    console.log("rearrange_selector")
+
     var maxLentemp = parseInt(jQuery("#canvas").css("width"));
     var startposition = (start) * parseFloat(maxLentemp) / jQuery("#chr" + chr_name).attr("chr_length");
     var width = jQuery("#bar_image_selector").width() / 2;
@@ -920,6 +932,7 @@ function setTableExport() {
 }
 
 function setSelector() {
+    console.log("setSelector")
     jQuery("#redraw_buttons").hide()
     jQuery("#selected_region").show()
     jQuery("#synteny").show()
@@ -937,9 +950,14 @@ function setSelector() {
 
     var width = parseInt(jQuery("#bar_image_selector").css("width"));
 
-    left = left - width / 2
+    jQuery( ".refMarkerShow" ).each(function( index ) {
+        var memberLeft = jQuery( this ).position().left
+        var memberRight = memberLeft + parseInt(jQuery( this ).css("width"))
+        if(memberLeft < left && memberRight > left){
+            jQuery("#bar_image_selector").animate({left: left + 'px'});
+        }
+    });
 
-    jQuery("#bar_image_selector").animate({left: left + 'px'});
 }
 
 function loadSyntenyfromSelector(first) {
@@ -951,6 +969,14 @@ function loadSyntenyfromSelector(first) {
     var newLeft = left * maxLentemp / sequencelength;
     var newWidth = parseInt(newLeft) + parseFloat(width)
     var start = parseInt(left * sequencelength / maxLentemp)
+
+    var delta = 0;
+    jQuery( ".refMarkerShow" ).each(function( index ) {
+        if(jQuery( this ).position().left > left && jQuery( this ).position().left < left+width){
+            delta =  parseInt(jQuery( this ).attr("homologs") / 2)
+        }
+
+    });
 
     var end = parseInt(start) + parseInt(width * sequencelength / maxLentemp)
 
@@ -971,7 +997,7 @@ function loadSyntenyfromSelector(first) {
     Fluxion.doAjax(
         'comparaService',
         'loadSyntenyfromSelector',
-        {'url': ajaxurl, 'start': start, 'end': end, 'genome_db_id': genome_db_id, 'chr': chr_name},
+        {'url': ajaxurl, 'start': start, 'end': end, 'genome_db_id': genome_db_id, 'chr': chr_name, 'delta':delta},
         {
             'doOnSuccess': function (json) {
                 if (first) {
