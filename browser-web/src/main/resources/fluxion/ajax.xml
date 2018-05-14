@@ -19,4 +19,8 @@
           class="uk.ac.bbsrc.earlham.browser.service.ajax.SmartDomain">
     </bean>
 
+    <bean id="ensemblRestServices"
+          class="uk.ac.bbsrc.earlham.browser.service.ajax.EnsemblRestServices">
+    </bean>
+
 </beans>
