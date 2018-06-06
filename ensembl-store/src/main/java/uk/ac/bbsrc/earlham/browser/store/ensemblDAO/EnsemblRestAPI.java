@@ -150,12 +150,12 @@ public class EnsemblRestAPI implements EnsemblRestStore {
 
     }
 
-    public JSONObject getGeneTree(String id) throws IOException {
+    public JSONObject getGeneTree(String id, String species) throws IOException {
         JSONObject result = new JSONObject();
 
         String ext = "/genetree/member/id/" + id + "?cigar_line=1;sequence=protein";//prune_species=cow;prune_taxon=9526";
 
-        String species = "human,pig,rat,mouse,dog,chimpanzee";
+//        String species = "human,pig,rat,mouse,dog,chimpanzee";
 
         String[] species_list = species.split(",");
 
@@ -199,7 +199,7 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         }
 
         JSONObject tree = JSONObject.fromObject(output);
-        result.put("member", getHomologous(id).getJSONObject("members"));
+        result.put("member", getHomologous(id, species).getJSONObject("members"));
         result.put("tree", tree.getJSONObject("tree"));
         result.put("ref", id);
         result.put("protein_id", id);
@@ -207,10 +207,10 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         return result;
     }
 
-    public JSONObject getHomologous(String id) throws IOException {
+    public JSONObject getHomologous(String id, String species) throws IOException {
         JSONObject result = new JSONObject();
 
-        JSONArray homologies = getHomology(id).getJSONObject("result").getJSONArray("data").getJSONObject(0).getJSONArray("homologies");
+        JSONArray homologies = getHomology(id, species).getJSONObject("result").getJSONArray("data").getJSONObject(0).getJSONArray("homologies");
 
         String[] members = new String[homologies.size() + 1];
 
@@ -290,11 +290,11 @@ public class EnsemblRestAPI implements EnsemblRestStore {
     }
 
 
-    public JSONObject getHomology(String id) throws IOException {
+    public JSONObject getHomology(String id, String species) throws IOException {
         JSONObject result = new JSONObject();
 
         String ext = "/homology/id/" + id + "?";//prune_species=cow;prune_taxon=9526";
-        String species = "human,pig,rat,mouse,dog,chimpanzee";
+//        String species = "human,pig,rat,mouse,dog,chimpanzee";
 
         String[] species_list = species.split(",");
 

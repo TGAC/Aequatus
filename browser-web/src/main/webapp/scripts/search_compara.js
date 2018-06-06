@@ -5,6 +5,8 @@
  * Time: 11:17
  * To change this template use File | Settings | File Templates.
  */
+var default_species = ["pan_troglodytes", "rattus_norvegicus", "homo_sapiens", "canis_familiaris", "sus_scrofa"]
+var selected_species = []
 var genomes = []
 
 function getReferences() {
@@ -26,17 +28,26 @@ function getReferences() {
                             listResult(json)
                         }
                     });
+
+                json.species = sortByKey(json.species, 'display_name');
+
                 var content = "" +
-                    "<div class='btn-group' role=\"group\">" +
-                    "<button id=\"btnGroupDrop1\" type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" aria-expanded=\"false\">" +
+                    "<button onclick=\"toggleGenome()\" class=\"btn btn-default dropdown-toggle\">" +
                     "Genomes <span class=\"caret\"></span>" +
-                    "</button>" +
-                    "<ul area-labelledby=\"btnGroupDrop1\" class=\"dropdown-menu dropdown-menu-right\" role=\"menu\">"
+                    "</button>";
 
+                jQuery("#reference_maps").append(content);
 
+                content = "";
                 for (var i = 0; i < json.species.length; i++) {
 
-                    content += "<li style=\"padding:10px\" onclick=\"changeGenome('" + json.species[i].taxon_id + "','" + json.species[i].name + "')\">" + json.species[i].display_name + "</li>"
+                    var checked = "";
+                    if(default_species.indexOf(json.species[i].name) >= 0){
+                        checked = "checked";
+                    }
+
+
+                    content += "<div class=\"col-12 col-md-2\" style=\"margin-top:5px; margin-bottom:5px;\"> <input type='checkbox' style=\"padding:10px\" name='genome_list' value='"+json.species[i].name+"' "+checked+"> " + json.species[i].display_name + "</div>"
 
                     var name = json.species[i].name;
 
@@ -50,14 +61,14 @@ function getReferences() {
 
                 }
 
-                content += "</ul></div>"
+                //content += "</div>"
 
                 jQuery("#genomes").change(function () {
                     var color = jQuery("option:selected", this).css("background");
                     jQuery(".headerbar").css("background", color);
                 });
 
-                jQuery("#reference_maps").append(content);
+                jQuery("#genome_list_div").append(content);
                 jQuery("#canvas").show();
                 //if (genome_db_id == undefined) {
                 //    changeGenome(json.genomes[0].genome_db_id, json.genomes[0].name)
@@ -69,6 +80,24 @@ function getReferences() {
         });
 }
 
+function sortByKey(array, key) {
+    return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+}
+
+
+function toggleGenome(){
+    jQuery("#genome_list_div").toggle();
+}
+
+function updateGenomeList(){
+    selected_species = []
+    jQuery('input[name="genome_list"]:checked').each(function() {
+        selected_species.push(this.value);
+    });
+}
 
 function setGenomes(){
     Fluxion.doAjax(

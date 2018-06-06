@@ -303,10 +303,12 @@ function getcoreMember(query, redrawn) {
 
     jQuery("#gene_tree_nj").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
 
+    updateGenomeList()
+
     Fluxion.doAjax(
         'ensemblRestServices',
         'getGeneTree',
-        {'id': query, 'url': ajaxurl},
+        {'id': query, 'species':selected_species.toString(), 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
                 console.log("getcoreMember 1")

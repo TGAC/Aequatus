@@ -254,13 +254,29 @@ function listResult(json) {
         }
         console.log("listResult 4")
 
-        content += "<div class='search_div' " +
-            "onclick='openClosePanel(); " +
-            "jQuery(\"#canvas\").show(); " +
-            "getcoreMember(\"" + value.id + "\",\"true\");'> " +
+        content += "<div class='search_div' id='searchlist_" + value.id + "' > " +
             "<div class='search_header'> " + value.id + " " +
                 // "<span class='badge' title='"+json.html[i].homologous+" Homologous'>"+json.html[i].homologous+"</span> " +
             "</div> " +
+
+            "<td> <i style='color:grey' class='fa fa-1x fa-sitemap fa-rotate-270' title='View GeneTree' onclick='openClosePanel(); " +
+            "jQuery(\"#canvas\").show(); " +
+            "getcoreMember(\"" + value.id + "\",\"true\");'" +
+            "> </i>" +
+            "</td>" +
+
+            "<td> <i style='color:grey' class='fa fa-1x fa-table' title='List Homology in Table' onclick='openClosePanel(); " +
+            "jQuery(\"#canvas\").show(); " +
+            "getHomologyForMember(\"" + value.id + "\",\"table\");'> </i>" +
+            "> </i>" +
+            "</td>" +
+
+            "<td> <i style='color:grey' class='fa fa-1x fa-random' title='View Homology as Sankey Plot' onclick='openClosePanel(); " +
+            "jQuery(\"#canvas\").show(); " +
+            "getHomologyForMember(\"" + value.id + "\",\"sankey\");'> </i>" +
+            "> </i>" +
+            "</td>" +
+
             "<div class='search_info'> " + value.species + " : " + value.seq_region_name + " " + value.display_name +
             " <br> " +
             description + "</div>" +

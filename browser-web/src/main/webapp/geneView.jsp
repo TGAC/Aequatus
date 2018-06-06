@@ -1,6 +1,9 @@
 <%--<%@ include file="header.jsp" %>--%>
 
 <%--Control Panel Code--%>
+<div id='genome_list_div' class="row" style="display: none; background: white none repeat scroll 0% 0%; z-index: 999; width: 80%; right: 0px; position: absolute; top: 50px;">
+</div>
+
 <div id="control_panel">
     <table cellspacing="0" cellpadding="0" border="0">
         <tbody>
@@ -298,7 +301,7 @@
     </div>
 
     <div id="selected_region"
-         style=" background-color: #FFFFFF; border: 1px solid #000000;  height: 20px;  left: 1px;  position: relative; text-align: center; top: 10px; vertical-align: middle; width: 100%; z-index: 999;">
+         style=" background-color: #FFFFFF; border: 1px solid #000000;  height: 20px;  left: 1px;  position: relative; text-align: center; top: 10px; vertical-align: middle; width: 100%; z-index: 500;">
 
     </div>
 
@@ -594,7 +597,8 @@
                                 </div>
 
                             </div>
-                            <div id="domainStructure" style=" word-wrap: break-word; overflow-y: scroll;height: 200px;"></div>
+                            <div id="domainStructure"
+                                 style=" word-wrap: break-word; overflow-y: scroll;height: 200px;"></div>
 
                         </td>
                     </tr>

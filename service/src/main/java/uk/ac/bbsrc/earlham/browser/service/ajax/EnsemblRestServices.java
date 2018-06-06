@@ -67,13 +67,13 @@ public class EnsemblRestServices {
 
         log.info("\n\n\n restservices searchGenes");
         String id = json.getString("id");
-//        String species = json.getString("species");
+        String species = json.getString("species");
 
         JSONObject response = new JSONObject();
         try {
             JSONObject genetree = new JSONObject();
 
-            genetree = ensemblRestStoreStore.getGeneTree(id);
+            genetree = ensemblRestStoreStore.getGeneTree(id, species);
 
             return genetree;
         } catch (Exception e) {
