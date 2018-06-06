@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.ac.bbsrc.earlham.browser.core.store.ComparaStore;
+import uk.ac.bbsrc.earlham.browser.core.store.EnsemblCoreStore;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -56,6 +57,14 @@ public class ComparaService {
         this.comparaStore = comparaStore;
     }
 
+    @Autowired
+    private EnsemblCoreStore ensemblCoreStore;
+
+    public void setEnsemblCoreStore(EnsemblCoreStore ensemblCoreStore) {
+        this.ensemblCoreStore = ensemblCoreStore;
+    }
+
+
     /**
      * @param session an HTTPSession comes from ajax call
      * @param json    json object with key parameters sent from ajax call
@@ -63,7 +72,6 @@ public class ComparaService {
      */
 
     public JSONObject searchGenomeid(HttpSession session, JSONObject json) {
-        log.info("search_genome_id");
         String query = json.getString("query");
         JSONObject response = new JSONObject();
         try {
@@ -99,20 +107,13 @@ public class ComparaService {
 
             Integer queryid = comparaStore.getDnafragearchsize(query, reference);
 
-//      if more than one results
             if (queryid > 1) {
                 response.put("html", "genomes");
                 response.put("genomes", comparaStore.getAllDnafragByName(query, reference));
             }
-//      if no result from seq_region
             else if (queryid == 0) {
                 response.put("html", "gene");
-//                response.put("gene", sequenceStore.getGenesSearch(seqName));
-//                response.put("transcript", sequenceStore.getTranscriptSearch(seqName));
-//                response.put("GO", sequenceStore.getGOSearch(seqName));
-//                response.put("chromosome", sequenceStore.checkChromosome());
             }
-//      if only one result from seq_region
             else {
                 Integer query_id = comparaStore.getDnafragId(query, reference);
                 String seqRegName = comparaStore.getReferenceName(query_id);
@@ -284,8 +285,6 @@ public class ComparaService {
             response.put("chr_id", chr_id);
 
             response.put("trackname", "member");
-            int count;
-            log.info(" \n\n\n " + genome_id + "\t " + chr_id);
             response.put("chr_length", comparaStore.getChromosomeLength(chr_id, genome_id));
             response.put("member", comparaStore.getAllMember(chr_id, genome_id));
             response.put("overview", comparaStore.getOverviewAllMember(chr_id, genome_id));
@@ -369,6 +368,110 @@ public class ComparaService {
         return response;
     }
 
+    public JSONObject getRefMember(HttpSession session, JSONObject json) {
+        String query = json.getString("query");
+        int query_int = json.getInt("query");
+        JSONObject response = new JSONObject();
+
+
+        response.put("trackname", "member");
+        try {
+
+
+
+            response.put("ref", comparaStore.getRefStableID(query));
+            response.put("chr_length", comparaStore.getRefStableID(query));
+
+            response.put("member", comparaStore.getRefMember(query));
+
+            String genome = comparaStore.getGenomefromGeneMemberID(query_int);
+            int seq_member_id = comparaStore.getSeqMemberIDfromGeneMemberID(query_int);
+            String stable_id = comparaStore.getSeqStableIDfromSeqMemberID(seq_member_id);
+            int chr_id = comparaStore.getDnafragIdfromStableId(stable_id);
+            int genome_id = comparaStore.getGenomeId(genome).getInt("ref");
+            response.put("chr_length", comparaStore.getChromosomeLength(chr_id, genome_id));
+
+            response.put("protein_id", comparaStore.getRefPtnStableID(query));
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return response;
+    }
+
+    public JSONObject getHomologyForMember(HttpSession session, JSONObject json) {
+        String query = json.getString("query");
+        JSONObject response = new JSONObject();
+
+        response.put("trackname", "homology");
+        try {
+            response.put("ref", comparaStore.getGeneMemberInfofromID(query));
+            response.put("refSpecies", comparaStore.getGeneMemberInfofromID(query));
+            response.put("homology", comparaStore.findHomology(query));
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return response;
+    }
+
+
+    public JSONObject getSyntenyForMember(HttpSession session, JSONObject json) {
+        long query = json.getLong("query");
+        JSONObject response = new JSONObject();
+
+        response.put("trackname", "synteny");
+        int delta = 15;
+
+        try {
+            response.put("ref", comparaStore.getGeneStableIDfromGeneMemberID(query));
+            response.put("refSpecies", comparaStore.getGenomefromGeneMemberID(query));
+            response.put("synteny", comparaStore.findSynteny(query, delta));
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return response;
+    }
+
+    public JSONObject loadSyntenyfromSelector(HttpSession session, JSONObject json) {
+        int start = json.getInt("start");
+        int end = json.getInt("end");
+        int genome_db_id = json.getInt("genome_db_id");
+        String chr = json.getString("chr");
+        JSONObject response = new JSONObject();
+        int delta =  json.getInt("delta");
+
+        response.put("trackname", "synteny");
+        try {
+            long gene_member_id = comparaStore.getCenralGeneMemberID(genome_db_id, chr,start,end);
+
+            response.put("ref", comparaStore.getGeneStableIDfromGeneMemberID(gene_member_id));
+
+            response.put("refSpecies", comparaStore.getGenomefromGeneMemberID(gene_member_id));
+
+            response.put("synteny", comparaStore.findSynteny(gene_member_id, delta));
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return response;
+    }
+
     public JSONObject countForCoreMember(HttpSession session, JSONObject json) {
         String query = json.getString("query");
         JSONObject response = new JSONObject();
@@ -402,7 +505,7 @@ public class ComparaService {
             int hit_seq_member_id = comparaStore.getSeqMemberIDfromStableID(protein_id);
 
             response.put("info", comparaStore.getInfoforMember(query).get("info"));
-            response.put("orthology", comparaStore.getInfoforOrtholog(hit_seq_member_id, ref_seq_member_id));
+            response.put("homology", comparaStore.getInfoforHomolog(hit_seq_member_id, ref_seq_member_id));
 
             return response;
         } catch (IOException e) {
@@ -473,12 +576,14 @@ public class ComparaService {
                     gene_member_id = comparaStore.getGeneMemberIDfromSeqMemberID(seq_member_id);
 
                 }
-                log.info("\n\n\t after    else iff "+query);
-                String ref = comparaStore.getReferencefromStableId(query);
-                String dnafrag = comparaStore.getDnafragIdfromStableId(query);
+
+                int ref = comparaStore.getReferencefromStableId(query);
+                int dnafrag = comparaStore.getDnafragIdfromStableId(query);
                 response.put("member_id", gene_member_id);
                 response.put("ref", ref);
                 response.put("dnafrag", dnafrag);
+                response.put("html", comparaStore.searchMember(query));
+
             }
 
         } catch (IOException e) {
@@ -517,7 +622,7 @@ public class ComparaService {
 
     public JSONObject getGenomeAndChrName(HttpSession session, JSONObject json) throws IOException {
         int query = json.getInt("query");
-        String chr = json.getString("chr");
+        int chr = json.getInt("chr");
 
         JSONObject response = new JSONObject();
 
@@ -563,6 +668,8 @@ public class ComparaService {
         hit_object.put("protein_id", hit);
         try {
             JSONObject alignment =  comparaStore.getPairwiseAlignment(ref_seq_member_id, hit_seq_member_id);
+            long homology_id = comparaStore.getHomologyID(ref_seq_member_id, hit_seq_member_id).getLong("homology_id");
+
             ref_object.put("alignment", alignment.get("ref"));
             hit_object.put("alignment", alignment.get("hit"));
 
@@ -571,6 +678,8 @@ public class ComparaService {
 
             response.put("ref", ref_object);
             response.put("hit", hit_object);
+
+            response.put("homology", comparaStore.getHomologyType(homology_id));
 
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -583,6 +692,64 @@ public class ComparaService {
         return response;
     }
 
+    public JSONObject getPairwiseAlignmentWithGenes(HttpSession session, JSONObject json) throws Exception {
+        String ref = json.getString("ref");
+        String hit = json.getString("hit");
 
+        JSONObject response = new JSONObject();
+
+        JSONObject ref_object = new JSONObject();
+        JSONObject hit_object = new JSONObject();
+
+
+        int ref_seq_member_id = comparaStore.getSeqMemberIDfromStableID(ref);
+        int hit_seq_member_id = comparaStore.getSeqMemberIDfromStableID(hit);
+
+        String ref_genome = comparaStore.getGenomefromSeqMemberID(ref_seq_member_id);
+        String hit_genome = comparaStore.getGenomefromSeqMemberID(hit_seq_member_id);
+
+        int ref_gene_member_id = comparaStore.getGeneMemberIDfromSeqMemberID(ref_seq_member_id);
+        int hit_gene_member_id = comparaStore.getGeneMemberIDfromSeqMemberID(hit_seq_member_id);
+
+
+        String ref_gene_stable_id = comparaStore.getGeneStableIDfromGeneMemberID(ref_gene_member_id);
+        String hit_gene_stable_id = comparaStore.getGeneStableIDfromGeneMemberID(hit_gene_member_id);
+
+
+
+
+        ref_object.put("gene_id", ref_gene_stable_id);
+        ref_object.put("protein_id", ref);
+
+        hit_object.put("gene_id", hit_gene_stable_id);
+        hit_object.put("protein_id", hit);
+        try {
+            JSONObject alignment =  comparaStore.getPairwiseAlignment(ref_seq_member_id, hit_seq_member_id);
+            long homology_id = comparaStore.getHomologyID(ref_seq_member_id, hit_seq_member_id).getLong("homology_id");
+
+            ref_object.put("alignment", alignment.get("ref"));
+            hit_object.put("alignment", alignment.get("hit"));
+
+            ref_object.put("gene", ensemblCoreStore.getGene(ref, ref_genome, ref_seq_member_id, ref_gene_stable_id));
+            hit_object.put("gene", ensemblCoreStore.getGene(hit, hit_genome, hit_seq_member_id, hit_gene_stable_id));
+
+            ref_object.put("sequence", comparaStore.getSeq(ref_seq_member_id));
+            hit_object.put("sequence",comparaStore.getSeq(hit_seq_member_id));;
+
+            response.put("ref", ref_object);
+            response.put("hit", hit_object);
+
+            response.put("homology", comparaStore.getHomologyType(homology_id));
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        }
+
+        return response;
+    }
 
 }

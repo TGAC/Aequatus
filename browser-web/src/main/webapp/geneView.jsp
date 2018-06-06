@@ -111,7 +111,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div style="display: none; background: none repeat scroll 0% 0% orange; padding: 10px; height: 296px; text-align: center; font-size: medium;"
+                <div style="display: none; background: none repeat scroll 0% 0% orange; padding: 10px; height: 296px; text-align: left; font-size: medium;"
                      id="filter_div">
                     <b>Species list:</b>
                     <div id="filter"></div>
@@ -122,78 +122,11 @@
                 </div>
                 <div id="export_div"
                      style="display: block; height: 296px; background: none repeat scroll 0% 0% rebeccapurple; padding: 10px; color: white">
+                    <h4> Export </h4>
+                    <div id="export_params"
+                         style="color: white">
 
-                    <table>
-                        <thead>
-                        <th colspan="3">
-                            <h4> Export </h4>
-                        </th>
-                        </thead>
-                        <tr class="border_bottom">
-                            <td colspan="3">
-                                Tree
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Newick <br>
-                                <a class="btn btn-small" href="#" onclick="exportGeneTree('newick')"> <i
-                                        style="color: white " class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                            <td>
-                                JSON Format <br>
-                                <a class="btn btn-small" href="#" onclick="exportGeneTree('json')"> <i
-                                        style="color: white" class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr class="border_bottom">
-                            <td colspan="3">
-                                Genes:
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Gene IDs<br>
-                                <a class="btn btn-small" href="#" onclick="exportGeneLabel('.stable')"> <i
-                                        style="color: white" class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                            <td>
-                                Gene Name<br>
-                                <a class="btn btn-small" href="#" onclick="exportGeneLabel('.geneinfo')"> <i
-                                        style="color: white" class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                            <td>
-                                Protein IDs<br>
-                                <a class="btn btn-small" href="#" onclick="exportGeneLabel('.protein_id')"> <i
-                                        style="color: white" class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr class="border_bottom">
-                            <td colspan="3">
-                                Alignment
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                CIGAR format<br>
-                                <a class="btn btn-small" href="#" onclick="exportAlignment()"> <i style="color: white "
-                                                                                                  class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                            <td>
-                                Sequence<br>
-                                <a class="btn btn-small" href="#" onclick="exportSequence()"> <i style="color: white"
-                                                                                                 class="fa fa-download"></i></a>
-                                </a>
-                            </td>
-                        </tr>
-                    </table>
-                    <br>
+                    </div>
                 </div>
             </td>
             <td width="50px">
@@ -206,27 +139,27 @@
                         style="color: white;"
                         class="fa fa-bars fa-3x control-buttons fa-rotate-90"></i>
                 </div>
-                <div onclick="openPanel('#search_div')"
+                <div onclick="togglePanel('#search_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% green;"><i
                         style="color: white;"
                         class="fa fa-search fa-3x control-buttons"></i>
                 </div>
-                <div onclick="openPanel('#settings_div')"
+                <div onclick="togglePanel('#settings_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% darkcyan;"><i
                         style="color: white;"
                         class="fa fa-cogs fa-3x control-buttons"></i>
                 </div>
-                <div onclick="openPanel('#filter_div')"
+                <div onclick="togglePanel('#filter_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% orange;"><i
                         style="color: white;"
                         class="fa fa-filter fa-3x control-buttons"></i>
                 </div>
-                <div onclick="openPanel('#export_div')"
+                <div onclick="togglePanel('#export_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% rebeccapurple;"><i
                         style="color: white;"
                         class="fa fa-external-link fa-3x control-buttons"></i>
                 </div>
-                <div onclick="openPanel('#info_div')"
+                <div onclick="togglePanel('#info_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% peru;"><i
                         style="color: white;"
                         class="fa fa-question fa-3x control-buttons"></i>
@@ -253,11 +186,11 @@
                     <input type="text" class="form-control" placeholder="Search for..." id="search"
                            style="box-sizing: border-box; height: 35px;">
                     <span class="input-group-btn">
-                            <button onclick="search_from_box()"
-                                    style="background: none repeat scroll 0% 0% green; height: 35px; top: 0px; border: 0px solid transparent;"
-                                    class="btn btn-default" type="button"><i class="fa fa-search fa-1x"
-                                                                             style="color: white;"></i></button>
-                        </span>
+                    <button onclick="search_from_box()"
+                            style="background: none repeat scroll 0% 0% green; height: 35px; top: 0px; border: 0px solid transparent;"
+                            class="btn btn-default" type="button"><i class="fa fa-search fa-1x"
+                                                                     style="color: white;"></i></button>
+                    </span>
                 </div>
             </td>
             <td>
@@ -284,30 +217,64 @@
 
 
     <div id="bar_image_ref"
-         style="border-left: 1px solid #000000; border-right: 1px solid #000000; height: 10px; left: 0; position: relative; top: 25px; vertical-align: middle; width: 100%; z-index: 999; text-align:center">
+         style="height: 10px; left: 0; position: relative; top: 25px; vertical-align: middle; width: 100%; z-index: 999; text-align:center">
     </div>
     <div class="ui-draggable" id="bar_image_selector"
-         style="left: 0px; position: relative; font-family: Lucida Console; vertical-align: middle; z-index: 1999; color: green; -moz-user-select: none; font-size: 30pt; font-weight: lighter; width: 100px;">
+         style="left: 0px; top: 13px; margin-bottom:15px; position: relative; font-family: Lucida Console; vertical-align: middle; z-index: 1999; height: 15px; outline: 4px solid darkolivegreen; ;color: green; -moz-user-select: none; font-size: 30pt; font-weight: lighter; width: 104px;">
 
-        <table cellspacing="0" cellpadding="0" width="100%" border="0">
-            <tbody>
-            <tr>
-                <td align="left">[</td>
-                <td align="right">]</td>
-            </tr>
-            </tbody>
-        </table>
-
-    </div>
-
-    <div id="selected_region"
-         style=" background-color: #FFFFFF; border: 1px solid #000000;  height: 20px;  left: 1px;  position: relative; text-align: center; top: 10px; vertical-align: middle; width: 100%; z-index: 500;">
+        <%--<table cellspacing="0" cellpadding="0" width="100%" border="0">--%>
+            <%--<tbody>--%>
+            <%--<tr>--%>
+                <%--<td align="left">[</td>--%>
+                <%--<td align="right">]</td>--%>
+            <%--</tr>--%>
+            <%--</tbody>--%>
+        <%--</table>--%>
 
     </div>
 
-    <div id="gene_tree_nj" style=" overflow: visible;   position: relative; top: 50px; width: 100%;">
+
+    <div id="selected_region_wrapper"
+         style=" background-color: #FFFFFF; border: 1px solid #000000;  height: 20px;  left: 0px;  position: relative; text-align: center; top: 10px; vertical-align: middle; width: 100%; z-index: 999;">
+        <div id="synteny_handle" style="position: absolute; right: 10px; z-index: 1999;"
+             onClick="toggleLeftInfo(jQuery('#synteny_wrapper'), 'synteny_wrapper');">
+            Toggle Synteny
+        </div>
+        <div id="selected_region"></div>
+
+        <div id="redraw_buttons" style="display: none;">
+            <button onclick="loadSyntenyfromSelector()">Load Synteny</button>
+
+            <button onclick="setSelector()"> Reset Selector</button>
+        </div>
 
     </div>
+    <div id="tempSynteny_wrapper"
+         style="width: 100%; left: 0%; position: relative; top: 20px; overflow: hidden;text-align: center; border: 1px solid transparent">
+        <div id="tempSynteny" style="width: 100%; left: 0%; position: relative; top: 0px;" class="">
+        </div>
+    </div>
+
+    <div id="synteny_wrapper"
+         style="width: 100%; left: 0%; position: relative; top: 20px; overflow: hidden;text-align: center; border: 1px solid transparent"
+         class="">
+        <div id="synteny" style="width: 100%; left: 0%; position: relative; top: 0px;" class="">
+
+        </div>
+    </div>
+
+
+    <div id="gene_tree_nj" style=" overflow: visible;   position: relative; top: 50px; width: 100%;" class="mainview">
+
+    </div>
+
+    <div id="homologies" style="width: 80%; left: 10%; position: relative; top: 50px;" class="mainview">
+    </div>
+
+    <div id="sankey" style="width: 80%; left: 10%; position: relative; top: 50px;" class="mainview">
+    </div>
+
+
     <div style="height: auto; margin-left: auto; margin-right: auto; z-index: 1999; position: fixed;">
 
 
@@ -337,6 +304,27 @@
     </div>
 </div>
 
+</div>
+
+<div id="sankey_info_wrapper" class="sankey_info">
+    <div id="sankey_info_header">
+        <table width="100%" cellspacing="0" border="0">
+            <thead>
+            <tr>
+                <td bgcolor="darkcyan">
+                    <div style="color: white; padding: 2px; width: 100%; text-align: center"
+                         id="homology_type_header"><span
+                            id="homology_type"></span>
+                        <i onclick="removeSankeyPopup();" class="fa fa-close "
+                           style="color: white; position: absolute; right: 5px; cursor: pointer; "></i>
+                    </div>
+                </td>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div id="sankey_info" style="margin: 10px">
+    </div>
 </div>
 
 <div id="popup" class="bubbleleft" style="width:200px; height:auto;">
@@ -505,6 +493,9 @@
             </table>
         </div>
 
+        <div style="overflow: hidden; left: 0px; position: relative; top: 10px; padding: 10px">
+            <div id="pairwiseModal_type" style=" word-wrap: break-word;"></div>
+        </div>
         <div style="overflow: hidden; left: 0px; position: relative; top: 10px; padding: 10px">
             <div id="pairwiseModal_content" style=" word-wrap: break-word;"></div>
         </div>

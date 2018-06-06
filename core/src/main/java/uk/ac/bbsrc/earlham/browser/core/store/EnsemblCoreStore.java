@@ -25,6 +25,8 @@
 
 package uk.ac.bbsrc.earlham.browser.core.store;
 
+import net.sf.json.JSONObject;
+
 /**
  * Created by IntelliJ IDEA.
  * User: thankia
@@ -33,5 +35,5 @@ package uk.ac.bbsrc.earlham.browser.core.store;
  * To change this template use File | Settings | File Templates.
  */
 public interface EnsemblCoreStore extends Store<String> {
-
-}
+    JSONObject getGene(String query, String genome, int member_id, String gene_stable_id);
+    }

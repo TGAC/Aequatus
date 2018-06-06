@@ -10,6 +10,8 @@ var selected_species = []
 var genomes = []
 
 function getReferences() {
+    console.log("getReferences")
+
 
     var colours = ['rgb(166,206,227)', 'rgb(31,120,180)', 'rgb(178,223,138)', 'rgb(51,160,44)', 'rgb(251,154,153)', 'rgb(227,26,28)', 'rgb(253,191,111)', 'rgb(255,127,0)', 'rgb(202,178,214)'];
     Fluxion.doAjax(
@@ -70,11 +72,14 @@ function getReferences() {
 
                 jQuery("#genome_list_div").append(content);
                 jQuery("#canvas").show();
-                //if (genome_db_id == undefined) {
-                //    changeGenome(json.genomes[0].genome_db_id, json.genomes[0].name)
-                //
-                //    getChromosomes();
-                //}
+
+                if (genome_db_id == undefined) {
+
+                    console.log("getReferences if")
+                    changeGenome(json.genomes[0].genome_db_id, json.genomes[0].name)
+
+                    // getChromosomes();
+                }
 
             }
         });
@@ -99,15 +104,16 @@ function updateGenomeList(){
     });
 }
 
-function setGenomes(){
+function setGenomes(callback) {
     Fluxion.doAjax(
         'comparaService',
         'setGenomes',
         {'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                console.log("genomeSet")
-                getUrlVariables()
+                if (callback) {
+                    callback()
+                }
             }
         });
 }
@@ -160,14 +166,14 @@ function search_member(query) {
     jQuery('#sessioninput').fadeOut();
     jQuery("#sessionid").html("");
     minWidth = null;
-    jQuery("#chr_maps").html("");
-    jQuery("#bar_image_ref").html("")
-    jQuery("#selected_region").html("")
-    jQuery("#gene_tree_nj").html("")
-    jQuery("#gene_tree_upgma").html("")
-    jQuery("#gene_widget_exons").html("")
-    jQuery('#canvas').hide();
-    jQuery("#search_result").html("");
+    //jQuery("#chr_maps").html("");
+    //jQuery("#bar_image_ref").html("")
+    //jQuery("#selected_region").html("")
+    //jQuery("#gene_tree_nj").html("")
+    //jQuery("#gene_tree_upgma").html("")
+    //jQuery("#gene_widget_exons").html("")
+    //jQuery('#canvas').hide();
+    //jQuery("#search_result").html("");
 
     jQuery("#searchresultHead").html("<br> <span style='color: grey; font-size: large;'>Searching...<span> " +
         "<br><br>" +
@@ -194,6 +200,7 @@ function search_member(query) {
 }
 
 function changeGenome(genome, name) {
+    console.log("changeGenome")
     genome_db_id = genome;
     chr = undefined;
     member_id = undefined;
@@ -202,19 +209,20 @@ function changeGenome(genome, name) {
 }
 
 function URLgenomeName(genome_name, chr_name) {
-    window.history.pushState("ref=" + genome_name, "Title", "index.jsp?ref=" + genome_name + "&chr=" + chr_name);
+    window.history.pushState("ref=" + genome_name, "Title", "?ref=" + genome_name + "&chr=" + chr_name);
 }
 
-function URLMemberID(stable_id) {
-    window.history.pushState("query=" + stable_id, "Title", "index.jsp?query=" + stable_id);
+function URLMemberID(stable_id, view) {
+    window.history.pushState("query=" + stable_id, "Title", "?query=" + stable_id + "&&view=" + view);
 }
 
 function URLSearch(search) {
-    window.history.pushState("search=" + search, "Title", "index.jsp?search=" + search);
+    window.history.pushState("search=" + search, "Title", "?search=" + search);
 }
 
 function search_redirect(json) {
-    URLMemberID(json.stable_id);
+    console.log("search_redirect")
+    URLMemberID(json.stable_id, "tree");
     getcoreMember(json.gene_member_id, true);
     jQuery("#canvas").show();
     jQuery("#genome_name").html(json.genome);

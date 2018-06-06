@@ -10,7 +10,8 @@
 var domainsvg;
 
 
-function drawDomain(id, domains) {
+function drawDomain(gene_id, protein_member_id, domains) {
+
     var margin = {top: 0, right: 0, bottom: 0, left: 0},
         width = jQuery(window).width() * 0.8,
         height = 500 - margin.top - margin.bottom;
@@ -42,8 +43,46 @@ function drawDomain(id, domains) {
         .attr("id", "domainline");
 
 
-    dispEachDomain(domains, syntenic_data.sequence[id].length);
+    var i = 0;
+    jQuery.map(syntenic_data.member[gene_id].Transcript, function (obj) {
+        if (obj.Translation && (obj.Translation.id == protein_member_id)) {
+            i = syntenic_data.member[gene_id].Transcript.indexOf(obj)
+        }
+    });
+
+    var exons = syntenic_data.member[gene_id].Transcript[i].Exon
+
+    if(syntenic_data.member[gene_id].Transcript[i].strand == "-1"){
+        exons = exons.reverse()
+    }
+
+    var exon_length = [0];
+    for(var exon=0; exon < syntenic_data.member[gene_id].Transcript[i].Exon.length; exon++){
+        exon_length.push(exon_length[exon] + syntenic_data.member[gene_id].Transcript[i].Exon[exon].length)
+    }
+
+
+    var linearScale = d3.scale.linear()
+        .domain([0, exon_length[exon_length.length - 1]])
+        .range([0, maxLentemp]);
+
+    var node = domainsvg.selectAll("rect")
+        .data(exon_length);
+
+    node.enter().append("rect")
+        .attr("x", function (d, i) {
+            return linearScale(d);
+        })
+        .attr("width", 1)
+        .attr("height", 200)
+        .attr("y", 10)
+        .attr("title", "Exon Boundry ")
+        .attr("fill", "#ff9999");
+
+    dispEachDomain(domains, syntenic_data.sequence[protein_member_id].length);
 }
+
+
 
 
 /**
@@ -53,7 +92,6 @@ function drawDomain(id, domains) {
  */
 function dispEachDomain(domains, max_len) {
 
-    console.log("dispEachDomain")
     var width = jQuery("#domainStructure").width()
 
     var delta = (max_len * 5) / width

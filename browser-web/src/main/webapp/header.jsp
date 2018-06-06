@@ -15,13 +15,20 @@
     <%--jquery--%>
     <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-1.11.2.min.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-ui-1.11.2.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.cookie.js'/>"></script>
+    <%--<script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery.cookie.js'/>"></script>--%>
     <script type="text/javascript" src="<c:url value='/scripts/jquery/js/jquery-migrate-1.2.1.min.js'/>"></script>
     <script type="text/javascript" src="<c:url value='/scripts/toSource.js'/>"></script>
 
     <%--jQuery DataTables--%>
     <link rel="stylesheet" type="text/css" href="<c:url value='styles/DataTables/datatables.min.css' />">
+    <%--<link rel="stylesheet" type="text/css" href="<c:url value='styles/DataTables/buttons.dataTables.min.css' />">--%>
     <script type="text/javascript" src="<c:url value='/scripts/DataTables/datatables.min.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/DataTables/dataTables.buttons.min.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/DataTables/buttons.html5.min.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/DataTables/pdfmake.min.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/DataTables/buttons.print.min.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/DataTables/jszip.min.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/DataTables/vfs_fonts.js'/>"></script>
 
     <%--bootstrap--%>
     <script type="text/javascript" src="<c:url value='/styles/bootstrap-css/bootstrap.js'/>"></script>
@@ -38,6 +45,7 @@
     <%--D3--%>
     <script src="<c:url value='/scripts/d3.js/d3.v3.min.js'/>"></script>
     <script src="<c:url value='/scripts/d3.js/d3.tip.v0.6.3.js'/>"></script>
+    <script src="<c:url value='/scripts/d3.js/sankey.js'/>"></script>
 
     <%--jquery UI--%>
     <link rel="stylesheet" href="<c:url value='/scripts/jquery/css/smoothness/jquery-ui-1.11.2.css'/>" type="text/css">
@@ -65,6 +73,10 @@
     <script type="text/javascript" src="<c:url value='/scripts/download.js'/>"></script>
     <script type="text/javascript" src="<c:url value='scripts/smart-domain.js'/>"></script>
     <script type="text/javascript" src="<c:url value='scripts/drawDomain.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='scripts/search_homologues.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='scripts/prepare_sankey_json.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='scripts/draw_sankey.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='scripts/drawSynteny.js'/>"></script>
 
 
     <%--Aequatus CSS--%>

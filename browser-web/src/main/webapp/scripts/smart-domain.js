@@ -97,7 +97,8 @@ function showDomainResult(json, gene_id, protein_id) {
         }
     })
 
-    drawDomain(protein_id, domains_to_draw)
+
+    drawDomain(gene_id, protein_id, domains_to_draw)
 }
 
 /**
@@ -189,6 +190,10 @@ function domainTable(domains, protein_id) {
     });
 
     var yrtable = jQuery('#visibleDomainListTable').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'csvHtml5'
+            ],
             "columnDefs": [
                 {
                     "targets": [0],
@@ -267,6 +272,10 @@ function checkStatus(jobid, gene_id, protein_id) {
                     }, 12000);
                 }
                 else {
+                    jQuery(response.domains).each(function (index) {
+                        response.domains[index].id = index;
+                    })
+                    protein_domains = response.domains;
                     showDomainResult(response, gene_id, protein_id)
                 }
             },
