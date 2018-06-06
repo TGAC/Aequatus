@@ -9,7 +9,6 @@ var genomes = []
 
 function getReferences() {
 
-
     var colours = ['rgb(166,206,227)', 'rgb(31,120,180)', 'rgb(178,223,138)', 'rgb(51,160,44)', 'rgb(251,154,153)', 'rgb(227,26,28)', 'rgb(253,191,111)', 'rgb(255,127,0)', 'rgb(202,178,214)'];
     Fluxion.doAjax(
         'ensemblRestServices',
@@ -17,6 +16,16 @@ function getReferences() {
         {'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
+
+                Fluxion.doAjax(
+                    'ensemblRestServices',
+                    'searchGenes',
+                    {'url': ajaxurl, 'keyword': 'BRCA2', 'species' : 'human'},
+                    {
+                        'doOnSuccess': function (json) {
+                            listResult(json)
+                        }
+                    });
                 var content = "" +
                     "<div class='btn-group' role=\"group\">" +
                     "<button id=\"btnGroupDrop1\" type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" aria-expanded=\"false\">" +
@@ -25,21 +34,22 @@ function getReferences() {
                     "<ul area-labelledby=\"btnGroupDrop1\" class=\"dropdown-menu dropdown-menu-right\" role=\"menu\">"
 
 
-                json.genomes.sort(naturalSort)
+                for (var i = 0; i < json.species.length; i++) {
 
-                for (var i = 0; i < json.genomes.length; i++) {
-                    content += "<li style=\"padding:10px\" onclick=\"changeGenome('" + json.genomes[i].genome_db_id + "','" + json.genomes[i].name + "')\">" + json.genomes[i].name + "</li>"
+                    content += "<li style=\"padding:10px\" onclick=\"changeGenome('" + json.species[i].taxon_id + "','" + json.species[i].name + "')\">" + json.species[i].display_name + "</li>"
 
-                    var name = json.genomes[i].name;
-                    var id = json.genomes[i].genome_db_id;
+                    var name = json.species[i].name;
+
+                    var taxon_id = json.species[i].taxon_id;
                     genomes.push(
                         {
                             "name": name,
-                            "id": id
+                            "id": taxon_id
                         }
                     );
 
                 }
+
                 content += "</ul></div>"
 
                 jQuery("#genomes").change(function () {
@@ -49,11 +59,11 @@ function getReferences() {
 
                 jQuery("#reference_maps").append(content);
                 jQuery("#canvas").show();
-                if (genome_db_id == undefined) {
-                    changeGenome(json.genomes[0].genome_db_id, json.genomes[0].name)
-
-                    getChromosomes();
-                }
+                //if (genome_db_id == undefined) {
+                //    changeGenome(json.genomes[0].genome_db_id, json.genomes[0].name)
+                //
+                //    getChromosomes();
+                //}
 
             }
         });

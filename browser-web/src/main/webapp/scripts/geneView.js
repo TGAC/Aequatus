@@ -26,7 +26,7 @@ var chr_name = null;
 var protein_domains = null;
 
 
-function getChromosomes(member_id) {
+function getChromosomes(genome_db_id) {
     var color = jQuery("option:selected", jQuery("#genomes")).attr("background");
     jQuery(".headerbar").css("background", color);
     jQuery("#chr_maps").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
@@ -40,7 +40,7 @@ function getChromosomes(member_id) {
 
     if (genome_db_id != null) {
         Fluxion.doAjax(
-            'comparaService',
+            'ensemblRestServices',
             'getChromosome',
             {'reference': genome_db_id, 'url': ajaxurl},
             {
@@ -304,19 +304,25 @@ function getcoreMember(query, redrawn) {
     jQuery("#gene_tree_nj").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
 
     Fluxion.doAjax(
-        'comparaService',
-        'getCoreMember',
-        {'query': query, 'url': ajaxurl},
+        'ensemblRestServices',
+        'getGeneTree',
+        {'id': query, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
+                console.log("getcoreMember 1")
                 syntenic_data = json
                 //window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);
+                console.log("getcoreMember 2")
                 init(json, "#settings_div", "#filter", "#sliderfilter")
+                console.log("getcoreMember 3")
 
-                setSelector()
+                // setSelector()
+                console.log("getcoreMember 4")
 
-                URLMemberID(json.ref)
+                // URLMemberID(json.ref)
+                console.log("getcoreMember 5")
                 drawSynteny(redrawn);
+                console.log("getcoreMember 6")
 
             }
         });

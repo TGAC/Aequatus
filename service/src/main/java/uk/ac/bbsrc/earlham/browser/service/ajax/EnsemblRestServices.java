@@ -41,4 +41,45 @@ public class EnsemblRestServices {
         }
 
     }
+
+
+    public JSONObject searchGenes(HttpSession session, JSONObject json) {
+
+        log.info("\n\n\n restservices searchGenes");
+        String keyword = json.getString("keyword");
+        String species = json.getString("species");
+
+        JSONObject response = new JSONObject();
+        try {
+            JSONObject genomes = new JSONObject();
+
+            genomes = ensemblRestStoreStore.searchGenes(keyword, species);
+
+            return genomes;
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        }
+
+    }
+
+    public JSONObject getGeneTree(HttpSession session, JSONObject json) {
+
+        log.info("\n\n\n restservices searchGenes");
+        String id = json.getString("id");
+//        String species = json.getString("species");
+
+        JSONObject response = new JSONObject();
+        try {
+            JSONObject genetree = new JSONObject();
+
+            genetree = ensemblRestStoreStore.getGeneTree(id);
+
+            return genetree;
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        }
+
+    }
 }

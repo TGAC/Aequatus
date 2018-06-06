@@ -38,4 +38,6 @@ import java.io.IOException;
  */
 public interface EnsemblRestStore extends Store<String> {
     JSONObject getSpecies() throws IOException;
+    JSONObject searchGenes(String keyword, String species) throws IOException;
+    JSONObject getGeneTree(String id) throws IOException;
 }
