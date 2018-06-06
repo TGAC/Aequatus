@@ -40,4 +40,7 @@ public interface EnsemblRestStore extends Store<String> {
     JSONObject getSpecies() throws IOException;
     JSONObject searchGenes(String keyword, String species) throws IOException;
     JSONObject getGeneTree(String id, String species) throws IOException;
+    JSONObject getHomology(String id, String species) throws IOException;
+    JSONObject getGenes(JSONObject ids, Boolean expand) throws IOException;
+    JSONObject getGene(String id, Boolean expand) throws IOException;
 }

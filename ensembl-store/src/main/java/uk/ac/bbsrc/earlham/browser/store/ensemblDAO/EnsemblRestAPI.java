@@ -210,7 +210,7 @@ public class EnsemblRestAPI implements EnsemblRestStore {
     public JSONObject getHomologous(String id, String species) throws IOException {
         JSONObject result = new JSONObject();
 
-        JSONArray homologies = getHomology(id, species).getJSONObject("result").getJSONArray("data").getJSONObject(0).getJSONArray("homologies");
+        JSONArray homologies = getHomology(id, species).getJSONArray("homology");
 
         String[] members = new String[homologies.size() + 1];
 
@@ -224,19 +224,21 @@ public class EnsemblRestAPI implements EnsemblRestStore {
 
         ids.put("ids", members);
 
-        result = getGenes(ids);
+        result = getGenes(ids, true);
 
         return result;
     }
 
-    public JSONObject getGenes(JSONObject ids) throws IOException {
+    public JSONObject getGenes(JSONObject ids, Boolean expand) throws IOException {
         JSONObject result = new JSONObject();
 
         String server = "https://rest.ensembl.org";
         String ext = "/lookup/id";
         URL url = new URL(server + ext);
 
-        ids.put("expand", "1");
+        if (expand == true) {
+            ids.put("expand", "1");
+        }
 
         URLConnection connection = url.openConnection();
         HttpURLConnection httpConnection = (HttpURLConnection) connection;
@@ -289,6 +291,52 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         return result;
     }
 
+    public JSONObject getGene(String id, Boolean expand) throws IOException {
+
+        String ext = "/lookup/id/" + id;
+
+        if (expand == true) {
+            ext += "?expand=1";
+        }
+        URL url = new URL(server + ext);
+
+        URLConnection connection = url.openConnection();
+        HttpURLConnection httpConnection = (HttpURLConnection) connection;
+
+        httpConnection.setRequestProperty("Content-Type", "application/json");
+
+
+        InputStream response = connection.getInputStream();
+        int responseCode = httpConnection.getResponseCode();
+
+        if (responseCode != 200) {
+            throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
+        }
+
+        String output;
+        Reader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(response, "UTF-8"));
+            StringBuilder builder = new StringBuilder();
+            char[] buffer = new char[8192];
+            int read;
+            while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
+                builder.append(buffer, 0, read);
+            }
+            output = builder.toString();
+        } finally {
+            if (reader != null) try {
+                reader.close();
+            } catch (IOException logOrIgnore) {
+                logOrIgnore.printStackTrace();
+            }
+        }
+
+        JSONObject gene = JSONObject.fromObject(output);
+
+        return gene;
+    }
+
 
     public JSONObject getHomology(String id, String species) throws IOException {
         JSONObject result = new JSONObject();
@@ -339,7 +387,13 @@ public class EnsemblRestAPI implements EnsemblRestStore {
             }
         }
 
-        result.put("result", output);
+        JSONObject homology = JSONObject.fromObject(output);
+
+
+        JSONArray homologies = homology.getJSONArray("data").getJSONObject(0).getJSONArray("homologies");
+
+        result.put("homology", homologies);
+
         return result;
     }
 

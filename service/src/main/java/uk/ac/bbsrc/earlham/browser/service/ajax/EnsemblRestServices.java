@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import uk.ac.bbsrc.earlham.browser.core.store.EnsemblRestStore;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 /**
  * Created by thankia on 14/05/2018.
@@ -81,5 +82,27 @@ public class EnsemblRestServices {
             return JSONUtils.SimpleJSONError(e.getMessage());
         }
 
+    }
+
+    public JSONObject getHomologyForMember(HttpSession session, JSONObject json) {
+        String id = json.getString("id");
+        String species = json.getString("species");
+        JSONObject response = new JSONObject();
+
+
+
+        response.put("trackname", "homology");
+        try {
+            response.put("ref", ensemblRestStoreStore.getGene(id, false));
+//            response.put("refSpecies", comparaStore.getGeneMemberInfofromID(query));
+            response.put("homology", ensemblRestStoreStore.getHomology(id, species).getJSONArray("homology"));
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return response;
     }
 }

@@ -116,22 +116,23 @@ function getHomologyForMember(query, view) {
 
     resetView();
 
-    Fluxion.doAjax(
-        'comparaService',
-        'getRefMember',
-        {'query': query, 'url': ajaxurl},
-        {
-            'doOnSuccess': function (json) {
-                sequencelength = json.chr_length;
+    //Fluxion.doAjax(
+    //    'comparaService',
+    //    'getRefMember',
+    //    {'query': query, 'url': ajaxurl},
+    //    {
+    //        'doOnSuccess': function (json) {
+    //            sequencelength = json.chr_length;
+    //
+    //            setSelector(json.member[json.ref].Transcript[0], json.member[json.ref].member_id)
+    //        }
+    //    });
+    updateGenomeList()
 
-                setSelector(json.member[json.ref].Transcript[0], json.member[json.ref].member_id)
-            }
-        });
-
     Fluxion.doAjax(
-        'comparaService',
+        'ensemblRestServices',
         'getHomologyForMember',
-        {'query': query, 'url': ajaxurl},
+        {'id': query, 'species':selected_species.toString(), 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
                 URLMemberID(json.ref.stable_id, view)
@@ -179,6 +180,7 @@ function drawHomology(json) {
         "</tr>" +
         "</thead>";
     var homology = json.homology;
+    console.log("drawHomology 1")
 
     homology_table_content += "<tfoot>" +
         "<tr>" +
@@ -205,38 +207,45 @@ function drawHomology(json) {
         "</tr>" +
         "</tfoot>" +
         "<tbody";
+    console.log("drawHomology 2")
 
-    var json_key = Object.keys(homology);
-    for (var i = 0; i < json_key.length; i++) {
-        var tree = homology[json_key[i]].tree >= 0 ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em; cursor: pointer' aria-hidden='true' onclick='openTree(\"" + homology[json_key[i]].source.protein_id + "\")'></i>" : "";
-        var pairwise = homology[json_key[i]].tree >= 0 ? "<td class='details-control pairwise-align details_hidden'></td>" : "<td></td>";
+    // var json_key = Object.keys(homology);
+    for (var i = 0; i < homology.length; i++) {
+        console.log("drawHomology 21 "+i)
+        var tree = homology[i].tree >= 0 ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em; cursor: pointer' aria-hidden='true' onclick='openTree(\"" + homology[i].source.protein_id + "\")'></i>" : "";
+        console.log("drawHomology 22 "+i)
+        var pairwise = homology[i].tree >= 0 ? "<td class='details-control pairwise-align details_hidden'></td>" : "<td></td>";
+        console.log("drawHomology 23 "+i)
         homology_table_content += "<tr> " +
             "<td class='details-control detail-info details_hidden'></td>" +
             pairwise +
-            "<td>" + json_key[i] + "</td>" +
-            "<td>" + homology[json_key[i]].target.id + "</td>" +
-            "<td>" + homology[json_key[i]].target.protein_id + "</td>" +
-            "<td>" + homology[json_key[i]].target.species + "</td>" +
-            "<td>" + homology[json_key[i]].dn_ds + "</td>" +
-            "<td>" + homology[json_key[i]].type + "</td>" +
-            "<td align='center'>" + homology[json_key[i]].target.perc_cov + "</td>" +
-            "<td align='center'>" + homology[json_key[i]].target.perc_pos + "</td>" +
-            "<td align='center'>" + homology[json_key[i]].target.perc_id + "</td>" +
+            "<td>" + i + "</td>" +
+            "<td>" + homology[i].target.id + "</td>" +
+            "<td>" + homology[i].target.protein_id + "</td>" +
+            "<td>" + homology[i].target.species + "</td>" +
+            "<td>" + homology[i].dn_ds + "</td>" +
+            "<td>" + homology[i].type + "</td>" +
+            "<td align='center'>" + homology[i].target.perc_cov + "</td>" +
+            "<td align='center'>" + homology[i].target.perc_pos + "</td>" +
+            "<td align='center'>" + homology[i].target.perc_id + "</td>" +
             "<td align='center'>" + tree + "</td>" +
-            "<td>" + homology[json_key[i]].source.id + "</td>" +
-            "<td>" + homology[json_key[i]].source.protein_id + "</td>" +
-            "<td>" + homology[json_key[i]].source.species + "</td>" +
-            "<td>" + homology[json_key[i]].source.cigar_line + "</td>" +
-            "<td>" + homology[json_key[i]].source.perc_cov + "</td>" +
-            "<td>" + homology[json_key[i]].source.perc_pos + "</td>" +
-            "<td>" + homology[json_key[i]].source.perc_id + "</td>" +
-            "<td>" + homology[json_key[i]].target.cigar_line + "</td>" +
+            "<td>" + homology[i].source.id + "</td>" +
+            "<td>" + homology[i].source.protein_id + "</td>" +
+            "<td>" + homology[i].source.species + "</td>" +
+            "<td>" + homology[i].source.cigar_line + "</td>" +
+            "<td>" + homology[i].source.perc_cov + "</td>" +
+            "<td>" + homology[i].source.perc_pos + "</td>" +
+            "<td>" + homology[i].source.perc_id + "</td>" +
+            "<td>" + homology[i].target.cigar_line + "</td>" +
             "</tr>";
     }
+    console.log("drawHomology 3")
 
     homology_table_content += "</tbody></table>"
+    console.log("drawHomology")
 
     jQuery("#homologies").html(homology_table_content)
+    console.log("drawHomology")
 
 
     var columnArray = [{
@@ -244,6 +253,7 @@ function drawHomology(json) {
         "visible": false,
         "searchable": false
     }];
+    console.log("drawHomology")
 
     for (var i = 12; i <= 19; ++i) {
         columnArray.push({
@@ -252,6 +262,7 @@ function drawHomology(json) {
             "searchable": false
         });
     }
+    console.log("drawHomology 4")
 
     jQuery('#homologyTable').DataTable({
         "columnDefs": columnArray,
