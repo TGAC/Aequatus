@@ -97,32 +97,20 @@ public class EnsemblRestAPI implements EnsemblRestStore {
     }
 
     public JSONObject searchGenes(String keyword, String species) throws IOException {
-        String ext = "/lookup/symbol/" + species;
+        String ext = "/xrefs/symbol/" + species+"/"+keyword+"%25?object_type=gene";
         URL url = new URL(server + ext);
 
         URLConnection connection = url.openConnection();
-        HttpURLConnection httpConnection = (HttpURLConnection) connection;
+        HttpURLConnection httpConnection = (HttpURLConnection)connection;
 
-        String postBody = "{ \"symbols\" : [\"" + keyword + "\" ] }";
-        httpConnection.setRequestMethod("POST");
         httpConnection.setRequestProperty("Content-Type", "application/json");
-        httpConnection.setRequestProperty("Accept", "application/json");
-        httpConnection.setRequestProperty("Content-Length", Integer.toString(postBody.getBytes().length));
-        httpConnection.setUseCaches(false);
-        httpConnection.setDoInput(true);
-        httpConnection.setDoOutput(true);
-
-        DataOutputStream wr = new DataOutputStream(httpConnection.getOutputStream());
-        wr.writeBytes(postBody);
-        wr.flush();
-        wr.close();
 
 
         InputStream response = connection.getInputStream();
         int responseCode = httpConnection.getResponseCode();
 
-        if (responseCode != 200) {
-            throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
+        if(responseCode != 200) {
+            throw new RuntimeException("Response code was not 200. Detected response was "+responseCode);
         }
 
         String output;
@@ -136,7 +124,8 @@ public class EnsemblRestAPI implements EnsemblRestStore {
                 builder.append(buffer, 0, read);
             }
             output = builder.toString();
-        } finally {
+        }
+        finally {
             if (reader != null) try {
                 reader.close();
             } catch (IOException logOrIgnore) {
@@ -145,7 +134,16 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         }
 
         JSONObject result = new JSONObject();
-        result.put("result", output);
+
+        JSONArray genes = JSONArray.fromObject(output);
+
+        for (int i = 0; i < genes.size(); i++) {
+            String gene_id = genes.getJSONObject(i).getString("id");
+            genes.getJSONObject(i).put(gene_id, getGene(gene_id, false));
+        }
+
+
+        result.put("result", genes);
         return result;
 
     }

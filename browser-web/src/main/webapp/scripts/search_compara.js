@@ -20,6 +20,7 @@ function getReferences() {
         {'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
+                console.log("getreference")
 
                 Fluxion.doAjax(
                     'ensemblRestServices',
@@ -41,6 +42,7 @@ function getReferences() {
                 jQuery("#reference_maps").append(content);
 
                 content = "";
+                var species_list = "<select name='species_list'> "
                 for (var i = 0; i < json.species.length; i++) {
 
                     var checked = "";
@@ -50,6 +52,8 @@ function getReferences() {
 
 
                     content += "<div class=\"col-12 col-md-2\" style=\"margin-top:5px; margin-bottom:5px;\"> <input type='checkbox' style=\"padding:10px\" name='genome_list' value='"+json.species[i].name+"' "+checked+"> " + json.species[i].display_name + "</div>"
+
+                    species_list += "<option value="+json.species[i].name+">" + json.species[i].display_name + "</option>"
 
                     var name = json.species[i].name;
 
@@ -62,6 +66,7 @@ function getReferences() {
                     );
 
                 }
+                species_list += "</select> "
 
                 //content += "</div>"
 
@@ -71,6 +76,7 @@ function getReferences() {
                 });
 
                 jQuery("#genome_list_div").append(content);
+                jQuery("#species_list_div").append(species_list);
                 jQuery("#canvas").show();
 
                 if (genome_db_id == undefined) {
@@ -185,11 +191,11 @@ function search_member(query) {
         "<img style='position: relative;' src='./images/browser/loading_big.gif' alt='Loading'>");
 
     URLSearch(query)
-
+console.log("search member")
     Fluxion.doAjax(
-        'comparaService',
-        'searchMember',
-        {'query': query, 'reference': reference, 'url': ajaxurl},
+        'ensemblRestServices',
+        'searchGenes',
+        {'keyword': query, 'species': jQuery('select[name=species_list]').val(), 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
 

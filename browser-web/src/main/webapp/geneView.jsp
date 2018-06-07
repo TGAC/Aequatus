@@ -1,7 +1,8 @@
 <%--<%@ include file="header.jsp" %>--%>
 
 <%--Control Panel Code--%>
-<div id='genome_list_div' class="row" style="display: none; background: white none repeat scroll 0% 0%; z-index: 999; width: 80%; right: 0px; position: absolute; top: 50px;">
+<div id='genome_list_div' class="row"
+     style="display: none; background: white none repeat scroll 0% 0%; z-index: 999; width: 80%; right: 0px; position: absolute; top: 50px;">
 </div>
 
 <div id="control_panel">
@@ -18,6 +19,7 @@
                      style="display: block; height: 296px; background: none repeat scroll 0% 0% green; padding: 10px;">
                     <input id="control_search" type="text"
                            style="border: 0px solid transparent; position: absolute; left: 0px; top: 75px; height: 45px; width: 298px; color: gray; font-size: 30px;">
+                    <div id="species_list_div" style="top: 130px; position: absolute;"></div>
                     <button onclick="jQuery('#search_history').html(jQuery('#search').val()); jQuery('#search').val(jQuery('#control_search').val()); search_member(jQuery('#control_search').val());"
                             style="border: 0px none; font-size: large; padding: 10px 25px; margin-left: auto; margin-right: auto; position: absolute; top: 150px; left: 100px; background: none repeat scroll 0% 0% black; color: white;">
                         Search
@@ -223,19 +225,19 @@
          style="left: 0px; top: 13px; margin-bottom:15px; position: relative; font-family: Lucida Console; vertical-align: middle; z-index: 1999; height: 15px; outline: 4px solid darkolivegreen; ;color: green; -moz-user-select: none; font-size: 30pt; font-weight: lighter; width: 104px;">
 
         <%--<table cellspacing="0" cellpadding="0" width="100%" border="0">--%>
-            <%--<tbody>--%>
-            <%--<tr>--%>
-                <%--<td align="left">[</td>--%>
-                <%--<td align="right">]</td>--%>
-            <%--</tr>--%>
-            <%--</tbody>--%>
+        <%--<tbody>--%>
+        <%--<tr>--%>
+        <%--<td align="left">[</td>--%>
+        <%--<td align="right">]</td>--%>
+        <%--</tr>--%>
+        <%--</tbody>--%>
         <%--</table>--%>
 
     </div>
 
 
     <div id="selected_region_wrapper"
-         style=" background-color: #FFFFFF; border: 1px solid #000000;  height: 20px;  left: 0px;  position: relative; text-align: center; top: 10px; vertical-align: middle; width: 100%; z-index: 999;">
+         style=" background-color: #FFFFFF; border: 1px solid #000000;  height: 20px;  left: 0px;  position: relative; text-align: center; top: 10px; vertical-align: middle; width: 100%; z-index: 500;">
         <div id="synteny_handle" style="position: absolute; right: 10px; z-index: 1999;"
              onClick="toggleLeftInfo(jQuery('#synteny_wrapper'), 'synteny_wrapper');">
             Toggle Synteny
