@@ -22,16 +22,7 @@ function getReferences() {
             'doOnSuccess': function (json) {
                 console.log("getreference")
 
-                Fluxion.doAjax(
-                    'ensemblRestServices',
-                    'searchGenes',
-                    {'url': ajaxurl, 'keyword': 'BRCA2', 'species' : 'human'},
-                    {
-                        'doOnSuccess': function (json) {
-                            listResult(json)
-                        }
-                    });
-
+               
                 json.species = sortByKey(json.species, 'display_name');
 
                 var content = "" +
