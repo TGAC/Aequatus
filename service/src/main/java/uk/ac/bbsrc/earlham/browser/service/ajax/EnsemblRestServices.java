@@ -106,4 +106,67 @@ public class EnsemblRestServices {
         return response;
     }
 
+    public JSONObject getPairwiseAlignmentWithGenes(HttpSession session, JSONObject json) throws Exception {
+        String ref = json.getString("ref");
+        String hit = json.getString("hit");
+
+        String ref_ptn = json.getString("ref_ptn");
+        String hit_ptn = json.getString("hit_ptn");
+
+        JSONObject response = new JSONObject();
+
+        JSONObject ref_object = new JSONObject();
+        JSONObject hit_object = new JSONObject();
+
+
+//        int ref_seq_member_id = ensemblRestStoreStore.getSeqMemberIDfromStableID(ref);
+//        int hit_seq_member_id = ensemblRestStoreStore.getSeqMemberIDfromStableID(hit);
+
+//        String ref_genome = ensemblRestStoreStore.getGenomefromSeqMemberID(ref_seq_member_id);
+//        String hit_genome = ensemblRestStoreStore.getGenomefromSeqMemberID(hit_seq_member_id);
+
+//        int ref_gene_member_id = ensemblRestStoreStore.getGeneMemberIDfromSeqMemberID(ref_seq_member_id);
+//        int hit_gene_member_id = ensemblRestStoreStore.getGeneMemberIDfromSeqMemberID(hit_seq_member_id);
+//
+//
+//        String ref_gene_stable_id = ensemblRestStoreStore.getGeneStableIDfromGeneMemberID(ref_gene_member_id);
+//        String hit_gene_stable_id = ensemblRestStoreStore.getGeneStableIDfromGeneMemberID(hit_gene_member_id);
+
+
+
+
+        ref_object.put("gene_id", ref);
+        ref_object.put("protein_id", ref_ptn);
+
+        hit_object.put("gene_id", hit);
+        hit_object.put("protein_id", hit_ptn);
+        try {
+//            JSONObject alignment =  ensemblRestStoreStore.getPairwiseAlignment(ref_seq_member_id, hit_seq_member_id);
+//            long homology_id = ensemblRestStoreStore.getHomologyID(ref_seq_member_id, hit_seq_member_id).getLong("homology_id");
+
+//            ref_object.put("alignment", alignment.get("ref"));
+//            hit_object.put("alignment", alignment.get("hit"));
+
+            ref_object.put("gene", ensemblRestStoreStore.getGene(ref, true));
+            hit_object.put("gene", ensemblRestStoreStore.getGene(hit, true));
+
+//            ref_object.put("sequence", ensemblRestStoreStore.getSeq(ref_seq_member_id));
+//            hit_object.put("sequence",ensemblRestStoreStore.getSeq(hit_seq_member_id));;
+
+            response.put("ref", ref_object);
+            response.put("hit", hit_object);
+
+//            response.put("homology", ensemblRestStoreStore.getHomologyType(homology_id));
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        }
+
+        return response;
+    }
+
 }

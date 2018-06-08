@@ -218,7 +218,7 @@ function drawHomology(json) {
         console.log("drawHomology 23 "+i)
         homology_table_content += "<tr> " +
             "<td class='details-control detail-info details_hidden'></td>" +
-            pairwise +
+            "<td class='details-control pairwise-align details_hidden'></td>" +
             "<td>" + i + "</td>" +
             "<td>" + homology[i].target.id + "</td>" +
             "<td>" + homology[i].target.protein_id + "</td>" +
@@ -407,33 +407,38 @@ function drawHomology(json) {
             jQuery('tr.shown').removeClass('shown');
 
             row.child("<div style='position:relative; left:100px;' id='pairwise_align'></div>").show();
-            drawPairwise(row.data()[13], row.data()[4]);
+            drawPairwise(row.data()[12], row.data()[3],row.data()[13], row.data()[4],row.data()[15], row.data()[19]);
             tr.addClass('shown');
             td.addClass('details_shown');
         }
     });
 }
 
-function drawPairwise(ref, hit) {
+function drawPairwise(ref, hit, ref_ptn, hit_ptn, ref_cigar, hit_cigar) {
+
+    console.log((ref_cigar))
+    console.log((hit_cigar))
+
     jQuery("#pairwise_align").html("<div><center><img src='./images/browser/loading_big.gif'></center></div>")
 
     Fluxion.doAjax(
-        'comparaService',
+        //'comparaService',
+        'ensemblRestServices',
         'getPairwiseAlignmentWithGenes',
-        {'hit': hit, 'ref': ref, 'url': ajaxurl},
+        {'hit': hit, 'ref': ref,'hit_ptn': hit_ptn, 'ref_ptn': ref_ptn, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
 
-                jQuery("#pairwise_align").html("<div  id = 'pairwise" + ref + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : " + jQuery(window).width() * 0.8 + "'></div>" +
+                jQuery("#pairwise_align").html("<div  id = 'pairwise" + ref_ptn + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : " + jQuery(window).width() * 0.8 + "'></div>" +
                     "<br>" +
-                    "<div id = 'pairwise" + hit + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : " + jQuery(window).width() * 0.8 + ";'></div>")
-                jQuery("#pairwise" + hit).svg()
-                jQuery("#pairwise" + ref).svg()
+                    "<div id = 'pairwise" + hit_ptn + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : " + jQuery(window).width() * 0.8 + ";'></div>")
+                jQuery("#pairwise" + hit_ptn).svg()
+                jQuery("#pairwise" + ref_ptn).svg()
 
 
-                svg = jQuery("#pairwise" + ref).svg("get")
+                svg = jQuery("#pairwise" + ref_ptn).svg("get")
 
-                var text = ref
+                var text = ref_ptn
 
                 svg.text(parseInt(jQuery(window).width() * 0.6) + 10, 10, text, {
                     fontFamily: 'Verdana',
@@ -445,9 +450,9 @@ function drawPairwise(ref, hit) {
 
                 svg.line(0, 6, jQuery(window).width() * 0.6, 6, {id: 'id geneline', stroke: 'red', strokeWidth: 2});
 
-                var svg = jQuery("#pairwise" + hit).svg("get")
+                var svg = jQuery("#pairwise" + hit_ptn).svg("get")
 
-                var text = hit
+                var text = hit_ptn
 
                 svg.text(parseInt(jQuery(window).width() * 0.6) + 10, 10, text, {
                     fontFamily: 'Verdana',
@@ -464,20 +469,24 @@ function drawPairwise(ref, hit) {
 
 
                 syntenic_data.cigar = {};
-                syntenic_data.member[json.ref.gene_id] = json.ref.gene;
+                syntenic_data.member[ref] = json.ref.gene;
                 ref_data = json.ref.gene
-                syntenic_data.member[json.hit.gene_id] = json.hit.gene;
-                syntenic_data.cigar[json.ref.protein_id] = json.ref.alignment;
-                syntenic_data.cigar[json.hit.protein_id] = json.ref.alignment;
+                syntenic_data.member[hit] = json.hit.gene;
+                syntenic_data.cigar[ref_ptn] = ref_cigar;//json.ref.alignment;
+                syntenic_data.cigar[hit_ptn] = hit_cigar;//json.ref.alignment;
 
                 syntenic_data.ref = json.ref.gene_id;
 
                 protein_member_id = json.ref.protein_id
 
+                console.log(syntenic_data)
                 resize_ref();
 
-                dispGenesExonForMember_id("#pairwise" + ref, json.ref.alignment, json.ref.gene_id, json.ref.protein_id)//, json.hit.alignment)
-                dispGenesExonForMember_id("#pairwise" + hit, json.hit.alignment, json.hit.gene_id, json.hit.protein_id, json.ref.alignment)
+                console.log(1)
+                dispGenesExonForMember_id("#pairwise" + ref_ptn, ref_cigar, ref, ref_ptn)//, json.hit.alignment)
+                console.log(2)
+                dispGenesExonForMember_id("#pairwise" + hit_ptn, hit_cigar, hit, hit_ptn, ref_cigar)
+                console.log(3)
 
 
                 separateSeq(json)

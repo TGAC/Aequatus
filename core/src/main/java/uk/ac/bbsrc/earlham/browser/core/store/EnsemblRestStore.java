@@ -26,7 +26,9 @@
 package uk.ac.bbsrc.earlham.browser.core.store;
 
 import net.sf.json.JSONObject;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 /**
@@ -39,7 +41,7 @@ import java.io.IOException;
 public interface EnsemblRestStore extends Store<String> {
     JSONObject getSpecies() throws IOException;
     JSONObject searchGenes(String keyword, String species) throws IOException;
-    JSONObject getGeneTree(String id, String species) throws IOException;
+    JSONObject getGeneTree(String id, String species) throws IOException, ParserConfigurationException, SAXException;
     JSONObject getHomology(String id, String species) throws IOException;
     JSONObject getGenes(JSONObject ids, Boolean expand) throws IOException;
     JSONObject getGene(String id, Boolean expand) throws IOException;

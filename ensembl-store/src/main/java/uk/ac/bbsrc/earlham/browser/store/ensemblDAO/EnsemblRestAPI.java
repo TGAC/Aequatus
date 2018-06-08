@@ -31,12 +31,18 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 import uk.ac.bbsrc.earlham.browser.core.store.EnsemblRestStore;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by IntelliJ IDEA.
@@ -97,11 +103,11 @@ public class EnsemblRestAPI implements EnsemblRestStore {
     }
 
     public JSONObject searchGenes(String keyword, String species) throws IOException {
-        String ext = "/xrefs/symbol/" + species+"/"+keyword+"%25?object_type=gene";
+        String ext = "/xrefs/symbol/" + species + "/" + keyword + "%25?object_type=gene";
         URL url = new URL(server + ext);
 
         URLConnection connection = url.openConnection();
-        HttpURLConnection httpConnection = (HttpURLConnection)connection;
+        HttpURLConnection httpConnection = (HttpURLConnection) connection;
 
         httpConnection.setRequestProperty("Content-Type", "application/json");
 
@@ -109,8 +115,8 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         InputStream response = connection.getInputStream();
         int responseCode = httpConnection.getResponseCode();
 
-        if(responseCode != 200) {
-            throw new RuntimeException("Response code was not 200. Detected response was "+responseCode);
+        if (responseCode != 200) {
+            throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
         }
 
         String output;
@@ -124,8 +130,7 @@ public class EnsemblRestAPI implements EnsemblRestStore {
                 builder.append(buffer, 0, read);
             }
             output = builder.toString();
-        }
-        finally {
+        } finally {
             if (reader != null) try {
                 reader.close();
             } catch (IOException logOrIgnore) {
@@ -148,7 +153,7 @@ public class EnsemblRestAPI implements EnsemblRestStore {
 
     }
 
-    public JSONObject getGeneTree(String id, String species) throws IOException {
+    public JSONObject getGeneTree(String id, String species) throws IOException, ParserConfigurationException, SAXException {
         JSONObject result = new JSONObject();
 
         String ext = "/genetree/member/id/" + id + "?cigar_line=1;sequence=protein";//prune_species=cow;prune_taxon=9526";
@@ -197,10 +202,63 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         }
 
         JSONObject tree = JSONObject.fromObject(output);
-        result.put("member", getHomologous(id, species).getJSONObject("members"));
+        result.put("member", getMembers(id, species).getJSONObject("members"));
+//        result.put("memberssss", getMembers(id, species).get("members"));
         result.put("tree", tree.getJSONObject("tree"));
         result.put("ref", id);
         result.put("protein_id", id);
+
+        return result;
+    }
+
+    public JSONObject getMembers(String id, String species) throws IOException, ParserConfigurationException, SAXException {
+        JSONObject result = new JSONObject();
+
+        String ext = "/genetree/member/id/" + id + "?";//prune_species=cow;prune_taxon=9526";
+
+//        String species = "human,pig,rat,mouse,dog,chimpanzee";
+
+        String[] species_list = species.split(",");
+
+        String[] prune = new String[species_list.length];
+
+        for (int i = 0; i < species_list.length; i++) {
+            prune[i] = "prune_species=" + species_list[i];
+        }
+
+        URL url = new URL(server + ext + ";" + StringUtils.join(prune, ";"));
+
+        URLConnection connection = url.openConnection();
+        HttpURLConnection httpConnection = (HttpURLConnection) connection;
+
+        httpConnection.setRequestProperty("Content-Type", "text/x-orthoxml+xml");
+
+//        InputStream response = connection.getInputStream();
+        int responseCode = httpConnection.getResponseCode();
+
+        if (responseCode != 200) {
+            throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
+        }
+
+        List<String> output = new ArrayList<>();
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(httpConnection.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            Pattern p = Pattern.compile("<gene.*geneId=\"(.*)\" protId=.*>");
+            Matcher matcher_comment = p.matcher(inputLine);
+            if (matcher_comment.find()) {
+                output.add(matcher_comment.group(1));
+            }
+        }
+        in.close();
+        JSONObject genes = new JSONObject();
+        for (int i = 0; i < output.size(); i++) {
+            genes.put(output.get(i), getGene(output.get(i), true));
+        }
+
+        result.put("members", genes);
 
         return result;
     }

@@ -22,7 +22,7 @@ function getReferences() {
             'doOnSuccess': function (json) {
                 console.log("getreference")
 
-               
+
                 json.species = sortByKey(json.species, 'display_name');
 
                 var content = "" +
@@ -99,6 +99,10 @@ function updateGenomeList(){
     jQuery('input[name="genome_list"]:checked').each(function() {
         selected_species.push(this.value);
     });
+    if(selected_species.indexOf(jQuery('select[name=species_list]').val()) < 0){
+        selected_species.push(jQuery('select[name=species_list]').val());
+        jQuery("input[value='" + jQuery('select[name=species_list]').val() + "']").prop('checked', true);
+    }
 }
 
 function setGenomes(callback) {
