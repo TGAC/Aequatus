@@ -37,6 +37,11 @@
         <param-value>${browser.urlpath}</param-value>
     </context-param>
 
+    <context-param>
+        <param-name>data</param-name>
+        <param-value>${browser.data}</param-value>
+    </context-param>
+
     <!--parameter goes to JSPs ends-->
 
     <!-- main servlet declaration -->

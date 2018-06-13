@@ -110,8 +110,10 @@
 </div>
 
 <div id="title" style="visibility: hidden; position: fixed;">${initParam.urlpath}</div>
+<div id="data" style="visibility: hidden; position: fixed;">${initParam.data}</div>
 
 <script type="text/javascript">
+
 
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-21666189-7']);
