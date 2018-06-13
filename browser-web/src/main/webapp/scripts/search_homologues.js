@@ -34,7 +34,7 @@ function search_homologues(query) {
     URLSearch(query)
 
     Fluxion.doAjax(
-        'comparaService',
+        services, //'comparaService',
         'searchMember',
         {'query': query, 'reference': reference, 'url': ajaxurl},
         {
@@ -92,7 +92,7 @@ function getSyntenyForMember(query) {
     jQuery("#synteny").html("<img style='position: relative; left: 0px; ' src='./images/browser/loading_big.gif' alt='Loading'>")
 
     Fluxion.doAjax(
-        'comparaService',
+        services, //'comparaService',
         'getSyntenyForMember',
         {'query': query, 'url': ajaxurl},
         {
@@ -117,7 +117,7 @@ function getHomologyForMember(query, view) {
     resetView();
 
     //Fluxion.doAjax(
-    //    'comparaService',
+    //    services, //'comparaService',
     //    'getRefMember',
     //    {'query': query, 'url': ajaxurl},
     //    {
@@ -130,7 +130,7 @@ function getHomologyForMember(query, view) {
     updateGenomeList()
 
     Fluxion.doAjax(
-        'ensemblRestServices',
+        services,
         'getHomologyForMember',
         {'id': query, 'species':selected_species.toString(), 'url': ajaxurl},
         {
@@ -422,8 +422,8 @@ function drawPairwise(ref, hit, ref_ptn, hit_ptn, ref_cigar, hit_cigar) {
     jQuery("#pairwise_align").html("<div><center><img src='./images/browser/loading_big.gif'></center></div>")
 
     Fluxion.doAjax(
-        //'comparaService',
-        'ensemblRestServices',
+        //services, //'comparaService',
+        services,
         'getPairwiseAlignmentWithGenes',
         {'hit': hit, 'ref': ref,'hit_ptn': hit_ptn, 'ref_ptn': ref_ptn, 'url': ajaxurl},
         {

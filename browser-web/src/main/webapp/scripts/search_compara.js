@@ -15,7 +15,7 @@ function getReferences() {
 
     var colours = ['rgb(166,206,227)', 'rgb(31,120,180)', 'rgb(178,223,138)', 'rgb(51,160,44)', 'rgb(251,154,153)', 'rgb(227,26,28)', 'rgb(253,191,111)', 'rgb(255,127,0)', 'rgb(202,178,214)'];
     Fluxion.doAjax(
-        'ensemblRestServices',
+        services,
         'getGenomes',
         {'url': ajaxurl},
         {
@@ -107,7 +107,7 @@ function updateGenomeList(){
 
 function setGenomes(callback) {
     Fluxion.doAjax(
-        'comparaService',
+        services, //'comparaService',
         'setGenomes',
         {'url': ajaxurl},
         {
@@ -134,7 +134,7 @@ function search(query) {
         "<img style='position: relative;' src='./images/browser/loading_big.gif' alt='Loading'>");
     var reference = jQuery('#genomes').val();
     Fluxion.doAjax(
-        'comparaService',
+        services, //'comparaService',
         'searchDnafrags',
         {'query': query, 'reference': reference, 'url': ajaxurl},
         {
@@ -188,7 +188,7 @@ function search_member(query) {
     URLSearch(query)
 console.log("search member")
     Fluxion.doAjax(
-        'ensemblRestServices',
+        services,
         'searchGenes',
         {'keyword': query, 'species': jQuery('select[name=species_list]').val(), 'url': ajaxurl},
         {

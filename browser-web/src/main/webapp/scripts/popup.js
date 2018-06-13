@@ -53,7 +53,7 @@ function newpopup(member_id, protein_id) {
     var desc = gene.desc
 
     Fluxion.doAjax(
-        'comparaService',
+        services, //'comparaService',
         'getInfoForCoreMember',
         {'query': member_id, 'protein_id':protein_id, 'ref':syntenic_data.protein_id, 'url': ajaxurl},
         {

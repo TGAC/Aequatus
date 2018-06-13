@@ -2,9 +2,26 @@
  * Created by thankia on 09/01/15.
  */
 
+var services;
 function setOff() {
     console.log("setOff")
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
+
+    if(jQuery('#data').text() == "rest"){
+        services = "ensemblRestServices";
+        jQuery("#chr_maps").hide()
+        jQuery("#bar_image_ref").hide()
+        jQuery("#bar_image_selector").hide()
+        jQuery("#selected_region_wrapper").hide()
+    } else if(jQuery('#data').text() == "local"){
+        services = "comparaService";
+        jQuery("#chr_maps").show()
+        jQuery("#bar_image_ref").show()
+        jQuery("#bar_image_selector").show()
+        jQuery("#selected_region_wrapper").show()
+    } else {
+        alert("browser.data not defined properly")
+    }
 
     setGenomes(getUrlVariables);
     var name = arguments.callee.toString();
@@ -177,7 +194,7 @@ function processURL(urlParam) {
 function getGenomeId(ref) {
     console.log("getGenomeId")
     Fluxion.doAjax(
-        'comparaService',
+        services, //'comparaService',
         'getGenomeId',
         {'query': ref, 'url': ajaxurl},
         {
@@ -192,7 +209,7 @@ function getGenomeId(ref) {
 function getChrId(chr, ref) {
     console.log("getChrId")
     Fluxion.doAjax(
-        'comparaService',
+        services, //'comparaService',
         'getChrId',
         {'query': chr, 'ref': ref, 'url': ajaxurl},
         {
@@ -213,7 +230,7 @@ function getMemberfromURL(query, view) {
 
     console.log("getMemberfromURL")
     Fluxion.doAjax(
-        'comparaService',
+        services, //'comparaService',
         'getMemberfromURL',
         {'query': query, 'view': view, 'url': ajaxurl},
         {
