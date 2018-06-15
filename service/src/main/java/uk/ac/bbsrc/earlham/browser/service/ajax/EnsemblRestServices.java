@@ -18,20 +18,31 @@ import java.io.IOException;
 @Ajaxified
 public class EnsemblRestServices {
 
+    String species = null;
+
     protected static final Logger log = LoggerFactory.getLogger(ComparaService.class);
     @Autowired
+
     private EnsemblRestStore ensemblRestStoreStore;
 
     public void setEnsemblRestStore(EnsemblRestStore ensemblRestStoreStore) {
         this.ensemblRestStoreStore = ensemblRestStoreStore;
     }
+
+    public boolean setGenomes(HttpSession session, JSONObject json) {
+        try {
+            species = json.getString("species");
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return false;
+        }
+    }
+
     public JSONObject getGenomes(HttpSession session, JSONObject json) {
 
         try {
-            JSONObject genomes = new JSONObject();
-
-            genomes = ensemblRestStoreStore.getSpecies();
-
+            JSONObject genomes = ensemblRestStoreStore.getSpecies();
             return genomes;
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -48,9 +59,7 @@ public class EnsemblRestServices {
 
         JSONObject response = new JSONObject();
         try {
-            JSONObject genomes = new JSONObject();
-
-            genomes = ensemblRestStoreStore.searchGenes(keyword, species);
+            JSONObject genomes = ensemblRestStoreStore.searchGenes(keyword, species);
 
             return genomes;
         } catch (Exception e) {
@@ -64,7 +73,7 @@ public class EnsemblRestServices {
 
         log.info("\n\n\n restservices searchGenes");
         String id = json.getString("id");
-        String species = json.getString("species");
+//        String species = json.getString("species");
 
         JSONObject response = new JSONObject();
         try {
@@ -82,7 +91,7 @@ public class EnsemblRestServices {
 
     public JSONObject getHomologyForMember(HttpSession session, JSONObject json) {
         String id = json.getString("id");
-        String species = json.getString("species");
+//        String species = json.getString("species");
         JSONObject response = new JSONObject();
 
 
