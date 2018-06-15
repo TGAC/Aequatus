@@ -23,7 +23,16 @@ function getReferences() {
                 console.log("getreference")
 
 
-                json.species = sortByKey(json.species, 'display_name');
+                if(json.species[0].display_name)
+                {
+                    console.log("getreference if")
+                    json.species = sortByKey(json.species, 'display_name');
+                }else{
+                    console.log("getreference else")
+                    json.species = sortByKey(json.species, 'name');
+                }
+
+                console.log("getreference 2")
 
                 var content = "" +
                     "<button onclick=\"toggleGenome()\" class=\"btn btn-default dropdown-toggle\">" +
@@ -42,9 +51,14 @@ function getReferences() {
                     }
 
 
-                    content += "<div class=\"col-12 col-md-2\" style=\"margin-top:5px; margin-bottom:5px;\"> <input type='checkbox' style=\"padding:10px\" name='genome_list' value='"+json.species[i].name+"' "+checked+"> " + json.species[i].display_name + "</div>"
+                    var text =  json.species[i].display_name ? json.species[i].display_name : json.species[i].name
 
-                    species_list += "<option value="+json.species[i].name+">" + json.species[i].display_name + "</option>"
+                    console.log(text)
+
+                    content += "<div class=\"col-12 col-md-2\" style=\"margin-top:5px; margin-bottom:5px;\"> <input type='checkbox' style=\"padding:10px\" name='genome_list' value='"+json.species[i].name+"' "+checked+"> " + text + "</div>"
+
+
+                    species_list += "<option value="+json.species[i].name+">" +text + "</option>"
 
                     var name = json.species[i].name;
 
@@ -103,13 +117,14 @@ function updateGenomeList(){
         selected_species.push(jQuery('select[name=species_list]').val());
         jQuery("input[value='" + jQuery('select[name=species_list]').val() + "']").prop('checked', true);
     }
+    setGenomes()
 }
 
 function setGenomes(callback) {
     Fluxion.doAjax(
         services, //'comparaService',
         'setGenomes',
-        {'url': ajaxurl},
+        {'url': ajaxurl, 'species':selected_species.toString()},
         {
             'doOnSuccess': function (json) {
                 if (callback) {
@@ -161,6 +176,7 @@ function search(query) {
 
 function search_member(query) {
     removePopup()
+    updateGenomeList()
     //window.history.pushState("search=" + query, "Title", "index.jsp?search=" + query);
 
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
@@ -186,7 +202,7 @@ function search_member(query) {
         "<img style='position: relative;' src='./images/browser/loading_big.gif' alt='Loading'>");
 
     URLSearch(query)
-console.log("search member")
+    console.log("search member")
     Fluxion.doAjax(
         services,
         'searchGenes',
