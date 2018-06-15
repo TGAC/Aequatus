@@ -13,17 +13,19 @@ function setOff() {
         jQuery("#bar_image_ref").hide()
         jQuery("#bar_image_selector").hide()
         jQuery("#selected_region_wrapper").hide()
+        testConnection()
     } else if(jQuery('#data').text() == "local"){
         services = "comparaService";
         jQuery("#chr_maps").show()
         jQuery("#bar_image_ref").show()
         jQuery("#bar_image_selector").show()
         jQuery("#selected_region_wrapper").show()
+        getReferences();
     } else {
         alert("browser.data not defined properly")
     }
 
-    setGenomes(getUrlVariables);
+    //setGenomes(getUrlVariables);
     var name = arguments.callee.toString();
     var testTextBox = jQuery('#search');
     var code = null;
@@ -145,6 +147,35 @@ function sethomologousEvents() {
             axis: "y",
             containment: "parent",
             handle: "#control_panel_handle"
+        });
+}
+
+function testConnection(){
+    Fluxion.doAjax(
+        //services, //'comparaService',
+        services,
+        'testRestAPI',
+        {'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+
+                if(json.ping == "1"){
+                    Fluxion.doAjax(
+                        //services, //'comparaService',
+                        services,
+                        'getRestInfo',
+                        {'url': ajaxurl},
+                        {
+                            'doOnSuccess': function (json) {
+
+                                console.log(json)
+                                getReferences();
+                            }
+                        });
+                }else{
+                    alert("Can not establish connection with Ensembl RestAPI");
+                }
+            }
         });
 }
 
