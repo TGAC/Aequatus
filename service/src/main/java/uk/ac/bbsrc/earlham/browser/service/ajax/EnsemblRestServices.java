@@ -27,9 +27,6 @@ public class EnsemblRestServices {
     }
     public JSONObject getGenomes(HttpSession session, JSONObject json) {
 
-        log.info("\n\n\n restservices getGenomes");
-
-        JSONObject response = new JSONObject();
         try {
             JSONObject genomes = new JSONObject();
 
@@ -40,7 +37,6 @@ public class EnsemblRestServices {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             return JSONUtils.SimpleJSONError(e.getMessage());
         }
-
     }
 
 
@@ -167,6 +163,33 @@ public class EnsemblRestServices {
         }
 
         return response;
+    }
+
+    public JSONObject testRestAPI(HttpSession session, JSONObject json) {
+
+        try {
+            JSONObject status = ensemblRestStoreStore.testRestAPI();
+            return status;
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        }
+
+    }
+
+    public JSONObject getRestInfo(HttpSession session, JSONObject json) {
+
+        try {
+            JSONObject info = new JSONObject();
+            info.put("version", ensemblRestStoreStore.getRestAPIversion().get("release"));
+            info.put("release", ensemblRestStoreStore.getReleaseversion().get("release"));
+
+            return info;
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        }
+
     }
 
 }
