@@ -89,7 +89,7 @@ function getReferences() {
                     console.log("getReferences if")
                     changeGenome(json.genomes[0].genome_db_id, json.genomes[0].name)
 
-                    // getChromosomes();
+                     //getChromosomes();
                 }
 
             }
