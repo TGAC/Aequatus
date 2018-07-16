@@ -782,11 +782,11 @@ function dlText(data, name) {
 }
 
 
-function getAlignment(hit, ref) {
+function getAlignment(hit_rene, hit, ref, ref_gene) {
     Fluxion.doAjax(
         services, //'comparaService',
         'getPairwiseAlignment',
-        {'hit': hit, 'ref': ref, 'url': ajaxurl},
+        {'hit_gene': hit_rene, 'hit': hit, 'ref': ref, 'ref_gene':ref_gene,'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
 

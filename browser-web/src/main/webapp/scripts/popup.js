@@ -70,9 +70,9 @@ function newpopup(member_id, protein_id) {
                     jQuery('#makemetop_button').html("<span style='color: lightgray; cursor: not-allowed;'> Change guide gene</span>");
                 }
 
-                jQuery('#ref_name').html("Chr " + json.info.name)
+                jQuery('#ref_name').html("Chr " + json.info.seq_region_name)
 
-                jQuery('#position').html(json.info.dnafrag_start + " - " + json.info.dnafrag_end)
+                jQuery('#position').html(json.info.start + " - " + json.info.end)
 
                 jQuery('#gene_desc').html(stringTrim(desc, 200))
 
@@ -84,8 +84,8 @@ function newpopup(member_id, protein_id) {
 
                 jQuery('#runSMART').html("<span onclick='smart(\"" + member_id + "\",\""+protein_id+"\")'>Find Domains</span>")
 
-                if(json.homoology == true && protein_id != syntenic_data.protein_id){
-                    jQuery('#1to1Link').html("<span onclick='getAlignment(\"" + protein_id + "\",\""+syntenic_data.protein_id+"\")'> 1 to 1 alignment</span>")
+                if(json.homology == true && protein_id != syntenic_data.protein_id){
+                    jQuery('#1to1Link').html("<span onclick='getAlignment(\"" + member_id + "\",\""+protein_id + "\",\""+syntenic_data.protein_id+ "\",\""+syntenic_data.ref+"\")'> 1 to 1 alignment</span>")
                 }else{
                     jQuery('#1to1Link').html("<span style='color: lightgray; cursor: not-allowed;'> 1 to 1 alignment </span>")
                 }

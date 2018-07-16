@@ -23,10 +23,10 @@ public class EnsemblRestServices {
     protected static final Logger log = LoggerFactory.getLogger(ComparaService.class);
     @Autowired
 
-    private EnsemblRestStore ensemblRestStoreStore;
+    private EnsemblRestStore ensemblRestStore;
 
     public void setEnsemblRestStore(EnsemblRestStore ensemblRestStoreStore) {
-        this.ensemblRestStoreStore = ensemblRestStoreStore;
+        this.ensemblRestStore = ensemblRestStoreStore;
     }
 
     public boolean setGenomes(HttpSession session, JSONObject json) {
@@ -42,7 +42,7 @@ public class EnsemblRestServices {
     public JSONObject getGenomes(HttpSession session, JSONObject json) {
 
         try {
-            JSONObject genomes = ensemblRestStoreStore.getSpecies();
+            JSONObject genomes = ensemblRestStore.getSpecies();
             return genomes;
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -59,7 +59,7 @@ public class EnsemblRestServices {
 
         JSONObject response = new JSONObject();
         try {
-            JSONObject genomes = ensemblRestStoreStore.searchGenes(keyword, species);
+            JSONObject genomes = ensemblRestStore.searchGenes(keyword, species);
 
             return genomes;
         } catch (Exception e) {
@@ -79,7 +79,7 @@ public class EnsemblRestServices {
         try {
             JSONObject genetree = new JSONObject();
 
-            genetree = ensemblRestStoreStore.getGeneTree(id, species);
+            genetree = ensemblRestStore.getGeneTree(id, species);
 
             return genetree;
         } catch (Exception e) {
@@ -98,9 +98,9 @@ public class EnsemblRestServices {
 
         response.put("trackname", "homology");
         try {
-            response.put("ref", ensemblRestStoreStore.getGene(id, false));
+            response.put("ref", ensemblRestStore.getGene(id, false));
 //            response.put("refSpecies", comparaStore.getGeneMemberInfofromID(query));
-            response.put("homology", ensemblRestStoreStore.getHomology(id, species).getJSONArray("homology"));
+            response.put("homology", ensemblRestStore.getHomology(id, species).getJSONArray("homology"));
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             return JSONUtils.SimpleJSONError(e.getMessage());
@@ -152,8 +152,8 @@ public class EnsemblRestServices {
 //            ref_object.put("alignment", alignment.get("ref"));
 //            hit_object.put("alignment", alignment.get("hit"));
 
-            ref_object.put("gene", ensemblRestStoreStore.getGene(ref, true));
-            hit_object.put("gene", ensemblRestStoreStore.getGene(hit, true));
+            ref_object.put("gene", ensemblRestStore.getGene(ref, true));
+            hit_object.put("gene", ensemblRestStore.getGene(hit, true));
 
 //            ref_object.put("sequence", ensemblRestStoreStore.getSeq(ref_seq_member_id));
 //            hit_object.put("sequence",ensemblRestStoreStore.getSeq(hit_seq_member_id));;
@@ -177,7 +177,7 @@ public class EnsemblRestServices {
     public JSONObject testRestAPI(HttpSession session, JSONObject json) {
 
         try {
-            JSONObject status = ensemblRestStoreStore.testRestAPI();
+            JSONObject status = ensemblRestStore.testRestAPI();
             return status;
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -190,8 +190,8 @@ public class EnsemblRestServices {
 
         try {
             JSONObject info = new JSONObject();
-            info.put("version", ensemblRestStoreStore.getRestAPIversion().get("release"));
-            info.put("release", ensemblRestStoreStore.getReleaseversion().get("release"));
+            info.put("version", ensemblRestStore.getRestAPIversion().get("release"));
+            info.put("release", ensemblRestStore.getReleaseversion().get("release"));
 
             return info;
         } catch (Exception e) {
@@ -200,5 +200,78 @@ public class EnsemblRestServices {
         }
 
     }
+
+    public JSONObject getInfoForCoreMember(HttpSession session, JSONObject json) {
+        String query = json.getString("query");
+        String ref = json.getString("ref");
+        String protein_id = json.getString("protein_id");
+
+        JSONObject response = new JSONObject();
+
+
+        try {
+//            int ref_seq_member_id = comparaStore.getSeqMemberIDfromStableID(ref);
+//            int hit_seq_member_id = comparaStore.getSeqMemberIDfromStableID(protein_id);
+
+            response.put("info", ensemblRestStore.getGene(query, false));
+//            response.put("info", comparaStore.getInfoforMember(query).get("info"));
+            response.put("homology", ensemblRestStore.getInfoforHomolog(query, ref));
+
+            return response;
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        }
+    }
+
+    public JSONObject getPairwiseAlignment(HttpSession session, JSONObject json) throws Exception {
+        String ref_gene = json.getString("ref_gene");
+        String hit_gene = json.getString("hit_gene");
+
+        String ref = json.getString("ref");
+        String hit = json.getString("hit");
+
+
+        JSONObject response = new JSONObject();
+
+        JSONObject ref_object = new JSONObject();
+        JSONObject hit_object = new JSONObject();
+
+
+
+        ref_object.put("gene_id", ref_gene);
+        ref_object.put("protein_id", ref);
+
+        hit_object.put("gene_id", hit_gene);
+        hit_object.put("protein_id", hit);
+        try {
+            JSONObject alignment =  ensemblRestStore.getPairwiseAlignment(ref_gene, hit);
+//            long homology_id = comparaStore.getHomologyID(ref_seq_member_id, hit_seq_member_id).getLong("homology_id");
+
+            ref_object.put("alignment", alignment.get("ref"));
+            hit_object.put("alignment", alignment.get("hit"));
+//
+            ref_object.put("sequence", alignment.get("ref_seq"));
+            hit_object.put("sequence", alignment.get("hit_seq"));
+//
+            response.put("ref", ref_object);
+            response.put("hit", hit_object);
+
+            response.put("homology", alignment.get("type"));
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        }
+
+        return response;
+    }
+
 
 }

@@ -48,6 +48,8 @@ public interface EnsemblRestStore extends Store<String> {
     JSONObject testRestAPI() throws IOException;
     JSONObject getRestAPIversion() throws IOException;
     JSONObject getReleaseversion() throws IOException;
+    boolean getInfoforHomolog(String query, String ref) throws IOException;
+    JSONObject getPairwiseAlignment(String query, String hit) throws IOException;
 
 
     }
