@@ -53,11 +53,9 @@ public class EnsemblRestServices {
 
     public JSONObject searchGenes(HttpSession session, JSONObject json) {
 
-        log.info("\n\n\n restservices searchGenes");
         String keyword = json.getString("keyword");
         String species = json.getString("species");
 
-        JSONObject response = new JSONObject();
         try {
             JSONObject genomes = ensemblRestStore.searchGenes(keyword, species);
 
@@ -71,11 +69,7 @@ public class EnsemblRestServices {
 
     public JSONObject getGeneTree(HttpSession session, JSONObject json) {
 
-        log.info("\n\n\n restservices searchGenes");
         String id = json.getString("id");
-//        String species = json.getString("species");
-
-        JSONObject response = new JSONObject();
         try {
             JSONObject genetree = new JSONObject();
 
@@ -91,15 +85,11 @@ public class EnsemblRestServices {
 
     public JSONObject getHomologyForMember(HttpSession session, JSONObject json) {
         String id = json.getString("id");
-//        String species = json.getString("species");
         JSONObject response = new JSONObject();
-
-
 
         response.put("trackname", "homology");
         try {
             response.put("ref", ensemblRestStore.getGene(id, false));
-//            response.put("refSpecies", comparaStore.getGeneMemberInfofromID(query));
             response.put("homology", ensemblRestStore.getHomology(id, species).getJSONArray("homology"));
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -123,45 +113,17 @@ public class EnsemblRestServices {
         JSONObject ref_object = new JSONObject();
         JSONObject hit_object = new JSONObject();
 
-
-//        int ref_seq_member_id = ensemblRestStoreStore.getSeqMemberIDfromStableID(ref);
-//        int hit_seq_member_id = ensemblRestStoreStore.getSeqMemberIDfromStableID(hit);
-
-//        String ref_genome = ensemblRestStoreStore.getGenomefromSeqMemberID(ref_seq_member_id);
-//        String hit_genome = ensemblRestStoreStore.getGenomefromSeqMemberID(hit_seq_member_id);
-
-//        int ref_gene_member_id = ensemblRestStoreStore.getGeneMemberIDfromSeqMemberID(ref_seq_member_id);
-//        int hit_gene_member_id = ensemblRestStoreStore.getGeneMemberIDfromSeqMemberID(hit_seq_member_id);
-//
-//
-//        String ref_gene_stable_id = ensemblRestStoreStore.getGeneStableIDfromGeneMemberID(ref_gene_member_id);
-//        String hit_gene_stable_id = ensemblRestStoreStore.getGeneStableIDfromGeneMemberID(hit_gene_member_id);
-
-
-
-
         ref_object.put("gene_id", ref);
         ref_object.put("protein_id", ref_ptn);
 
         hit_object.put("gene_id", hit);
         hit_object.put("protein_id", hit_ptn);
         try {
-//            JSONObject alignment =  ensemblRestStoreStore.getPairwiseAlignment(ref_seq_member_id, hit_seq_member_id);
-//            long homology_id = ensemblRestStoreStore.getHomologyID(ref_seq_member_id, hit_seq_member_id).getLong("homology_id");
-
-//            ref_object.put("alignment", alignment.get("ref"));
-//            hit_object.put("alignment", alignment.get("hit"));
-
             ref_object.put("gene", ensemblRestStore.getGene(ref, true));
             hit_object.put("gene", ensemblRestStore.getGene(hit, true));
 
-//            ref_object.put("sequence", ensemblRestStoreStore.getSeq(ref_seq_member_id));
-//            hit_object.put("sequence",ensemblRestStoreStore.getSeq(hit_seq_member_id));;
-
             response.put("ref", ref_object);
             response.put("hit", hit_object);
-
-//            response.put("homology", ensemblRestStoreStore.getHomologyType(homology_id));
 
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -204,17 +166,13 @@ public class EnsemblRestServices {
     public JSONObject getInfoForCoreMember(HttpSession session, JSONObject json) {
         String query = json.getString("query");
         String ref = json.getString("ref");
-        String protein_id = json.getString("protein_id");
 
         JSONObject response = new JSONObject();
 
 
         try {
-//            int ref_seq_member_id = comparaStore.getSeqMemberIDfromStableID(ref);
-//            int hit_seq_member_id = comparaStore.getSeqMemberIDfromStableID(protein_id);
 
             response.put("info", ensemblRestStore.getGene(query, false));
-//            response.put("info", comparaStore.getInfoforMember(query).get("info"));
             response.put("homology", ensemblRestStore.getInfoforHomolog(query, ref));
 
             return response;
@@ -249,14 +207,11 @@ public class EnsemblRestServices {
         hit_object.put("protein_id", hit);
         try {
             JSONObject alignment =  ensemblRestStore.getPairwiseAlignment(ref_gene, hit);
-//            long homology_id = comparaStore.getHomologyID(ref_seq_member_id, hit_seq_member_id).getLong("homology_id");
 
             ref_object.put("alignment", alignment.get("ref"));
             hit_object.put("alignment", alignment.get("hit"));
-//
             ref_object.put("sequence", alignment.get("ref_seq"));
             hit_object.put("sequence", alignment.get("hit_seq"));
-//
             response.put("ref", ref_object);
             response.put("hit", hit_object);
 
