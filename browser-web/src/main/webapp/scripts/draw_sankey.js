@@ -243,7 +243,9 @@ function drawSankey(data, div) {
                 }
                 first = false;
 
-                info += "<tr><td>"+i+"</td><td>"+source+"</td><td>"+target+"</td></tr>";
+                if(key.indexOf("seq") < 0){
+                    info += "<tr><td>"+i+"</td><td>"+source+"</td><td>"+target+"</td></tr>";
+                }
             }
             info += "</tbody></table>";
 
