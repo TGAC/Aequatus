@@ -52,6 +52,7 @@ function drawSankey(data, div) {
         graph.nodes = data.nodes.slice(0);
         graph.links = data.links.slice(0);
         var currentData = graph;
+        var link, node, myNodes, myLinks;
         renderSankey()
 
 
@@ -82,7 +83,7 @@ function drawSankey(data, div) {
             path = sankey.link();
 
             // add in the links
-            var link = svg.append("g").selectAll(".link")
+            link = svg.append("g").selectAll(".link")
                 .data(myLinks)
                 .enter().append("path")
                 .attr("class", "link")
@@ -101,7 +102,7 @@ function drawSankey(data, div) {
                 });
 
             // add in the nodes
-            var node = svg.append("g").selectAll(".node")
+            node = svg.append("g").selectAll(".node")
                 .data(myNodes)
                 .enter().append("g")
                 .attr("class", "node")
