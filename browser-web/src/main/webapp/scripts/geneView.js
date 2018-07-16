@@ -542,22 +542,25 @@ function makeMeTop(new_gene_id, new_protein_id) {
         changeReference(new_gene_id, new_protein_id)
 
         removePopup();
-        if (genome_db_id != syntenic_data.member[syntenic_data.ref].species) {
-            genome_name = syntenic_data.member[syntenic_data.ref].species;
 
-            genome_db_id = null
-            chr_name = syntenic_data.member[syntenic_data.ref].reference
-            chr = null
+        if(services == "comparaService"){
+            if (genome_db_id != syntenic_data.member[syntenic_data.ref].species) {
+                genome_name = syntenic_data.member[syntenic_data.ref].species;
 
-            getChromosomes(new_gene_id);
-            members = undefined
-            getMember(new_gene_id);
-            jQuery("#genome_name").html(genome_name);
-        } else if (chr != syntenic_data.member[syntenic_data.ref].reference) {
-            chr_name = syntenic_data.member[syntenic_data.ref].reference
-            chr = null
-            members = undefined
-            getMember(new_gene_id);
+                genome_db_id = null
+                chr_name = syntenic_data.member[syntenic_data.ref].reference
+                chr = null
+
+                getChromosomes(new_gene_id);
+                members = undefined
+                getMember(new_gene_id);
+                jQuery("#genome_name").html(genome_name);
+            } else if (chr != syntenic_data.member[syntenic_data.ref].reference) {
+                chr_name = syntenic_data.member[syntenic_data.ref].reference
+                chr = null
+                members = undefined
+                getMember(new_gene_id);
+            }
         }
     }
 
