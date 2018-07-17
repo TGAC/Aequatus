@@ -387,16 +387,22 @@ function listResult(json) {
 
             "<td> <i style='color:grey' class='fa fa-1x fa-sitemap fa-rotate-270' title='View GeneTree' onclick='openClosePanel(); " +
             "jQuery(\"#canvas\").show(); " +
+            "getRefs(\"" + value[value.id].stable_id + "\",\""+ value[value.id].dnafrag_id+ "\",\""+ value[value.id].genome_db_id+ "\",\""+ value[value.id].gene_member_id + "\"); " +
+
             "getcoreMember(\"" + value.id + "\",\"true\");'> </i>" +
             "</td>" +
 
             "<td> <i style='color:grey' class='fa fa-1x fa-table' title='List Homology in Table' onclick='openClosePanel(); " +
             "jQuery(\"#canvas\").show(); " +
+            "getRefs(\"" + value[value.id].stable_id + "\",\""+ value[value.id].dnafrag_id+ "\",\""+ value[value.id].genome_db_id+ "\",\""+ value[value.id].gene_member_id + "\"); " +
+
+
             "getHomologyForMember(\"" + value.id + "\",\"table\");'> </i>" +
             "</td>" +
 
             "<td> <i style='color:grey' class='fa fa-1x fa-random' title='View Homology as Sankey Plot' onclick='openClosePanel(); " +
             "jQuery(\"#canvas\").show(); " +
+            "getRefs(\"" + value[value.id].stable_id + "\",\""+ value[value.id].dnafrag_id+ "\",\""+ value[value.id].genome_db_id+ "\",\""+ value[value.id].gene_member_id + "\"); " +
             "getHomologyForMember(\"" + value.id + "\",\"sankey\");'> </i>" +
             "</td>" +
             "</tr>" +
@@ -426,6 +432,20 @@ function listResult(json) {
 //         jQuery("#search_result").html("<div style='width: 100%; text-align: center; padding-top: 15px; font-size: 15px;'>No Result found</div>");
 
 //     }
+}
+
+function getRefs(stable_id, dnafrag_id, genome_db_id, gene_member_id){
+    console.log("getrefs")
+
+    console.log(stable_id)
+    setSearchList(stable_id);
+    console.log(dnafrag_id)
+    console.log(genome_db_id)
+    setCredentials(dnafrag_id,genome_db_id);
+    getChromosomes();
+    getMember();
+    console.log(gene_member_id)
+    getSyntenyForMember(gene_member_id);
 }
 
 

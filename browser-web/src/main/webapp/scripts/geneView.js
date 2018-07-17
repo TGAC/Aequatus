@@ -281,15 +281,17 @@ function initiateSynteny(member) {
 
 function getcoreMember(query, redrawn) {
     console.log("getcoreMember " + query)
+    var updated = updateGenomeList()
     jQuery(".refMarkerShow").removeClass("selected")
     jQuery("#ref" + query).addClass("selected")
     jQuery("#gene_widget").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
 
     resetView()
 
+
+
     jQuery("#gene_tree_nj").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
 
-    updateGenomeList()
 
     Fluxion.doAjax(
         services,
@@ -312,6 +314,8 @@ function getcoreMember(query, redrawn) {
                 prepareTree(redrawn);
 
                 console.log("getcoreMember 6")
+                console.log(updated)
+
             }
         });
 }

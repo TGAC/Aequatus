@@ -83,13 +83,17 @@ function getReferences() {
                 jQuery("#genome_list_div").append(content);
                 jQuery("#species_list_div").append(species_list);
                 jQuery("#canvas").show();
+                updateGenomeList()
 
                 if (genome_db_id == undefined) {
 
                     console.log("getReferences if")
-                    changeGenome(json.genomes[0].genome_db_id, json.genomes[0].name)
+                    //changeGenome(json.genomes[0].genome_db_id, json.genomes[0].name)
 
-                     //getChromosomes();
+                    if(services == "comparaService"){
+                        changeGenome(json.species[0].genome_db_id, json.species[0].name)
+                        // getChromosomes();
+                    }
                 }
 
             }
@@ -117,8 +121,17 @@ function updateGenomeList(){
         selected_species.push(jQuery('select[name=species_list]').val());
         jQuery("input[value='" + jQuery('select[name=species_list]').val() + "']").prop('checked', true);
     }
-    setGenomes()
+    Fluxion.doAjax(
+        services, //'comparaService',
+        'setGenomes',
+        {'url': ajaxurl, 'species':selected_species.toString()},
+        {
+            'doOnSuccess': function (json) {
+                return true;
+            }
+        });
 }
+
 
 function setGenomes(callback) {
     Fluxion.doAjax(
@@ -127,9 +140,8 @@ function setGenomes(callback) {
         {'url': ajaxurl, 'species':selected_species.toString()},
         {
             'doOnSuccess': function (json) {
-                if (callback) {
-                    callback()
-                }
+                console.log("setGenomes here")
+                return true;
             }
         });
 }
@@ -221,7 +233,7 @@ function changeGenome(genome, name) {
     genome_db_id = genome;
     chr = undefined;
     member_id = undefined;
-    getChromosomes();
+    getChromosomes(genome_db_id);
     jQuery("#genome_name").html(name)
 }
 
