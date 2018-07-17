@@ -268,12 +268,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             List<Map<String, Object>> genomeIDs = template.queryForList(GET_ALL_GENOMES, new Object[]{"%%"});
 
 
-
-
-
             int i = 0;
             for (Map map : genomeIDs) {
-                if (DatabaseSchemaSelector.createConnection(map.get("name").toString()) && Arrays.asList(query).indexOf(map.get("name").toString()) >= 0 ) {
+                if (DatabaseSchemaSelector.createConnection(map.get("name").toString()) && Arrays.asList(query).indexOf(map.get("name").toString()) >= 0) {
                     genomes.add(map);
                     if (i == 0) {
                         genome_ids += (map.get("genome_db_id").toString());
@@ -286,7 +283,6 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
             genome_ids += ")";
 
-                log.info("\n\n\n\t genome ids "+genome_ids);
             return genomes;
         } catch (EmptyResultDataAccessException e) {
             throw new IOException(" getAllGenomeId no result found");
@@ -730,11 +726,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
         List<Map<String, Object>> genelist = new ArrayList<>();
 
-        final String SEARCH_HOMOLOGY_IDs = "SELECT homology_id FROM homology_member WHERE seq_member_id = ?;";
-
         for (Map gene : before) {
-            List<Long> homology_ids_list = new ArrayList<>();
-
 
             int gene_member_id = template.queryForInt(GET_GENE_MEMBER_ID_FROM_STABLE_ID, new Object[]{gene.get("stable_id")});
 
@@ -747,7 +739,6 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                     "and hm.seq_member_id <> hm2.seq_member_id " +
                     "and hm2.seq_member_id = s.seq_member_id " +
                     "and s.genome_db_id in " + genome_ids + ";";
-
 
             List<Long> homology_ids_array = new ArrayList<>();
             List<Map<String, Object>> tmp_homology_member_id = template.queryForList(SEARCH_HOMOLOGY_FOR_SEQ_MEMBER_ID_IN_GENOMES, new Object[]{seq_member_id});
@@ -993,7 +984,6 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public JSONObject getGenefromCore(String query, String genome, int member_id, String gene_stable_id, String desc) throws IOException {
         try {
 
-            log.info("\n\n\n\t getGenefromCore "+query +","+ genome+","+ member_id+","+  gene_stable_id+","+ desc);
             genome = template.queryForObject(GET_GENOME_NAME_FROM_ID, new Object[]{genome}, String.class);
 
             JSONObject gene = SQLSequenceDAO.getGenebyStableid(query, genome, member_id, gene_stable_id);
@@ -1031,7 +1021,6 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                 "JOIN gene_member m4 on (m4.canonical_member_id = m3.seq_member_id) " +
                 "WHERE m1.gene_member_id = ? AND m3.genome_db_id in " + genome_ids + " and gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\" ";
 
-        log.info("\n\n\n\t genome_ids "+genome_ids);
         List<Map<String, Object>> homology_member_id = template.queryForList(GET_GENE_TREE_FOR_REFERENCE, new Object[]{query});
 
         for (Map map_two : homology_member_id) {
@@ -1129,7 +1118,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     public JSONObject getInfoforMember(String query) throws IOException {
 
         JSONObject gene_info = new JSONObject();
-        final String GET_GENE_INFO = "select m1.*, df.* " +
+        final String GET_GENE_INFO = "select m1.dnafrag_start as start, m1.dnafrag_end as end, m1.dnafrag_strand as strand, df.name as seq_region_name " +
                 "from gene_member m1, dnafrag df " +
                 "WHERE m1.stable_id = ? AND m1.genome_db_id in " + genome_ids + " and m1.dnafrag_id = df.dnafrag_id;";
 
@@ -1488,7 +1477,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                 "and h.homology_id in (" + StringUtils.join(homology_ids, ",") + ") " +
                 "and hm.seq_member_id = s.seq_member_id " +
                 "and hm.gene_member_id = gm.gene_member_id " +
-                "and g.genome_db_id in " + genome_ids + " "+
+                "and g.genome_db_id in " + genome_ids + " " +
                 "and s.genome_db_id = g.genome_db_id " +
                 "and h.method_link_species_set_id = mlss.method_link_species_set_id " +
                 "and mlss.method_link_id = ml.method_link_id;";
@@ -1553,9 +1542,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         }
         for (Object key : homologies.keySet()) {
             //based on you key types
-            String keyStr = (String)key;
+            String keyStr = (String) key;
             JSONObject keyvalue = homologies.getJSONObject(keyStr);
-            if(keyvalue.has("target")) {
+            if (keyvalue.has("target")) {
                 homologies_array.add(keyvalue);
             }
         }
