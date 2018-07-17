@@ -165,7 +165,6 @@ function printAlignment(){
 }
 
 function joinAlignment(){
-    console.log("joinAlignment")
 
     for (var id in cigar_json) {
         var cigar_string = expandCigar(cigar_json[id])

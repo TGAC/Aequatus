@@ -4,17 +4,16 @@
 
 var services;
 function setOff() {
-    console.log("setOff")
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
 
-    if(jQuery('#data').text() == "rest"){
+    if (jQuery('#data').text() == "rest") {
         services = "ensemblRestServices";
         jQuery("#chr_maps").hide()
         jQuery("#bar_image_ref").hide()
         jQuery("#bar_image_selector").hide()
         jQuery("#selected_region_wrapper").hide()
         testConnection()
-    } else if(jQuery('#data').text() == "local"){
+    } else if (jQuery('#data').text() == "local") {
         services = "comparaService";
         jQuery("#chr_maps").show()
         jQuery("#bar_image_ref").show()
@@ -112,7 +111,6 @@ function setOff() {
 
 
 function sethomologousEvents() {
-    console.log("sethomologousEvents")
 
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
     setGenomes()
@@ -150,7 +148,7 @@ function sethomologousEvents() {
         });
 }
 
-function testConnection(){
+function testConnection() {
     Fluxion.doAjax(
         //services, //'comparaService',
         services,
@@ -159,7 +157,7 @@ function testConnection(){
         {
             'doOnSuccess': function (json) {
 
-                if(json.ping == "1"){
+                if (json.ping == "1") {
                     Fluxion.doAjax(
                         //services, //'comparaService',
                         services,
@@ -168,11 +166,10 @@ function testConnection(){
                         {
                             'doOnSuccess': function (json) {
 
-                                console.log(json)
                                 getReferences();
                             }
                         });
-                }else{
+                } else {
                     alert("Can not establish connection with Ensembl RestAPI");
                 }
             }
@@ -180,7 +177,6 @@ function testConnection(){
 }
 
 function getUrlVariables(chr) {
-    console.log("getUrlVariables")
     jQuery.urlParam = function (name) {
         var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
         if (results == null) {
@@ -196,8 +192,6 @@ function getUrlVariables(chr) {
 }
 
 function processURL(urlParam) {
-    console.log("processURL")
-
     if (jQuery.urlParam("search") != null) {
         if (parseInt(jQuery("#control_panel").css("left")) < 0) {
             openPanel('#search_div')
@@ -223,7 +217,6 @@ function processURL(urlParam) {
 }
 
 function getGenomeId(ref) {
-    console.log("getGenomeId")
     Fluxion.doAjax(
         services, //'comparaService',
         'getGenomeId',
@@ -238,7 +231,6 @@ function getGenomeId(ref) {
 }
 
 function getChrId(chr, ref) {
-    console.log("getChrId")
     Fluxion.doAjax(
         services, //'comparaService',
         'getChrId',
@@ -259,7 +251,6 @@ function getChrId(chr, ref) {
 
 function getMemberfromURL(query, view) {
 
-    console.log("getMemberfromURL")
     Fluxion.doAjax(
         services, //'comparaService',
         'getMemberfromURL',
@@ -318,8 +309,6 @@ function getMemberfromURL(query, view) {
 
 
 function search_from_box() {
-    console.log("search_from_box")
-
     if (parseInt(jQuery("#control_panel").css("left")) < 0) {
         openPanel('#search_div')
     }
@@ -329,55 +318,23 @@ function search_from_box() {
 }
 
 function resize() {
-    console.log("resize")
-
     drawChromosome();
-    console.log("resize 1")
     drawMember();
-    console.log("resize 2")
     select_chr();
-    console.log("resize 3")
     resizeView()
-    console.log("resize 4")
-
-    // if (member_id == undefined) {
-    //     // select_member();
-    //     // drawSelected();
-    // } else {
-
-    //     var start = 0;
-    //     for (var i = 0; i < members.length; i++) {
-    //         if (members[i].id == member_id) {
-    //             start = members[i].start;
-    //         }
-    //     }
-    //     // rearrange_selector(member_id, start, chr);
-    //     // drawSelected();
-    //     // prepareTree(true);
-    //     resetView()
-    // }
 }
 
 function listResult(json) {
-    console.log("listResult")
-    console.log(json.result.length)
     var content = "<p id='search_hit' style='background: white;'>";
     jQuery.each(json.result, function (key, value) {
-        console.log(key, value);
-        console.log("listResult 1")
-
         var link = "<i style='cursor:pointer' " +
             "onclick='openClosePanel(); jQuery(\"#canvas\").show(); getcoreMember(" + value.id + ",\"true\");' " +
             "class=\"fa fa-external-link\"></i>"
-        console.log("listResult 2")
-
         var description = value.description
-        console.log("listResult 3")
 
         if (description == null) {
             description = ""
         }
-        console.log("listResult 4")
 
         content += "<div class='search_div' id='searchlist_" + value.id + "' > " +
             "<div class='search_header'>" +
@@ -387,14 +344,14 @@ function listResult(json) {
 
             "<td> <i style='color:grey' class='fa fa-1x fa-sitemap fa-rotate-270' title='View GeneTree' onclick='openClosePanel(); " +
             "jQuery(\"#canvas\").show(); " +
-            "getRefs(\"" + value[value.id].stable_id + "\",\""+ value[value.id].dnafrag_id+ "\",\""+ value[value.id].genome_db_id+ "\",\""+ value[value.id].gene_member_id + "\"); " +
+            "getRefs(\"" + value[value.id].stable_id + "\",\"" + value[value.id].dnafrag_id + "\",\"" + value[value.id].genome_db_id + "\",\"" + value[value.id].gene_member_id + "\"); " +
 
             "getcoreMember(\"" + value.id + "\",\"true\");'> </i>" +
             "</td>" +
 
             "<td> <i style='color:grey' class='fa fa-1x fa-table' title='List Homology in Table' onclick='openClosePanel(); " +
             "jQuery(\"#canvas\").show(); " +
-            "getRefs(\"" + value[value.id].stable_id + "\",\""+ value[value.id].dnafrag_id+ "\",\""+ value[value.id].genome_db_id+ "\",\""+ value[value.id].gene_member_id + "\"); " +
+            "getRefs(\"" + value[value.id].stable_id + "\",\"" + value[value.id].dnafrag_id + "\",\"" + value[value.id].genome_db_id + "\",\"" + value[value.id].gene_member_id + "\"); " +
 
 
             "getHomologyForMember(\"" + value.id + "\",\"table\");'> </i>" +
@@ -402,7 +359,7 @@ function listResult(json) {
 
             "<td> <i style='color:grey' class='fa fa-1x fa-random' title='View Homology as Sankey Plot' onclick='openClosePanel(); " +
             "jQuery(\"#canvas\").show(); " +
-            "getRefs(\"" + value[value.id].stable_id + "\",\""+ value[value.id].dnafrag_id+ "\",\""+ value[value.id].genome_db_id+ "\",\""+ value[value.id].gene_member_id + "\"); " +
+            "getRefs(\"" + value[value.id].stable_id + "\",\"" + value[value.id].dnafrag_id + "\",\"" + value[value.id].genome_db_id + "\",\"" + value[value.id].gene_member_id + "\"); " +
             "getHomologyForMember(\"" + value.id + "\",\"sankey\");'> </i>" +
             "</td>" +
             "</tr>" +
@@ -415,36 +372,18 @@ function listResult(json) {
             "</div>";
     });
 
-    // if(json.html.length > 0){
-    //     for (var i = 0; i < json.html.length; i++) {
 
-
-    //         if (i == json.html.length - 1) {
     content += "</p>";
     jQuery("#search_result").html(content);
     jQuery("#search_result").fadeIn();
     jQuery("#search_hit").tablesorter();
-    //     }
-
-    // }
-//     }
-//     else{
-//         jQuery("#search_result").html("<div style='width: 100%; text-align: center; padding-top: 15px; font-size: 15px;'>No Result found</div>");
-
-//     }
 }
 
-function getRefs(stable_id, dnafrag_id, genome_db_id, gene_member_id){
-    console.log("getrefs")
-
-    console.log(stable_id)
+function getRefs(stable_id, dnafrag_id, genome_db_id, gene_member_id) {
     setSearchList(stable_id);
-    console.log(dnafrag_id)
-    console.log(genome_db_id)
-    setCredentials(dnafrag_id,genome_db_id);
+    setCredentials(dnafrag_id, genome_db_id);
     getChromosomes();
     getMember();
-    console.log(gene_member_id)
     getSyntenyForMember(gene_member_id);
 }
 

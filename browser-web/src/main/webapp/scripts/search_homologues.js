@@ -48,7 +48,6 @@ function search_homologues(query) {
 
 
 function list_homologues(json) {
-    console.log("list_homologues")
     var content = "";
 
     if (json.html.length > 0) {
@@ -106,7 +105,6 @@ function getSyntenyForMember(query) {
 }
 
 
-
 function getHomologyForMember(query, view) {
     if (view == "table") {
         jQuery("#homologies").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
@@ -132,7 +130,7 @@ function getHomologyForMember(query, view) {
     Fluxion.doAjax(
         services,
         'getHomologyForMember',
-        {'id': query, 'species':selected_species.toString(), 'url': ajaxurl},
+        {'id': query, 'species': selected_species.toString(), 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
                 URLMemberID(json.ref.stable_id, view)
@@ -152,7 +150,6 @@ function getHomologyForMember(query, view) {
 }
 
 function drawHomology(json) {
-    console.log("drawHomology")
     var homology_table_content = "<table><tr><td><h3>Confidently predicted Homology for " + json.ref.display_label + "</h3></td><td valign=middle> (Gene: " + json.ref.stable_id + ")</td></tr></table> <br>" +
         "<table id='homologyTable' class='table' width='100%'>" +
         "<thead>" +
@@ -180,7 +177,6 @@ function drawHomology(json) {
         "</tr>" +
         "</thead>";
     var homology = json.homology;
-    console.log("drawHomology 1")
 
     homology_table_content += "<tfoot>" +
         "<tr>" +
@@ -207,15 +203,11 @@ function drawHomology(json) {
         "</tr>" +
         "</tfoot>" +
         "<tbody";
-    console.log("drawHomology 2")
 
     // var json_key = Object.keys(homology);
     for (var i = 0; i < homology.length; i++) {
-        console.log("drawHomology 21 "+i)
         var tree = homology[i].tree >= 0 ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em; cursor: pointer' aria-hidden='true' onclick='openTree(\"" + homology[i].source.protein_id + "\")'></i>" : "";
-        console.log("drawHomology 22 "+i)
         var pairwise = homology[i].tree >= 0 ? "<td class='details-control pairwise-align details_hidden'></td>" : "<td></td>";
-        console.log("drawHomology 23 "+i)
         homology_table_content += "<tr> " +
             "<td class='details-control detail-info details_hidden'></td>" +
             "<td class='details-control pairwise-align details_hidden'></td>" +
@@ -239,13 +231,10 @@ function drawHomology(json) {
             "<td>" + homology[i].target.cigar_line + "</td>" +
             "</tr>";
     }
-    console.log("drawHomology 3")
 
     homology_table_content += "</tbody></table>"
-    console.log("drawHomology")
 
     jQuery("#homologies").html(homology_table_content)
-    console.log("drawHomology")
 
 
     var columnArray = [{
@@ -253,7 +242,6 @@ function drawHomology(json) {
         "visible": false,
         "searchable": false
     }];
-    console.log("drawHomology")
 
     for (var i = 12; i <= 19; ++i) {
         columnArray.push({
@@ -262,7 +250,6 @@ function drawHomology(json) {
             "searchable": false
         });
     }
-    console.log("drawHomology 4")
 
     jQuery('#homologyTable').DataTable({
         "columnDefs": columnArray,
@@ -407,7 +394,7 @@ function drawHomology(json) {
             jQuery('tr.shown').removeClass('shown');
 
             row.child("<div style='position:relative; left:100px;' id='pairwise_align'></div>").show();
-            drawPairwise(row.data()[12], row.data()[3],row.data()[13], row.data()[4],row.data()[15], row.data()[19]);
+            drawPairwise(row.data()[12], row.data()[3], row.data()[13], row.data()[4], row.data()[15], row.data()[19]);
             tr.addClass('shown');
             td.addClass('details_shown');
         }
@@ -416,16 +403,13 @@ function drawHomology(json) {
 
 function drawPairwise(ref, hit, ref_ptn, hit_ptn, ref_cigar, hit_cigar) {
 
-    console.log((ref_cigar))
-    console.log((hit_cigar))
-
     jQuery("#pairwise_align").html("<div><center><img src='./images/browser/loading_big.gif'></center></div>")
 
     Fluxion.doAjax(
         //services, //'comparaService',
         services,
         'getPairwiseAlignmentWithGenes',
-        {'hit': hit, 'ref': ref,'hit_ptn': hit_ptn, 'ref_ptn': ref_ptn, 'url': ajaxurl},
+        {'hit': hit, 'ref': ref, 'hit_ptn': hit_ptn, 'ref_ptn': ref_ptn, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
 
@@ -479,15 +463,10 @@ function drawPairwise(ref, hit, ref_ptn, hit_ptn, ref_cigar, hit_cigar) {
 
                 protein_member_id = json.ref.protein_id
 
-                console.log(syntenic_data)
                 resize_ref();
 
-                console.log(1)
                 dispGenesExonForMember_id("#pairwise" + ref_ptn, ref_cigar, ref, ref_ptn)//, json.hit.alignment)
-                console.log(2)
                 dispGenesExonForMember_id("#pairwise" + hit_ptn, hit_cigar, hit, hit_ptn, ref_cigar)
-                console.log(3)
-
 
                 separateSeq(json)
 
