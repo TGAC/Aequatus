@@ -735,17 +735,6 @@ public class ComparaService {
         String ref_genome = comparaStore.getGenomefromSeqMemberID(ref_seq_member_id);
         String hit_genome = comparaStore.getGenomefromSeqMemberID(hit_seq_member_id);
 
-//        log.info("\n\n\n\t ref_genome "+ref_genome);
-//        log.info("\n\n\n\t hit_genome "+hit_genome);
-
-
-
-
-//        String ref_gene_stable_id = comparaStore.getGeneStableIDfromGeneMemberID(ref_gene_member_id);
-//        String hit_gene_stable_id = comparaStore.getGeneStableIDfromGeneMemberID(hit_gene_member_id);
-
-
-
 
         ref_object.put("gene_id", ref);
         ref_object.put("protein_id", ref_ptn);
@@ -753,11 +742,7 @@ public class ComparaService {
         hit_object.put("gene_id", hit);
         hit_object.put("protein_id", hit_ptn);
         try {
-//            JSONObject alignment =  comparaStore.getPairwiseAlignment(ref_seq_member_id, hit_seq_member_id);
             long homology_id = comparaStore.getHomologyID(ref_seq_member_id, hit_seq_member_id).getLong("homology_id");
-
-//            ref_object.put("alignment", alignment.get("ref"));
-//            hit_object.put("alignment", alignment.get("hit"));
 
             ref_object.put("gene", ensemblCoreStore.getGene(ref, ref_genome));
             hit_object.put("gene", ensemblCoreStore.getGene(hit, hit_genome));
