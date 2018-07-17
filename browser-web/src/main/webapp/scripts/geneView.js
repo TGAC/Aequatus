@@ -284,9 +284,8 @@ function getcoreMember(query, redrawn) {
     jQuery(".refMarkerShow").removeClass("selected")
     jQuery("#ref" + query).addClass("selected")
     jQuery("#gene_widget").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
-    jQuery("#gene_tree_nj").html("")
-    jQuery("#gene_tree_upgma").html("")
-    jQuery("#gene_widget_exons").html("")
+
+    resetView()
 
     jQuery("#gene_tree_nj").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
 
