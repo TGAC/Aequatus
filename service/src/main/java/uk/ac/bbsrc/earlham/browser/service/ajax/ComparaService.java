@@ -584,7 +584,7 @@ public class ComparaService {
             int gene_member_id = comparaStore.getGeneMemberId(query);
             int seq_member_id = comparaStore.getSeqMemberId(query);
             if (gene_member_id == 0 && seq_member_id == 0) {
-                response.put("html", comparaStore.searchMember(query));
+                response.put("result", comparaStore.searchMember(query));
             } else{
                 if(seq_member_id == 0){
                     gene_member_id = comparaStore.getGeneMemberIDfromStableID(query);
@@ -603,7 +603,7 @@ public class ComparaService {
                 response.put("member_id", gene_member_id);
                 response.put("ref", ref);
                 response.put("dnafrag", dnafrag);
-                response.put("html", comparaStore.searchMember(query));
+                response.put("result", comparaStore.searchMember(query));
 
             }
 

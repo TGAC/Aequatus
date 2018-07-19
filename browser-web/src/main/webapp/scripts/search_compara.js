@@ -23,42 +23,35 @@ function getReferences() {
                 console.log("getreference")
 
 
-                if(json.species[0].display_name)
-                {
-                    console.log("getreference if")
+                if (json.species[0].display_name) {
                     json.species = sortByKey(json.species, 'display_name');
-                }else{
-                    console.log("getreference else")
+                } else {
                     json.species = sortByKey(json.species, 'name');
                 }
-
-                console.log("getreference 2")
 
                 var content = "" +
                     "<button onclick=\"toggleGenome()\" class=\"btn btn-default dropdown-toggle\">" +
                     "Genomes <span class=\"caret\"></span>" +
                     "</button>";
 
-                jQuery("#reference_maps").append(content);
+                jQuery("#reference_maps").html(content);
+
 
                 content = "";
                 var species_list = "<select name='species_list'> "
                 for (var i = 0; i < json.species.length; i++) {
 
                     var checked = "";
-                    if(default_species.indexOf(json.species[i].name) >= 0){
+                    if (default_species.indexOf(json.species[i].name) >= 0) {
                         checked = "checked";
                     }
 
 
-                    var text =  json.species[i].display_name ? json.species[i].display_name : json.species[i].name
+                    var text = json.species[i].display_name ? json.species[i].display_name : json.species[i].name
 
-                    console.log(text)
+                    content += "<div class=\"col-12 col-md-2\" style=\"margin-top:5px; margin-bottom:5px;\"> <input type='checkbox' style=\"padding:10px\" name='genome_list' value='" + json.species[i].name + "' " + checked + "> " + text + "</div>"
 
-                    content += "<div class=\"col-12 col-md-2\" style=\"margin-top:5px; margin-bottom:5px;\"> <input type='checkbox' style=\"padding:10px\" name='genome_list' value='"+json.species[i].name+"' "+checked+"> " + text + "</div>"
-
-
-                    species_list += "<option value="+json.species[i].name+">" +text + "</option>"
+                    species_list += "<option value=" + json.species[i].name + ">" + text + "</option>"
 
                     var name = json.species[i].name;
 
@@ -73,27 +66,24 @@ function getReferences() {
                 }
                 species_list += "</select> "
 
-                //content += "</div>"
-
                 jQuery("#genomes").change(function () {
                     var color = jQuery("option:selected", this).css("background");
                     jQuery(".headerbar").css("background", color);
                 });
 
                 jQuery("#genome_list_div").append(content);
-                jQuery("#species_list_div").append(species_list);
+                jQuery("#species_list_div").html(species_list);
                 jQuery("#canvas").show();
                 updateGenomeList()
 
                 if (genome_db_id == undefined) {
 
-                    console.log("getReferences if")
-                    //changeGenome(json.genomes[0].genome_db_id, json.genomes[0].name)
-
-                    if(services == "comparaService"){
+                    if (services == "comparaService") {
                         changeGenome(json.species[0].genome_db_id, json.species[0].name)
-                        // getChromosomes();
                     }
+                } else {
+                    getChromosomes(genome_db_id);
+                    jQuery("#genome_name").html(name)
                 }
 
             }
@@ -101,30 +91,31 @@ function getReferences() {
 }
 
 function sortByKey(array, key) {
-    return array.sort(function(a, b) {
-        var x = a[key]; var y = b[key];
+    return array.sort(function (a, b) {
+        var x = a[key];
+        var y = b[key];
         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
 }
 
 
-function toggleGenome(){
+function toggleGenome() {
     jQuery("#genome_list_div").toggle();
 }
 
-function updateGenomeList(){
+function updateGenomeList() {
     selected_species = []
-    jQuery('input[name="genome_list"]:checked').each(function() {
+    jQuery('input[name="genome_list"]:checked').each(function () {
         selected_species.push(this.value);
     });
-    if(selected_species.indexOf(jQuery('select[name=species_list]').val()) < 0){
+    if (selected_species.indexOf(jQuery('select[name=species_list]').val()) < 0) {
         selected_species.push(jQuery('select[name=species_list]').val());
         jQuery("input[value='" + jQuery('select[name=species_list]').val() + "']").prop('checked', true);
     }
     Fluxion.doAjax(
         services, //'comparaService',
         'setGenomes',
-        {'url': ajaxurl, 'species':selected_species.toString()},
+        {'url': ajaxurl, 'species': selected_species.toString()},
         {
             'doOnSuccess': function (json) {
                 return true;
@@ -137,11 +128,12 @@ function setGenomes(callback) {
     Fluxion.doAjax(
         services, //'comparaService',
         'setGenomes',
-        {'url': ajaxurl, 'species':selected_species.toString()},
+        {'url': ajaxurl, 'species': selected_species.toString()},
         {
             'doOnSuccess': function (json) {
-                console.log("setGenomes here")
-                return true;
+                if (callback) {
+                    callback()
+                }
             }
         });
 }
@@ -215,17 +207,43 @@ function search_member(query) {
 
     URLSearch(query)
     console.log("search member")
-    Fluxion.doAjax(
-        services,
-        'searchGenes',
-        {'keyword': query, 'species': jQuery('select[name=species_list]').val(), 'url': ajaxurl},
-        {
-            'doOnSuccess': function (json) {
+    var i = 0;
+    // if(!jQuery('select[name=species_list]').val())
+    // {
+    //     var undef = true
+    //     while(undef)
+    //     {
+    //          i++;
+    //          if(jQuery('select[name=species_list]').val())
+    //          {
+    //             undef = false;
+    //             console.log(i)
+    //             break;
+    //          }
+    //     }
+    // }else{
+    //             console.log("defined")
 
-                listResult(json)
+    // }
 
-            }
-        });
+    var checkExist = setInterval(function () {
+        if (jQuery('select[name=species_list]').val()) {
+            clearInterval(checkExist);
+            Fluxion.doAjax(
+                services,
+                'searchGenes',
+                {'keyword': query, 'species': jQuery('select[name=species_list]').val(), 'url': ajaxurl},
+                {
+                    'doOnSuccess': function (json) {
+
+                        listResult(json.result)
+
+                    }
+                });
+        }
+    }, 1000); //
+
+
 }
 
 function changeGenome(genome, name) {

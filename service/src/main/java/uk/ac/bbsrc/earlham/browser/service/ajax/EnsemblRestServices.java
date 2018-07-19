@@ -1,5 +1,6 @@
 package uk.ac.bbsrc.earlham.browser.service.ajax;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sourceforge.fluxion.ajax.Ajaxified;
 import net.sourceforge.fluxion.ajax.util.JSONUtils;
@@ -54,12 +55,20 @@ public class EnsemblRestServices {
     public JSONObject searchGenes(HttpSession session, JSONObject json) {
 
         String keyword = json.getString("keyword");
-        String species = json.getString("species");
 
         try {
-            JSONObject genomes = ensemblRestStore.searchGenes(keyword, species);
+            JSONArray results = new JSONArray();
 
-            return genomes;
+            for (String sp:species.split(",")){
+                results.addAll(ensemblRestStore.searchGenes(keyword, sp).getJSONArray("result"));
+            }
+
+            JSONObject response = new JSONObject();
+
+            response.put("result", results);
+
+
+            return response;
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             return JSONUtils.SimpleJSONError(e.getMessage());
@@ -216,6 +225,33 @@ public class EnsemblRestServices {
             response.put("hit", hit_object);
 
             response.put("homology", alignment.get("type"));
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        }
+
+        return response;
+    }
+
+    public JSONObject getMemberfromURL(HttpSession session, JSONObject json) throws IOException {
+        String query = json.getString("query");
+        JSONObject response = new JSONObject();
+        try {
+            JSONObject result = ensemblRestStore.getGene(query, false);
+            if(result.has("id")){
+                response.put("result", result);
+            } else{
+                JSONArray results = new JSONArray();
+                for (String sp:species.split(",")){
+                    results.addAll(ensemblRestStore.searchGenes(query, sp).getJSONArray("result"));
+                }
+                response.put("result", results);
+
+            }
 
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

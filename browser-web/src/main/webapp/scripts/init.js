@@ -24,7 +24,7 @@ function setOff() {
         alert("browser.data not defined properly")
     }
 
-    //setGenomes(getUrlVariables);
+    setGenomes(getUrlVariables);
     var name = arguments.callee.toString();
     var testTextBox = jQuery('#search');
     var code = null;
@@ -177,6 +177,8 @@ function testConnection() {
 }
 
 function getUrlVariables(chr) {
+    console.log("getUrlVariables")
+
     jQuery.urlParam = function (name) {
         var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
         if (results == null) {
@@ -250,14 +252,17 @@ function getChrId(chr, ref) {
 
 
 function getMemberfromURL(query, view) {
+    console.log("getMemberfrom URL")
+
 
     Fluxion.doAjax(
         services, //'comparaService',
         'getMemberfromURL',
-        {'query': query, 'view': view, 'url': ajaxurl},
+        {'query': query, 'view': view, 'species': jQuery('select[name=species_list]').val(), 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
                 if (json.member_id) {
+                    console.log("getMemberfrom URL if")
                     member_id = json.member_id;
                     chr = json.dnafrag;
                     genome_db_id = json.ref;
@@ -266,7 +271,7 @@ function getMemberfromURL(query, view) {
                     getMember(json.member_id);
                     select_chr();
                     select_genome();
-                    listResult(json)
+                    listResult(json.html)
                     setSearchList(json.html[0].stable_id)
                     getSyntenyForMember(json.member_id)
                     if (view == "tree") {
@@ -288,6 +293,8 @@ function getMemberfromURL(query, view) {
                         search_member(query)
                     }
                 } else {
+                    console.log("getMemberfrom URL else")
+
                     getReferences()
 
                     if (parseInt(jQuery("#control_panel").css("left")) < 0) {
@@ -297,8 +304,8 @@ function getMemberfromURL(query, view) {
                     jQuery("#control_search").val(query);
                     jQuery("#search").val(query);
                     var content = "";
-
-                    listResult(json)
+                    URLSearch(query)
+                    listResult(json.result)
 
 
                 }
@@ -325,8 +332,12 @@ function resize() {
 }
 
 function listResult(json) {
+
+    console.log("listResult")
+
     var content = "<p id='search_hit' style='background: white;'>";
-    jQuery.each(json.result, function (key, value) {
+    jQuery.each(json, function (key, value) {
+
         var link = "<i style='cursor:pointer' " +
             "onclick='openClosePanel(); jQuery(\"#canvas\").show(); getcoreMember(" + value.id + ",\"true\");' " +
             "class=\"fa fa-external-link\"></i>"
@@ -381,10 +392,12 @@ function listResult(json) {
 
 function getRefs(stable_id, dnafrag_id, genome_db_id, gene_member_id) {
     setSearchList(stable_id);
-    setCredentials(dnafrag_id, genome_db_id);
-    getChromosomes();
-    getMember();
-    getSyntenyForMember(gene_member_id);
+    if (services == "comparaService") {
+        setCredentials(dnafrag_id, genome_db_id);
+        getChromosomes();
+        getMember();
+        getSyntenyForMember(gene_member_id);
+    }
 }
 
 
