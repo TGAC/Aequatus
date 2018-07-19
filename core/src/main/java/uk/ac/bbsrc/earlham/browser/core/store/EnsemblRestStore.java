@@ -40,16 +40,14 @@ import java.io.IOException;
  */
 public interface EnsemblRestStore extends Store<String> {
     JSONObject getSpecies() throws IOException;
-    JSONObject searchGenes(String keyword, String species) throws IOException;
-    JSONObject getGeneTree(String id, String species) throws IOException, ParserConfigurationException, SAXException;
+    JSONObject searchGenes(String keyword, String species) throws IOException, InterruptedException;
+    JSONObject getGeneTree(String id, String species) throws IOException, ParserConfigurationException, SAXException, InterruptedException;
     JSONObject getHomology(String id, String species) throws IOException;
-    JSONObject getGenes(JSONObject ids, Boolean expand) throws IOException;
-    JSONObject getGene(String id, Boolean expand) throws IOException;
+    JSONObject getGenes(JSONObject ids, Boolean expand) throws IOException, InterruptedException;
+    JSONObject getGene(String id, Boolean expand) throws IOException, InterruptedException;
     JSONObject testRestAPI() throws IOException;
     JSONObject getRestAPIversion() throws IOException;
     JSONObject getReleaseversion() throws IOException;
     boolean getInfoforHomolog(String query, String ref) throws IOException;
     JSONObject getPairwiseAlignment(String query, String hit) throws IOException;
-
-
     }

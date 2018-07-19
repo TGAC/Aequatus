@@ -354,7 +354,7 @@ public class EnsemblRestAPI implements EnsemblRestStore {
 
 
 
-    public JSONObject searchGenes(String keyword, String species) throws IOException {
+    public JSONObject searchGenes(String keyword, String species) throws IOException, InterruptedException {
         String ext = "/xrefs/symbol/" + species + "/" + keyword + "%25?object_type=gene";
         URL url = new URL(server + ext);
 
@@ -364,12 +364,18 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         httpConnection.setRequestProperty("Content-Type", "application/json");
 
 
-        InputStream response = connection.getInputStream();
         int responseCode = httpConnection.getResponseCode();
 
         if (responseCode != 200) {
+            if(responseCode == 429 && httpConnection.getHeaderField("Retry-After") != null) {
+                double sleepFloatingPoint = Double.valueOf(httpConnection.getHeaderField("Retry-After"));
+                double sleepMillis = 1000 * sleepFloatingPoint;
+                Thread.sleep((long)sleepMillis);
+                return searchGenes(keyword, species) ;
+            }
             throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
         }
+        InputStream response = connection.getInputStream();
 
         String output;
         Reader reader = null;
@@ -405,7 +411,7 @@ public class EnsemblRestAPI implements EnsemblRestStore {
 
     }
 
-    public JSONObject getGeneTree(String id, String species) throws IOException, ParserConfigurationException, SAXException {
+    public JSONObject getGeneTree(String id, String species) throws IOException, ParserConfigurationException, SAXException, InterruptedException {
         JSONObject result = new JSONObject();
 
         String ext = "/genetree/member/id/" + id + "?cigar_line=1;sequence=protein";//prune_species=cow;prune_taxon=9526";
@@ -463,7 +469,7 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         return result;
     }
 
-    public JSONObject getMembers(String id, String species) throws IOException, ParserConfigurationException, SAXException {
+    public JSONObject getMembers(String id, String species) throws IOException, ParserConfigurationException, SAXException, InterruptedException {
         JSONObject result = new JSONObject();
 
         String ext = "/genetree/member/id/" + id + "?";//prune_species=cow;prune_taxon=9526";
@@ -515,7 +521,7 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         return result;
     }
 
-    public JSONObject getHomologous(String id, String species) throws IOException {
+    public JSONObject getHomologous(String id, String species) throws IOException, InterruptedException {
         JSONObject result = new JSONObject();
 
         JSONArray homologies = getHomology(id, species).getJSONArray("homology");
@@ -537,7 +543,7 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         return result;
     }
 
-    public JSONObject getGenes(JSONObject ids, Boolean expand) throws IOException {
+    public JSONObject getGenes(JSONObject ids, Boolean expand) throws IOException, InterruptedException {
         JSONObject result = new JSONObject();
 
         String server = "https://rest.ensembl.org";
@@ -570,6 +576,12 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         int responseCode = httpConnection.getResponseCode();
 
         if (responseCode != 200) {
+            if(responseCode == 429 && httpConnection.getHeaderField("Retry-After") != null) {
+                double sleepFloatingPoint = Double.valueOf(httpConnection.getHeaderField("Retry-After"));
+                double sleepMillis = 1000 * sleepFloatingPoint;
+                Thread.sleep((long)sleepMillis);
+                return getGenes(ids, expand) ;
+            }
             throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
         }
 
@@ -599,31 +611,45 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         return result;
     }
 
-    public JSONObject getGene(String id, Boolean expand) throws IOException {
+    public JSONObject getGene(String id, Boolean expand) throws IOException, InterruptedException {
 
         String ext = "/lookup/id/" + id;
+
+        JSONObject gene = new JSONObject();
 
         if (expand == true) {
             ext += "?expand=1";
         }
         URL url = new URL(server + ext);
 
-        URLConnection connection = url.openConnection();
-        HttpURLConnection httpConnection = (HttpURLConnection) connection;
-
-        httpConnection.setRequestProperty("Content-Type", "application/json");
-
-
-        InputStream response = connection.getInputStream();
-        int responseCode = httpConnection.getResponseCode();
-
-        if (responseCode != 200) {
-            throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
-        }
-
         String output;
         Reader reader = null;
+
         try {
+            URLConnection connection = url.openConnection();
+            HttpURLConnection httpConnection = (HttpURLConnection) connection;
+
+            httpConnection.setRequestProperty("Content-Type", "application/json");
+
+            log.info("\n\n\n before before response code ");
+
+            log.info("\n\n\n before response code ");
+            int responseCode = httpConnection.getResponseCode();
+            log.info("\n\n\n response code "+responseCode);
+            if (responseCode == 400) {
+                return gene;
+            }else if (responseCode != 200) {
+                if(responseCode == 429 && httpConnection.getHeaderField("Retry-After") != null) {
+                    double sleepFloatingPoint = Double.valueOf(httpConnection.getHeaderField("Retry-After"));
+                    double sleepMillis = 1000 * sleepFloatingPoint;
+                    Thread.sleep((long)sleepMillis);
+                    return getGene(id, expand) ;
+                }
+                throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
+            }
+
+            InputStream response = connection.getInputStream();
+
             reader = new BufferedReader(new InputStreamReader(response, "UTF-8"));
             StringBuilder builder = new StringBuilder();
             char[] buffer = new char[8192];
@@ -640,7 +666,7 @@ public class EnsemblRestAPI implements EnsemblRestStore {
             }
         }
 
-        JSONObject gene = JSONObject.fromObject(output);
+        gene = JSONObject.fromObject(output);
 
         return gene;
     }
