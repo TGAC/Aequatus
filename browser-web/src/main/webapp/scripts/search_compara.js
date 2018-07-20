@@ -71,7 +71,7 @@ function getReferences() {
                     jQuery(".headerbar").css("background", color);
                 });
 
-                jQuery("#genome_list_div").append(content);
+                jQuery("#genome_list_div").html(content);
                 jQuery("#species_list_div").html(species_list);
                 jQuery("#canvas").show();
                 updateGenomeList()
