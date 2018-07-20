@@ -332,17 +332,21 @@ function resize() {
 }
 
 function listResult(json) {
-
     console.log("listResult")
-
     var content = "<p id='search_hit' style='background: white;'>";
     jQuery.each(json, function (key, value) {
+        var badges = ""
+        var ref_link = ""
+        if (services == "comparaService") {
+            ref_link = "getRefs(\"" + value[value.id].stable_id + "\",\"" + value[value.id].dnafrag_id + "\",\"" + value[value.id].genome_db_id + "\",\"" + value[value.id].gene_member_id + "\"); "
+            badges = "<span class='badge' title='" +  value[value.id].homologous + " Homologous'>" +  value[value.id].homologous + "</span> "
+
+        }
 
         var link = "<i style='cursor:pointer' " +
             "onclick='openClosePanel(); jQuery(\"#canvas\").show(); getcoreMember(" + value.id + ",\"true\");' " +
             "class=\"fa fa-external-link\"></i>"
         var description = value.description
-
         if (description == null) {
             description = ""
         }
@@ -351,26 +355,22 @@ function listResult(json) {
             "<div class='search_header'>" +
             "<table width='100%'>" +
             "<tr><td>" + value.id + " " +
-                // "<span class='badge' title='"+json.html[i].homologous+" Homologous'>"+json.html[i].homologous+"</span> " +
-
+            badges +
             "<td> <i style='color:grey' class='fa fa-1x fa-sitemap fa-rotate-270' title='View GeneTree' onclick='openClosePanel(); " +
             "jQuery(\"#canvas\").show(); " +
-            "getRefs(\"" + value[value.id].stable_id + "\",\"" + value[value.id].dnafrag_id + "\",\"" + value[value.id].genome_db_id + "\",\"" + value[value.id].gene_member_id + "\"); " +
-
+            ref_link +
             "getcoreMember(\"" + value.id + "\",\"true\");'> </i>" +
             "</td>" +
 
             "<td> <i style='color:grey' class='fa fa-1x fa-table' title='List Homology in Table' onclick='openClosePanel(); " +
             "jQuery(\"#canvas\").show(); " +
-            "getRefs(\"" + value[value.id].stable_id + "\",\"" + value[value.id].dnafrag_id + "\",\"" + value[value.id].genome_db_id + "\",\"" + value[value.id].gene_member_id + "\"); " +
-
-
+            ref_link +
             "getHomologyForMember(\"" + value.id + "\",\"table\");'> </i>" +
             "</td>" +
 
             "<td> <i style='color:grey' class='fa fa-1x fa-random' title='View Homology as Sankey Plot' onclick='openClosePanel(); " +
             "jQuery(\"#canvas\").show(); " +
-            "getRefs(\"" + value[value.id].stable_id + "\",\"" + value[value.id].dnafrag_id + "\",\"" + value[value.id].genome_db_id + "\",\"" + value[value.id].gene_member_id + "\"); " +
+            ref_link +
             "getHomologyForMember(\"" + value.id + "\",\"sankey\");'> </i>" +
             "</td>" +
             "</tr>" +
@@ -382,8 +382,6 @@ function listResult(json) {
             value[value.id].description + "</div>" +
             "</div>";
     });
-
-
     content += "</p>";
     jQuery("#search_result").html(content);
     jQuery("#search_result").fadeIn();
