@@ -42,6 +42,11 @@
         <param-value>${browser.data}</param-value>
     </context-param>
 
+    <context-param>
+        <param-name>genome</param-name>
+        <param-value>${browser.genome}</param-value>
+    </context-param>
+
     <!--parameter goes to JSPs ends-->
 
     <!-- main servlet declaration -->

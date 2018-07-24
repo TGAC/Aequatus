@@ -57,12 +57,13 @@ public class EnsemblRestAPI implements EnsemblRestStore {
 
     protected static final Logger log = LoggerFactory.getLogger(EnsemblRestAPI.class);
 
-    String server = "https://rest.ensembl.org";
+    public static String server = "https://rest.ensembl.org";
+    public static String division = "";
     protected URL url;
 
     @Override
     public JSONObject getSpecies() throws IOException {
-        String ext = "/info/species?";
+        String ext = "/info/species?"+division;
         url = new URL(server + ext);
         URLConnection connection = url.openConnection();
         HttpURLConnection httpConnection = (HttpURLConnection) connection;
@@ -102,8 +103,72 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         return result.getJSONObject("result");
     }
 
+    public JSONObject setServer(String genome) throws IOException {
+        JSONObject response = new JSONObject();
+        if(genome.toLowerCase().equals("vertebrates")){
+            server = "https://rest.ensembl.org";
+            division = "";
+            response.put("division","Vertebrates");
+        }else{
+            server = "http://rest.ensemblgenomes.org";
+            JSONArray divisions = getDivisons();
+
+            for (int i=0; i<divisions.size(); i++) {
+                if(divisions.getString(i).toLowerCase().contains(genome.toLowerCase())){
+                    response.put("division",divisions.getString(i));
+                    division = "division="+divisions.getString(i);
+                    break;
+                }
+            }
+        }
+        return response;
+    }
+
+    public JSONArray getDivisons() throws IOException {
+        String ext = "/info/divisions?";
+        URL url = new URL(server + ext);
+
+        URLConnection connection = url.openConnection();
+        HttpURLConnection httpConnection = (HttpURLConnection)connection;
+
+        httpConnection.setRequestProperty("Content-Type", "application/json");
+
+
+        InputStream response = connection.getInputStream();
+        int responseCode = httpConnection.getResponseCode();
+
+        if(responseCode != 200) {
+            throw new RuntimeException("Response code was not 200. Detected response was "+responseCode);
+        }
+
+        String output;
+        Reader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(response, "UTF-8"));
+            StringBuilder builder = new StringBuilder();
+            char[] buffer = new char[8192];
+            int read;
+            while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
+                builder.append(buffer, 0, read);
+            }
+            output = builder.toString();
+        }
+        finally {
+            if (reader != null) try {
+                reader.close();
+            } catch (IOException logOrIgnore) {
+                logOrIgnore.printStackTrace();
+            }
+        }
+
+        JSONArray divisons = JSONArray.fromObject(output);
+
+        return divisons;
+
+    }
+
     public JSONObject getSpecies(String query) throws IOException {
-        String ext = "/info/species?";
+        String ext = "/info/species?"+division;
         url = new URL(server + ext);
         URLConnection connection = url.openConnection();
         HttpURLConnection httpConnection = (HttpURLConnection) connection;
@@ -594,7 +659,6 @@ public class EnsemblRestAPI implements EnsemblRestStore {
     public JSONObject getGenes(JSONObject ids, Boolean expand) throws IOException, InterruptedException {
         JSONObject result = new JSONObject();
 
-        String server = "https://rest.ensembl.org";
         String ext = "/lookup/id";
         URL url = new URL(server + ext);
 

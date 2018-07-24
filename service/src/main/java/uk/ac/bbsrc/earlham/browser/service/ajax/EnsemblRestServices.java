@@ -40,6 +40,19 @@ public class EnsemblRestServices {
         }
     }
 
+    public JSONObject setServer(HttpSession session, JSONObject json) {
+        String server = json.getString("genome");
+
+        try {
+            JSONObject response = new JSONObject();
+            response = ensemblRestStore.setServer(server);
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        }
+    }
+
     public JSONObject getGenomes(HttpSession session, JSONObject json) {
 
         try {

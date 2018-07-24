@@ -1,8 +1,12 @@
 <%--<%@ include file="header.jsp" %>--%>
 
 <%--Control Panel Code--%>
-<div id='genome_list_div' class="row"
+<div id='genome_list_wrapper' class="row"
      style="display: none; background: white none repeat scroll 0% 0%; z-index: 999; width: 80%; right: 0px; position: absolute; top: 50px;">
+    <div id='division' style="font-size: 18px; text-align: center; padding: 10px;">
+    </div>
+    <div id='genome_list_div'>
+    </div>
 </div>
 
 <div id="control_panel">
@@ -83,7 +87,8 @@
 
                         <tr>
                             <td align=right>
-                                <div class="circleBase type2" style="background: white; border: 2px solid blue;"></div>
+                                <div class="circleBase type2"
+                                     style="background: white; border: 2px solid blue;"></div>
                             </td>
                             <td align="left">
                                 Multiple events
@@ -102,7 +107,8 @@
                                     <g id="examplestyle2CIGAR" class="style2 CIGAR">
                                         <rect x="2" y="1" width="33" height="10" rx="1" ry="1" fill="gray"
                                               class="utr1"/>
-                                        <rect x="34.005102040816325" y="1" width="18.994897959183675" height="10" rx="1"
+                                        <rect x="34.005102040816325" y="1" width="18.994897959183675" height="10"
+                                              rx="1"
                                               ry="1" fill="rgb(166,206,227)" class="match"/>
                                     </g>
                                 </svg>
@@ -157,9 +163,10 @@
                         class="fa fa-filter fa-3x control-buttons"></i>
                 </div>
                 <div onclick="togglePanel('#export_div')"
-                     style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% rebeccapurple;"><i
-                        style="color: white;"
-                        class="fa fa-external-link fa-3x control-buttons"></i>
+                     style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% rebeccapurple;">
+                    <i
+                            style="color: white;"
+                            class="fa fa-external-link fa-3x control-buttons"></i>
                 </div>
                 <div onclick="togglePanel('#info_div')"
                      style="padding: 5px; text-align: center; background: none repeat scroll 0% 0% peru;"><i
@@ -266,7 +273,8 @@
     </div>
 
 
-    <div id="gene_tree_nj" style=" overflow: visible;   position: relative; top: 50px; width: 100%;" class="mainview">
+    <div id="gene_tree_nj" style=" overflow: visible;   position: relative; top: 50px; width: 100%;"
+         class="mainview">
 
     </div>
 

@@ -8,6 +8,7 @@ function setOff() {
 
     if (jQuery('#data').text() == "rest") {
         services = "ensemblRestServices";
+        setServer(jQuery('#config_genome').text())
         jQuery("#chr_maps").hide()
         jQuery("#bar_image_ref").hide()
         jQuery("#bar_image_selector").hide()
@@ -23,7 +24,6 @@ function setOff() {
     } else {
         alert("browser.data not defined properly")
     }
-
     setGenomes(getUrlVariables);
     var name = arguments.callee.toString();
     var testTextBox = jQuery('#search');
@@ -148,32 +148,54 @@ function sethomologousEvents() {
         });
 }
 
-function testConnection() {
+function setServer(genome) {
     Fluxion.doAjax(
         //services, //'comparaService',
         services,
-        'testRestAPI',
-        {'url': ajaxurl},
+        'setServer',
+        {'genome':genome, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
 
-                if (json.ping == "1") {
-                    Fluxion.doAjax(
-                        //services, //'comparaService',
-                        services,
-                        'getRestInfo',
-                        {'url': ajaxurl},
-                        {
-                            'doOnSuccess': function (json) {
-
-                                getReferences();
-                            }
-                        });
-                } else {
-                    alert("Can not establish connection with Ensembl RestAPI");
-                }
+                jQuery('#division').html(json.division)
             }
         });
+}
+
+function testConnection() {
+
+    var checkExist = setInterval(function () {
+        if (jQuery('#division').text().length > 0) {
+            clearInterval(checkExist);
+            Fluxion.doAjax(
+                //services, //'comparaService',
+                services,
+                'testRestAPI',
+                {'url': ajaxurl},
+                {
+                    'doOnSuccess': function (json) {
+
+                        if (json.ping == "1") {
+                            Fluxion.doAjax(
+                                //services, //'comparaService',
+                                services,
+                                'getRestInfo',
+                                {'url': ajaxurl},
+                                {
+                                    'doOnSuccess': function (json) {
+
+                                        getReferences();
+                                    }
+                                });
+                        } else {
+                            alert("Can not establish connection with Ensembl RestAPI");
+                        }
+                    }
+                });
+        }
+    }, 1000); //
+
+
 }
 
 function getUrlVariables(chr) {
