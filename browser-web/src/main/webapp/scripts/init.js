@@ -225,29 +225,42 @@ function getGenomeId(ref) {
         {'query': ref, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                genome_db_id = json.ref;
                 getReferences();
-                changeGenome(json.ref, ref)
+                if (services == "comparaService")
+                {
+                    genome_db_id = json.ref;
+                    changeGenome(json.ref, ref)
+                } else{
+                    changeGenome(json.name, ref)
+                }
             }
         });
 }
 
 function getChrId(chr, ref) {
-    Fluxion.doAjax(
-        services, //'comparaService',
-        'getChrId',
-        {'query': chr, 'ref': ref, 'url': ajaxurl},
-        {
-            'doOnSuccess': function (json) {
-                chr = json.dnafrag;
-                genome_db_id = json.ref;
-                getReferences();
-                setCredentials(json.chr, json.ref);
-                getChromosomes();
-                getMember();
-                select_chr()
-            }
-        });
+
+    if (services == "comparaService")
+    {
+        Fluxion.doAjax(
+            services, //'comparaService',
+            'getChrId',
+            {'query': chr, 'ref': ref, 'url': ajaxurl},
+            {
+                'doOnSuccess': function (json) {
+
+                    chr = json.dnafrag;
+                    genome_db_id = json.ref;
+                    getReferences();
+                    setCredentials(json.chr, json.ref);
+                    getChromosomes();
+                    getMember();
+                    select_chr()
+                }
+            });
+    } else{
+        getGenomeId(ref)
+    }
+
 }
 
 

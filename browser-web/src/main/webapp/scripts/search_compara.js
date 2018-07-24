@@ -247,12 +247,24 @@ function search_member(query) {
 }
 
 function changeGenome(genome, name) {
-    console.log("changeGenome")
-    genome_db_id = genome;
-    chr = undefined;
-    member_id = undefined;
-    getChromosomes(genome_db_id);
-    jQuery("#genome_name").html(name)
+    console.log("changeGenome " + genome)
+
+
+    if (services == "comparaService") {
+        genome_db_id = genome;
+        chr = undefined;
+        member_id = undefined;
+        getChromosomes(genome_db_id);
+        jQuery("#genome_name").html(name)
+    } else {
+        var checkExist = setInterval(function () {
+            if (jQuery('select[name=species_list]').val()) {
+                clearInterval(checkExist);
+                jQuery("[name='species_list']").val(genome)
+                jQuery(":checkbox[value=" + genome + "]").prop("checked", "true");
+            }
+        }, 1000); //
+    }
 }
 
 function URLgenomeName(genome_name, chr_name) {

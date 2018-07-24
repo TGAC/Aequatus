@@ -272,5 +272,21 @@ public class EnsemblRestServices {
         return response;
     }
 
+    public JSONObject getGenomeId(HttpSession session, JSONObject json) {
+        String query = json.getString("query");
+        JSONObject response = new JSONObject();
+
+        response.put("ref", "member");
+        try {
+            return ensemblRestStore.getSpecies(query);
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        }
+    }
+
 
 }

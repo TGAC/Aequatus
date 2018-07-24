@@ -102,6 +102,54 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         return result.getJSONObject("result");
     }
 
+    public JSONObject getSpecies(String query) throws IOException {
+        String ext = "/info/species?";
+        url = new URL(server + ext);
+        URLConnection connection = url.openConnection();
+        HttpURLConnection httpConnection = (HttpURLConnection) connection;
+
+        httpConnection.setRequestProperty("Content-Type", "application/json");
+
+
+        InputStream response = connection.getInputStream();
+        int responseCode = httpConnection.getResponseCode();
+
+        if (responseCode != 200) {
+            throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
+        }
+
+        String output;
+        Reader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(response, "UTF-8"));
+            StringBuilder builder = new StringBuilder();
+            char[] buffer = new char[8192];
+            int read;
+            while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
+                builder.append(buffer, 0, read);
+            }
+            output = builder.toString();
+        } finally {
+            if (reader != null) try {
+                reader.close();
+            } catch (IOException logOrIgnore) {
+                logOrIgnore.printStackTrace();
+            }
+        }
+
+        JSONObject species = JSONObject.fromObject(output);
+        JSONArray species_list = species.getJSONArray("species");
+        JSONObject result = new JSONObject();
+
+        for (int i=0; i<species_list.size(); i++) {
+            if(species_list.getJSONObject(i).getJSONArray("aliases").contains(query)){
+                result = species_list.getJSONObject(i);
+                break;
+            }
+        }
+        return result;
+    }
+
     public JSONObject testRestAPI() throws IOException{
         String ext = "/info/ping?";
         URL url = new URL(server + ext);
