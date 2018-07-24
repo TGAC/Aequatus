@@ -253,8 +253,6 @@ function getChrId(chr, ref) {
 
 function getMemberfromURL(query, view) {
     console.log("getMemberfrom URL")
-
-
     Fluxion.doAjax(
         services, //'comparaService',
         'getMemberfromURL',
@@ -262,7 +260,6 @@ function getMemberfromURL(query, view) {
         {
             'doOnSuccess': function (json) {
                 if (json.member_id) {
-                    console.log("getMemberfrom URL if")
                     member_id = json.member_id;
                     chr = json.dnafrag;
                     genome_db_id = json.ref;
@@ -271,8 +268,8 @@ function getMemberfromURL(query, view) {
                     getMember(json.member_id);
                     select_chr();
                     select_genome();
-                    listResult(json.html)
-                    setSearchList(json.html[0].stable_id)
+                    listResult(json.result)
+                    setSearchList(json.result[0].id)
                     getSyntenyForMember(json.member_id)
                     if (view == "tree") {
                         setTreeExport();
@@ -290,11 +287,9 @@ function getMemberfromURL(query, view) {
 
                         jQuery('#search').val(query);
                         jQuery('#control_search').val(query)
-                        search_member(query)
+                        //search_member(query)
                     }
                 } else {
-                    console.log("getMemberfrom URL else")
-
                     getReferences()
 
                     if (parseInt(jQuery("#control_panel").css("left")) < 0) {
@@ -334,6 +329,7 @@ function resize() {
 function listResult(json) {
     console.log("listResult")
     var content = "<p id='search_hit' style='background: white;'>";
+
     jQuery.each(json, function (key, value) {
         var badges = ""
         var ref_link = ""
@@ -385,10 +381,10 @@ function listResult(json) {
     content += "</p>";
     jQuery("#search_result").html(content);
     jQuery("#search_result").fadeIn();
-    jQuery("#search_hit").tablesorter();
 }
 
 function getRefs(stable_id, dnafrag_id, genome_db_id, gene_member_id) {
+    console.log("getRefs")
     setSearchList(stable_id);
     if (services == "comparaService") {
         setCredentials(dnafrag_id, genome_db_id);
@@ -400,6 +396,7 @@ function getRefs(stable_id, dnafrag_id, genome_db_id, gene_member_id) {
 
 
 function setSearchList(stable_id) {
+    console.log("setSearchList")
     jQuery(".search_div").removeClass("active");
     jQuery("#searchlist_" + stable_id).addClass("active");
     var clone = jQuery("#searchlist_" + stable_id).clone();

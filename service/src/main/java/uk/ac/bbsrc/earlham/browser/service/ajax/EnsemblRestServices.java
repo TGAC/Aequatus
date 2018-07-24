@@ -241,9 +241,17 @@ public class EnsemblRestServices {
         String query = json.getString("query");
         JSONObject response = new JSONObject();
         try {
-            JSONObject result = ensemblRestStore.getGene(query, false);
-            if(result.has("id")){
+            JSONArray result = new JSONArray();
+            JSONObject gene = new JSONObject();
+            gene.put("type", "gene");
+            gene.put("id", query);
+            gene.put(query, ensemblRestStore.getGene(query, false));
+            if(gene.getJSONObject(query) != null){
+                result.add(gene);
                 response.put("result", result);
+                response.put("member_id", 0);
+                response.put("ref", 0);
+                response.put("dnafrag", 0);
             } else{
                 JSONArray results = new JSONArray();
                 for (String sp:species.split(",")){
