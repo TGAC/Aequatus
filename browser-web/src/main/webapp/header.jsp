@@ -111,7 +111,6 @@
 
 <div id="title" style="visibility: hidden; position: fixed;">${initParam.urlpath}</div>
 <div id="data" style="visibility: hidden; position: fixed;">${initParam.data}</div>
-<div id="config_genome" style="visibility: hidden; position: fixed;">${initParam.genome}</div>
 
 <script type="text/javascript">
 

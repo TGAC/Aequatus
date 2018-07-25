@@ -56,6 +56,8 @@ public class EnsemblRestServices {
     public JSONObject getGenomes(HttpSession session, JSONObject json) {
 
         try {
+            log.info("\n\n\n\t getGenomes ");
+
             JSONObject genomes = ensemblRestStore.getSpecies();
             return genomes;
         } catch (Exception e) {
@@ -79,7 +81,6 @@ public class EnsemblRestServices {
             JSONObject response = new JSONObject();
 
             response.put("result", results);
-
 
             return response;
         } catch (Exception e) {

@@ -8,12 +8,11 @@ function setOff() {
 
     if (jQuery('#data').text() == "rest") {
         services = "ensemblRestServices";
-        setServer(jQuery('#config_genome').text())
+        testConnection()
         jQuery("#chr_maps").hide()
         jQuery("#bar_image_ref").hide()
         jQuery("#bar_image_selector").hide()
         jQuery("#selected_region_wrapper").hide()
-        testConnection()
     } else if (jQuery('#data').text() == "local") {
         services = "comparaService";
         jQuery("#chr_maps").show()
@@ -148,52 +147,71 @@ function sethomologousEvents() {
         });
 }
 
-function setServer(genome) {
+function setServer() {
+    var genome = jQuery('#config_genome').val();
     Fluxion.doAjax(
-        //services, //'comparaService',
         services,
         'setServer',
         {'genome':genome, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
+                getReferences()
+            }
+        });
+}
 
-                jQuery('#division').html(json.division)
+function getDivision() {
+    jQuery('#division').html("")
+    Fluxion.doAjax(
+        services,
+        'getDivision',
+        {'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+                for(var i=0; i<json.divison.length; i++){
+                    jQuery('#division').append("<input type=radio name=divisions value='"+json.division[i]+"'>"+json.division[i]+"</input>")
+                }
+            }
+        });
+}
+
+function setDivision(division) {
+    Fluxion.doAjax(
+        services,
+        'setDivision',
+        {'division':division, 'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+
+                // jQuery('#division').html(json.division)
             }
         });
 }
 
 function testConnection() {
 
-    var checkExist = setInterval(function () {
-        if (jQuery('#division').text().length > 0) {
-            clearInterval(checkExist);
-            Fluxion.doAjax(
-                //services, //'comparaService',
-                services,
-                'testRestAPI',
-                {'url': ajaxurl},
-                {
-                    'doOnSuccess': function (json) {
+    console.log("testConnection")
 
-                        if (json.ping == "1") {
-                            Fluxion.doAjax(
-                                //services, //'comparaService',
-                                services,
-                                'getRestInfo',
-                                {'url': ajaxurl},
-                                {
-                                    'doOnSuccess': function (json) {
+    // var checkExist = setInterval(function () {
+    //     if (jQuery('#config_genome').text().length > 0) {
+    //         clearInterval(checkExist);
+    Fluxion.doAjax(
+        //services, //'comparaService',
+        services,
+        'testRestAPI',
+        {'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
 
-                                        getReferences();
-                                    }
-                                });
-                        } else {
-                            alert("Can not establish connection with Ensembl RestAPI");
-                        }
-                    }
-                });
-        }
-    }, 1000); //
+                if (json.ping == "1") {
+                    setServer()
+                } else {
+                    alert("Can not establish connection with Ensembl RestAPI");
+                }
+            }
+        });
+    //     }
+    // }, 1000); //
 
 
 }
@@ -236,7 +254,7 @@ function processURL(urlParam) {
         getMemberfromURL(urlParam("query"), urlParam("view"));
     }
     else {
-        getReferences();
+        // getReferences();
     }
 }
 

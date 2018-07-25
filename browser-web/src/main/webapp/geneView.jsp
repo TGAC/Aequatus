@@ -3,7 +3,11 @@
 <%--Control Panel Code--%>
 <div id='genome_list_wrapper' class="row"
      style="display: none; background: white none repeat scroll 0% 0%; z-index: 999; width: 80%; right: 0px; position: absolute; top: 50px;">
-    <div id='division' style="font-size: 18px; text-align: center; padding: 10px;">
+    <select id="config_genome" onchange="setServer()">
+        <option value="vertebrates" selected>Vertebrates</option>
+        <option value="non-vertebrates">Non Vertebrates</option>
+    </select>
+    <div id='divisions' style="font-size: 18px; text-align: center; padding: 10px;">
     </div>
     <div id='genome_list_div'>
     </div>

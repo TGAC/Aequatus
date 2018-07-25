@@ -25,6 +25,7 @@
 
 package uk.ac.bbsrc.earlham.browser.core.store;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.xml.sax.SAXException;
 
