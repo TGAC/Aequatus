@@ -230,6 +230,7 @@ function search_member(query) {
     var checkExist = setInterval(function () {
         if (jQuery('select[name=species_list]').val()) {
             clearInterval(checkExist);
+            updateGenomeList()
             Fluxion.doAjax(
                 services,
                 'searchGenes',
