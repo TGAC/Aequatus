@@ -59,6 +59,10 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String TABLE = "";
 
+    //    Meta
+    public static final String GET_META_INFO = "SELECT * FROM meta;";
+
+
     //    Genome DB
     public static final String GET_ALL_GENOMES = "SELECT * FROM genome_db WHERE name LIKE ?";
 
@@ -1552,5 +1556,23 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
         return homologies_array;
 
+    }
+
+    public int getReleaseversion() throws IOException {
+        int release = 0;
+        try {
+            List<Map<String, Object>> meta_info = template.queryForList(GET_META_INFO, new Object[]{});
+            for (Map meta : meta_info) {
+                if(meta.get("meta_key").toString().equals("schema_version")){
+                    release = Integer.parseInt(meta.get("meta_value").toString());
+                }
+            }
+
+        } catch (EmptyResultDataAccessException e) {
+            throw new IOException(" getAllDnafragByGenomedbId no result found");
+
+        }
+
+        return release;
     }
 }

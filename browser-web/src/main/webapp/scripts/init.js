@@ -15,6 +15,7 @@ function setOff() {
         jQuery("#selected_region_wrapper").hide()
     } else if (jQuery('#data').text() == "local") {
         services = "comparaService";
+        getRelease()
         jQuery("#chr_maps").show()
         jQuery("#bar_image_ref").show()
         jQuery("#bar_image_selector").show()
@@ -204,6 +205,7 @@ function testConnection() {
             'doOnSuccess': function (json) {
 
                 if (json.ping == "1") {
+                    getRelease()
                     setServer()
                 } else {
                     alert("Can not establish connection with Ensembl RestAPI");
@@ -214,6 +216,27 @@ function testConnection() {
     // }, 1000); //
 
 
+}
+
+function getRelease() {
+
+    console.log("getRelease")
+
+    Fluxion.doAjax(
+        //services, //'comparaService',
+        services,
+        'getRestInfo',
+        {'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+
+                if (json.release) {
+                    jQuery("#release").html(json.release)
+                } else {
+                    jQuery("#release").html("Unknown")
+                }
+            }
+        });
 }
 
 function getUrlVariables(chr) {

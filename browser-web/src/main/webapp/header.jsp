@@ -102,7 +102,7 @@
     <center>
         <div style="position: absolute; top: 50%; -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%);  transform: translateY(-50%);">
             <a class="headerlink" href="<c:url value="/"/>"> <font color=white> Aequatus Browser
-                - ${initParam.header} </font></a>
+                - ${initParam.header} </font></a> - Ensembl Release <span id="release"></span>
         </div>
     </center>
 

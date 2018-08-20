@@ -95,4 +95,6 @@ public interface ComparaStore extends Store<String> {
     String getSeq(int seq_member_id)  throws Exception;
     String getGeneStableIDfromGeneMemberID(long gene_member_id) throws Exception;
     long getCenralGeneMemberID(int genome_db_id, String chr,int start, int end) throws Exception;
+    int getReleaseversion() throws IOException;
+
     }

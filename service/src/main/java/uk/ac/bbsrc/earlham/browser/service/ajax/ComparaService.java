@@ -766,4 +766,17 @@ public class ComparaService {
         return response;
     }
 
+    public JSONObject getRestInfo(HttpSession session, JSONObject json) {
+
+        try {
+            JSONObject info = new JSONObject();
+            info.put("release", comparaStore.getReleaseversion());
+            return info;
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return JSONUtils.SimpleJSONError(e.getMessage());
+        }
+
+    }
+
 }
