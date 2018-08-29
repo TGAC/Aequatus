@@ -100,7 +100,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public static final String COUNT_CHR_DNAFRAG_BY_NAME = "SELECT count(*) FROM dnafrag WHERE dnafrag_id = ? AND genome_db_id = ? AND coord_system_name LIKE \"%chr%\"";
 
-    public static final String GET_CHROMOSOME_BY_GENOME_ID = "SELECT *  FROM dnafrag WHERE genome_db_id = ? AND coord_system_name LIKE '%chr%'";
+    public static final String GET_CHROMOSOME_BY_GENOME_ID = "SELECT *  FROM dnafrag WHERE genome_db_id = ? AND coord_system_name LIKE '%chr%' and is_reference=1";
 
     public static final String GET_dnafrag_Name_FROM_ID = "SELECT name FROM dnafrag WHERE dnafrag_id = ?";
 
