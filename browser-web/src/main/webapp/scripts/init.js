@@ -10,12 +10,14 @@ function setOff() {
         services = "ensemblRestServices";
         testConnection()
         jQuery("#chr_maps").hide()
+        jQuery("#config_genome").show()
         jQuery("#bar_image_ref").hide()
         jQuery("#bar_image_selector").hide()
         jQuery("#selected_region_wrapper").hide()
     } else if (jQuery('#data').text() == "local") {
         services = "comparaService";
         getRelease()
+        jQuery("#config_genome").hide()
         jQuery("#chr_maps").show()
         jQuery("#bar_image_ref").show()
         jQuery("#bar_image_selector").show()
