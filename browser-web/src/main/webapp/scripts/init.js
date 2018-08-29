@@ -152,6 +152,8 @@ function sethomologousEvents() {
 
 function setServer() {
     var genome = jQuery('#config_genome').val();
+    jQuery("#genome_list_div").html("<div><center><img src='./images/browser/loading_big.gif'></center></div>")
+
     Fluxion.doAjax(
         services,
         'setServer',
