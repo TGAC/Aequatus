@@ -28,6 +28,17 @@ var protein_domains = null;
 
 function getChromosomes(genome_db_id) {
 
+    if(!genome_db_id){
+        genome_db_id = jQuery('select[name=species_selector]').val()
+        var name = jQuery('select[name=species_selector]  option:selected').text()
+        jQuery("select[name=species_list] option").each(function() {
+            if(jQuery(this).text() == name) {
+                jQuery(this).attr('selected', 'selected');
+            }
+        });
+    }
+
+
     var color = jQuery("option:selected", jQuery("#genomes")).attr("background");
     jQuery(".headerbar").css("background", color);
     jQuery("#chr_maps").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
@@ -46,7 +57,6 @@ function getChromosomes(genome_db_id) {
             {'reference': genome_db_id, 'url': ajaxurl},
             {
                 'doOnSuccess': function (json) {
-
                     chromosomes = json.member;
                     if (chromosomes.length > 0) {
                         showGeneReference()

@@ -7,6 +7,7 @@
         <option value="vertebrates" selected>Vertebrates</option>
         <option value="non-vertebrates">Non Vertebrates</option>
     </select>
+    <div id="species_selector_div"></div>
     <div id='divisions' style="font-size: 18px; text-align: center; padding: 10px;">
     </div>
     <div id='genome_list_div'>

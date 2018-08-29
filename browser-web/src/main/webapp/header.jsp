@@ -130,4 +130,4 @@
 
 </script>
 
-<div id="content" style="clear: both; height: 100%;   position: absolute;    width: 100%;">
+<div id="content" style="clear: both; height: 100%; position: absolute; width: 100%;">

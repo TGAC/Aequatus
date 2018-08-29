@@ -40,6 +40,7 @@ function getReferences() {
 
                         content = "";
                         var species_list = "<select name='species_list'> "
+                        var species_selector = "<select name='species_selector' onchange='getChromosomes()'> "
                         for (var i = 0; i < json.species.length; i++) {
 
                             var checked = "";
@@ -49,10 +50,12 @@ function getReferences() {
 
 
                             var text = json.species[i].display_name ? json.species[i].display_name : json.species[i].name
+                            var value = json.species[i].genome_db_id ? json.species[i].genome_db_id : json.species[i].name
 
                             content += "<div class=\"col-12 col-md-2\" style=\"margin-top:5px; margin-bottom:5px;\"> <input type='checkbox' style=\"padding:10px\" name='genome_list' value='" + json.species[i].name + "' " + checked + "> " + text + "</div>"
 
                             species_list += "<option value=" + json.species[i].name + ">" + text + "</option>"
+                            species_selector += "<option value=" + value + ">" + text + "</option>"
 
                             var name = json.species[i].name;
 
@@ -66,6 +69,7 @@ function getReferences() {
 
                         }
                         species_list += "</select> "
+                        species_selector += "</select> "
 
                         jQuery("#genomes").change(function () {
                             var color = jQuery("option:selected", this).css("background");
@@ -80,6 +84,7 @@ function getReferences() {
                         if (genome_db_id == undefined) {
 
                             if (services == "comparaService") {
+                                jQuery("#species_selector_div").html(species_selector);
                                 changeGenome(json.species[0].genome_db_id, json.species[0].name)
                             }
                         } else {
