@@ -48,7 +48,6 @@ function search_homologues(query) {
 
 
 function list_homologues(json) {
-    console.log("list_homologues")
     var content = "";
 
     if (json.html.length > 0) {
@@ -106,7 +105,6 @@ function getSyntenyForMember(query) {
 }
 
 
-
 function getHomologyForMember(query, view) {
     if (view == "table") {
         jQuery("#homologies").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
@@ -151,7 +149,6 @@ function getHomologyForMember(query, view) {
 }
 
 function drawHomology(json) {
-    console.log("drawHomology")
     var homology_table_content = "<table><tr><td><h3>Confidently predicted Homology for " + json.ref.display_label + "</h3></td><td valign=middle> (Gene: " + json.ref.stable_id + ")</td></tr></table> <br>" +
         "<table id='homologyTable' class='table' width='100%'>" +
         "<thead>" +
@@ -206,31 +203,31 @@ function drawHomology(json) {
         "</tfoot>" +
         "<tbody";
 
-    var json_key = Object.keys(homology);
-    for (var i = 0; i < json_key.length; i++) {
-        var tree = homology[json_key[i]].tree >= 0 ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em; cursor: pointer' aria-hidden='true' onclick='openTree(\"" + homology[json_key[i]].source.protein_id + "\")'></i>" : "";
-        var pairwise = homology[json_key[i]].tree >= 0 ? "<td class='details-control pairwise-align details_hidden'></td>" : "<td></td>";
+    // var json_key = Object.keys(homology);
+    for (var i = 0; i < homology.length; i++) {
+        var tree = homology[i].tree >= 0 ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em; cursor: pointer' aria-hidden='true' onclick='openTree(\"" + homology[i].source.protein_id + "\")'></i>" : "";
+        var pairwise = homology[i].tree >= 0 ? "<td class='details-control pairwise-align details_hidden'></td>" : "<td></td>";
         homology_table_content += "<tr> " +
             "<td class='details-control detail-info details_hidden'></td>" +
-            pairwise +
-            "<td>" + json_key[i] + "</td>" +
-            "<td>" + homology[json_key[i]].target.id + "</td>" +
-            "<td>" + homology[json_key[i]].target.protein_id + "</td>" +
-            "<td>" + homology[json_key[i]].target.species + "</td>" +
-            "<td>" + homology[json_key[i]].dn_ds + "</td>" +
-            "<td>" + homology[json_key[i]].type + "</td>" +
-            "<td align='center'>" + homology[json_key[i]].target.perc_cov + "</td>" +
-            "<td align='center'>" + homology[json_key[i]].target.perc_pos + "</td>" +
-            "<td align='center'>" + homology[json_key[i]].target.perc_id + "</td>" +
+            "<td class='details-control pairwise-align details_hidden'></td>" +
+            "<td>" + i + "</td>" +
+            "<td>" + homology[i].target.id + "</td>" +
+            "<td>" + homology[i].target.protein_id + "</td>" +
+            "<td>" + homology[i].target.species + "</td>" +
+            "<td>" + homology[i].dn_ds + "</td>" +
+            "<td>" + homology[i].type + "</td>" +
+            "<td align='center'>" + homology[i].target.perc_cov + "</td>" +
+            "<td align='center'>" + homology[i].target.perc_pos + "</td>" +
+            "<td align='center'>" + homology[i].target.perc_id + "</td>" +
             "<td align='center'>" + tree + "</td>" +
-            "<td>" + homology[json_key[i]].source.id + "</td>" +
-            "<td>" + homology[json_key[i]].source.protein_id + "</td>" +
-            "<td>" + homology[json_key[i]].source.species + "</td>" +
-            "<td>" + homology[json_key[i]].source.cigar_line + "</td>" +
-            "<td>" + homology[json_key[i]].source.perc_cov + "</td>" +
-            "<td>" + homology[json_key[i]].source.perc_pos + "</td>" +
-            "<td>" + homology[json_key[i]].source.perc_id + "</td>" +
-            "<td>" + homology[json_key[i]].target.cigar_line + "</td>" +
+            "<td>" + homology[i].source.id + "</td>" +
+            "<td>" + homology[i].source.protein_id + "</td>" +
+            "<td>" + homology[i].source.species + "</td>" +
+            "<td>" + homology[i].source.cigar_line + "</td>" +
+            "<td>" + homology[i].source.perc_cov + "</td>" +
+            "<td>" + homology[i].source.perc_pos + "</td>" +
+            "<td>" + homology[i].source.perc_id + "</td>" +
+            "<td>" + homology[i].target.cigar_line + "</td>" +
             "</tr>";
     }
 
@@ -396,14 +393,15 @@ function drawHomology(json) {
             jQuery('tr.shown').removeClass('shown');
 
             row.child("<div style='position:relative; left:100px;' id='pairwise_align'></div>").show();
-            drawPairwise(row.data()[13], row.data()[4]);
+            drawPairwise(row.data()[12], row.data()[3], row.data()[13], row.data()[4], row.data()[15], row.data()[19]);
             tr.addClass('shown');
             td.addClass('details_shown');
         }
     });
 }
 
-function drawPairwise(ref, hit) {
+function drawPairwise(ref, hit, ref_ptn, hit_ptn, ref_cigar, hit_cigar) {
+
     jQuery("#pairwise_align").html("<div><center><img src='./images/browser/loading_big.gif'></center></div>")
 
     Fluxion.doAjax(
@@ -413,16 +411,16 @@ function drawPairwise(ref, hit) {
         {
             'doOnSuccess': function (json) {
 
-                jQuery("#pairwise_align").html("<div  id = 'pairwise" + ref + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : " + jQuery(window).width() * 0.8 + "'></div>" +
+                jQuery("#pairwise_align").html("<div  id = 'pairwise" + ref_ptn + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : " + jQuery(window).width() * 0.8 + "'></div>" +
                     "<br>" +
-                    "<div id = 'pairwise" + hit + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : " + jQuery(window).width() * 0.8 + ";'></div>")
-                jQuery("#pairwise" + hit).svg()
-                jQuery("#pairwise" + ref).svg()
+                    "<div id = 'pairwise" + hit_ptn + "' style='position:relative;  cursor:pointer; height: 14px;  LEFT: 0px; width : " + jQuery(window).width() * 0.8 + ";'></div>")
+                jQuery("#pairwise" + hit_ptn).svg()
+                jQuery("#pairwise" + ref_ptn).svg()
 
 
-                svg = jQuery("#pairwise" + ref).svg("get")
+                svg = jQuery("#pairwise" + ref_ptn).svg("get")
 
-                var text = ref
+                var text = ref_ptn
 
                 svg.text(parseInt(jQuery(window).width() * 0.6) + 10, 10, text, {
                     fontFamily: 'Verdana',
@@ -434,9 +432,9 @@ function drawPairwise(ref, hit) {
 
                 svg.line(0, 6, jQuery(window).width() * 0.6, 6, {id: 'id geneline', stroke: 'red', strokeWidth: 2});
 
-                var svg = jQuery("#pairwise" + hit).svg("get")
+                var svg = jQuery("#pairwise" + hit_ptn).svg("get")
 
-                var text = hit
+                var text = hit_ptn
 
                 svg.text(parseInt(jQuery(window).width() * 0.6) + 10, 10, text, {
                     fontFamily: 'Verdana',
@@ -453,11 +451,11 @@ function drawPairwise(ref, hit) {
 
 
                 syntenic_data.cigar = {};
-                syntenic_data.member[json.ref.gene_id] = json.ref.gene;
+                syntenic_data.member[ref] = json.ref.gene;
                 ref_data = json.ref.gene
-                syntenic_data.member[json.hit.gene_id] = json.hit.gene;
-                syntenic_data.cigar[json.ref.protein_id] = json.ref.alignment;
-                syntenic_data.cigar[json.hit.protein_id] = json.ref.alignment;
+                syntenic_data.member[hit] = json.hit.gene;
+                syntenic_data.cigar[ref_ptn] = ref_cigar;//json.ref.alignment;
+                syntenic_data.cigar[hit_ptn] = hit_cigar;//json.ref.alignment;
 
                 syntenic_data.ref = json.ref.gene_id;
 
@@ -465,9 +463,8 @@ function drawPairwise(ref, hit) {
 
                 resize_ref();
 
-                dispGenesExonForMember_id("#pairwise" + ref, json.ref.alignment, json.ref.gene_id, json.ref.protein_id)//, json.hit.alignment)
-                dispGenesExonForMember_id("#pairwise" + hit, json.hit.alignment, json.hit.gene_id, json.hit.protein_id, json.ref.alignment)
-
+                dispGenesExonForMember_id("#pairwise" + ref_ptn, ref_cigar, ref, ref_ptn)//, json.hit.alignment)
+                dispGenesExonForMember_id("#pairwise" + hit_ptn, hit_cigar, hit, hit_ptn, ref_cigar)
 
                 separateSeq(json)
 

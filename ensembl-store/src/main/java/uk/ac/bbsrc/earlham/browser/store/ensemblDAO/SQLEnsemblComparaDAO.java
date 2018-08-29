@@ -587,6 +587,8 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public JSONObject findSynteny(long query, int delta) throws Exception {
 
+        log.info("findSynteny "+query);
+
         List<Long> homology_ids = new ArrayList<>();
 
         JSONObject synteny = new JSONObject();
@@ -694,6 +696,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
 
     public List<Long> getHomologyid(long seq_member_id) throws Exception {
+
+        log.info("getHomologyid long "+seq_member_id);
+
         List<Long> homology_ids = new ArrayList<>();
         final String SEARCH_HOMOLOGY_IDs = "SELECT homology_id FROM homology_member WHERE seq_member_id = ?;";
 
@@ -722,7 +727,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     public List<Map<String, Object>> getHomologyid(List<Map<String, Object>> before) throws Exception {
 
-
+        log.info("getHomologyid list");
         List<Map<String, Object>> genelist = new ArrayList<>();
 
         final String SEARCH_HOMOLOGY_IDs = "SELECT homology_id FROM homology_member WHERE seq_member_id = ?;";
@@ -1407,12 +1412,14 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     }
 
 
-    public JSONObject findHomology(String query) throws Exception {
+    public JSONArray findHomology(String query) throws Exception {
 
+        log.info("findHomology query "+query);
         List<Long> homology_ids = new ArrayList<>();
 
         int seq_member_id = template.queryForInt(GET_SEQ_MEMBER_ID_FROM_GENE_MEMBER_ID, new Object[]{query});
         JSONObject homologies = new JSONObject();
+        JSONArray homologies_array = new JSONArray();
 
         final String SEARCH_HOMOLOGY_IDs = "SELECT homology_id FROM homology_member WHERE seq_member_id = ?;";
 
@@ -1424,15 +1431,18 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         }
 
 
-        final String SEARCH_HOMOLOGY_INFO = "SELECT gm.stable_id as id, h.*, hm.*, s.stable_id as protein_id, g.name as species,g.taxon_id, ml.type " +
-                "from homology_member hm, homology h, seq_member s, genome_db g, method_link_species_set mlss, method_link ml, gene_member gm  " +
+        final String SEARCH_HOMOLOGY_INFO = "SELECT gm.stable_id as id, h.*, hm.*, s.stable_id as protein_id, g.name as species,g.taxon_id " +
+//                ", ml.type " +
+                "from homology_member hm, homology h, seq_member s, genome_db g, gene_member gm " +
+//                ", method_link_species_set mlss, method_link ml, " +
                 "where h.homology_id = hm.homology_id  " +
                 "and h.homology_id in (" + StringUtils.join(homology_ids, ",") + ") " +
                 "and hm.seq_member_id = s.seq_member_id " +
                 "and hm.gene_member_id = gm.gene_member_id " +
-                "and s.genome_db_id = g.genome_db_id " +
-                "and h.method_link_species_set_id = mlss.method_link_species_set_id " +
-                "and mlss.method_link_id = ml.method_link_id;";
+                "and g.genome_db_id in " + genome_ids + " " +
+                "and s.genome_db_id = g.genome_db_id;";
+//                "and h.method_link_species_set_id = mlss.method_link_species_set_id " +
+//                "and mlss.method_link_id = ml.method_link_id;";
 
         List<Map<String, Object>> homology_member_id = template.queryForList(SEARCH_HOMOLOGY_INFO);
 
@@ -1492,8 +1502,17 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             }
 
         }
+        for (Object key : homologies.keySet()) {
+            //based on you key types
+            String keyStr = (String) key;
+            JSONObject keyvalue = homologies.getJSONObject(keyStr);
+            if (keyvalue.has("target")) {
+                homologies_array.add(keyvalue);
+            }
+        }
 
-        return homologies;
+
+        return homologies_array;
 
     }
 }
