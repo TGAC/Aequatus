@@ -319,7 +319,7 @@ function getcoreMember(query, redrawn) {
                 // setSelector()
                 console.log("getcoreMember 4")
 
-                // URLMemberID(json.ref)
+                 URLMemberID(json.ref, "tree")
                 console.log("getcoreMember 5")
                 prepareTree(redrawn);
 

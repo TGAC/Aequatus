@@ -133,7 +133,9 @@ function getHomologyForMember(query, view) {
         {'id': query, 'species': selected_species.toString(), 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                URLMemberID(json.ref.stable_id, view)
+                var id = json.ref.stable_id ? json.ref.stable_id : json.ref.id
+
+                URLMemberID(id, view)
 
                 jQuery("#gene_tree_nj").html("")
                 if (view == "table") {
@@ -165,7 +167,7 @@ function drawHomology(json) {
         "<th>Coverage (%)</th>" +
         "<th>Similarity (%)</th>" +
         "<th>Identity (%)</th>" +
-        "<th>GeneTree</th>" +
+        "<th>is_tree_compliant</th>" +
         "<th>source Gene</th>" +
         "<th>source Protein</th>" +
         "<th>source Species</th>" +
@@ -191,7 +193,7 @@ function drawHomology(json) {
         "<th>Coverage (%)</th>" +
         "<th>Similarity  (%)</th>" +
         "<th>Identity (%)</th>" +
-        "<th>GeneTree</th>" +
+        "<th>is_tree_compliant</th>" +
         "<th>source Gene</th>" +
         "<th>source Protein</th>" +
         "<th>source Species</th>" +
@@ -206,7 +208,7 @@ function drawHomology(json) {
 
     // var json_key = Object.keys(homology);
     for (var i = 0; i < homology.length; i++) {
-        var tree = homology[i].tree >= 0 ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em; cursor: pointer' aria-hidden='true' onclick='openTree(\"" + homology[i].source.protein_id + "\")'></i>" : "";
+        var tree = homology[i].tree >= 0 ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em; cursor: pointer' aria-hidden='true'></i>" : "";
         var pairwise = homology[i].tree >= 0 ? "<td class='details-control pairwise-align details_hidden'></td>" : "<td></td>";
         homology_table_content += "<tr> " +
             "<td class='details-control detail-info details_hidden'></td>" +
@@ -254,6 +256,14 @@ function drawHomology(json) {
     if(homology[0].target.perc_cov == undefined){
         columnArray.push({
             "targets": [8],
+            "visible": false,
+            "searchable": false
+        });
+    }
+
+    if(homology[0].tree == undefined){
+        columnArray.push({
+            "targets": [11],
             "visible": false,
             "searchable": false
         });
