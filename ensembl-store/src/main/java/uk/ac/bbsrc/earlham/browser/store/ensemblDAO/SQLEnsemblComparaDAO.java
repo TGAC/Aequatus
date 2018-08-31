@@ -1536,7 +1536,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                 homologies.getJSONObject(temp_homology_id).put("taxonomy_level", null);
                 homologies.getJSONObject(temp_homology_id).put("type", map_two.get("description"));
                 homologies.getJSONObject(temp_homology_id).put("method_link_type", map_two.get("type"));
-                homologies.getJSONObject(temp_homology_id).put("tree", Arrays.binarySearch(int_genome_ids, genome_db_id));
+                homologies.getJSONObject(temp_homology_id).put("tree", map_two.get("is_tree_compliant"));
 
                 homologies.getJSONObject(temp_homology_id).put("target", homology_member);
             } else {
