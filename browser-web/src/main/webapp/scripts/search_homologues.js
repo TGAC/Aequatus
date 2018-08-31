@@ -251,6 +251,23 @@ function drawHomology(json) {
         });
     }
 
+    if(homology[0].target.perc_cov == undefined){
+        columnArray.push({
+            "targets": [8],
+            "visible": false,
+            "searchable": false
+        });
+    }
+
+    if(homology[0].target.perc_cov == undefined){
+        columnArray.push({
+            "targets": [16],
+            "visible": false,
+            "searchable": false
+        });
+    }
+
+
     jQuery('#homologyTable').DataTable({
         "columnDefs": columnArray,
         initComplete: function () {
@@ -474,6 +491,18 @@ function drawPairwise(ref, hit, ref_ptn, hit_ptn, ref_cigar, hit_cigar) {
         });
 }
 function formatRow(d) {
+
+    var coverage = "";
+    if(d[16] == "undefined"){
+        coverage = "";
+    }else{
+        coverage = '<tr>' +
+            '<th>Percentage Coverage</th>' +
+            '<td>' + d[16] + '</td>' +
+            '<td>' + d[8] + '</td>' +
+            '</tr>';
+    }
+
     return '<table class="table dataTable" style="padding-left:50px; width:50%; float:left" cellpadding="5" cellspacing="0" border="0" >' +
         '<thead>' +
         '<tr>' +
@@ -502,11 +531,7 @@ function formatRow(d) {
         '<td>' + d[15] + '</td>' +
         '<td>' + d[19] + '</td>' +
         '</tr>' +
-        '<tr>' +
-        '<th>Percentage Coverage</th>' +
-        '<td>' + d[16] + '</td>' +
-        '<td>' + d[8] + '</td>' +
-        '</tr>' +
+        coverage +
         '<tr>' +
         '<th>Percentage Positivity</th>' +
         '<td>' + d[17] + '</td>' +
