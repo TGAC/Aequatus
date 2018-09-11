@@ -261,7 +261,7 @@ public class EnsemblRestServices {
             if(gene.getJSONObject(query) != null){
                 result.add(gene);
                 response.put("result", result);
-                response.put("member_id", 0);
+                response.put("member_id", query);
                 response.put("ref", 0);
                 response.put("dnafrag", 0);
             } else{

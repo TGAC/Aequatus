@@ -31,11 +31,6 @@ function getChromosomes(genome_db_id) {
     if(!genome_db_id){
         genome_db_id = jQuery('select[name=species_selector]').val()
         var name = jQuery('select[name=species_selector]  option:selected').text()
-        jQuery("select[name=species_list] option").each(function() {
-            if(jQuery(this).text() == name) {
-                jQuery(this).attr('selected', 'selected');
-            }
-        });
     }
 
 

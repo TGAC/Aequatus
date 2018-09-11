@@ -23,10 +23,11 @@ function setOff() {
         jQuery("#bar_image_selector").show()
         jQuery("#selected_region_wrapper").show()
         getReferences();
+        setGenomes(getUrlVariables);
+
     } else {
         alert("browser.data not defined properly")
     }
-    setGenomes(getUrlVariables);
     var name = arguments.callee.toString();
     var testTextBox = jQuery('#search');
     var code = null;
@@ -157,10 +158,11 @@ function setServer() {
     Fluxion.doAjax(
         services,
         'setServer',
-        {'genome':genome, 'url': ajaxurl},
+        {'genome': genome, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
                 getReferences()
+                setGenomes(getUrlVariables);
             }
         });
 }
@@ -173,8 +175,8 @@ function getDivision() {
         {'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                for(var i=0; i<json.divison.length; i++){
-                    jQuery('#division').append("<input type=radio name=divisions value='"+json.division[i]+"'>"+json.division[i]+"</input>")
+                for (var i = 0; i < json.divison.length; i++) {
+                    jQuery('#division').append("<input type=radio name=divisions value='" + json.division[i] + "'>" + json.division[i] + "</input>")
                 }
             }
         });
@@ -184,7 +186,7 @@ function setDivision(division) {
     Fluxion.doAjax(
         services,
         'setDivision',
-        {'division':division, 'url': ajaxurl},
+        {'division': division, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
 
@@ -197,11 +199,7 @@ function testConnection() {
 
     console.log("testConnection")
 
-    // var checkExist = setInterval(function () {
-    //     if (jQuery('#config_genome').text().length > 0) {
-    //         clearInterval(checkExist);
     Fluxion.doAjax(
-        //services, //'comparaService',
         services,
         'testRestAPI',
         {'url': ajaxurl},
@@ -216,10 +214,6 @@ function testConnection() {
                 }
             }
         });
-    //     }
-    // }, 1000); //
-
-
 }
 
 function getRelease() {
@@ -227,7 +221,6 @@ function getRelease() {
     console.log("getRelease")
 
     Fluxion.doAjax(
-        //services, //'comparaService',
         services,
         'getRestInfo',
         {'url': ajaxurl},
@@ -293,11 +286,10 @@ function getGenomeId(ref) {
         {
             'doOnSuccess': function (json) {
                 getReferences();
-                if (services == "comparaService")
-                {
+                if (services == "comparaService") {
                     genome_db_id = json.ref;
                     changeGenome(json.ref, ref)
-                } else{
+                } else {
                     changeGenome(json.name, ref)
                 }
             }
@@ -306,8 +298,7 @@ function getGenomeId(ref) {
 
 function getChrId(chr, ref) {
 
-    if (services == "comparaService")
-    {
+    if (services == "comparaService") {
         Fluxion.doAjax(
             services, //'comparaService',
             'getChrId',
@@ -324,7 +315,7 @@ function getChrId(chr, ref) {
                     select_chr()
                 }
             });
-    } else{
+    } else {
         getGenomeId(ref)
     }
 
@@ -336,21 +327,26 @@ function getMemberfromURL(query, view) {
     Fluxion.doAjax(
         services, //'comparaService',
         'getMemberfromURL',
-        {'query': query, 'view': view, 'species': jQuery('select[name=species_list]').val(), 'url': ajaxurl},
+        {'query': query, 'view': view, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                if (json.member_id) {
+                if (json.member_id != undefined) {
                     member_id = json.member_id;
                     chr = json.dnafrag;
                     genome_db_id = json.ref;
-                    getReferences();
-                    getChromosomes(json.member_id);
-                    getMember(json.member_id);
-                    select_chr();
-                    select_genome();
+                    if (services == "comparaService") {
+                        getReferences();
+                        getChromosomes(json.member_id);
+                        getMember(json.member_id);
+                        select_chr();
+                        select_genome();
+                        getSyntenyForMember(json.member_id)
+                    }
+
                     listResult(json.result)
+
                     setSearchList(json.result[0].id)
-                    getSyntenyForMember(json.member_id)
+
                     if (view == "tree") {
                         setTreeExport();
                         getcoreMember(json.member_id, true);
@@ -367,7 +363,6 @@ function getMemberfromURL(query, view) {
 
                         jQuery('#search').val(query);
                         jQuery('#control_search').val(query)
-                        //search_member(query)
                     }
                 } else {
                     getReferences()
@@ -413,9 +408,10 @@ function listResult(json) {
     jQuery.each(json, function (key, value) {
         var badges = ""
         var ref_link = ""
+        var id = value[value.id].stable_id ? value[value.id].stable_id : value[value.id].id
         if (services == "comparaService") {
             ref_link = "getRefs(\"" + value[value.id].stable_id + "\",\"" + value[value.id].dnafrag_id + "\",\"" + value[value.id].genome_db_id + "\",\"" + value[value.id].gene_member_id + "\"); "
-            badges = "<span class='badge' title='" +  value[value.id].homologous + " Homologous'>" +  value[value.id].homologous + "</span> "
+            badges = "<span class='badge' title='" + value[value.id].homologous + " Homologous'>" + value[value.id].homologous + "</span> "
 
         }
 
@@ -433,19 +429,20 @@ function listResult(json) {
             "<tr><td>" + value.id + " " +
             badges +
             "<td> <i style='color:grey' class='fa fa-1x fa-sitemap fa-rotate-270' title='View GeneTree' onclick='openClosePanel(); " +
-            "jQuery(\"#canvas\").show(); " +
+            "jQuery(\"#canvas\").show();   setSearchList(\"" + id + "\"); " +
             ref_link +
             "getcoreMember(\"" + value.id + "\",\"true\");'> </i>" +
             "</td>" +
 
+
             "<td> <i style='color:grey' class='fa fa-1x fa-table' title='List Homology in Table' onclick='openClosePanel(); " +
-            "jQuery(\"#canvas\").show(); " +
+            "jQuery(\"#canvas\").show();   setSearchList(\"" + id + "\"); " +
             ref_link +
             "getHomologyForMember(\"" + value.id + "\",\"table\");'> </i>" +
             "</td>" +
 
             "<td> <i style='color:grey' class='fa fa-1x fa-random' title='View Homology as Sankey Plot' onclick='openClosePanel(); " +
-            "jQuery(\"#canvas\").show(); " +
+            "jQuery(\"#canvas\").show();   setSearchList(\"" + id + "\"); " +
             ref_link +
             "getHomologyForMember(\"" + value.id + "\",\"sankey\");'> </i>" +
             "</td>" +
