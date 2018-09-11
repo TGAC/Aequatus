@@ -206,12 +206,15 @@ public class ComparaService {
 
     public JSONObject searchGenes(HttpSession session, JSONObject json) {
         String keyword = json.getString("keyword");
-        String species = json.getString("species");
+//        String species = json.getString("species");
 
         JSONObject response = new JSONObject();
         try {
-
-            response.put("result", comparaStore.searchMember(keyword, species));
+            JSONArray results = new JSONArray();
+            for (String sp:species.split(",")){
+                results.addAll(comparaStore.searchMember(keyword, sp));
+            }
+            response.put("result", results);
 
             return response;
         } catch (Exception e) {
