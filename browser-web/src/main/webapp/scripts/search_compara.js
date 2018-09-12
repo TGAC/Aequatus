@@ -112,15 +112,15 @@ function updateGenomeList() {
         selected_species.push(this.value);
     });
 
-    Fluxion.doAjax(
-        services, //'comparaService',
-        'setGenomes',
-        {'url': ajaxurl, 'species': selected_species.toString()},
-        {
-            'doOnSuccess': function (json) {
-                return true;
-            }
-        });
+    //Fluxion.doAjax(
+    //    services, //'comparaService',
+    //    'setGenomes',
+    //    {'url': ajaxurl, 'species': selected_species.toString()},
+    //    {
+    //        'doOnSuccess': function (json) {
+    //            return true;
+    //        }
+    //    });
 }
 
 
