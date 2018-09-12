@@ -80,7 +80,7 @@ function getReferences() {
                 if (genome_db_id == undefined) {
 
                     if (services == "comparaService") {
-                        jQuery("#species_list_div").html(species_list);
+                        //jQuery("#species_list_div").html(species_list);
                         jQuery("#species_selector_div").html(species_selector);
                         changeGenome(json.species[0].genome_db_id, json.species[0].name)
                     }
