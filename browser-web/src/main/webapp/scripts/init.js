@@ -349,13 +349,13 @@ function getMemberfromURL(query, view) {
 
                     if (view == "tree") {
                         setTreeExport();
-                        getcoreMember(json.member_id, true);
+                        getcoreMember(json.result[0].id, true);
                     } else if (view == "table") {
                         setTableExport();
-                        getHomologyForMember(json.member_id, "table");
+                        getHomologyForMember(json.result[0].id, "table");
                     } else if (view == "sankey") {
                         setTableExport();
-                        getHomologyForMember(json.member_id, "sankey");
+                        getHomologyForMember(json.result[0].id, "sankey");
                     } else {
                         if (parseInt(jQuery("#control_panel").css("left")) < 0) {
                             openPanel('#search_div')
