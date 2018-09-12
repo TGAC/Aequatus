@@ -266,8 +266,10 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     }
 
     public JSONArray setAllGenomeId(String[] query) throws IOException {
+        log.info("setAllGenomeId "+query);
         try {
             genome_ids = "(";
+            log.info("setAllGenomeId 1 "+genome_ids);
             JSONArray genomes = new JSONArray();
             List<Map<String, Object>> genomeIDs = template.queryForList(GET_ALL_GENOMES, new Object[]{"%%"});
 
@@ -282,10 +284,13 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                         genome_ids += "," + (map.get("genome_db_id").toString());
                     }
                     i++;
+                    log.info("setAllGenomeId 2 "+i+" "+genome_ids);
                 }
+
             }
 
             genome_ids += ")";
+            log.info("setAllGenomeId 3 "+genome_ids);
 
             return genomes;
         } catch (EmptyResultDataAccessException e) {
@@ -1011,9 +1016,11 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             )
     )
 
-    public JSONObject getGeneTreeforMember(String query) throws IOException {
+    public JSONObject getGeneTreeforMember(String query, String species) throws IOException {
 
         JSONObject member = new JSONObject();
+
+        setAllGenomeId(species.split(","));
 
         final String GET_GENE_TREE_FOR_REFERENCE = "select m1.stable_id AS Ref, m1.canonical_member_id AS peptide_id, m2.stable_id AS Ref_stable_id, m3.*, gam.cigar_line, gtr.method_link_species_set_id, m4.gene_member_id, m4.display_label as 'desc'  " +
                 "from gene_member m1 " +
@@ -1214,8 +1221,12 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     }
 
-    public Map getGeneTree(String query) throws IOException {
+    public Map getGeneTree(String query, String species) throws IOException {
         JSONObject homology_members = new JSONObject();
+
+
+
+        setAllGenomeId(species.split(","));
 
 //        final String GET_GENE_MEMBER_ID_FOR_REFERENCE = "select  m3.seq_member_id, gtr.root_id,  m3.gene_member_id, gam.gene_align_id   " +
 //                "from gene_member m1 " +
@@ -1236,6 +1247,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                 " JOIN seq_member m3 ON (gtn1.seq_member_id = m3.seq_member_id)" +
                 " WHERE m1.gene_member_id = ? AND m3.genome_db_id in " + genome_ids + " and gtr.clusterset_id = \"default\" AND m1.source_name = \"ENSEMBLGENE\"";
 //        gets all intermediate nodes for each gene from root to node
+
+        log.info("\n\n\n\t GET_GENE_MEMBER_ID_FOR_REFERENCE"+GET_GENE_MEMBER_ID_FOR_REFERENCE);
+
         List<Map<String, Object>> root_id = template.queryForList(GET_GENE_MEMBER_ID_FOR_REFERENCE, new Object[]{query});
         List<List<Map>> trees = new ArrayList<List<Map>>();
         for (Map map_two : root_id) {
@@ -1283,7 +1297,6 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
                 }
             }
         }
-
         Map<String, Object> super_node = template.queryForMap(GET_NODE_INFORMATION, new Object[]{test_array.getJSONObject(0).get("parent_id")});
         super_node.put("children", test_array);
 
@@ -1457,7 +1470,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     }
 
 
-    public JSONArray findHomology(String query) throws Exception {
+    public JSONArray findHomology(String query, String species) throws Exception {
+
+        setAllGenomeId(species.split(","));
 
         List<Long> homology_ids = new ArrayList<>();
 
@@ -1489,7 +1504,9 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         List<Map<String, Object>> homology_member_id = template.queryForList(SEARCH_HOMOLOGY_INFO);
 
 
-        String[] temp_genome_ids = genome_ids.replaceAll("\\(", "").replaceAll("\\)", "").replaceAll("\\s", "").split(",");
+        String backup_genome_ids = new String(genome_ids);
+
+        String[] temp_genome_ids = backup_genome_ids.replaceAll("\\(", "").replaceAll("\\)", "").replaceAll("\\s", "").split(",");
 
         int[] int_genome_ids = new int[temp_genome_ids.length];
 
