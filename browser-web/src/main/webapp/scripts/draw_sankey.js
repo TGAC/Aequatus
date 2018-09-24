@@ -9,6 +9,7 @@
 var graph;
 var units = "Widgets";
 
+var svgWidth = jQuery(window).width()
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
     width = 1000 - margin.left - margin.right,
     height = 700 - margin.top - margin.bottom;
@@ -38,7 +39,7 @@ function drawSankey(data, div) {
     var path = sankey.link();
     jQuery(div).html("")
     svg = d3.select(div).append("svg")
-        .attr("width", width + margin.left + margin.right)
+        .attr("width", svgWidth + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .style("overflow", "visible")
         .append("g")
@@ -67,7 +68,7 @@ function drawSankey(data, div) {
 
 
             svg = d3.select(div).append("svg")
-                .attr("width", width + margin.left + margin.right)
+                .attr("width", svgWidth + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .style("overflow", "visible")
                 .append("g")
@@ -88,6 +89,9 @@ function drawSankey(data, div) {
                 .enter().append("path")
                 .attr("class", "link")
                 .attr("d", path)
+                .style("fill", "none")
+                .style("stroke", "#000")
+                .style("stroke-opacity", 0.2)
                 .style("stroke-width", function (d) {
                     return Math.max(1, d.dy);
                 })
@@ -155,7 +159,7 @@ function drawSankey(data, div) {
             // add in the title for the nodes
             node.append("text")
                 .attr("x", function (d) {
-                    if (d.sourceLinks[0]) {
+                    if (d.sourceLinks[0] && d.targetLinks[0]) {
                         return -6;
                     }
                     else {
@@ -168,7 +172,7 @@ function drawSankey(data, div) {
                 })
                 .attr("dy", ".35em")
                 .attr("text-anchor", function (d) {
-                    if (d.sourceLinks[0]) {
+                    if (d.sourceLinks[0] && d.targetLinks[0]) {
                         return "end";
                     }
                     else {

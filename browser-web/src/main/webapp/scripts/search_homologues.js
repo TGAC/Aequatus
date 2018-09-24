@@ -106,6 +106,8 @@ function getSyntenyForMember(query) {
 
 
 function getHomologyForMember(query, view) {
+
+
     if (view == "table") {
         jQuery("#homologies").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
     } else if (view == "sankey") {
@@ -133,13 +135,12 @@ function getHomologyForMember(query, view) {
         {
             'doOnSuccess': function (json) {
                 URLMemberID(json.ref.stable_id, view)
-
+                syntenic_data.view = view
+                syntenic_data.ref = json.ref.stable_id
                 jQuery("#gene_tree_nj").html("")
                 if (view == "table") {
-                    syntenic_data.view = "table"
                     drawHomology(json)
                 } else if (view == "sankey") {
-                    syntenic_data.view = "sankey"
                     generate_sankey_JSON(json)
                 }
 

@@ -923,6 +923,20 @@ function setTreeExport() {
     table.append(row4)
 
 
+    var row5 = jQuery("<tr></tr>");
+    var column1 = jQuery("<td></td>");
+
+    column1.html("SVG format <br> <a class='btn btn-small' href='#' onclick='triggerExport(\"#gene_tree_nj\")'>  <i class='fa fa-download' style='color: white'></i> </a>")
+    row5.append(column1)
+
+    var column2 = jQuery("<td></td>");
+
+    column2.html("PNG <br> <a class='btn btn-small' href='#' onclick='triggerExport(\"#gene_tree_nj\", true)'>  <i class='fa fa-download' style='color: white'></i> </a>")
+    row5.append(column2)
+
+    table.append(row5)
+
+
     jQuery("#export_params").html(table)
 
 }
