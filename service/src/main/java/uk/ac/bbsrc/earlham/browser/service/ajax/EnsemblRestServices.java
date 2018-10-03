@@ -68,6 +68,8 @@ public class EnsemblRestServices {
     public JSONObject searchGenes(HttpSession session, JSONObject json) {
 
         String keyword = json.getString("keyword");
+        String species = json.getString("species");
+
 
         try {
             JSONArray results = new JSONArray();
@@ -91,6 +93,7 @@ public class EnsemblRestServices {
     public JSONObject getGeneTree(HttpSession session, JSONObject json) {
 
         String id = json.getString("id");
+        String species = json.getString("species");
         try {
             JSONObject genetree = new JSONObject();
 
@@ -106,6 +109,8 @@ public class EnsemblRestServices {
 
     public JSONObject getHomologyForMember(HttpSession session, JSONObject json) {
         String id = json.getString("id");
+        String species = json.getString("species");
+
         JSONObject response = new JSONObject();
 
         response.put("trackname", "homology");

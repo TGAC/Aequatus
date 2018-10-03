@@ -215,7 +215,7 @@ function search_member(query) {
     Fluxion.doAjax(
         services,
         'searchGenes',
-        {'keyword': query, 'url': ajaxurl},
+        {'keyword': query, 'specie': selected_species, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
 
