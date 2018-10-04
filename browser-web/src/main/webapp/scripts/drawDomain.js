@@ -50,7 +50,7 @@ function drawDomain(gene_id, protein_member_id, domains) {
         }
     });
 
-    var exons = syntenic_data.member[gene_id].Transcript[i].Exon
+    var exons = syntenic_data.member[gene_id].Transcript[i].Exon.slice(0);
 
     if(syntenic_data.member[gene_id].Transcript[i].strand == "-1"){
         exons = exons.reverse()
