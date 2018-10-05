@@ -462,7 +462,7 @@ function drawPairwise(ref, hit, ref_ptn, hit_ptn, ref_cigar, hit_cigar) {
 
                 protein_member_id = json.ref.protein_id
 
-                resize_ref();
+                set_members_length();
 
                 dispGenesExonForMember_id("#pairwise" + ref_ptn, ref_cigar, ref, ref_ptn)//, json.hit.alignment)
                 dispGenesExonForMember_id("#pairwise" + hit_ptn, hit_cigar, hit, hit_ptn, ref_cigar)
