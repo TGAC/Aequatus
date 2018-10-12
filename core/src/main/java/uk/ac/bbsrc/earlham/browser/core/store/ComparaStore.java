@@ -42,7 +42,7 @@ import java.util.Map;
 public interface ComparaStore extends Store<String> {
     String getAllDnafragByGenomedbId(int query) throws IOException;
     JSONArray getAllGenomeId(String query) throws IOException;
-    JSONArray setAllGenomeId(String query) throws IOException;
+    JSONArray setAllGenomeId(String[] query) throws IOException;
     JSONArray getGenomicAlignbyDnafragId(String query) throws IOException;
     JSONArray getGenomicAlignblockbyId(String query) throws IOException;
     int getReferenceLength(int query) throws IOException;
@@ -62,10 +62,11 @@ public interface ComparaStore extends Store<String> {
     JSONArray getOverviewAllMember(int query, int genome_db) throws IOException;
     JSONArray getAllChromosome(int query) throws IOException;
     int getChromosomeLength(int chr_id, int genome_id) throws IOException;
-    JSONObject getGeneTreeforMember(String query) throws IOException;
+    JSONObject getGeneTreeforMember(String query, String species) throws IOException;
     JSONObject getRefMember(String query) throws IOException;
     JSONArray searchMember(String query) throws IOException;
-    Map getGeneTree(String query) throws IOException;
+    JSONArray searchMember(String query, String species) throws IOException;
+    Map getGeneTree(String query, String species) throws IOException;
     int countGeneTreeforMember(String query) throws IOException;
     JSONObject getInfoforMember(String query) throws IOException;
     boolean getInfoforHomolog(int ref, int hit) throws IOException;
@@ -80,7 +81,11 @@ public interface ComparaStore extends Store<String> {
     Map<String, Object> getGeneMemberInfofromID(String query) throws Exception;
     JSONObject findSynteny (long query, int delta) throws Exception;
     String getRefPtnStableID(String query) throws Exception;
-    JSONArray findHomology(String query) throws Exception;
+//<<<<<<< HEAD
+//    JSONArray findHomology(String query) throws Exception;
+//=======
+    JSONArray findHomology(String query, String species) throws Exception;
+//>>>>>>> rest
     int getGeneMemberIDfromStableID(String query) throws Exception;
     int getSeqMemberIDfromGeneMemberID(int gene_member_id) throws Exception;
     int getSeqMemberIDfromStableID(String query) throws Exception;
@@ -94,4 +99,6 @@ public interface ComparaStore extends Store<String> {
     String getSeq(int seq_member_id)  throws Exception;
     String getGeneStableIDfromGeneMemberID(long gene_member_id) throws Exception;
     long getCenralGeneMemberID(int genome_db_id, String chr,int start, int end) throws Exception;
+    int getReleaseversion() throws IOException;
+
     }

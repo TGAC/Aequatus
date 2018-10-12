@@ -103,7 +103,7 @@
     <center>
         <div style="position: absolute; top: 50%; -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%);  transform: translateY(-50%);">
             <a class="headerlink" href="<c:url value="/"/>"> <font color=white> Aequatus Browser
-                - ${initParam.header} </font></a>
+                - ${initParam.header} </font></a> - Ensembl Release <span id="release"></span>
         </div>
     </center>
 
@@ -111,8 +111,10 @@
 </div>
 
 <div id="title" style="visibility: hidden; position: fixed;">${initParam.urlpath}</div>
+<div id="data" style="visibility: hidden; position: fixed;">${initParam.data}</div>
 
 <script type="text/javascript">
+
 
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-21666189-7']);
@@ -129,4 +131,4 @@
 
 </script>
 
-<div id="content" style="clear: both; height: 100%;   position: absolute;    width: 100%;">
+<div id="content" style="clear: both; height: 100%; position: absolute; width: 100%;">

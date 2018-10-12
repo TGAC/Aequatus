@@ -34,7 +34,7 @@ function search_homologues(query) {
     URLSearch(query)
 
     Fluxion.doAjax(
-        'comparaService',
+        services, //'comparaService',
         'searchMember',
         {'query': query, 'reference': reference, 'url': ajaxurl},
         {
@@ -91,7 +91,7 @@ function getSyntenyForMember(query) {
     jQuery("#synteny").html("<img style='position: relative; left: 0px; ' src='./images/browser/loading_big.gif' alt='Loading'>")
 
     Fluxion.doAjax(
-        'comparaService',
+        services, //'comparaService',
         'getSyntenyForMember',
         {'query': query, 'url': ajaxurl},
         {
@@ -116,27 +116,35 @@ function getHomologyForMember(query, view) {
 
     resetView();
 
-    Fluxion.doAjax(
-        'comparaService',
-        'getRefMember',
-        {'query': query, 'url': ajaxurl},
-        {
-            'doOnSuccess': function (json) {
-                sequencelength = json.chr_length;
+    //Fluxion.doAjax(
+    //    services, //'comparaService',
+    //    'getRefMember',
+    //    {'query': query, 'url': ajaxurl},
+    //    {
+    //        'doOnSuccess': function (json) {
+    //            sequencelength = json.chr_length;
+    //
+    //            setSelector(json.member[json.ref].Transcript[0], json.member[json.ref].member_id)
+    //        }
+    //    });
+    updateGenomeList()
 
-                setSelector(json.member[json.ref].Transcript[0], json.member[json.ref].member_id)
-            }
-        });
-
     Fluxion.doAjax(
-        'comparaService',
+        services,
         'getHomologyForMember',
-        {'query': query, 'url': ajaxurl},
+        {'id': query, 'species': selected_species.toString(), 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                URLMemberID(json.ref.stable_id, view)
+//<<<<<<< HEAD
+//                //URLMemberID(json.ref.stable_id, view)
+//
+//=======
+                var id = json.ref.stable_id ? json.ref.stable_id : json.ref.id
                 syntenic_data.view = view
-                syntenic_data.ref = json.ref.stable_id
+                syntenic_data.ref = id
+                URLMemberID(id, view)
+
+//>>>>>>> rest
                 jQuery("#gene_tree_nj").html("")
                 if (view == "table") {
                     drawHomology(json)
@@ -165,7 +173,7 @@ function drawHomology(json) {
         "<th>Coverage (%)</th>" +
         "<th>Similarity (%)</th>" +
         "<th>Identity (%)</th>" +
-        "<th>GeneTree</th>" +
+        "<th>is_tree_compliant</th>" +
         "<th>source Gene</th>" +
         "<th>source Protein</th>" +
         "<th>source Species</th>" +
@@ -191,7 +199,7 @@ function drawHomology(json) {
         "<th>Coverage (%)</th>" +
         "<th>Similarity  (%)</th>" +
         "<th>Identity (%)</th>" +
-        "<th>GeneTree</th>" +
+        "<th>is_tree_compliant</th>" +
         "<th>source Gene</th>" +
         "<th>source Protein</th>" +
         "<th>source Species</th>" +
@@ -206,7 +214,11 @@ function drawHomology(json) {
 
     // var json_key = Object.keys(homology);
     for (var i = 0; i < homology.length; i++) {
-        var tree = homology[i].tree >= 0 ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em; cursor: pointer' aria-hidden='true' onclick='openTree(\"" + homology[i].source.protein_id + "\")'></i>" : "";
+//<<<<<<< HEAD
+//        var tree = homology[i].tree >= 0 ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em; cursor: pointer' aria-hidden='true' onclick='openTree(\"" + homology[i].source.protein_id + "\")'></i>" : "";
+//=======
+        var tree = homology[i].tree >= 0 ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em; cursor: pointer' aria-hidden='true'></i>" : "";
+//>>>>>>> rest
         var pairwise = homology[i].tree >= 0 ? "<td class='details-control pairwise-align details_hidden'></td>" : "<td></td>";
         homology_table_content += "<tr> " +
             "<td class='details-control detail-info details_hidden'></td>" +
@@ -250,6 +262,31 @@ function drawHomology(json) {
             "searchable": false
         });
     }
+
+    if(homology[0].target.perc_cov == undefined){
+        columnArray.push({
+            "targets": [8],
+            "visible": false,
+            "searchable": false
+        });
+    }
+
+    if(homology[0].tree == undefined){
+        columnArray.push({
+            "targets": [11],
+            "visible": false,
+            "searchable": false
+        });
+    }
+
+    if(homology[0].target.perc_cov == undefined){
+        columnArray.push({
+            "targets": [16],
+            "visible": false,
+            "searchable": false
+        });
+    }
+
 
     jQuery('#homologyTable').DataTable({
         "columnDefs": columnArray,
@@ -406,9 +443,10 @@ function drawPairwise(ref, hit, ref_ptn, hit_ptn, ref_cigar, hit_cigar) {
     jQuery("#pairwise_align").html("<div><center><img src='./images/browser/loading_big.gif'></center></div>")
 
     Fluxion.doAjax(
-        'comparaService',
+        //services, //'comparaService',
+        services,
         'getPairwiseAlignmentWithGenes',
-        {'hit': hit, 'ref': ref, 'url': ajaxurl},
+        {'hit': hit, 'ref': ref, 'hit_ptn': hit_ptn, 'ref_ptn': ref_ptn, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
 
@@ -462,7 +500,11 @@ function drawPairwise(ref, hit, ref_ptn, hit_ptn, ref_cigar, hit_cigar) {
 
                 protein_member_id = json.ref.protein_id
 
+//<<<<<<< HEAD
                 set_members_length();
+//=======
+//                resize_ref();
+//>>>>>>> rest
 
                 dispGenesExonForMember_id("#pairwise" + ref_ptn, ref_cigar, ref, ref_ptn)//, json.hit.alignment)
                 dispGenesExonForMember_id("#pairwise" + hit_ptn, hit_cigar, hit, hit_ptn, ref_cigar)
@@ -473,6 +515,18 @@ function drawPairwise(ref, hit, ref_ptn, hit_ptn, ref_cigar, hit_cigar) {
         });
 }
 function formatRow(d) {
+
+    var coverage = "";
+    if(d[16] == "undefined"){
+        coverage = "";
+    }else{
+        coverage = '<tr>' +
+            '<th>Percentage Coverage</th>' +
+            '<td>' + d[16] + '</td>' +
+            '<td>' + d[8] + '</td>' +
+            '</tr>';
+    }
+
     return '<table class="table dataTable" style="padding-left:50px; width:50%; float:left" cellpadding="5" cellspacing="0" border="0" >' +
         '<thead>' +
         '<tr>' +
@@ -501,11 +555,7 @@ function formatRow(d) {
         '<td>' + d[15] + '</td>' +
         '<td>' + d[19] + '</td>' +
         '</tr>' +
-        '<tr>' +
-        '<th>Percentage Coverage</th>' +
-        '<td>' + d[16] + '</td>' +
-        '<td>' + d[8] + '</td>' +
-        '</tr>' +
+        coverage +
         '<tr>' +
         '<th>Percentage Positivity</th>' +
         '<td>' + d[17] + '</td>' +

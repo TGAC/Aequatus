@@ -15,14 +15,17 @@ function generate_sankey_JSON(json) {
     var nodes = [];
     var links = [];
     var type_size = {}
+
     nodes.push({
         "node": 0,
         "type": "homology",
         "name": "reference",
         "value": 2
     })
+    console.log("generate_sankey_JSON 3")
 
     for (var i = 0; i < homology.length; i++) {
+
 
         homologs.push({
             id: homology[i].target.id,
@@ -31,18 +34,29 @@ function generate_sankey_JSON(json) {
             source: homology[i].source,
             target: homology[i].target
         });
+//<<<<<<< HEAD
         if (species.indexOf(homology[i].target.species) < 0) {
             species.push(homology[i].target.species);
         }
+//=======
+//        console.log("generate_sankey_JSON 3 2 i "+i)
+//        if (species.indexOf(homology[i].target.species) < 0) {
+//            species.push(homology[i].target.species);
+//        }
+//        console.log("generate_sankey_JSON 3 3 i "+i)
+////>>>>>>> rest
         if (types.indexOf(homology[i].type) < 0) {
             types.push(homology[i].type);
             type_size[homology[i].type] = 1;
         } else {
             type_size[homology[i].type] = type_size[homology[i].type] + 1;
         }
+        console.log("generate_sankey_JSON 3 4 i "+i)
     }
+    console.log("generate_sankey_JSON 4")
 
     var node = 1
+    console.log("generate_sankey_JSON 5")
 
     for (var i = 0; i < types.length; i++, node++) {
         nodes.push({
@@ -52,6 +66,7 @@ function generate_sankey_JSON(json) {
             "value": homologs.length
         })
     }
+    console.log("generate_sankey_JSON 6")
 
     for (var i = 0; i < homologs.length; i++, node++) {
         nodes.push({
@@ -66,6 +81,10 @@ function generate_sankey_JSON(json) {
 
     }
 
+//<<<<<<< HEAD
+//=======
+//    console.log("generate_sankey_JSON 7")
+//>>>>>>> rest
 
     // for (var i = 0; i < species.length; i++, node++) {
     //     nodes.push({
@@ -74,6 +93,7 @@ function generate_sankey_JSON(json) {
     //         "name": species[i]
     //     })
     // }
+    console.log("generate_sankey_JSON 8")
 
 
     var item;
@@ -100,7 +120,13 @@ function generate_sankey_JSON(json) {
         })
         //}
     }
-
+//
+//<<<<<<< HEAD
+//=======
+//    console.log("generate_sankey_JSON 9")
+//
+//
+//>>>>>>> rest
     for (var i = 0; i < homology.length; i++) {
         var source = nodes.find(item => item.name == homology[i].type)
         var target = nodes.find(item => item.name == homology[i].target.id)
@@ -121,6 +147,9 @@ function generate_sankey_JSON(json) {
 
     }
 
+    console.log("generate_sankey_JSON 10")
+
+
     // for (var i = 0; i < json_key.length; i++) {
     //     var source = nodes.find(item => item.name == homology[i].target.id)
     //     var target = nodes.find(item => item.name == homology[i].target.species
@@ -131,16 +160,24 @@ function generate_sankey_JSON(json) {
     //         "value": 2
     //     })
     // }
+    console.log("generate_sankey_JSON 11")
 
     var sankey_json = {
         "nodes": nodes,
         "links": links
     }
 
+//<<<<<<< HEAD
+//=======
+//    console.log("generate_sankey_JSON 12")
+//>>>>>>> rest
 
     setSankeyExport();
+    console.log("generate_sankey_JSON 13")
     setSankeyFilter(types);
+    console.log("generate_sankey_JSON 14")
     drawSankey(sankey_json, "#sankey")
+    console.log("generate_sankey_JSON 15")
 
 }
 

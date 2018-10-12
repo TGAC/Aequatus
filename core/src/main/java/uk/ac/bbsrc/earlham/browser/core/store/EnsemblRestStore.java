@@ -26,6 +26,10 @@
 package uk.ac.bbsrc.earlham.browser.core.store;
 
 import net.sf.json.JSONObject;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -34,7 +38,18 @@ import net.sf.json.JSONObject;
  * Time: 10:10:33
  * To change this template use File | Settings | File Templates.
  */
-public interface EnsemblCoreStore extends Store<String> {
-    JSONObject getGene(String query, String genome, int member_id, String gene_stable_id);
-    JSONObject getGene(String gene_stable_id, String genome);
+public interface EnsemblRestStore extends Store<String> {
+    JSONObject getSpecies() throws IOException;
+    JSONObject setServer(String server) throws IOException;
+    JSONObject getSpecies(String query) throws IOException;
+    JSONObject searchGenes(String keyword, String species) throws IOException, InterruptedException;
+    JSONObject getGeneTree(String id, String species) throws IOException, ParserConfigurationException, SAXException, InterruptedException;
+    JSONObject getHomology(String id, String species) throws IOException;
+    JSONObject getGenes(JSONObject ids, Boolean expand) throws IOException, InterruptedException;
+    JSONObject getGene(String id, Boolean expand) throws IOException, InterruptedException;
+    JSONObject testRestAPI() throws IOException;
+    JSONObject getRestAPIversion() throws IOException;
+    JSONObject getReleaseversion() throws IOException;
+    boolean getInfoforHomolog(String query, String ref) throws IOException;
+    JSONObject getPairwiseAlignment(String query, String hit) throws IOException;
     }

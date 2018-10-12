@@ -2,11 +2,32 @@
  * Created by thankia on 09/01/15.
  */
 
+var services;
 function setOff() {
-    console.log("setOff")
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
 
-    setGenomes(getUrlVariables);
+    if (jQuery('#data').text() == "rest") {
+        services = "ensemblRestServices";
+        testConnection()
+        jQuery("#chr_maps").hide()
+        jQuery("#config_genome").show()
+        jQuery("#bar_image_ref").hide()
+        jQuery("#bar_image_selector").hide()
+        jQuery("#selected_region_wrapper").hide()
+    } else if (jQuery('#data').text() == "local") {
+        services = "comparaService";
+        getRelease()
+        jQuery("#config_genome").hide()
+        jQuery("#chr_maps").show()
+        jQuery("#bar_image_ref").show()
+        jQuery("#bar_image_selector").show()
+        jQuery("#selected_region_wrapper").show()
+        getReferences();
+        setGenomes(getUrlVariables);
+
+    } else {
+        alert("browser.data not defined properly")
+    }
     var name = arguments.callee.toString();
     var testTextBox = jQuery('#search');
     var code = null;
@@ -93,7 +114,6 @@ function setOff() {
 
 
 function sethomologousEvents() {
-    console.log("sethomologousEvents")
 
     ajaxurl = '/' + jQuery('#title').text() + '/' + jQuery('#title').text() + '/fluxion.ajax';
     setGenomes()
@@ -131,8 +151,94 @@ function sethomologousEvents() {
         });
 }
 
+function setServer() {
+    var genome = jQuery('#config_genome').val();
+    jQuery("#genome_list_div").html("<div><center><img src='./images/browser/loading_big.gif'></center></div>")
+
+    Fluxion.doAjax(
+        services,
+        'setServer',
+        {'genome': genome, 'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+                getReferences()
+                setGenomes(getUrlVariables);
+            }
+        });
+}
+
+function getDivision() {
+    jQuery('#division').html("")
+    Fluxion.doAjax(
+        services,
+        'getDivision',
+        {'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+                for (var i = 0; i < json.divison.length; i++) {
+                    jQuery('#division').append("<input type=radio name=divisions value='" + json.division[i] + "'>" + json.division[i] + "</input>")
+                }
+            }
+        });
+}
+
+function setDivision(division) {
+    Fluxion.doAjax(
+        services,
+        'setDivision',
+        {'division': division, 'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+
+                // jQuery('#division').html(json.division)
+            }
+        });
+}
+
+function testConnection() {
+
+    console.log("testConnection")
+
+    Fluxion.doAjax(
+        services,
+        'testRestAPI',
+        {'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+
+                if (json.ping == "1") {
+                    getRelease()
+                    setServer()
+                } else {
+                    alert("Can not establish connection with Ensembl RestAPI");
+                }
+            }
+        });
+}
+
+function getRelease() {
+
+    console.log("getRelease")
+
+    Fluxion.doAjax(
+        services,
+        'getRestInfo',
+        {'url': ajaxurl},
+        {
+            'doOnSuccess': function (json) {
+
+                if (json.release) {
+                    jQuery("#release").html(json.release)
+                } else {
+                    jQuery("#release").html("Unknown")
+                }
+            }
+        });
+}
+
 function getUrlVariables(chr) {
     console.log("getUrlVariables")
+
     jQuery.urlParam = function (name) {
         var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
         if (results == null) {
@@ -148,8 +254,6 @@ function getUrlVariables(chr) {
 }
 
 function processURL(urlParam) {
-    console.log("processURL")
-
     if (jQuery.urlParam("search") != null) {
         if (parseInt(jQuery("#control_panel").css("left")) < 0) {
             openPanel('#search_div')
@@ -170,75 +274,88 @@ function processURL(urlParam) {
         getMemberfromURL(urlParam("query"), urlParam("view"));
     }
     else {
-        getReferences();
+        // getReferences();
     }
 }
 
 function getGenomeId(ref) {
-    console.log("getGenomeId")
     Fluxion.doAjax(
-        'comparaService',
+        services, //'comparaService',
         'getGenomeId',
         {'query': ref, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                genome_db_id = json.ref;
                 getReferences();
-                changeGenome(json.ref, ref)
+                if (services == "comparaService") {
+                    genome_db_id = json.ref;
+                    changeGenome(json.ref, ref)
+                } else {
+                    changeGenome(json.name, ref)
+                }
             }
         });
 }
 
 function getChrId(chr, ref) {
-    console.log("getChrId")
-    Fluxion.doAjax(
-        'comparaService',
-        'getChrId',
-        {'query': chr, 'ref': ref, 'url': ajaxurl},
-        {
-            'doOnSuccess': function (json) {
-                chr = json.dnafrag;
-                genome_db_id = json.ref;
-                getReferences();
-                setCredentials(json.chr, json.ref);
-                getChromosomes();
-                getMember();
-                select_chr()
-            }
-        });
+
+    if (services == "comparaService") {
+        Fluxion.doAjax(
+            services, //'comparaService',
+            'getChrId',
+            {'query': chr, 'ref': ref, 'url': ajaxurl},
+            {
+                'doOnSuccess': function (json) {
+
+                    chr = json.dnafrag;
+                    genome_db_id = json.ref;
+                    getReferences();
+                    setCredentials(json.chr, json.ref);
+                    getChromosomes();
+                    getMember();
+                    select_chr()
+                }
+            });
+    } else {
+        getGenomeId(ref)
+    }
+
 }
 
 
 function getMemberfromURL(query, view) {
-
-    console.log("getMemberfromURL")
+    console.log("getMemberfrom URL")
     Fluxion.doAjax(
-        'comparaService',
+        services, //'comparaService',
         'getMemberfromURL',
         {'query': query, 'view': view, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                if (json.member_id) {
+                if (json.member_id != undefined) {
                     member_id = json.member_id;
                     chr = json.dnafrag;
                     genome_db_id = json.ref;
-                    getReferences();
-                    getChromosomes(json.member_id);
-                    getMember(json.member_id);
-                    select_chr();
-                    select_genome();
-                    listResult(json)
-                    setSearchList(json.html[0].stable_id)
-                    getSyntenyForMember(json.member_id)
+                    if (services == "comparaService") {
+                        getReferences();
+                        getChromosomes(json.member_id);
+                        getMember(json.member_id);
+                        select_chr();
+                        select_genome();
+                        getSyntenyForMember(json.member_id)
+                    }
+
+                    listResult(json.result)
+
+                    setSearchList(json.result[0].id)
+
                     if (view == "tree") {
                         setTreeExport();
-                        getcoreMember(json.member_id, true);
+                        getcoreMember(json.result[0].id, true);
                     } else if (view == "table") {
                         setTableExport();
-                        getHomologyForMember(json.member_id, "table");
+                        getHomologyForMember(json.result[0].id, "table");
                     } else if (view == "sankey") {
                         setTableExport();
-                        getHomologyForMember(json.member_id, "sankey");
+                        getHomologyForMember(json.result[0].id, "sankey");
                     } else {
                         if (parseInt(jQuery("#control_panel").css("left")) < 0) {
                             openPanel('#search_div')
@@ -246,7 +363,6 @@ function getMemberfromURL(query, view) {
 
                         jQuery('#search').val(query);
                         jQuery('#control_search').val(query)
-                        search_member(query)
                     }
                 } else {
                     getReferences()
@@ -258,8 +374,8 @@ function getMemberfromURL(query, view) {
                     jQuery("#control_search").val(query);
                     jQuery("#search").val(query);
                     var content = "";
-
-                    listResult(json)
+                    URLSearch(query)
+                    listResult(json.result)
 
 
                 }
@@ -268,9 +384,8 @@ function getMemberfromURL(query, view) {
         });
 }
 
-function search_from_box() {
-    console.log("search_from_box")
 
+function search_from_box() {
     if (parseInt(jQuery("#control_panel").css("left")) < 0) {
         openPanel('#search_div')
     }
@@ -280,116 +395,85 @@ function search_from_box() {
 }
 
 function resize() {
-    console.log("resize")
-
     drawChromosome();
-    console.log("resize 1")
     drawMember();
-    console.log("resize 2")
     select_chr();
-    console.log("resize 3")
     resizeView()
-    console.log("resize 4")
-
-    // if (member_id == undefined) {
-    //     // select_member();
-    //     // drawSelected();
-    // } else {
-
-    //     var start = 0;
-    //     for (var i = 0; i < members.length; i++) {
-    //         if (members[i].id == member_id) {
-    //             start = members[i].start;
-    //         }
-    //     }
-    //     // rearrange_selector(member_id, start, chr);
-    //     // drawSelected();
-    //     // prepareTree(true);
-    //     resetView()
-    // }
 }
 
 function listResult(json) {
     console.log("listResult")
+    var content = "<p id='search_hit' style='background: white;'>";
 
-    jQuery("#search_result").html("");
-
-    var content = "";
-
-    if (json.html.length > 0) {
-        for (var i = 0; i < json.html.length; i++) {
-            if (i == 0) {
-                content += "<p id='search_hit' style='background: white;'>";
-            }
-            var link = "<i style='cursor:pointer' " +
-                "onclick='openClosePanel(); jQuery(\"#canvas\").show(); setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); getChromosomes(); getMember();   getcoreMember(" + json.html[i].gene_member_id + ",\"true\");' " +
-                "class=\"fa fa-external-link\"></i>"
-
-            var description = json.html[i].description
-
-            if (description == null) {
-                description = ""
-            }
-            content += "<div class='search_div' id='searchlist_" + json.html[i].stable_id + "'> " +
-                "<div class='search_header'>" +
-                "<table width='100%'>" +
-                "<tr>" +
-                "<td>" + json.html[i].stable_id + " <span class='badge' title='" + json.html[i].homologous + " Homologous'>" + json.html[i].homologous + "</span> " +
-                "</td>" +
-
-                "<td> <i style='color:grey' class='fa fa-1x fa-sitemap fa-rotate-270' title='View GeneTree' onclick='openClosePanel(); " +
-                "jQuery(\"#canvas\").show(); " +
-                "setSearchList(\"" + json.html[i].stable_id + "\"); " +
-                "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
-                "getChromosomes(); " +
-                "getMember();   " +
-                "getSyntenyForMember(" + json.html[i].gene_member_id + ");" +
-                "setTreeExport();   " +
-                "getcoreMember(" + json.html[i].gene_member_id + ",\"true\");'" +
-                "> </i>" +
-                "</td>" +
-
-                "<td> <i style='color:grey' class='fa fa-1x fa-table' title='List Homology in Table'  onclick='openClosePanel(); " +
-                "setSearchList(\"" + json.html[i].stable_id + "\"); " +
-                "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
-                "getChromosomes(); " +
-                "getMember();   " +
-                "getSyntenyForMember(" + json.html[i].gene_member_id + ");" +
-                "getHomologyForMember(" + json.html[i].gene_member_id + ",\"table\");'> </i>" +
-                "</td>" +
-
-                "<td> <i style='color:grey' class='fa fa-1x fa-random' title='View Homology as Sankey Plot'  onclick='openClosePanel(); " +
-                "setSearchList(\"" + json.html[i].stable_id + "\"); " +
-                "setCredentials(" + json.html[i].dnafrag_id + "," + json.html[i].genome_db_id + "); " +
-                "getChromosomes(); " +
-                "getMember();   " +
-                "getSyntenyForMember(" + json.html[i].gene_member_id + ");" +
-                "getHomologyForMember(" + json.html[i].gene_member_id + ",\"sankey\");'> </i>" +
-                "</td>" +
-
-                "</tr>" +
-                "</table>" +
-                "</div>" +
-                "<div class='search_info'> " + json.html[i].genome + " : " + json.html[i].coord_system_name + " " + json.html[i].name +
-                " <br> " +
-                description + "</div>" +
-                "</div>";
-
-            if (i == json.html.length - 1) {
-                content += "</p>";
-                jQuery("#search_result").html(content);
-                jQuery("#search_result").fadeIn();
-            }
+    jQuery.each(json, function (key, value) {
+        var badges = ""
+        var ref_link = ""
+        var id = value[value.id].stable_id ? value[value.id].stable_id : value[value.id].id
+        if (services == "comparaService") {
+            ref_link = "getRefs(\"" + value[value.id].stable_id + "\",\"" + value[value.id].dnafrag_id + "\",\"" + value[value.id].genome_db_id + "\",\"" + value[value.id].gene_member_id + "\"); "
+            badges = "<span class='badge' title='" + value[value.id].homologous + " Homologous'>" + value[value.id].homologous + "</span> "
 
         }
-    }
-    else {
-        jQuery("#search_result").html("<div style='width: 100%; text-align: center; padding-top: 15px; font-size: 15px;'>No Result found</div>");
 
+        var link = "<i style='cursor:pointer' " +
+            "onclick='openClosePanel(); jQuery(\"#canvas\").show(); getcoreMember(" + value.id + ",\"true\");' " +
+            "class=\"fa fa-external-link\"></i>"
+        var description = value.description
+        if (description == null) {
+            description = ""
+        }
+
+        content += "<div class='search_div' id='searchlist_" + value.id + "' > " +
+            "<div class='search_header'>" +
+            "<table width='100%'>" +
+            "<tr><td>" + value.id + " " +
+            badges +
+            "<td> <i style='color:grey' class='fa fa-1x fa-sitemap fa-rotate-270' title='View GeneTree' onclick='openClosePanel(); " +
+            "jQuery(\"#canvas\").show();   setSearchList(\"" + id + "\"); " +
+            ref_link +
+            "getcoreMember(\"" + value.id + "\",\"true\");'> </i>" +
+            "</td>" +
+
+
+            "<td> <i style='color:grey' class='fa fa-1x fa-table' title='List Homology in Table' onclick='openClosePanel(); " +
+            "jQuery(\"#canvas\").show();   setSearchList(\"" + id + "\"); " +
+            ref_link +
+            "getHomologyForMember(\"" + value.id + "\",\"table\");'> </i>" +
+            "</td>" +
+
+            "<td> <i style='color:grey' class='fa fa-1x fa-random' title='View Homology as Sankey Plot' onclick='openClosePanel(); " +
+            "jQuery(\"#canvas\").show();   setSearchList(\"" + id + "\"); " +
+            ref_link +
+            "getHomologyForMember(\"" + value.id + "\",\"sankey\");'> </i>" +
+            "</td>" +
+            "</tr>" +
+            "</table>" +
+            "</div> " +
+
+            "<div class='search_info'> " + value[value.id].display_name + " <br> " + value[value.id].species + " : " + value[value.id].seq_region_name +
+            " <br> " +
+            value[value.id].description + "</div>" +
+            "</div>";
+    });
+    content += "</p>";
+    jQuery("#search_result").html(content);
+    jQuery("#search_result").fadeIn();
+}
+
+function getRefs(stable_id, dnafrag_id, genome_db_id, gene_member_id) {
+    console.log("getRefs")
+    setSearchList(stable_id);
+    if (services == "comparaService") {
+        setCredentials(dnafrag_id, genome_db_id);
+        getChromosomes();
+        getMember();
+        getSyntenyForMember(gene_member_id);
     }
 }
 
+
 function setSearchList(stable_id) {
+    console.log("setSearchList")
     jQuery(".search_div").removeClass("active");
     jQuery("#searchlist_" + stable_id).addClass("active");
     var clone = jQuery("#searchlist_" + stable_id).clone();
