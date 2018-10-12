@@ -135,16 +135,12 @@ function getHomologyForMember(query, view) {
         {'id': query, 'species': selected_species.toString(), 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-//<<<<<<< HEAD
-//                //URLMemberID(json.ref.stable_id, view)
-//
-//=======
+
                 var id = json.ref.stable_id ? json.ref.stable_id : json.ref.id
                 syntenic_data.view = view
                 syntenic_data.ref = id
                 URLMemberID(id, view)
 
-//>>>>>>> rest
                 jQuery("#gene_tree_nj").html("")
                 if (view == "table") {
                     drawHomology(json)
@@ -152,7 +148,6 @@ function getHomologyForMember(query, view) {
                     generate_sankey_JSON(json)
                 }
 
-                //setSelector(json.ref, json.ref.canonical_member_id)
             }
         });
 }
@@ -212,13 +207,8 @@ function drawHomology(json) {
         "</tfoot>" +
         "<tbody";
 
-    // var json_key = Object.keys(homology);
     for (var i = 0; i < homology.length; i++) {
-//<<<<<<< HEAD
-//        var tree = homology[i].tree >= 0 ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em; cursor: pointer' aria-hidden='true' onclick='openTree(\"" + homology[i].source.protein_id + "\")'></i>" : "";
-//=======
         var tree = homology[i].tree >= 0 ? "<i class='fa fa-check-circle-o' style='color:#35b008; font-size: 1.5em; cursor: pointer' aria-hidden='true'></i>" : "";
-//>>>>>>> rest
         var pairwise = homology[i].tree >= 0 ? "<td class='details-control pairwise-align details_hidden'></td>" : "<td></td>";
         homology_table_content += "<tr> " +
             "<td class='details-control detail-info details_hidden'></td>" +
@@ -500,11 +490,7 @@ function drawPairwise(ref, hit, ref_ptn, hit_ptn, ref_cigar, hit_cigar) {
 
                 protein_member_id = json.ref.protein_id
 
-//<<<<<<< HEAD
                 set_members_length();
-//=======
-//                resize_ref();
-//>>>>>>> rest
 
                 dispGenesExonForMember_id("#pairwise" + ref_ptn, ref_cigar, ref, ref_ptn)//, json.hit.alignment)
                 dispGenesExonForMember_id("#pairwise" + hit_ptn, hit_cigar, hit, hit_ptn, ref_cigar)

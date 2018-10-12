@@ -737,51 +737,20 @@ String query_seq = null;
 
         int ref_seq_member_id = comparaStore.getSeqMemberIDfromGeneMemberID(ref_gene_member_id);
         int hit_seq_member_id = comparaStore.getSeqMemberIDfromGeneMemberID(hit_gene_member_id);
-//<<<<<<< HEAD
-//
-//=======
-//>>>>>>> rest
 
         String ref_genome = comparaStore.getGenomefromSeqMemberID(ref_seq_member_id);
         String hit_genome = comparaStore.getGenomefromSeqMemberID(hit_seq_member_id);
 
-//<<<<<<< HEAD
-//
-//
-//        String ref_gene_stable_id = comparaStore.getGeneStableIDfromGeneMemberID(ref_gene_member_id);
-//        String hit_gene_stable_id = comparaStore.getGeneStableIDfromGeneMemberID(hit_gene_member_id);
-//=======
-//>>>>>>> rest
-
         ref_object.put("gene_id", ref);
         ref_object.put("protein_id", ref_ptn);
 
-//<<<<<<< HEAD
-//        String seq_stable_id = comparaStore.getSeqStableIDfromSeqMemberID(ref_seq_member_id);
-//        String hit_stable_id = comparaStore.getSeqStableIDfromSeqMemberID(hit_seq_member_id);
-//
-//        ref_object.put("gene_id", ref_gene_stable_id);
-//        ref_object.put("protein_id", seq_stable_id);
-//
-//        hit_object.put("gene_id", hit_gene_stable_id);
-//        hit_object.put("protein_id", hit_stable_id);
-//=======
         hit_object.put("gene_id", hit);
         hit_object.put("protein_id", hit_ptn);
-//>>>>>>> rest
         try {
             long homology_id = comparaStore.getHomologyID(ref_seq_member_id, hit_seq_member_id).getLong("homology_id");
 
-//<<<<<<< HEAD
-//            ref_object.put("alignment", alignment.get("ref"));
-//            hit_object.put("alignment", alignment.get("hit"));
-//
-//            ref_object.put("gene", ensemblCoreStore.getGene(seq_stable_id, ref_genome, ref_seq_member_id, ref_gene_stable_id));
-//            hit_object.put("gene", ensemblCoreStore.getGene(hit_stable_id, hit_genome, hit_seq_member_id, hit_gene_stable_id));
-//=======
             ref_object.put("gene", ensemblCoreStore.getGene(ref, ref_genome));
             hit_object.put("gene", ensemblCoreStore.getGene(hit, hit_genome));
-//>>>>>>> rest
 
             ref_object.put("sequence", comparaStore.getSeq(ref_seq_member_id));
             hit_object.put("sequence",comparaStore.getSeq(hit_seq_member_id));;

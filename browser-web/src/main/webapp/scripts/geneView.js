@@ -28,7 +28,7 @@ var protein_domains = null;
 
 function getChromosomes(genome_db_id) {
 
-    if(!genome_db_id){
+    if (!genome_db_id) {
         genome_db_id = jQuery('select[name=species_selector]').val()
         var name = jQuery('select[name=species_selector]  option:selected').text()
     }
@@ -239,7 +239,7 @@ function drawMember() {
             var stopposition = (overview[overview_len].end - overview[overview_len].start) * parseFloat(maxLentemp) / sequencelength;
             jQuery("<div>").attr({
                 'class': "refMarkerShow",
-                'homologs':overview[overview_len].graph,
+                'homologs': overview[overview_len].graph,
                 'style': "LEFT:" + startposition + "px; width :" + stopposition + "px; background: rgba(0,128,0," + (overview[overview_len].graph / max) + "); height: 10px;",
                 'onclick': 'moveDraggable("' + startposition + '")',
                 'title': overview[overview_len].graph + " Gene in region"
@@ -253,7 +253,7 @@ function drawMember() {
         var stopposition = (overview[0].end - overview[0].start) * parseFloat(maxLentemp) / sequencelength;
         jQuery("<div>").attr({
             'class': "refMarkerShow",
-            'homologs':overview[overview_len].graph,
+            'homologs': overview[overview_len].graph,
             'style': "LEFT:" + startposition + "px; width :" + stopposition + "px; background: rgba(0,128,0," + (overview[0].graph) + "); height: 10px;",
             'title': overview[overview_len].graph + " Gene in region"
         }).appendTo("#bar_image_ref");
@@ -262,7 +262,7 @@ function drawMember() {
 
 }
 
-function moveDraggable(startposition){
+function moveDraggable(startposition) {
     jQuery("#bar_image_selector").animate({left: startposition})
     drawSelected()
 }
@@ -294,32 +294,19 @@ function getcoreMember(query, redrawn) {
     resetView()
 
 
-
     jQuery("#gene_tree_nj").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading'>")
 
 
     Fluxion.doAjax(
         services,
         'getGeneTree',
-        {'id': query, 'species':selected_species.toString(), 'url': ajaxurl},
+        {'id': query, 'species': selected_species.toString(), 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
-                console.log("getcoreMember 1")
                 syntenic_data = json
-                //window.history.pushState("ref=" + json.genome_name, "Title", "index.jsp?query=" + syntenic_data.ref.genes.gene.stable_id);
-                console.log("getcoreMember 2")
                 init(json, "#settings_div", "#filter", "#sliderfilter")
-                console.log("getcoreMember 3")
-
-                // setSelector()
-                console.log("getcoreMember 4")
-
-                 URLMemberID(json.ref, "tree")
-                console.log("getcoreMember 5")
+                URLMemberID(json.ref, "tree")
                 prepareTree(redrawn);
-
-                console.log("getcoreMember 6")
-                console.log(updated)
 
             }
         });
@@ -551,7 +538,7 @@ function makeMeTop(new_gene_id, new_protein_id) {
 
         removePopup();
 
-        if(services == "comparaService"){
+        if (services == "comparaService") {
             if (genome_name != syntenic_data.member[syntenic_data.ref].species) {
                 genome_name = syntenic_data.member[syntenic_data.ref].species;
 
@@ -798,7 +785,7 @@ function getAlignment(hit_rene, hit, ref, ref_gene) {
     Fluxion.doAjax(
         services, //'comparaService',
         'getPairwiseAlignment',
-        {'hit_gene': hit_rene, 'hit': hit, 'ref': ref, 'ref_gene':ref_gene,'url': ajaxurl},
+        {'hit_gene': hit_rene, 'hit': hit, 'ref': ref, 'ref_gene': ref_gene, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
 
@@ -981,10 +968,10 @@ function setSelector() {
 
     var width = parseInt(jQuery("#bar_image_selector").css("width"));
 
-    jQuery( ".refMarkerShow" ).each(function( index ) {
-        var memberLeft = jQuery( this ).position().left
-        var memberRight = memberLeft + parseInt(jQuery( this ).css("width"))
-        if(memberLeft < left && memberRight > left){
+    jQuery(".refMarkerShow").each(function (index) {
+        var memberLeft = jQuery(this).position().left
+        var memberRight = memberLeft + parseInt(jQuery(this).css("width"))
+        if (memberLeft < left && memberRight > left) {
             jQuery("#bar_image_selector").animate({left: left + 'px'});
         }
     });
@@ -1002,9 +989,9 @@ function loadSyntenyfromSelector(first) {
     var start = parseInt(left * sequencelength / maxLentemp)
 
     var delta = 0;
-    jQuery( ".refMarkerShow" ).each(function( index ) {
-        if(jQuery( this ).position().left > left && jQuery( this ).position().left < left+width){
-            delta =  parseInt(jQuery( this ).attr("homologs") / 2)
+    jQuery(".refMarkerShow").each(function (index) {
+        if (jQuery(this).position().left > left && jQuery(this).position().left < left + width) {
+            delta = parseInt(jQuery(this).attr("homologs") / 2)
         }
 
     });
@@ -1028,7 +1015,7 @@ function loadSyntenyfromSelector(first) {
     Fluxion.doAjax(
         services, //'comparaService',
         'loadSyntenyfromSelector',
-        {'url': ajaxurl, 'start': start, 'end': end, 'genome_db_id': genome_db_id, 'chr': chr_name, 'delta':delta},
+        {'url': ajaxurl, 'start': start, 'end': end, 'genome_db_id': genome_db_id, 'chr': chr_name, 'delta': delta},
         {
             'doOnSuccess': function (json) {
                 if (first) {
