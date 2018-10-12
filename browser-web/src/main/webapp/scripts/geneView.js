@@ -858,7 +858,7 @@ function setTreeExport() {
     var table = jQuery("<table cellpadding='2px'></table>");
 
     var row_spacing = jQuery("<tr class='border_bottom'></tr>");
-    var column_spanning = jQuery("<td colspan=3></td>");
+    var column_spanning = jQuery("<td colspan=4></td>");
     column_spanning.html("Tree")
     row_spacing.append(column_spanning)
 
@@ -875,10 +875,22 @@ function setTreeExport() {
     var column2 = jQuery("<td></td>");
     column2.html("JSON Format <br> <a class='btn btn-small' href='#' onclick='exportGeneTree(\"json\")'>  <i class='fa fa-download' style='color: white'></i> </a>")
     row1.append(column2)
+
+    var column3 = jQuery("<td></td>");
+
+    column3.html("SVG format <br> <a class='btn btn-small' href='#' onclick='triggerExport(\"#gene_tree_nj\")'>  <i class='fa fa-download' style='color: white'></i> </a>")
+    row1.append(column3)
+
+    var column4 = jQuery("<td></td>");
+
+    column4.html("PNG <br> <a class='btn btn-small' href='#' onclick='triggerExport(\"#gene_tree_nj\", true)'>  <i class='fa fa-download' style='color: white'></i> </a>")
+    row1.append(column4)
+
+
     table.append(row1)
 
     var row2 = jQuery("<tr class='border_bottom'></tr>");
-    var column1 = jQuery("<td colspan=3></td>");
+    var column1 = jQuery("<td colspan=4></td>");
 
 
     column1.html("Genes:")
@@ -906,7 +918,7 @@ function setTreeExport() {
 
 
     var row_spacing = jQuery("<tr class='border_bottom'></tr>");
-    var column_spanning = jQuery("<td colspan=3></td>");
+    var column_spanning = jQuery("<td colspan=4></td>");
     column_spanning.html("Alignment")
     row_spacing.append(column_spanning)
 
@@ -925,20 +937,6 @@ function setTreeExport() {
     row4.append(column2)
 
     table.append(row4)
-
-
-    var row5 = jQuery("<tr></tr>");
-    var column1 = jQuery("<td></td>");
-
-    column1.html("SVG format <br> <a class='btn btn-small' href='#' onclick='triggerExport(\"#gene_tree_nj\")'>  <i class='fa fa-download' style='color: white'></i> </a>")
-    row5.append(column1)
-
-    var column2 = jQuery("<td></td>");
-
-    column2.html("PNG <br> <a class='btn btn-small' href='#' onclick='triggerExport(\"#gene_tree_nj\", true)'>  <i class='fa fa-download' style='color: white'></i> </a>")
-    row5.append(column2)
-
-    table.append(row5)
 
 
     jQuery("#export_params").html(table)
