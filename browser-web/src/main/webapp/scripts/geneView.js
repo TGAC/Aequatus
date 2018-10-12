@@ -552,14 +552,15 @@ function makeMeTop(new_gene_id, new_protein_id) {
         removePopup();
 
         if(services == "comparaService"){
-            if (genome_db_id != syntenic_data.member[syntenic_data.ref].species) {
+            if (genome_name != syntenic_data.member[syntenic_data.ref].species) {
                 genome_name = syntenic_data.member[syntenic_data.ref].species;
 
-                genome_db_id = null
+                genome_db_id = getGenomeId(genome_name)
+
                 chr_name = syntenic_data.member[syntenic_data.ref].reference
                 chr = null
 
-                getChromosomes(new_gene_id);
+                getChromosomes(genome_db_id);
                 members = undefined
                 getMember(new_gene_id);
                 jQuery("#genome_name").html(genome_name);

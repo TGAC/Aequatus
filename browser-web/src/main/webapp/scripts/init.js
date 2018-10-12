@@ -336,7 +336,7 @@ function getMemberfromURL(query, view) {
                     genome_db_id = json.ref;
                     if (services == "comparaService") {
                         getReferences();
-                        getChromosomes(json.member_id);
+                        getChromosomes(genome_db_id);
                         getMember(json.member_id);
                         select_chr();
                         select_genome();
