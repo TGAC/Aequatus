@@ -13,8 +13,14 @@ function newpopup(member_id, protein_id) {
     var gene;
     var stable_id;
 
+    jQuery("#popup_loading").show()
     jQuery('#stable_label').html("")
 
+    jQuery('#ensemblLink').html("")
+
+    jQuery('#exportAlignmentLink').html("")
+
+    jQuery('#exportSequenceLink').html("")
 
     jQuery('#makemetop_button').html("")
 
@@ -28,7 +34,9 @@ function newpopup(member_id, protein_id) {
 
     jQuery('#ensemblLink').html("")
 
-    jQuery('#ensemblLink').html("<a href='http://www.ensembl.org/id/" + stable_id + "'>Link to Ensembl</a>")
+    jQuery('#1to1Link').html("")
+
+    jQuery('#smartDomain').hide()
 
     if (mouseX + jQuery("#popup").width() > jQuery("#main1").width()) {
         jQuery("#popup").css({"left": parseInt(mouseX+25)});
@@ -58,6 +66,9 @@ function newpopup(member_id, protein_id) {
         {'query': member_id, 'protein_id':protein_id, 'ref':syntenic_data.protein_id, 'url': ajaxurl},
         {
             'doOnSuccess': function (json) {
+                jQuery("#popup_loading").hide()
+                jQuery('#smartDomain').show()
+
                 if (json.info.display_label) {
                     jQuery('#stable_label').html(json.info.display_label)
                 } else {

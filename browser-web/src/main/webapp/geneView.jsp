@@ -364,6 +364,13 @@
             <tbody>
             <tr>
                 <td>
+                    <div id="popup_loading">
+                        <center><img src="images/ajax-loader.gif"></center>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
                     <div id="ref_name"></div>
                 </td>
             </tr>
