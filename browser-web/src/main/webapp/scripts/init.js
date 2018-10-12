@@ -499,4 +499,6 @@ function resetView() {
     jQuery(".mainview").each(function (i, div) {
         jQuery(div).html("");
     });
+    removeInfoPopup()
+    removePopup()
 }
