@@ -410,7 +410,7 @@ function listResult(json) {
         var ref_link = ""
         var id = value[value.id].stable_id ? value[value.id].stable_id : value[value.id].id
         if (services == "comparaService") {
-            ref_link = "getRefs(\"" + value[value.id].stable_id + "\",\"" + value[value.id].dnafrag_id + "\",\"" + value[value.id].genome_db_id + "\",\"" + value[value.id].gene_member_id + "\"); "
+            //ref_link = "getRefs(\"" + value[value.id].stable_id + "\",\"" + value[value.id].dnafrag_id + "\",\"" + value[value.id].genome_db_id + "\",\"" + value[value.id].gene_member_id + "\"); "
             badges = "<span class='badge' title='" + value[value.id].homologous + " Homologous'>" + value[value.id].homologous + "</span> "
 
         }
@@ -423,27 +423,34 @@ function listResult(json) {
             description = ""
         }
 
+        console.log(value[value.id])
+        console.log(typeof(value[value.id]))
+
+        var temp_obj = JSON.stringify(value[value.id]);
+
+        console.log(temp_obj)
+
         content += "<div class='search_div' id='searchlist_" + value.id + "' > " +
             "<div class='search_header'>" +
             "<table width='100%'>" +
             "<tr><td>" + value.id + " " +
             badges +
             "<td> <i style='color:grey' class='fa fa-1x fa-sitemap fa-rotate-270' title='View GeneTree' onclick='openClosePanel(); " +
-            "jQuery(\"#canvas\").show();   setSearchList(\"" + id + "\"); " +
-            ref_link +
+            "jQuery(\"#canvas\").show();   setSearchList(" + temp_obj + "); " +
+                // ref_link +
             "getcoreMember(\"" + value.id + "\",\"true\");'> </i>" +
             "</td>" +
 
 
             "<td> <i style='color:grey' class='fa fa-1x fa-table' title='List Homology in Table' onclick='openClosePanel(); " +
-            "jQuery(\"#canvas\").show();   setSearchList(\"" + id + "\"); " +
-            ref_link +
+            "jQuery(\"#canvas\").show();   setSearchList(" + temp_obj + "); " +
+                // ref_link +
             "getHomologyForMember(\"" + value.id + "\",\"table\");'> </i>" +
             "</td>" +
 
             "<td> <i style='color:grey' class='fa fa-1x fa-random' title='View Homology as Sankey Plot' onclick='openClosePanel(); " +
-            "jQuery(\"#canvas\").show();   setSearchList(\"" + id + "\"); " +
-            ref_link +
+            "jQuery(\"#canvas\").show();   setSearchList(" + temp_obj + "); " +
+                // ref_link +
             "getHomologyForMember(\"" + value.id + "\",\"sankey\");'> </i>" +
             "</td>" +
             "</tr>" +
@@ -460,25 +467,29 @@ function listResult(json) {
     jQuery("#search_result").fadeIn();
 }
 
-function getRefs(stable_id, dnafrag_id, genome_db_id, gene_member_id) {
-    console.log("getRefs")
-    setSearchList(stable_id);
-    if (services == "comparaService") {
-        setCredentials(dnafrag_id, genome_db_id);
-        getChromosomes();
-        getMember();
-        getSyntenyForMember(gene_member_id);
+
+function setSearchList(value) {
+    console.log(value)
+    var id = value["stable_id"] ? value["stable_id"] : value["id"]
+    // //
+    console.log("setSearchList " + id)
+    if (!jQuery("#searchlist_" + id).hasClass("active")) {
+        jQuery(".search_div").removeClass("active");
+        jQuery("#searchlist_" + id).addClass("active");
+        var clone = jQuery("#searchlist_" + id).clone();
+        jQuery("#searchlist_" + id).remove();
+        jQuery("#search_result").prepend(clone);
+        if (services == "comparaService") {
+            var dnafrag_id = value["dnafrag_id"]
+            var genome_db_id = value["genome_db_id"]
+            var gene_member_id = value["gene_member_id"]
+
+            setCredentials(dnafrag_id, genome_db_id);
+            getChromosomes();
+            getMember();
+            getSyntenyForMember(gene_member_id);
+        }
     }
-}
-
-
-function setSearchList(stable_id) {
-    console.log("setSearchList")
-    jQuery(".search_div").removeClass("active");
-    jQuery("#searchlist_" + stable_id).addClass("active");
-    var clone = jQuery("#searchlist_" + stable_id).clone();
-    jQuery("#searchlist_" + stable_id).remove();
-    jQuery("#search_result").prepend(clone);
 }
 
 function hideGeneReference() {
