@@ -118,6 +118,10 @@ function removeInfoPopup(){
     jQuery("#info_popup_wrapper").fadeOut()
 }
 
+function removeSankeyInfoPopup(){
+    jQuery("#sankey_info_wrapper").fadeOut()
+}
+
 function removeDomainPopup(){
     jQuery("#domain_popup_wrapper").fadeOut()
 }
