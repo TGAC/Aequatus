@@ -58,7 +58,7 @@ function drawDomain(gene_id, protein_member_id, domains) {
 
     var exon_length = [0];
     for(var exon=0; exon < syntenic_data.member[gene_id].Transcript[i].Exon.length; exon++){
-        exon_length.push(exon_length[exon] + (syntenic_data.member[gene_id].Transcript[i].Exon[exon].end - syntenic_data.member[gene_id].Transcript[i].Exon[exon].start))
+        exon_length.push(exon_length[exon] + (syntenic_data.member[gene_id].Transcript[i].Exon[exon].length))
     }
 
 
