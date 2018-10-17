@@ -9,10 +9,7 @@
 var graph;
 var units = "Widgets";
 
-var svgWidth = jQuery(window).width()
-var margin = {top: 10, right: 10, bottom: 10, left: 10},
-    width = 1000 - margin.left - margin.right,
-    height = 700 - margin.top - margin.bottom;
+var svgWidth, margin, width, height;
 
 var formatNumber = d3.format(",.0f"),    // zero decimal places
     format = function (d) {
@@ -21,11 +18,22 @@ var formatNumber = d3.format(",.0f"),    // zero decimal places
     color = d3.scale.category20();
 
 // append the svg canvas to the page
-var svg;
 
 // Set the sankey diagram properties
 
 function drawSankey(data, div) {
+    svgWidth = jQuery(window).width();
+
+    margin = {top: 10, right: 10, bottom: 10, left: 10},
+        width = 1000 - margin.left - margin.right,
+        height = 700 - margin.top - margin.bottom;
+
+    formatNumber = d3.format(",.0f"),    // zero decimal places
+        format = function (d) {
+            return formatNumber(d) + " " + units;
+        },
+        color = d3.scale.category20();
+
     if (data.nodes.size() * 5 > height) {
         height = data.nodes.size() * 5
     }
@@ -38,7 +46,7 @@ function drawSankey(data, div) {
 
     var path = sankey.link();
     jQuery(div).html("")
-    svg = d3.select(div).append("svg")
+    var svg = d3.select(div).append("svg")
         .attr("width", svgWidth + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .style("overflow", "visible")
@@ -232,24 +240,24 @@ function drawSankey(data, div) {
             link.attr("d", path);
         }
 
-        function sankey_info(d){
+        function sankey_info(d) {
 
             jQuery("#sankey_info_wrapper").fadeIn()
             jQuery("#homology_type").html(d.type)
 
             var first = true;
             var info = ""
-            for(var i in d.source){
+            for (var i in d.source) {
                 var key = i;
                 var source = d.source[i];
                 var target = d.target[i];
-                if(first){
+                if (first) {
                     info += "<table id='sankey_info_table'><thead><tr><th>Attribute</th><th>Source</th><th>Target</th></tr></thead><tbody>";
                 }
                 first = false;
 
-                if(key.indexOf("seq") < 0){
-                    info += "<tr><td>"+i+"</td><td>"+source+"</td><td>"+target+"</td></tr>";
+                if (key.indexOf("seq") < 0) {
+                    info += "<tr><td>" + i + "</td><td>" + source + "</td><td>" + target + "</td></tr>";
                 }
             }
             info += "</tbody></table>";
@@ -262,6 +270,6 @@ function drawSankey(data, div) {
     })
 }
 
-function removeSankeyPopup(){
+function removeSankeyPopup() {
     jQuery("#sankey_info_wrapper").fadeOut()
 }
