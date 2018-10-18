@@ -138,17 +138,38 @@ function generate_sankey_JSON(json) {
 
 function setSankeyExport() {
     jQuery("#export_params").html("")
+    var table = jQuery("<table cellpadding='2px'></table>");
+
+    var row1 = jQuery("<tr></tr>");
+
+    var column3 = jQuery("<td></td>");
+
+    column3.html("SVG format <br> <a class='btn btn-small' href='#' onclick='triggerExport(\"#sankey\")'>  <i class='fa fa-download' style='color: white'></i> </a>")
+    row1.append(column3)
+
+    var column4 = jQuery("<td></td>");
+
+    column4.html("PNG <br> <a class='btn btn-small' href='#' onclick='triggerExport(\"#sankey\", true)'>  <i class='fa fa-download' style='color: white'></i> </a>")
+
+    row1.append(column4)
+
+    table.append(row1)
+
+    jQuery("#export_params").html(table)
+
 }
 
 function setSankeyFilter(types) {
 
-    jQuery("#filter_div").html("Show Homology Type : <p>")
+    jQuery("#filter").html("Show Homology Type : <p>")
 
     var radios = "<p><input type='radio' name='type_homology' class='sankey-label last clicked' checked value='all'> All</input> </p>"
     for (var i = 0; i < types.length; i++) {
         radios += "<p><input type='radio' name='type_homology' class='sankey-label last clicked' value='" + types[i] + "'> " + types[i] + "</input> </p>"
     }
 
-    jQuery("#filter_div").append(radios)
+    jQuery("#filter").append(radios)
+    jQuery("#sliderfilter").html("")
+
 
 }

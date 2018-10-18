@@ -304,6 +304,7 @@ function getcoreMember(query, redrawn) {
         {
             'doOnSuccess': function (json) {
                 syntenic_data = json
+                setTreeExport();
                 init(json, "#settings_div", "#filter", "#sliderfilter")
                 URLMemberID(json.ref, "tree")
                 prepareTree(redrawn);
@@ -853,6 +854,7 @@ function getAlignment(hit_rene, hit, ref, ref_gene) {
 }
 
 function setTreeExport() {
+    console.log("setTreeExport")
     jQuery("#export_params").html("")
 
     var table = jQuery("<table cellpadding='2px'></table>");

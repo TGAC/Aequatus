@@ -511,3 +511,9 @@ function resetView() {
     removePopup()
     removeSankeyInfoPopup()
 }
+
+function restSettingDiv()
+{
+    jQuery("#settings_div").html("");
+}
+

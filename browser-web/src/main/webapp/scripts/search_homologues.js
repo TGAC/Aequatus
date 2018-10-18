@@ -140,10 +140,13 @@ function getHomologyForMember(query, view) {
                 syntenic_data.view = view
                 syntenic_data.ref = id
                 URLMemberID(id, view)
+                restSettingDiv()
 
                 jQuery("#gene_tree_nj").html("")
                 if (view == "table") {
+                    setTabularFilter()
                     drawHomology(json)
+
                 } else if (view == "sankey") {
                     generate_sankey_JSON(json)
                 }
@@ -326,6 +329,7 @@ function drawHomology(json) {
 
     var table = jQuery('#homologyTable').DataTable();
 
+    jQuery('#export_params').html("")
     var buttons = new jQuery.fn.dataTable.Buttons(table, {
         buttons: [
             {
@@ -557,4 +561,9 @@ function formatRow(d) {
 
 function openTree(id) {
     getMemberfromURL(id, "tree")
+}
+
+function setTabularFilter(){
+        jQuery("#filter").html("")
+        jQuery("#sliderfilter").html("")
 }
