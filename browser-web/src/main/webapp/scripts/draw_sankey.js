@@ -211,14 +211,14 @@ function drawSankey(data, div) {
             } else {
                 graph.nodes = data.nodes
                 currentData.nodes = graph.nodes.filter(function (d) {
-                    if (d.type == val || d.name == val || d.name == "reference") {
+                    if (d.type == val || d.name == val || d.name == "reference" || d.type == "species") {
                         return d;
                     }
                 });
 
                 graph.links = data.links
                 currentData.links = graph.links.filter(function (d) {
-                    if (d.target.type == val || d.target.name == val)// || d.name == "reference")
+                    if (d.target.type == val || d.target.name == val || d.target.type == "species")
                     {
                         return d;
                     }
