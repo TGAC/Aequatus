@@ -305,6 +305,7 @@ function getcoreMember(query, redrawn) {
             'doOnSuccess': function (json) {
                 syntenic_data = json
                 setTreeExport();
+                setGeneTreeHelp();
                 init(json, "#settings_div", "#filter", "#sliderfilter")
                 URLMemberID(json.ref, "tree")
                 prepareTree(redrawn);

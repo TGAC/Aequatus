@@ -145,9 +145,11 @@ function getHomologyForMember(query, view) {
                 jQuery("#gene_tree_nj").html("")
                 if (view == "table") {
                     setTabularFilter()
+                    setHomologyTableHelp()
                     drawHomology(json)
 
                 } else if (view == "sankey") {
+                    setHomologySankeyHelp()
                     generate_sankey_JSON(json)
                 }
 

@@ -78,6 +78,7 @@
     <script type="text/javascript" src="<c:url value='scripts/draw_sankey.js'/>"></script>
     <script type="text/javascript" src="<c:url value='scripts/drawSynteny.js'/>"></script>
     <script type="text/javascript" src="<c:url value='scripts/d3_export.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='scripts/setHelp.js'/>"></script>
 
 
     <%--Aequatus CSS--%>
