@@ -305,6 +305,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
             for (Map map : genomeIDs) {
                 if (DatabaseSchemaSelector.createConnection(map.get("name").toString())) {
+                    map.put("default", DatabaseSchemaSelector.defaultDatabase(map.get("name").toString()));
                     genomes.add(map);
                 }
             }
@@ -586,7 +587,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     }
 
 
-    public Map<String, Object> getGeneMemberInfofromID(String query) throws Exception {
+    public Map<String, Object> getGeneMemberInfofromID(int query) throws Exception {
 
         Map<String, Object> gene;
         gene = template.queryForMap(GET_GENE_MEMBER_INFO_FROM_GENE_MEMBER_ID, new Object[]{query});
@@ -785,7 +786,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
         return Stable_ID;
     }
 
-    public String getRefPtnStableID(String query) throws Exception {
+    public String getRefPtnStableID(int query) throws Exception {
         String canonical_id = template.queryForObject(GET_CANONICAL_MEMBER_ID_FROM_GENE_MEMBER_ID, new Object[]{query}, String.class);
         return template.queryForObject(GET_STABLE_ID_FROM_SEQ_MEMBER_ID, new Object[]{canonical_id}, String.class);
     }
@@ -1021,7 +1022,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
             )
     )
 
-    public JSONObject getGeneTreeforMember(String query, String species) throws IOException {
+    public JSONObject getGeneTreeforMember(int query, String species) throws IOException {
 
         JSONObject member = new JSONObject();
 
@@ -1226,7 +1227,10 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
 
     }
 
-    public Map getGeneTree(String query, String species) throws IOException {
+    public Map getGeneTree(int query, String species) throws IOException {
+
+        log.info("DAO getGeneTree");
+
         JSONObject homology_members = new JSONObject();
 
 
@@ -1475,7 +1479,7 @@ public class SQLEnsemblComparaDAO implements ComparaStore {
     }
 
 
-    public JSONArray findHomology(String query, String species) throws Exception {
+    public JSONArray findHomology(int query, String species) throws Exception {
 
         setAllGenomeId(species.split(","));
         List<Long> homology_ids = new ArrayList<>();

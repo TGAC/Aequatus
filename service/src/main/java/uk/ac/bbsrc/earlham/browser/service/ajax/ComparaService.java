@@ -363,6 +363,8 @@ public class ComparaService {
     }
 
     public JSONObject getGeneTree(HttpSession session, JSONObject json) {
+
+        log.info("getGeneTree");
         String stable_id = json.getString("id");
         String species = json.getString("species");
 
@@ -371,7 +373,14 @@ public class ComparaService {
 
         response.put("trackname", "member");
         try {
-            String query = String.valueOf(comparaStore.getGeneMemberId(stable_id));
+            int query = comparaStore.getGeneMemberId(stable_id);
+
+            if(query == 0){
+                int seq_member_id = comparaStore.getSeqMemberId(stable_id);
+                query = comparaStore.getGeneMemberIDfromSeqMemberID(seq_member_id);
+                stable_id = comparaStore.getGeneStableIDfromGeneMemberID(query);
+            }
+
 
             response.put("ref", stable_id);
 
@@ -414,7 +423,7 @@ public class ComparaService {
             int genome_id = comparaStore.getGenomeId(genome).getInt("ref");
             response.put("chr_length", comparaStore.getChromosomeLength(chr_id, genome_id));
 
-            response.put("protein_id", comparaStore.getRefPtnStableID(query));
+            response.put("protein_id", comparaStore.getRefPtnStableID(query_int));
 
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -434,10 +443,16 @@ public class ComparaService {
 
         response.put("trackname", "homology");
         try {
-            String query = String.valueOf(comparaStore.getGeneMemberId(stable_id));
+            int query = comparaStore.getGeneMemberId(stable_id);
+
+            if(query == 0){
+                int seq_member_id = comparaStore.getSeqMemberId(stable_id);
+                query = comparaStore.getGeneMemberIDfromSeqMemberID(seq_member_id);
+                stable_id = comparaStore.getGeneStableIDfromGeneMemberID(query);
+            }
 
             response.put("ref", comparaStore.getGeneMemberInfofromID(query));
-            response.put("refSpecies", comparaStore.getGeneMemberInfofromID(query));
+            response.put("refSpecies", comparaStore.getGenomefromGeneMemberID(query));
             response.put("homology", comparaStore.findHomology(query, species));
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
