@@ -5,7 +5,9 @@
  * Time: 11:17
  * To change this template use File | Settings | File Templates.
  */
-var default_species = ["pan_troglodytes", "rattus_norvegicus", "homo_sapiens", "canis_familiaris", "sus_scrofa"]
+var default_species = [];
+var default_species_animal = ["pan_troglodytes", "rattus_norvegicus", "homo_sapiens", "canis_familiaris", "sus_scrofa"]
+var default_species_plants = ["aegilops_tauschii", "brachypodium_distachyon", "oryza_sativa", "triticum_aestivum", "triticum_urartu"];
 var selected_species = []
 var genomes = []
 
@@ -41,7 +43,7 @@ function getReferences() {
                 for (var i = 0; i < json.species.length; i++) {
 
                     var checked = "";
-                    if (default_species.indexOf(json.species[i].name) >= 0) {
+                    if (default_species.indexOf(json.species[i].name) >= 0 || json.species[i].default == true) {
                         checked = "checked";
                     }
 

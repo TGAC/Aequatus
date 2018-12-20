@@ -155,6 +155,14 @@ function setServer() {
     var genome = jQuery('#config_genome').val();
     jQuery("#genome_list_div").html("<div><center><img src='./images/browser/loading_big.gif'></center></div>")
 
+    jQuery("input[name='genome_list']:checkbox").prop('checked',false);
+
+    if(genome == "vertebrates"){
+        default_species = default_species_animal
+    }else if (genome == "non-vertebrates"){
+        default_species = default_species_plants
+    }
+
     Fluxion.doAjax(
         services,
         'setServer',
@@ -423,12 +431,7 @@ function listResult(json) {
             description = ""
         }
 
-        console.log(value[value.id])
-        console.log(typeof(value[value.id]))
-
         var temp_obj = JSON.stringify(value[value.id]);
-
-        console.log(temp_obj)
 
         content += "<div class='search_div' id='searchlist_" + value.id + "' > " +
             "<div class='search_header'>" +

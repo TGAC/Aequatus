@@ -63,6 +63,23 @@ public final class DatabaseSchemaSelector {
         }
     }
 
+    public static boolean defaultDatabase(String genome) throws IOException {
+        if (templates == null) {
+            templates = new HashMap<String, JdbcTemplate>();
+        }
+
+        if (ppconfig.containsKey(genome + ".url") && ppconfig.containsKey(genome + ".username") && ppconfig.containsKey(genome + ".password")) {
+            String isDefault = ppconfig.getProperty(genome + ".isDefault");
+            if(isDefault.toLowerCase().equals("true")){
+                return true;
+            }else{
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     private static DriverManagerDataSource getDataSource(String driverClassName, String url, String dbUsername, String dbPassword) {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(driverClassName);
