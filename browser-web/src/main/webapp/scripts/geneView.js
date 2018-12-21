@@ -77,7 +77,6 @@ function getChromosomes(genome_db_id) {
 
 
                     if (member_id == undefined) {
-                        console.log("calling getMember")
                         getMember();
                     } else if (chr_name == null) {
                         select_chr()
@@ -99,14 +98,12 @@ function getChromosomes(genome_db_id) {
                     } else {
                         hideGeneReference()
                     }
-
                     drawChromosome()
                     if (chr == undefined && chr_name == null) {
                         setCredentials(chromosomes[0].id, genome_db_id);
                     }
 
                     if (member_id == undefined) {
-                        console.log("calling getMember")
                         getMember();
                     } else if (chr_name == null) {
                         select_chr()
@@ -159,7 +156,6 @@ function setCredentials(chr_name, genome_id) {
 }
 
 function getMember(member) {
-    console.log("getMember")
     jQuery(".selected").removeClass("selected")
     jQuery("#chr" + chr).addClass("selected")
 
@@ -277,15 +273,10 @@ function drawSelected(member) {
 
 function initiateSynteny(member) {
 
-    // jQuery("#redraw_buttons").show()
-    // jQuery("#selected_region").hide()
-    // jQuery("#synteny").hide()
-    console.log("initiateSynteny")
     loadSyntenyfromSelector(true)
 }
 
 function getcoreMember(query, redrawn) {
-    console.log("getcoreMember " + query)
     var updated = updateGenomeList()
     jQuery(".refMarkerShow").removeClass("selected")
     jQuery("#ref" + query).addClass("selected")
@@ -383,8 +374,6 @@ function onClicked(desc, stable_id, member_id) {
 
 
 function rearrange_selector(query, start, chr_name) {
-    console.log("rearrange_selector")
-
     var maxLentemp = parseInt(jQuery("#canvas").css("width"));
     var startposition = (start) * parseFloat(maxLentemp) / jQuery("#chr" + chr_name).attr("chr_length");
     var width = jQuery("#bar_image_selector").width() / 2;
@@ -466,11 +455,8 @@ function reverse_compliment(sequence) {
 }
 
 function resizeView() {
-    console.log("resizeView")
-
     if (syntenic_data.view == "tree") {
         jQuery("#gene_tree_nj").html("")
-        console.log(syntenic_data)
         drawTree(syntenic_data.tree, "#gene_tree_nj", newpopup)
     } else if (syntenic_data.view == "sankey") {
 
@@ -480,7 +466,6 @@ function resizeView() {
 }
 
 function prepareTree(redrawn) {
-    console.log("prepareTree")
     syntenic_data.view = "tree"
     jQuery("#gene_widget").html("<img style='position: relative; left: 50%; ' src='./images/browser/loading_big.gif' alt='Loading' height='100%'>")
     jQuery("#gene_tree_nj").html("")
@@ -529,8 +514,6 @@ function select_genome() {
 
 
 function makeMeTop(new_gene_id, new_protein_id) {
-
-    console.log("makeMeTop")
 
     if (new_gene_id != member_id || new_protein_id != protein_member_id) {
 
@@ -855,7 +838,6 @@ function getAlignment(hit_rene, hit, ref, ref_gene) {
 }
 
 function setTreeExport() {
-    console.log("setTreeExport")
     jQuery("#export_params").html("")
 
     var table = jQuery("<table cellpadding='2px'></table>");
@@ -951,7 +933,6 @@ function setTableExport() {
 }
 
 function setSelector() {
-    console.log("setSelector")
     jQuery("#redraw_buttons").hide()
     jQuery("#selected_region").show()
     jQuery("#synteny").show()
@@ -980,8 +961,6 @@ function setSelector() {
 }
 
 function loadSyntenyfromSelector(first) {
-    console.log("loadSyntenyfromSelector")
-
     var left = parseInt(jQuery("#bar_image_selector").position().left)
     var width = parseInt(jQuery("#bar_image_selector").css("width"));
     var maxLentemp = parseInt(jQuery("#canvas").css("width"));
@@ -1010,7 +989,6 @@ function loadSyntenyfromSelector(first) {
         jQuery("#synteny").hide()
         jQuery("#tempSynteny").show()
         jQuery("#tempSynteny").html("<img style='position: relative; left: 0px; ' src='./images/browser/loading_big.gif' alt='Loading'>")
-        console.log(first)
         first = false;
     }
     Fluxion.doAjax(
