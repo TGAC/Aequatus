@@ -111,11 +111,9 @@ public class ComparaService {
             if (queryid > 1) {
                 response.put("html", "genomes");
                 response.put("genomes", comparaStore.getAllDnafragByName(query, reference));
-            }
-            else if (queryid == 0) {
+            } else if (queryid == 0) {
                 response.put("html", "gene");
-            }
-            else {
+            } else {
                 Integer query_id = comparaStore.getDnafragId(query, reference);
                 String seqRegName = comparaStore.getReferenceName(query_id);
                 int length = comparaStore.getReferenceLength(query_id);
@@ -211,7 +209,7 @@ public class ComparaService {
         JSONObject response = new JSONObject();
         try {
             JSONArray results = new JSONArray();
-            for (String sp:species.split(",")){
+            for (String sp : species.split(",")) {
                 results.addAll(comparaStore.searchMember(keyword, sp));
             }
             response.put("result", results);
@@ -223,7 +221,6 @@ public class ComparaService {
         }
 
     }
-
 
 
     public boolean setGenomes(HttpSession session, JSONObject json) {
@@ -238,6 +235,7 @@ public class ComparaService {
         }
 
     }
+
     /**
      * Returns a JSONObject that can be read as single reference or a list of results
      * <p/>
@@ -375,7 +373,7 @@ public class ComparaService {
         try {
             int query = comparaStore.getGeneMemberId(stable_id);
 
-            if(query == 0){
+            if (query == 0) {
                 int seq_member_id = comparaStore.getSeqMemberId(stable_id);
                 query = comparaStore.getGeneMemberIDfromSeqMemberID(seq_member_id);
                 stable_id = comparaStore.getGeneStableIDfromGeneMemberID(query);
@@ -408,7 +406,6 @@ public class ComparaService {
 
         response.put("trackname", "member");
         try {
-
 
 
             response.put("ref", comparaStore.getRefStableID(query));
@@ -445,7 +442,7 @@ public class ComparaService {
         try {
             int query = comparaStore.getGeneMemberId(stable_id);
 
-            if(query == 0){
+            if (query == 0) {
                 int seq_member_id = comparaStore.getSeqMemberId(stable_id);
                 query = comparaStore.getGeneMemberIDfromSeqMemberID(seq_member_id);
                 stable_id = comparaStore.getGeneStableIDfromGeneMemberID(query);
@@ -492,11 +489,11 @@ public class ComparaService {
         int genome_db_id = json.getInt("genome_db_id");
         String chr = json.getString("chr");
         JSONObject response = new JSONObject();
-        int delta =  json.getInt("delta");
+        int delta = json.getInt("delta");
 
         response.put("trackname", "synteny");
         try {
-            long gene_member_id = comparaStore.getCenralGeneMemberID(genome_db_id, chr,start,end);
+            long gene_member_id = comparaStore.getCenralGeneMemberID(genome_db_id, chr, start, end);
 
             response.put("ref", comparaStore.getGeneStableIDfromGeneMemberID(gene_member_id));
 
@@ -596,7 +593,7 @@ public class ComparaService {
 
     public JSONObject getMemberfromURL(HttpSession session, JSONObject json) throws IOException {
         String query = json.getString("query");
-String query_seq = null;
+        String query_seq = null;
         JSONObject response = new JSONObject();
 
 
@@ -606,16 +603,17 @@ String query_seq = null;
             int seq_member_id = comparaStore.getSeqMemberId(query);
             if (gene_member_id == 0 && seq_member_id == 0) {
                 response.put("result", comparaStore.searchMember(query));
-            } else{
-                if(seq_member_id == 0){
+            } else {
+                if (seq_member_id == 0) {
                     gene_member_id = comparaStore.getGeneMemberIDfromStableID(query);
                     seq_member_id = comparaStore.getSeqMemberIDfromGeneMemberID(gene_member_id);
                     query_seq = comparaStore.getSeqStableIDfromSeqMemberID(seq_member_id);
 
                 }
-                if(gene_member_id == 0){
+                if (gene_member_id == 0) {
                     seq_member_id = comparaStore.getSeqMemberIDfromStableID(query);
                     gene_member_id = comparaStore.getGeneMemberIDfromSeqMemberID(seq_member_id);
+                    query_seq = query;
 
                 }
 
@@ -709,14 +707,15 @@ String query_seq = null;
         hit_object.put("gene_id", comparaStore.getGeneStableIDfromGeneMemberID(hit_gene_member_id));
         hit_object.put("protein_id", hit);
         try {
-            JSONObject alignment =  comparaStore.getPairwiseAlignment(ref_seq_member_id, hit_seq_member_id);
+            JSONObject alignment = comparaStore.getPairwiseAlignment(ref_seq_member_id, hit_seq_member_id);
             long homology_id = comparaStore.getHomologyID(ref_seq_member_id, hit_seq_member_id).getLong("homology_id");
 
             ref_object.put("alignment", alignment.get("ref"));
             hit_object.put("alignment", alignment.get("hit"));
 
             ref_object.put("sequence", comparaStore.getSeq(ref_seq_member_id));
-            hit_object.put("sequence",comparaStore.getSeq(hit_seq_member_id));;
+            hit_object.put("sequence", comparaStore.getSeq(hit_seq_member_id));
+            ;
 
             response.put("ref", ref_object);
             response.put("hit", hit_object);
@@ -768,7 +767,8 @@ String query_seq = null;
             hit_object.put("gene", ensemblCoreStore.getGene(hit, hit_genome));
 
             ref_object.put("sequence", comparaStore.getSeq(ref_seq_member_id));
-            hit_object.put("sequence",comparaStore.getSeq(hit_seq_member_id));;
+            hit_object.put("sequence", comparaStore.getSeq(hit_seq_member_id));
+            ;
 
             response.put("ref", ref_object);
             response.put("hit", hit_object);
