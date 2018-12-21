@@ -205,8 +205,6 @@ function setDivision(division) {
 
 function testConnection() {
 
-    console.log("testConnection")
-
     Fluxion.doAjax(
         services,
         'testRestAPI',
@@ -226,8 +224,6 @@ function testConnection() {
 
 function getRelease() {
 
-    console.log("getRelease")
-
     Fluxion.doAjax(
         services,
         'getRestInfo',
@@ -245,8 +241,6 @@ function getRelease() {
 }
 
 function getUrlVariables(chr) {
-    console.log("getUrlVariables")
-
     jQuery.urlParam = function (name) {
         var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
         if (results == null) {
@@ -331,7 +325,6 @@ function getChrId(chr, ref) {
 
 
 function getMemberfromURL(query, view) {
-    console.log("getMemberfrom URL")
     Fluxion.doAjax(
         services, //'comparaService',
         'getMemberfromURL',
@@ -410,7 +403,6 @@ function resize() {
 }
 
 function listResult(json) {
-    console.log("listResult")
     var content = "<p id='search_hit' style='background: white;'>";
 
     jQuery.each(json, function (key, value) {
@@ -439,18 +431,18 @@ function listResult(json) {
             "<tr><td>" + value.id + " " +
             badges +
             "<td> <i style='color:grey' class='fa fa-1x fa-sitemap fa-rotate-270' title='View GeneTree' onclick='openClosePanel(); " +
-            "jQuery(\"#canvas\").show();   setSearchList(" + temp_obj + "); " +
+            "jQuery(\"#canvas\").show();   setSearchList(" + id + "); loadRefInfo(" + temp_obj + "); " +
             "resetView(); getcoreMember(\"" + value.id + "\",\"true\");'> </i>" +
             "</td>" +
 
 
             "<td> <i style='color:grey' class='fa fa-1x fa-table' title='List Homology in Table' onclick='openClosePanel(); " +
-            "jQuery(\"#canvas\").show();   setSearchList(" + temp_obj + "); " +
+            "jQuery(\"#canvas\").show();   setSearchList(" + id + "); loadRefInfo(" + temp_obj + "); " +
             "resetView(); getHomologyForMember(\"" + value.id + "\",\"table\");'> </i>" +
             "</td>" +
 
             "<td> <i style='color:grey' class='fa fa-1x fa-random' title='View Homology as Sankey Plot' onclick='openClosePanel(); " +
-            "jQuery(\"#canvas\").show();   setSearchList(" + temp_obj + "); " +
+            "jQuery(\"#canvas\").show();   setSearchList(" + id + "); loadRefInfo(" + temp_obj + "); " +
             "resetView(); getHomologyForMember(\"" + value.id + "\",\"sankey\");'> </i>" +
             "</td>" +
             "</tr>" +
@@ -467,28 +459,27 @@ function listResult(json) {
     jQuery("#search_result").fadeIn();
 }
 
+function loadRefInfo(value){
+    if (services == "comparaService") {
+        var dnafrag_id = value["dnafrag_id"]
+        var genome_db_id = value["genome_db_id"]
+        var gene_member_id = value["gene_member_id"]
+
+        setCredentials(dnafrag_id, genome_db_id);
+        getChromosomes();
+        getMember();
+        getSyntenyForMember(gene_member_id);
+    }
+}
 
 function setSearchList(value) {
-    console.log(value)
-    var id = value["stable_id"] ? value["stable_id"] : value["id"]
-    // //
-    console.log("setSearchList " + id)
+    var id = value
     if (!jQuery("#searchlist_" + id).hasClass("active")) {
         jQuery(".search_div").removeClass("active");
         jQuery("#searchlist_" + id).addClass("active");
         var clone = jQuery("#searchlist_" + id).clone();
         jQuery("#searchlist_" + id).remove();
         jQuery("#search_result").prepend(clone);
-        if (services == "comparaService") {
-            var dnafrag_id = value["dnafrag_id"]
-            var genome_db_id = value["genome_db_id"]
-            var gene_member_id = value["gene_member_id"]
-
-            setCredentials(dnafrag_id, genome_db_id);
-            getChromosomes();
-            getMember();
-            getSyntenyForMember(gene_member_id);
-        }
     }
 }
 
