@@ -188,7 +188,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.13</version>
+            <version>8.0.16</version>
         </dependency>
         <dependency>
             <groupId>net.sf.json-lib</groupId>
@@ -262,7 +262,7 @@
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
-            <version>1.2.1</version>
+            <version>1.2.2</version>
         </dependency>
         <dependency>
             <groupId>commons-pool</groupId>
@@ -294,9 +294,9 @@
         <log4j-version>1.2.16</log4j-version>
         <slf4j-log4j-version>1.6.0</slf4j-log4j-version>
         <!--<jetty-version>6.1.7</jetty-version>-->
-        <spring-version>3.0.5.RELEASE</spring-version>
+        <spring-version>3.0.6.RELEASE</spring-version>
         <spring-hibernate-version>2.0.8</spring-hibernate-version>
-        <spring-integration-version>2.0.3.RELEASE</spring-integration-version>
+        <spring-integration-version>4.3.19.RELEASE</spring-integration-version>
         <mysql-version>5.1.10</mysql-version>
     </properties>
 
