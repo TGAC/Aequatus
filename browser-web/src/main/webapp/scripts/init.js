@@ -431,18 +431,18 @@ function listResult(json) {
             "<tr><td>" + value.id + " " +
             badges +
             "<td> <i style='color:grey' class='fa fa-1x fa-sitemap fa-rotate-270' title='View GeneTree' onclick='openClosePanel(); " +
-            "jQuery(\"#canvas\").show();   setSearchList(" + id + "); loadRefInfo(" + temp_obj + "); " +
+            "jQuery(\"#canvas\").show();   setSearchList(\"" + id + "\"); loadRefInfo(" + temp_obj + "); " +
             "resetView(); getcoreMember(\"" + value.id + "\",\"true\");'> </i>" +
             "</td>" +
 
 
             "<td> <i style='color:grey' class='fa fa-1x fa-table' title='List Homology in Table' onclick='openClosePanel(); " +
-            "jQuery(\"#canvas\").show();   setSearchList(" + id + "); loadRefInfo(" + temp_obj + "); " +
+            "jQuery(\"#canvas\").show();   setSearchList(\"" + id + "\"); loadRefInfo(" + temp_obj + "); " +
             "resetView(); getHomologyForMember(\"" + value.id + "\",\"table\");'> </i>" +
             "</td>" +
 
             "<td> <i style='color:grey' class='fa fa-1x fa-random' title='View Homology as Sankey Plot' onclick='openClosePanel(); " +
-            "jQuery(\"#canvas\").show();   setSearchList(" + id + "); loadRefInfo(" + temp_obj + "); " +
+            "jQuery(\"#canvas\").show();   setSearchList(\"" + id + "\"); loadRefInfo(" + temp_obj + "); " +
             "resetView(); getHomologyForMember(\"" + value.id + "\",\"sankey\");'> </i>" +
             "</td>" +
             "</tr>" +
