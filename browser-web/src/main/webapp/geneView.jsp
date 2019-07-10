@@ -492,7 +492,7 @@
             </table>
         </div>
 
-        <div style="overflow: hidden; left: 0px; position: relative; top: 10px; padding: 10px">
+        <div style="overflow: hidden; left: 0px; position: relative;">
             <div id="domainModal_content" style=" word-wrap: break-word;">
                 <table width="100%">
                     <tr>
@@ -551,7 +551,7 @@
 
                             </div>
                             <div id="domainStructure"
-                                 style=" word-wrap: break-word; overflow-y: scroll;height: 200px;"></div>
+                                 style="width:100%; word-wrap: break-word; overflow-y: scroll; height: 200px;"></div>
 
                         </td>
                     </tr>
