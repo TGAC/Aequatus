@@ -145,11 +145,11 @@
 
     <!-- Maven repository download -->
     <repositories>
-        <repository>
-            <id>hasbanana-repo</id>
-            <name>hasbanana Maven Repository</name>
-            <url>http://www.hasbanana.com/maven/repo</url>
-        </repository>
+<!--        <repository>-->
+<!--            <id>hasbanana-repo</id>-->
+<!--            <name>hasbanana Maven Repository</name>-->
+<!--            <url>http://www.hasbanana.com/maven/repo</url>-->
+<!--        </repository>-->
 
         <repository>
             <id>tgac-repo</id>
