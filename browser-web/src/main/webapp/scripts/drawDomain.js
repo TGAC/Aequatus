@@ -9,14 +9,16 @@
 
 var domainsvg;
 
+var domainWidth = 0;
 
-function drawDomain(gene_id, protein_member_id, domains) {
+    function drawDomain(gene_id, protein_member_id, domains) {
 
     var margin = {top: 0, right: 0, bottom: 0, left: 0},
-        width = jQuery(window).width() * 0.8,
-        height = 500 - margin.top - margin.bottom;
+        width = jQuery("#domainStructure").width(),
+        height = 200 - margin.top - margin.bottom;
 
     var maxLentemp = jQuery("#domainStructure").width();
+    domainWidth = jQuery("#domainStructure").width();
     var stopposition = maxLentemp;
 
 
@@ -57,11 +59,12 @@ function drawDomain(gene_id, protein_member_id, domains) {
     }
 
     var exon_length = [0];
-    for(var exon=0; exon < syntenic_data.member[gene_id].Transcript[i].Exon.length; exon++){
-        exon_length.push(exon_length[exon] + (syntenic_data.member[gene_id].Transcript[i].Exon[exon].length))
+    for(var exon=0; exon < exons.length; exon++){
+        exon_length.push(exon_length[exon] + (exons[exon].length))
     }
 
 
+    console.log(maxLentemp)
     var linearScale = d3.scale.linear()
         .domain([0, exon_length[exon_length.length - 1]])
         .range([0, maxLentemp]);
@@ -168,7 +171,7 @@ function dispEachDomain(domains, max_len) {
 
         var linearScale = d3.scale.linear()
             .domain([0, max_len])
-            .range([0, width]);
+            .range([0, domainWidth]);
 
         var node = domainsvg.selectAll(".domain")
             .data(domains);
