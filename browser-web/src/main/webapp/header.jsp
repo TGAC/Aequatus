@@ -59,7 +59,8 @@
     <script type="text/javascript" src="<c:url value='aequatus-vis/scripts/util.js'/>"></script>
     <script type="text/javascript" src="<c:url value='aequatus-vis/scripts/d3_tree.js'/>"></script>
     <script type="text/javascript" src="<c:url value='aequatus-vis/scripts/cigarUtils.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='aequatus-vis/scripts/underscore/underscore-min.js'/>"></script>
+    <script type="text/javascript" src="https://underscorejs.org/underscore-min.js"></script>
+
     <link rel="stylesheet" href="<c:url value='aequatus-vis/styles/style.css'/>" type="text/css">
 
 
