@@ -113,7 +113,7 @@ public class EnsemblRestAPI implements EnsemblRestStore {
             division = "";
             response.put("genome", "vertebrates");
         } else {
-            server = "http://rest.ensemblgenomes.org";
+            server = "http://rest.ensembl.org";
 //            JSONArray divisions = getDivisons();
             response.put("genome", "non-vertebrates");
             response.put("divisions", "EnsemblPlants");
