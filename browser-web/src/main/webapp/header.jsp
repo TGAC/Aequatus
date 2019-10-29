@@ -32,6 +32,9 @@
 
     <%--bootstrap--%>
     <script type="text/javascript" src="<c:url value='/styles/bootstrap-css/bootstrap.js'/>"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/jquery/js/sol.js'/>"></script>
+    <link rel="stylesheet" href="<c:url value='/scripts/jquery/css/sol.css'/>" type="text/css">
+
     <link rel="stylesheet" href="<c:url value='/styles/bootstrap-css/bootstrap.css'/>" type="text/css">
     <link rel="stylesheet" href="<c:url value='/styles/bootstrap-css/bootstrap-theme.min.css'/>" type="text/css">
 
