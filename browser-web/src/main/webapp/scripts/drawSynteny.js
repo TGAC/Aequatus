@@ -71,7 +71,7 @@ function dispGeneinSynteny(g, svg, genes, species, ref_species, temp) {
     var margin = 10;
 
 
-    var maxLentemp = (jQuery(window).width() * 0.9);
+    var maxLentemp = (jQuery(window).width() * 0.8);
 
 
     var no_of_genes = genes.genes.no_of_genes;
@@ -253,7 +253,7 @@ function dispGenesForSpecies(div, species, genes, ref_species, temp) {
 
     var svg = jQuery(div).svg("get")
 
-    var maxLentemp = jQuery(window).width() * 0.9;
+    var maxLentemp = jQuery(window).width() * 0.8;
 
     var label = species;
 
