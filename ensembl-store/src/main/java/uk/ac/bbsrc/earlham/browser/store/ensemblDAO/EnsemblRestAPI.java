@@ -66,7 +66,7 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         log.info("\n\n\n\t getSpecies ");
 
         String ext = "/info/species?" + division;
-        log.info("\n\n\n\t division "+division);
+        log.info("\n\n\n\t division " + division);
         url = new URL(server + ext);
         URLConnection connection = url.openConnection();
         HttpURLConnection httpConnection = (HttpURLConnection) connection;
@@ -82,23 +82,8 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         }
 
         String output;
-        Reader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(response, "UTF-8"));
-            StringBuilder builder = new StringBuilder();
-            char[] buffer = new char[8192];
-            int read;
-            while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
-                builder.append(buffer, 0, read);
-            }
-            output = builder.toString();
-        } finally {
-            if (reader != null) try {
-                reader.close();
-            } catch (IOException logOrIgnore) {
-                logOrIgnore.printStackTrace();
-            }
-        }
+
+        output = processOutput(response);
 
 
         JSONObject result = new JSONObject();
@@ -121,7 +106,6 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         }
         return response;
     }
-
 
 
     public JSONObject getSpecies(String query) throws IOException {
@@ -185,9 +169,44 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         InputStream response = connection.getInputStream();
         int responseCode = httpConnection.getResponseCode();
 
-        if (responseCode != 200) {
-            throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
+        JSONObject status = new JSONObject();
+
+        if (responseCode == 200) {
+
+
+            String output;
+
+            output = processOutput(response);
+
+            status = JSONObject.fromObject(output);
+        } else {
+            throw new RuntimeException(processErrorcode(responseCode));
         }
+
+        return status;
+    }
+
+    private String processErrorcode(int responseCode) throws IOException {
+        String error_msg = "";
+        if (responseCode == 400) {
+            error_msg = "The service is unable to find an ID " + responseCode;
+        } else if (responseCode == 403) {
+            error_msg = "Reached too many requests, access to the service has been temporarily stopped. " + responseCode;
+        } else if (responseCode == 404) {
+            error_msg = "Indicates a badly formatted request. Contact Admin. " + responseCode;
+        } else if (responseCode == 408) {
+            error_msg = "The request was not processed in time. Wait and retry later. " + responseCode;
+        } else if (responseCode == 429) {
+            error_msg = "You have been rate-limited; wait and retry.";
+        } else if (responseCode == 503) {
+            error_msg = "The Ensembl service is temporarily down; retry after a pause. " + responseCode;
+        }
+        return error_msg;
+
+    }
+
+
+    private String processOutput(InputStream response) throws IOException {
 
         String output;
         Reader reader = null;
@@ -207,11 +226,9 @@ public class EnsemblRestAPI implements EnsemblRestStore {
                 logOrIgnore.printStackTrace();
             }
         }
-        JSONObject status = JSONObject.fromObject(output);
 
-        return status;
+        return output;
     }
-
 
     public JSONObject getRestAPIversion() throws IOException {
         String ext = "/info/rest?";
@@ -225,30 +242,17 @@ public class EnsemblRestAPI implements EnsemblRestStore {
 
         InputStream response = connection.getInputStream();
         int responseCode = httpConnection.getResponseCode();
+        JSONObject version = new JSONObject();
+        if (responseCode == 200) {
 
-        if (responseCode != 200) {
-            throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
-        }
+            String output;
 
-        String output;
-        Reader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(response, "UTF-8"));
-            StringBuilder builder = new StringBuilder();
-            char[] buffer = new char[8192];
-            int read;
-            while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
-                builder.append(buffer, 0, read);
-            }
-            output = builder.toString();
-        } finally {
-            if (reader != null) try {
-                reader.close();
-            } catch (IOException logOrIgnore) {
-                logOrIgnore.printStackTrace();
-            }
+            output = processOutput(response);
+
+            version = JSONObject.fromObject(output);
+        } else {
+            throw new RuntimeException(processErrorcode(responseCode));
         }
-        JSONObject version = JSONObject.fromObject(output);
 
         return version;
     }
@@ -263,33 +267,22 @@ public class EnsemblRestAPI implements EnsemblRestStore {
 
         httpConnection.setRequestProperty("Content-Type", "application/json");
 
-
         InputStream response = connection.getInputStream();
+
         int responseCode = httpConnection.getResponseCode();
 
-        if (responseCode != 200) {
-            throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
-        }
+        JSONObject release = new JSONObject();
 
-        String output;
-        Reader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(response, "UTF-8"));
-            StringBuilder builder = new StringBuilder();
-            char[] buffer = new char[8192];
-            int read;
-            while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
-                builder.append(buffer, 0, read);
-            }
-            output = builder.toString();
-        } finally {
-            if (reader != null) try {
-                reader.close();
-            } catch (IOException logOrIgnore) {
-                logOrIgnore.printStackTrace();
-            }
+        if (responseCode == 200) {
+
+            String output;
+
+            output = processOutput(response);
+
+            release = JSONObject.fromObject(output);
+        } else {
+            throw new RuntimeException(processErrorcode(responseCode));
         }
-        JSONObject release = JSONObject.fromObject(output);
 
         return release;
     }
@@ -314,40 +307,27 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         InputStream response = connection.getInputStream();
         int responseCode = httpConnection.getResponseCode();
 
-        if (responseCode != 200) {
-            throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
-        }
+        if (responseCode == 200) {
 
-        String output;
-        Reader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(response, "UTF-8"));
-            StringBuilder builder = new StringBuilder();
-            char[] buffer = new char[8192];
-            int read;
-            while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
-                builder.append(buffer, 0, read);
+
+            String output;
+
+            output = processOutput(response);
+
+            JSONObject homology = JSONObject.fromObject(output);
+
+
+            JSONArray homologies = homology.getJSONArray("data").getJSONObject(0).getJSONArray("homologies");
+
+            for (Object map : homologies) {
+                if (String.valueOf(((JSONObject) map).get("protein_id")).equals(ref)) {
+                    log.info("getInfoforHomolog " + String.valueOf(((JSONObject) map).get("protein_id")));
+                    homolog = true;
+                    break;
+                }
             }
-            output = builder.toString();
-        } finally {
-            if (reader != null) try {
-                reader.close();
-            } catch (IOException logOrIgnore) {
-                logOrIgnore.printStackTrace();
-            }
-        }
-
-        JSONObject homology = JSONObject.fromObject(output);
-
-
-        JSONArray homologies = homology.getJSONArray("data").getJSONObject(0).getJSONArray("homologies");
-
-        for (Object map : homologies) {
-            if (String.valueOf(((JSONObject) map).get("protein_id")).equals(ref)) {
-                log.info("getInfoforHomolog " + String.valueOf(((JSONObject) map).get("protein_id")));
-                homolog = true;
-                break;
-            }
+        } else {
+            throw new RuntimeException(processErrorcode(responseCode));
         }
 
         return homolog;
@@ -373,46 +353,33 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         InputStream response = connection.getInputStream();
         int responseCode = httpConnection.getResponseCode();
 
-        if (responseCode != 200) {
-            throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
-        }
+        if (responseCode == 200) {
 
-        String output;
-        Reader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(response, "UTF-8"));
-            StringBuilder builder = new StringBuilder();
-            char[] buffer = new char[8192];
-            int read;
-            while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
-                builder.append(buffer, 0, read);
+
+            String output;
+
+            output = processOutput(response);
+
+            JSONObject homology = JSONObject.fromObject(output);
+
+
+            JSONArray homologies = homology.getJSONArray("data").getJSONObject(0).getJSONArray("homologies");
+
+            for (Object map : homologies) {
+                JSONObject target = ((JSONObject) map).getJSONObject("target");
+                JSONObject source = ((JSONObject) map).getJSONObject("source");
+                if (String.valueOf(target.get("protein_id")).equals(hit)) {
+                    log.info("getInfoforHomolog " + String.valueOf(((JSONObject) map).get("protein_id")));
+                    result.put("ref", source.get("cigar_line"));
+                    result.put("hit", target.get("cigar_line"));
+                    result.put("ref_seq", source.get("align_seq"));
+                    result.put("hit_seq", target.get("align_seq"));
+                    result.put("type", ((JSONObject) map).get("type"));
+                    break;
+                }
             }
-            output = builder.toString();
-        } finally {
-            if (reader != null) try {
-                reader.close();
-            } catch (IOException logOrIgnore) {
-                logOrIgnore.printStackTrace();
-            }
-        }
-
-        JSONObject homology = JSONObject.fromObject(output);
-
-
-        JSONArray homologies = homology.getJSONArray("data").getJSONObject(0).getJSONArray("homologies");
-
-        for (Object map : homologies) {
-            JSONObject target = ((JSONObject) map).getJSONObject("target");
-            JSONObject source = ((JSONObject) map).getJSONObject("source");
-            if (String.valueOf(target.get("protein_id")).equals(hit)) {
-                log.info("getInfoforHomolog " + String.valueOf(((JSONObject) map).get("protein_id")));
-                result.put("ref", source.get("cigar_line"));
-                result.put("hit", target.get("cigar_line"));
-                result.put("ref_seq", source.get("align_seq"));
-                result.put("hit_seq", target.get("align_seq"));
-                result.put("type", ((JSONObject) map).get("type"));
-                break;
-            }
+        } else {
+            throw new RuntimeException(processErrorcode(responseCode));
         }
 
         return result;
@@ -431,47 +398,35 @@ public class EnsemblRestAPI implements EnsemblRestStore {
 
         int responseCode = httpConnection.getResponseCode();
 
-        if (responseCode != 200) {
-            if (responseCode == 429 && httpConnection.getHeaderField("Retry-After") != null) {
-                double sleepFloatingPoint = Double.valueOf(httpConnection.getHeaderField("Retry-After"));
-                double sleepMillis = 1000 * sleepFloatingPoint;
-                Thread.sleep((long) sleepMillis);
-                return searchGenes(keyword, species);
-            }
-            throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
-        }
-        InputStream response = connection.getInputStream();
-
-        String output;
-        Reader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(response, "UTF-8"));
-            StringBuilder builder = new StringBuilder();
-            char[] buffer = new char[8192];
-            int read;
-            while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
-                builder.append(buffer, 0, read);
-            }
-            output = builder.toString();
-        } finally {
-            if (reader != null) try {
-                reader.close();
-            } catch (IOException logOrIgnore) {
-                logOrIgnore.printStackTrace();
-            }
-        }
-
         JSONObject result = new JSONObject();
 
-        JSONArray genes = JSONArray.fromObject(output);
+        log.info("\n\n\n response code " + responseCode);
 
-        for (int i = 0; i < genes.size(); i++) {
-            String gene_id = genes.getJSONObject(i).getString("id");
-            genes.getJSONObject(i).put(gene_id, getGene(gene_id, false));
+        if (responseCode == 429 && httpConnection.getHeaderField("Retry-After") != null) {
+            double sleepFloatingPoint = Double.valueOf(httpConnection.getHeaderField("Retry-After"));
+            double sleepMillis = 1000 * sleepFloatingPoint;
+            Thread.sleep((long) sleepMillis);
+            return searchGenes(keyword, species);
+        } else if (responseCode == 200) {
+            InputStream response = connection.getInputStream();
+
+            String output;
+
+            output = processOutput(response);
+
+
+            JSONArray genes = JSONArray.fromObject(output);
+
+            for (int i = 0; i < genes.size(); i++) {
+                String gene_id = genes.getJSONObject(i).getString("id");
+                genes.getJSONObject(i).put(gene_id, getGene(gene_id, false));
+            }
+
+
+            result.put("result", genes);
+        } else {
+            throw new RuntimeException(processErrorcode(responseCode));
         }
-
-
-        result.put("result", genes);
         return result;
 
     }
@@ -501,35 +456,22 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         InputStream response = connection.getInputStream();
         int responseCode = httpConnection.getResponseCode();
 
-        if (responseCode != 200) {
-            throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
-        }
+        if (responseCode == 200) {
 
-        String output;
-        Reader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(response, "UTF-8"));
-            StringBuilder builder = new StringBuilder();
-            char[] buffer = new char[8192];
-            int read;
-            while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
-                builder.append(buffer, 0, read);
-            }
-            output = builder.toString();
-        } finally {
-            if (reader != null) try {
-                reader.close();
-            } catch (IOException logOrIgnore) {
-                logOrIgnore.printStackTrace();
-            }
-        }
 
-        JSONObject tree = JSONObject.fromObject(output);
-        result.put("member", getMembers(id, species).getJSONObject("members"));
+            String output;
+
+            output = processOutput(response);
+
+            JSONObject tree = JSONObject.fromObject(output);
+            result.put("member", getMembers(id, species).getJSONObject("members"));
 //        result.put("memberssss", getMembers(id, species).get("members"));
-        result.put("tree", tree.getJSONObject("tree"));
-        result.put("ref", id);
-        result.put("protein_id", id);
+            result.put("tree", tree.getJSONObject("tree"));
+            result.put("ref", id);
+            result.put("protein_id", id);
+        } else {
+            throw new RuntimeException(processErrorcode(responseCode));
+        }
 
         return result;
     }
@@ -559,29 +501,30 @@ public class EnsemblRestAPI implements EnsemblRestStore {
 //        InputStream response = connection.getInputStream();
         int responseCode = httpConnection.getResponseCode();
 
-        if (responseCode != 200) {
-            throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
-        }
+        if (responseCode == 200) {
 
-        List<String> output = new ArrayList<>();
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(httpConnection.getInputStream()));
-        String inputLine;
-        StringBuffer content = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            Pattern p = Pattern.compile("<gene.*geneId=\"(.*)\" protId=.*>");
-            Matcher matcher_comment = p.matcher(inputLine);
-            if (matcher_comment.find()) {
-                output.add(matcher_comment.group(1));
+            List<String> output = new ArrayList<>();
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(httpConnection.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                Pattern p = Pattern.compile("<gene.*geneId=\"(.*)\" protId=.*>");
+                Matcher matcher_comment = p.matcher(inputLine);
+                if (matcher_comment.find()) {
+                    output.add(matcher_comment.group(1));
+                }
             }
-        }
-        in.close();
-        JSONObject genes = new JSONObject();
-        for (int i = 0; i < output.size(); i++) {
-            genes.put(output.get(i), getGene(output.get(i), true));
-        }
+            in.close();
+            JSONObject genes = new JSONObject();
+            for (int i = 0; i < output.size(); i++) {
+                genes.put(output.get(i), getGene(output.get(i), true));
+            }
 
-        result.put("members", genes);
+            result.put("members", genes);
+        } else {
+            throw new RuntimeException(processErrorcode(responseCode));
+        }
 
         return result;
     }
@@ -639,37 +582,21 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         InputStream response = connection.getInputStream();
         int responseCode = httpConnection.getResponseCode();
 
-        if (responseCode != 200) {
-            if (responseCode == 429 && httpConnection.getHeaderField("Retry-After") != null) {
-                double sleepFloatingPoint = Double.valueOf(httpConnection.getHeaderField("Retry-After"));
-                double sleepMillis = 1000 * sleepFloatingPoint;
-                Thread.sleep((long) sleepMillis);
-                return getGenes(ids, expand);
-            }
-            throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
+        if (responseCode == 429 && httpConnection.getHeaderField("Retry-After") != null) {
+            double sleepFloatingPoint = Double.valueOf(httpConnection.getHeaderField("Retry-After"));
+            double sleepMillis = 1000 * sleepFloatingPoint;
+            Thread.sleep((long) sleepMillis);
+            return getGenes(ids, expand);
+        } else if (responseCode == 200) {
+            String output;
+
+            output = processOutput(response);
+
+            result.put("members", output);
+        } else {
+            throw new RuntimeException(processErrorcode(responseCode));
+
         }
-
-        String output;
-        Reader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(response, "UTF-8"));
-            StringBuilder builder = new StringBuilder();
-            char[] buffer = new char[8192];
-            int read;
-            while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
-                builder.append(buffer, 0, read);
-            }
-            output = builder.toString();
-        } finally {
-            if (reader != null) try {
-                reader.close();
-            } catch (IOException logOrIgnore) {
-                logOrIgnore.printStackTrace();
-            }
-        }
-
-
-        result.put("members", output);
 
 
         return result;
@@ -700,28 +627,20 @@ public class EnsemblRestAPI implements EnsemblRestStore {
             log.info("\n\n\n before response code ");
             int responseCode = httpConnection.getResponseCode();
             log.info("\n\n\n response code " + responseCode);
-            if (responseCode == 400) {
-                return gene;
-            } else if (responseCode != 200) {
-                if (responseCode == 429 && httpConnection.getHeaderField("Retry-After") != null) {
-                    double sleepFloatingPoint = Double.valueOf(httpConnection.getHeaderField("Retry-After"));
-                    double sleepMillis = 1000 * sleepFloatingPoint;
-                    Thread.sleep((long) sleepMillis);
-                    return getGene(id, expand);
-                }
-                throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
+            if (responseCode == 429 && httpConnection.getHeaderField("Retry-After") != null) {
+                double sleepFloatingPoint = Double.valueOf(httpConnection.getHeaderField("Retry-After"));
+                double sleepMillis = 1000 * sleepFloatingPoint;
+                Thread.sleep((long) sleepMillis);
+                return getGene(id, expand);
+            } else if (responseCode == 200) {
+                InputStream response = connection.getInputStream();
+
+                output = processOutput(response);
+            } else {
+                throw new RuntimeException(processErrorcode(responseCode));
             }
 
-            InputStream response = connection.getInputStream();
 
-            reader = new BufferedReader(new InputStreamReader(response, "UTF-8"));
-            StringBuilder builder = new StringBuilder();
-            char[] buffer = new char[8192];
-            int read;
-            while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
-                builder.append(buffer, 0, read);
-            }
-            output = builder.toString();
         } finally {
             if (reader != null) try {
                 reader.close();
@@ -762,35 +681,21 @@ public class EnsemblRestAPI implements EnsemblRestStore {
         InputStream response = connection.getInputStream();
         int responseCode = httpConnection.getResponseCode();
 
-        if (responseCode != 200) {
-            throw new RuntimeException("Response code was not 200. Detected response was " + responseCode);
+        if (responseCode == 200) {
+
+            String output;
+
+            output = processOutput(response);
+
+            JSONObject homology = JSONObject.fromObject(output);
+
+
+            JSONArray homologies = homology.getJSONArray("data").getJSONObject(0).getJSONArray("homologies");
+
+            result.put("homology", homologies);
+        } else {
+            throw new RuntimeException(processErrorcode(responseCode));
         }
-
-        String output;
-        Reader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(response, "UTF-8"));
-            StringBuilder builder = new StringBuilder();
-            char[] buffer = new char[8192];
-            int read;
-            while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
-                builder.append(buffer, 0, read);
-            }
-            output = builder.toString();
-        } finally {
-            if (reader != null) try {
-                reader.close();
-            } catch (IOException logOrIgnore) {
-                logOrIgnore.printStackTrace();
-            }
-        }
-
-        JSONObject homology = JSONObject.fromObject(output);
-
-
-        JSONArray homologies = homology.getJSONArray("data").getJSONObject(0).getJSONArray("homologies");
-
-        result.put("homology", homologies);
 
         return result;
     }
