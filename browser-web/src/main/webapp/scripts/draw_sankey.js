@@ -262,7 +262,7 @@ function drawSankey(data, div) {
                 first = false;
 
                 if (key.indexOf("seq") < 0) {
-                    info += "<tr><td>" + i + "</td><td>" + source + "</td><td>" + target + "</td></tr>";
+                    info += "<tr><td>" + i + "</td><td><div style='width:170px; overflow:scroll'>" + source + "</div></td><td><div style='width:170px; overflow:scroll'>" + target + "</div></td></tr>";
                 }
             }
             info += "</tbody></table>";
